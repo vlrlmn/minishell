@@ -1,47 +1,45 @@
-cc main.c -I/usr/local/opt/readline/include -L/usr/local/opt/readline/lib -lreadline -o minishell
+# cc main.c -I/usr/local/opt/readline/include -L/usr/local/opt/readline/lib -lreadline -o minishell
 
-1. -lreadline - compilation flag
-2. -I/usr/local/opt/readline/include -L/usr/local/opt/readline/lib -lreadline libraries for functions like rl_replace_line and rl_redisplay 
+# 1. -lreadline - compilation flag
+# 2. -I/usr/local/opt/readline/include -L/usr/local/opt/readline/lib -lreadline libraries for functions like rl_replace_line and rl_redisplay 
 
 NAME = minishell
 
+# Определите CC только с флагами компилятора
 CC = cc -Wall -Wextra -Werror
+# Определите CFLAGS для флагов компиляции и LDFLAGS для флагов линкера
+CFLAGS = -I/usr/local/opt/readline/include
+LDFLAGS = -L/usr/local/opt/readline/lib -lreadline
 
 SRC = 	main.c \
-		lexer.c \
-		error.c \
+	lexer.c \
+	errors.c
 
 OBJ = $(SRC:.c=.o)
 
-HDRS = ../minishell.h
+HDRS = minishell.h
 
 RM = rm -f
 
 LIBFT = Libft/libft.a
 
-PRINTF = printf/libftprintf.a
-
 .c.o:
-	${CC} -I ${HDRS} -c $< -o ${<:.c=.o}
+	$(CC) $(CFLAGS) -c $< -o $@
 
-$(NAME):		$(OBJ)
-				$(MAKE) -C printf
-				$(MAKE) -C Libft
-				${CC} -o $(NAME) $(OBJ) $(LIBFT) $(PRINTF)
+$(NAME):	$(OBJ)
+	$(MAKE) -C Libft
+	$(CC) -o $(NAME) $(OBJ) $(LIBFT) $(LDFLAGS)
 
-all:			$(NAME)
+all:		$(NAME)
 
 clean:
-			${RM} $(OBJ)
-			$(MAKE) -C printf clean
-			$(MAKE) -C Libft clean
+	$(RM) $(OBJ)
+	$(MAKE) -C Libft clean
 
+fclean:	clean
+	$(RM) $(NAME)
+	$(MAKE) -C Libft fclean
 
-fclean:		clean
-		${RM} $(NAME)
-		$(MAKE) -C printf fclean
-		$(MAKE) -C Libft fclean
+re:		fclean all
 
-re:			fclean all
-
-.PHONY:		all clean fclean re
+.PHONY:	all clean fclean re

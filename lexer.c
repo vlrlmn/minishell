@@ -85,7 +85,7 @@ void add_spaces(char *work_line, char *input, int input_len)
     work_line[j] = '\0';
 }
 
-void lexer(t_args *args, char *input)
+void lexer(char *input)
 {
     char **line_tokens;
     char *work_line;

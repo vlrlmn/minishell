@@ -16,8 +16,10 @@ int loop_result(t_args *args)
 {
     int exit_status;
     char *input;
+    exit_status = 0;
     while(1)
     {
+        (void)args;
         input = readline("minishell$ ");
         if (input == NULL)
         {
@@ -26,7 +28,7 @@ int loop_result(t_args *args)
         }
         if (input)
             add_history(input);
-        lexer(args, input);
+        lexer(input);
     }
     return (exit_status);
 }
@@ -48,6 +50,8 @@ int main(int argc, char **argv, char **envp)
     t_args args;
     int exit_status;
 
+    (void)argc;
+    (void)argv;
     set_environment(&args, envp);
     signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);

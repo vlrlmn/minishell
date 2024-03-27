@@ -47,7 +47,7 @@ typedef struct s_args
 }					t_args;
 
 /*Lexer*/
-void lexer(t_args *args, char *input);
+void lexer(char *input);
 
 /*Errors*/
 void exit_with_syntax_err(int err_code);
