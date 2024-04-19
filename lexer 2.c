@@ -1,11 +1,6 @@
 #include "minishell.h"
 
-int is_space (char c)
-{
-    return(c == '\t' || c == '\n' || c == '\v'  || c == '\f' || c == '\r');
-}
-
-int quotes_balance(char *input)
+int valid_quotes(char *input)
 {
     int double_q;
     int single_q;
@@ -16,13 +11,11 @@ int quotes_balance(char *input)
     i = -1;
     while(input[i++])
     {
-        if(input[i] == 39)
+        if(input[i] == '\'')
             single_q++;
-        if (input[i] == 34)
+        if (input[i] == '\"')
             double_q++;
     }
-    printf("single quote: %d\n", single_q);
-    printf("double quote: %d\n", double_q);
     if (single_q % 2 != 0 || double_q % 2 != 0)
         return(QUOTES_ERR);
     else if (single_q && double_q)
@@ -35,7 +28,7 @@ int quotes_balance(char *input)
         return (NO_QUOTES);
 }
 
-int parenthesis_balance(char *input)
+int valid_parenthesis(char *input)
 {
     int i;
     int count;
@@ -92,55 +85,22 @@ void add_spaces(char *work_line, char *input, int input_len)
     work_line[j] = '\0';
 }
 
-void space_normalizer(char *line)
-{
-    int i;
-    int j;
-    char last;
-    int in_quote;
-
-    i = 0;
-    j = 0;
-    in_quote = 0;
-    last = 0;
-    while(line[i])
-    {
-        if(line[i] == 34 || line[i] == 39)
-        {
-            if(in_quote == line[i])
-                in_quote = 0;
-            else if (!in_quote)
-                in_quote = line[i];
-        }
-        if (!in_quote && is_space(line[i]) && (last == ' ' || last == 0))
-            ;
-        else
-            line[j++] = line[i];
-        last = line[i];
-        i++;
-    }
-    if (last == ' ')
-        j--;
-    line[j] = '\0';
-}
-
-void lexer(char *input)
+void lexer(t_args *args, char *input)
 {
     char **line_tokens;
     char *work_line;
     int len;
 
     len = ft_strlen(input);
-    if (quotes_balance(input) == QUOTES_ERR || !parenthesis_balance(input))
-        exit_with_syntax_err(SYNTAX_ERR); //EX_UNAVAILABLE is a code (2) for syntax err
+    if (valid_quotes(input) == QUOTES_ERR || !valid_parenthesis(input))
+        exit_with_syntax_err(SYNTAX_ERR);
     work_line = malloc(sizeof(char) * (len * 4)); 
     if (!work_line)
-        exit_with_malloc_error(EX_UNAVAILABLE); //EX_UNAVAILABLE is a code (69) for error malloc
+        exit_with_malloc_error(EX_UNAVAILABLE);
     add_spaces(work_line, input, len);
-    space_normalizer(work_line);
     line_tokens = ft_split(work_line, ' ');
     if (!line_tokens)
         exit_with_malloc_error(EX_UNAVAILABLE);
-    free_line_tokens(line_tokens); // TO_DO
+    free(line_tokens);
     free(work_line);
 }

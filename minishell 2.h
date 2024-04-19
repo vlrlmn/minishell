@@ -19,6 +19,12 @@
 # define WORD 1
 # define PIPE 2
 
+# define QUOTES_ERR 0
+# define MULTIPLE_QUOTES 1
+# define NO_QUOTES 2
+# define SINGLE_Q 3
+# define DOUBLE_Q 4
+
 # define SYNTAX_ERR 2
 
 typedef struct s_token
@@ -40,21 +46,10 @@ typedef struct s_args
     t_token         *tok;
 }					t_args;
 
-typedef enum quotes_handler
-{
-                    QUOTES_ERR,
-                    MULTIPLE_QUOTES,
-                    NO_QUOTES,
-                    SINGLE_Q,
-                    DOUBLE_Q,
-}			t_quotes;
-
-
 /*Lexer*/
-void lexer(char *input);
+void lexer(t_args *args, char *input);
 
-/*Errors and free*/
+/*Errors*/
 void exit_with_syntax_err(int err_code);
 void exit_with_malloc_error(int err_code);
-void free_environment(t_args	*shell_context);
 #endif

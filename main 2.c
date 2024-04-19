@@ -9,25 +9,24 @@ void handle_sigint(int sig)
 		rl_on_new_line();
 		rl_redisplay();
     }
+
 }
 
 int loop_result(t_args *args)
 {
     int exit_status;
     char *input;
-    exit_status = 0;
     while(1)
     {
-        (void)args;
         input = readline("minishell$ ");
         if (input == NULL)
         {
             write(STDOUT_FILENO, "exit\n", 5);
             break ;
         }
-        if (*input)
+        if (input)
             add_history(input);
-        lexer(input);
+        lexer(args, input);
     }
     return (exit_status);
 }
@@ -35,32 +34,24 @@ int loop_result(t_args *args)
 void set_environment(t_args *args, char **envp)
 {
     int len;
-    int i;
 
-    i = 0;
     len = 0;
     while(envp[len])
         len++;
     args->envp = (char **)malloc((len + 2) * sizeof(char *));
-    while(i < len)
-    {
-        args->envp[i] = ft_strdup(envp[i]);
-        i++;
-    }
+    //write function which will copy **envp to args->envp
+
 }
 
 int main(int argc, char **argv, char **envp)
 {
-    t_args	shell_context;
-    int	exit_status;
+    t_args args;
+    int exit_status;
 
-    (void)argc;
-    (void)argv;
-    set_environment(&shell_context, envp);
+    set_environment(&args, envp);
     signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
-    exit_status = loop_result(&shell_context);
+    exit_status = loop_result(&args);
     rl_clear_history();
-    free_environment(&shell_context); // TO_DO
     return(exit_status);
 }

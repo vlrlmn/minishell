@@ -4,16 +4,14 @@
 # 2. -I/usr/local/opt/readline/include -L/usr/local/opt/readline/lib -lreadline libraries for functions like rl_replace_line and rl_redisplay 
 
 NAME = minishell
-
-# Определите CC только с флагами компилятора
 CC = cc -Wall -Wextra -Werror
-# Определите CFLAGS для флагов компиляции и LDFLAGS для флагов линкера
 CFLAGS = -I/usr/local/opt/readline/include
 LDFLAGS = -L/usr/local/opt/readline/lib -lreadline
 
 SRC = 	main.c \
 	lexer.c \
-	errors.c
+	errors.c \
+	free_env.c \
 
 OBJ = $(SRC:.c=.o)
 
