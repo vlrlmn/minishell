@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlomakin <vlomakin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:11 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/04/22 15:30:24 by vlomakin         ###   ########.fr       */
+/*   Updated: 2024/04/24 17:39:34 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ int	quotes_balance(char *input)
 		if (input[i] == 34)
 			double_q++;
 	}
-	printf("single quote: %d\n", single_q);
-	printf("double quote: %d\n", double_q);
+	// printf("single quote: %d\n", single_q);
+	// printf("double quote: %d\n", double_q);
 	if (single_q % 2 != 0 || double_q % 2 != 0)
 		return (QUOTES_ERR);
 	else if (single_q && double_q)
@@ -125,7 +125,7 @@ void	space_normalizer(char *line)
 			else if (!in_quote)
 				in_quote = line[i];
 		}
-		if (!in_quote && is_space(line[i]) && (last == ' ' || last == 0))
+		if (!in_quote && is_space(line[i]) && (last == ' ' || (last == 0 && i == 0)))
 			;
 		else
 			line[j++] = line[i];
@@ -139,13 +139,12 @@ void	space_normalizer(char *line)
 
 void	lexer(char *input)
 {
-	char **line_tokens;
 	char *work_line;
 	int len;
 
 	len = ft_strlen(input);
 	if (quotes_balance(input) == QUOTES_ERR || !parenthesis_balance(input))
-		exit_with_syntax_err(SYNTAX_ERR);
+		exit_with_syntax_err(SYNTAX_ERR); // change: ask to close the quote
 			//EX_UNAVAILABLE is a code (2) for syntax err
 	work_line = malloc(sizeof(char) * (len * 4));
 	if (!work_line)
@@ -153,9 +152,5 @@ void	lexer(char *input)
 			//EX_UNAVAILABLE is a code (69) for error malloc
 	add_spaces(work_line, input, len);
 	space_normalizer(work_line);
-	line_tokens = ft_split(work_line, ' ');
-	if (!line_tokens)
-		exit_with_malloc_error(EX_UNAVAILABLE);
-	free_line_tokens(line_tokens); // TO_DO
-	free(work_line);
+	tokenize_input(work_line);
 }
