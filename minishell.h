@@ -23,7 +23,7 @@
 typedef struct s_token
 {
     int                 len;
-    char                *begin;
+    char                *value;
     int                 type;
     int                 pos;
     struct s_token      *next;
