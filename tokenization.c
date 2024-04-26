@@ -47,9 +47,7 @@ int handle_quotes(char **input, int *in_quote, char **start, t_token **head)
     }
     return (0);
 }
-#include <stdio.h>
 
-// Определения типов токенов для печати
 const char *token_type_string(t_type type) {
     switch (type) {
         case WORD: return "WORD";
@@ -61,12 +59,11 @@ const char *token_type_string(t_type type) {
     }
 }
 
-// Функция для печати всех токенов в списке
 void print_tokens(const t_token *tokens) {
     const t_token *current = tokens;
     printf("Tokens:\n");
     while (current != NULL) {
-        printf("Type: %s, Value: '%s'\n", token_type_string(current->type), current->value);
+        printf("Type: %s, Value: %s\n", token_type_string(current->type), current->value);
         current = current->next;
     }
 }

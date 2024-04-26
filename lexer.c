@@ -6,15 +6,36 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:11 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/04/24 17:39:34 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/04/25 16:53:06 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_space(char c)
+char *process_double_quotes(char *input)
 {
-	return (c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r');
+    char *processed;
+    int i;
+    int j;
+
+    i = 0;
+    j = 0;
+    processed = malloc(strlen(input) + 1); 
+    if (!processed)
+        return(NULL);
+    while(input[i])
+    {
+        if(input[i] == 34 && input[i + 1] == 34 && input[i-1] && input[i + 2] && !is_space(input[i - 1]) && !is_space(input[i + 2]))
+            i+=2;
+        else
+        {
+            processed[j] = input[i];
+            j++;
+            i++;
+        }
+    }
+    printf("%s\n", processed);
+    return(processed);
 }
 
 int	quotes_balance(char *input)
@@ -152,5 +173,6 @@ void	lexer(char *input)
 			//EX_UNAVAILABLE is a code (69) for error malloc
 	add_spaces(work_line, input, len);
 	space_normalizer(work_line);
+    work_line = process_double_quotes(work_line);
 	tokenize_input(work_line);
 }

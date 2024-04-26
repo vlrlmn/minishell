@@ -93,9 +93,11 @@ typedef enum token_type
 void lexer(char *input);
 
 /*Errors and free*/
-void exit_with_syntax_err(int err_code);
-void exit_with_malloc_error(int err_code);
-void free_environment(t_args	*shell_context);
-void    free_line_tokens(char **line_tokens);
-void    tokenize_input(char *line);
+void                    exit_with_syntax_err(int err_code);
+void                    exit_with_malloc_error(int err_code);
+void                    free_environment(t_args	*shell_context);
+void                    free_line_tokens(char **line_tokens);
+void                    tokenize_input(char *line);
+int                     is_space(char c);
+
 #endif
