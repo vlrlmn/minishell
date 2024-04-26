@@ -9,11 +9,12 @@ CFLAGS = -I/usr/local/opt/readline/include
 LDFLAGS = -L/usr/local/opt/readline/lib -lreadline
 
 SRC = 	main.c \
-	lexer.c \
+	
 	errors.c \
 	free_env.c \
 	tokenization.c \
 	lexer_utils.c \
+	parse.c \
 
 OBJ = $(SRC:.c=.o)
 

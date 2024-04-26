@@ -81,13 +81,12 @@ typedef enum token_type
                     PIPE,
                     EXEC,
                     WORD,
+                    WORD_IN_QUOTES,
                     REDIR_IN,
                     REDIR_OUT,
                     REDIR_APP,
                     HEREDOC,
-                    Q_SINGLE,
-                    Q_DOUBLE,
-                    QUOTE,
+                    EXPANSION,
 }			t_type;
 /*Lexer*/
 void lexer(char *input);
@@ -99,5 +98,6 @@ void                    free_environment(t_args	*shell_context);
 void                    free_line_tokens(char **line_tokens);
 void                    tokenize_input(char *line);
 int                     is_space(char c);
+void                    lexer(char *input);
 
 #endif
