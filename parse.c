@@ -6,13 +6,13 @@
 /*   By: vlomakin <vlomakin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 11:50:56 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/04/26 17:11:33 by vlomakin         ###   ########.fr       */
+/*   Updated: 2024/04/26 17:20:59 by vlomakin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	in_quotes_token(char *line, int pos, char sym, t_token *tok)
+int	in_quotes_token(char *line, int pos, char sym, t_token *tok)
 {
 	int	end_pos;
 	int	start_pos;
@@ -27,6 +27,7 @@ void	in_quotes_token(char *line, int pos, char sym, t_token *tok)
 	tok->pos = pos;
 	tok->type = WORD_IN_QUOTES;
 	tok->next = NULL;
+	return(end_pos);
 }
 
 void	symbol_token(char *symbol, int pos, t_token *tok)
@@ -54,7 +55,7 @@ void	two_symbols_token(char *symbols, int len, t_token *tok, int pos)
 	tok->next = NULL;
 }
 
-void	expansion_token(char *work_line, int pos, t_token *tok)
+int	expansion_token(char *work_line, int pos, t_token *tok)
 {
 	int	end;
 
@@ -65,9 +66,10 @@ void	expansion_token(char *work_line, int pos, t_token *tok)
 	tok->pos = pos;
 	tok->type = EXPANSION;
 	tok->next = NULL;
+	return (end);
 }
 
-void	word_token(char *work_line, int pos, t_token *tok)
+int	word_token(char *work_line, int pos, t_token *tok)
 {
 	int end;
 
@@ -77,6 +79,7 @@ void	word_token(char *work_line, int pos, t_token *tok)
 	tok->len = ft_strlcpy(tok->value, work_line, end);
 	tok->type = WORD;
 	tok->next = NULL;
+	return(end);
 }
 
 void	lexer(char *input)
@@ -91,16 +94,21 @@ void	lexer(char *input)
 	while (input[i])
 	{
 		if (input[i] == 34 || input[i] == 39)
-			in_quotes_token(input + i, i, input[i], tokens);
+			i += in_quotes_token(input + i, i, input[i], tokens);
 		else if (input[i] == '>' || input[i] == '<' || input[i] == '|')
+		{
 			symbol_token(input[i], i, tokens);
+			i++;
+		}
 		else if ((input[i] == '>' && input[i + 1] == '>' && input[i + 1])
 			|| (input[i] == '<' && input[i + 1] == '<' && input[i + 1]))
+		{
 			two_symbols_token(input + i, 2, tokens, i);
+			i += 2;
+		}
 		else if (input[i] == '$')
-			expansion_token(input + i, i, tokens);
+			i += expansion_token(input + i, i, tokens);
 		else if	(!is_delimiter(input[i]))
-			word_token(input + i, i, tokens);
-		i++;
+			i += word_token(input + i, i, tokens);
 	} // FIX i counter
 }
