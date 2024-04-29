@@ -9,7 +9,6 @@ CFLAGS = -I/usr/local/opt/readline/include
 LDFLAGS = -L/usr/local/opt/readline/lib -lreadline
 
 SRC = 	main.c \
-	
 	errors.c \
 	free_env.c \
 	tokenization.c \
