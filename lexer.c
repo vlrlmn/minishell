@@ -5,174 +5,83 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/22 12:44:11 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/04/25 16:53:06 by lomakinaval      ###   ########.fr       */
+/*   Created: 2024/04/26 11:50:56 by vlomakin          #+#    #+#             */
+/*   Updated: 2024/04/29 19:23:44 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char *process_double_quotes(char *input)
+int fill_new_token(char *input, t_token *last, int i)
 {
-    char *processed;
-    int i;
-    int j;
+	if (input[i] == 34 || input[i] == 39)
+		i += in_quotes_token(input + i, i, input[i], last);
+	else if (input[i] == '>' || input[i] == '<' || input[i] == '|')
+	{
+		symbol_token(input[i], i, last);
+		return (i + 1);
+	}
+	else if ((input[i] == '>' && input[i + 1] == '>') || (input[i] == '<' 
+			&& input[i + 1] == '<'))
+	{
+		two_symbols_token(input + i, 2, i, last);
+		return (i + 2);
+	}
+	else if (input[i] == '$')
+		return (i += expansion_token(input + i, i, last));
+	else if	(!is_delimiter(input[i]))
+		return (i += word_token(input + i, i, last));
+	while (input[i] && is_delimiter(input[i]))
+	   	i++;
+	return (i);
+}
 
-    i = 0;
-    j = 0;
-    processed = malloc(strlen(input) + 1); 
-    if (!processed)
-        return(NULL);
-    while(input[i])
-    {
-        if(input[i] == 34 && input[i + 1] == 34 && input[i-1] && input[i + 2] && !is_space(input[i - 1]) && !is_space(input[i + 2]))
-            i+=2;
-        else
-        {
-            processed[j] = input[i];
-            j++;
-            i++;
-        }
+/*Debugging*/
+const char *token_type_string(t_type type) {
+    switch (type) {
+        case WORD: return "WORD";
+        case PIPE: return "PIPE";
+        case REDIR_IN: return "REDIR_IN";
+        case REDIR_OUT: return "REDIR_OUT";
+        default: return "UNKNOWN";
     }
-    printf("%s\n", processed);
-    return(processed);
 }
 
-int	quotes_balance(char *input)
-{
-	int	double_q;
-	int	single_q;
-	int	i;
-
-	double_q = 0;
-	single_q = 0;
-	i = -1;
-	while (input[i++])
-	{
-		if (input[i] == 39)
-			single_q++;
-		if (input[i] == 34)
-			double_q++;
-	}
-	// printf("single quote: %d\n", single_q);
-	// printf("double quote: %d\n", double_q);
-	if (single_q % 2 != 0 || double_q % 2 != 0)
-		return (QUOTES_ERR);
-	else if (single_q && double_q)
-		return (MULTIPLE_QUOTES);
-	else if (single_q && !double_q)
-		return (SINGLE_Q);
-	else if (!single_q && double_q)
-		return (DOUBLE_Q);
-	else
-		return (NO_QUOTES);
+void print_tokens(const t_token *tokens) {
+    const t_token *current = tokens;
+    printf("Tokens:\n");
+    while (current != NULL) {
+        printf("Type: %s, Value: %s\n", token_type_string(current->type), current->value);
+        current = current->next;
+    }
 }
-
-int	parenthesis_balance(char *input)
-{
-	int	i;
-	int	count;
-
-	i = 0;
-	count = 0;
-	while (input[i])
-	{
-		if (input[i] == '(')
-			count++;
-		else if (input[i] == ')')
-		{
-			if (count == 0)
-				return (-1);
-			count--;
-		}
-		i++;
-	}
-	if (count != 0)
-		return (0);
-	else
-		return (1);
-}
-
-void	add_spaces(char *work_line, char *input, int input_len)
-{
-	int	i;
-	int	j;
-	int	double_q;
-	int	single_q;
-
-	i = 0;
-	j = 0;
-	double_q = 0;
-	single_q = 0;
-	while (i < input_len)
-	{
-		if (input[i] == '\'' && !double_q)
-			single_q = !single_q;
-		if (input[i] == '\"' && !single_q)
-			double_q = !double_q;
-		if (!single_q && !double_q && (input[i] == '>' || input[i] == '<'
-				|| input[i] == '|' || input[i] == '$'))
-		{
-			if (j > 0 && work_line[j - 1] != ' ')
-				work_line[j++] = ' ';
-			if (input[i] == '>' && input[i + 1] == '>')
-				work_line[j++] = input[++i];
-			work_line[j++] = ' ';
-		}
-		else
-			work_line[j++] = input[i];
-		i++;
-	}
-	work_line[j] = '\0';
-}
-
-void	space_normalizer(char *line)
-{
-	int		i;
-	int		j;
-	char	last;
-	int		in_quote;
-
-	i = 0;
-	j = 0;
-	in_quote = 0;
-	last = 0;
-	while (line[i])
-	{
-		if (line[i] == 34 || line[i] == 39)
-		{
-			if (in_quote == line[i])
-				in_quote = 0;
-			else if (!in_quote)
-				in_quote = line[i];
-		}
-		if (!in_quote && is_space(line[i]) && (last == ' ' || (last == 0 && i == 0)))
-			;
-		else
-			line[j++] = line[i];
-		last = line[i];
-		i++;
-	}
-	if (last == ' ')
-		j--;
-	line[j] = '\0';
-}
+/* ^^^^^^^^Debugging^^^^^^^^*/
 
 void	lexer(char *input)
 {
-	char *work_line;
-	int len;
+	int	i;
+	t_token *head;
+	t_token *last;
+	t_token *new;
 
-	len = ft_strlen(input);
-	if (quotes_balance(input) == QUOTES_ERR || !parenthesis_balance(input))
-		exit_with_syntax_err(SYNTAX_ERR); // change: ask to close the quote
-			//EX_UNAVAILABLE is a code (2) for syntax err
-	work_line = malloc(sizeof(char) * (len * 4));
-	if (!work_line)
-		exit_with_malloc_error(EX_UNAVAILABLE);
-			//EX_UNAVAILABLE is a code (69) for error malloc
-	add_spaces(work_line, input, len);
-	space_normalizer(work_line);
-    work_line = process_double_quotes(work_line);
-	tokenize_input(work_line);
+	head = NULL;
+	last = NULL;
+	i = 0;
+	while (input[i])
+	{
+		new = malloc(sizeof(t_token));
+		if (!new)
+		{
+			free(head);
+			return ;
+		}
+		new->next = NULL;
+		if (!head)
+			head = new;
+		else
+			last->next = new;
+		last = new;
+		i = fill_new_token(input, new, i);
+	}
+	print_tokens(head); //Debugging
 }

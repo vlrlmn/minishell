@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlomakin <vlomakin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/04/26 11:53:38 by vlomakin         ###   ########.fr       */
+/*   Updated: 2024/04/29 19:09:40 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@ void	handle_sigint(int sig)
 	}
 }
 
+/*This is where we have instant loop happening. Inside the loop
+we reading the line, adding it in history and call lexer, beginning
+of input parsing*/
 int	loop_result(t_args *args)
 {
 	int		exit_status;
@@ -45,6 +48,8 @@ int	loop_result(t_args *args)
 	return (exit_status);
 }
 
+/*We need to create new environment argument and copy envp from main
+arguments because this is safe way to work with environment*/
 void	set_environment(t_args *args, char **envp)
 {
 	int	len;
@@ -62,6 +67,10 @@ void	set_environment(t_args *args, char **envp)
 	}
 }
 
+/*Here we launch our program, set environment, handle signals.
+For saving history and mowing with arrows through
+previously written commands we use rl_clear_history();
+In the end we clear everything and free memory*/
 int	main(int argc, char **argv, char **envp)
 {
 	t_args	shell_context;

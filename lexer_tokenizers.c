@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
+/*   lexer_tokenizers.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/26 11:50:56 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/04/29 18:27:04 by lomakinaval      ###   ########.fr       */
+/*   Created: 2024/04/29 19:14:25 by lomakinaval       #+#    #+#             */
+/*   Updated: 2024/04/29 19:26:32 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,11 @@
 int	in_quotes_token(char *line, int pos, char sym, t_token *tok)
 {
 	int	end_pos;
-	int	start_pos;
-	char	end_char;
+	char*	end_char;
 
 	end_char = ft_strrchr(line, sym);
 	end_pos = 0;
-	start_pos = 0;
-	while (line[end_pos] && line[end_pos] != end_char)
+	while (line[end_pos] && line[end_pos] != end_char[0])
 		end_pos++;
 	tok->value = malloc(sizeof(char) * end_pos + 1);
 	if(!tok->value)
@@ -32,7 +30,7 @@ int	in_quotes_token(char *line, int pos, char sym, t_token *tok)
 	return(end_pos);
 }
 
-void	symbol_token(char *symbol, int pos, t_token *tok)
+void	symbol_token(char symbol, int pos, t_token *tok)
 {
 	if (symbol == '<')
 		tok->type = REDIR_IN;
@@ -44,7 +42,7 @@ void	symbol_token(char *symbol, int pos, t_token *tok)
 	tok->value = malloc(sizeof(char) * 2);
 	if(!tok->value)
 		exit (EX_UNAVAILABLE);
-	tok->len = ft_strlcpy(tok->value, symbol, 1);
+	tok->len = ft_strlcpy(tok->value, &symbol, 1);
 }
 
 void	two_symbols_token(char *symbols, int len, int pos, t_token *tok)
@@ -88,57 +86,6 @@ int	word_token(char *work_line, int pos, t_token *tok)
 		exit (EX_UNAVAILABLE);
 	tok->len = ft_strlcpy(tok->value, work_line, end);
 	tok->type = WORD;
+	tok->pos = pos;
 	return(end);
-}
-
-int fill_new_token(char *input, t_token *last, int i)
-{
-	if (input[i] == 34 || input[i] == 39)
-		i += in_quotes_token(input + i, i, input[i], last);
-	else if (input[i] == '>' || input[i] == '<' || input[i] == '|')
-	{
-		symbol_token(input[i], i, last);
-		return (i + 1);
-	}
-	else if ((input[i] == '>' && input[i + 1] == '>') || (input[i] == '<' 
-			&& input[i + 1] == '<'))
-	{
-		two_symbols_token(input + i, 2, i, last);
-		return (i + 2);
-	}
-	else if (input[i] == '$')
-		return (i += expansion_token(input + i, i, last));
-	else if	(!is_delimiter(input[i]))
-		return (i += word_token(input + i, i, last));
-	while (input[i] && is_delimiter(input[i]))
-	   	i++;
-	return (i);
-}
-
-void	lexer(char *input)
-{
-	int	i;
-	t_token *head;
-	t_token *last;
-	t_token *new;
-
-	head = NULL;
-	last = NULL;
-	i = 0;
-	while (input[i])
-	{
-		new = malloc(sizeof(t_token));
-		if (!new)
-		{
-			free(head);
-			return ;
-		}
-		new->next = NULL;
-		if (!head)
-			head = new;
-		else
-			last->next = new;
-		last = new;
-		i = fill_new_token(input, new, i);
-	}
 }

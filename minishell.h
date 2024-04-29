@@ -96,8 +96,13 @@ void                    exit_with_syntax_err(int err_code);
 void                    exit_with_malloc_error(int err_code);
 void                    free_environment(t_args	*shell_context);
 void                    free_line_tokens(char **line_tokens);
-void                    tokenize_input(char *line);
-int                     is_space(char c);
+int	is_delimiter(char c);
 void                    lexer(char *input);
 
+/*Lexer tokenizers*/
+int	word_token(char *work_line, int pos, t_token *tok);
+int	expansion_token(char *work_line, int pos, t_token *tok);
+void	two_symbols_token(char *symbols, int len, int pos, t_token *tok);
+void	symbol_token(char symbol, int pos, t_token *tok);
+int	in_quotes_token(char *line, int pos, char sym, t_token *tok);
 #endif
