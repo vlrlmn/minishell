@@ -6,12 +6,19 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 11:50:56 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/04/29 19:23:44 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/04/29 19:35:07 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*Depending on the type we fill new tokens, division principles:
+1) If it's in the quotes, we put everything including quotes in the token with type of WORD_IN_QUOTES
+2) If it's > < | we create token with a type of REDIR_IN/REDIR_OUT/PIPE
+3) If it's >> << we create token with a type of HEREDOC, HEREDOC_APP
+4) If it's $ we create token with type EXPANSION
+5) If it's any other symbol excluding spaces we create token with a type of WORD
+6) If it's spaces we just move the index*/
 int fill_new_token(char *input, t_token *last, int i)
 {
 	if (input[i] == 34 || input[i] == 39)
@@ -57,6 +64,11 @@ void print_tokens(const t_token *tokens) {
 }
 /* ^^^^^^^^Debugging^^^^^^^^*/
 
+/*Here we need to tokenize written input, that means that the input
+should be divided into smaller particles. While we go through our line
+we allocate memory for a token and then fill it with the function
+fill_new_token. We return index to the next position of the next token 
+in the line*/
 void	lexer(char *input)
 {
 	int	i;
