@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 11:50:56 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/04/29 19:35:07 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/04/30 18:30:34 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,29 +36,25 @@ int fill_new_token(char *input, t_token *last, int i)
 	}
 	else if (input[i] == '$')
 		return (i += expansion_token(input + i, i, last));
-	else if	(!is_delimiter(input[i]))
+	else if	(ft_isalnum(input[i]))
 		return (i += word_token(input + i, i, last));
-	while (input[i] && is_delimiter(input[i]))
-	   	i++;
+	else
+	{
+		while (input[i] && is_delimiter(input[i]))
+	   		i++;
+	}
 	return (i);
 }
 
 /*Debugging*/
-const char *token_type_string(t_type type) {
-    switch (type) {
-        case WORD: return "WORD";
-        case PIPE: return "PIPE";
-        case REDIR_IN: return "REDIR_IN";
-        case REDIR_OUT: return "REDIR_OUT";
-        default: return "UNKNOWN";
-    }
-}
 
-void print_tokens(const t_token *tokens) {
-    const t_token *current = tokens;
+void print_tokens(t_token *tokens) {
+    t_token *current = tokens;
+
     printf("Tokens:\n");
-    while (current != NULL) {
-        printf("Type: %s, Value: %s\n", token_type_string(current->type), current->value);
+    while (current) 
+	{
+        printf("Value: %s\n", current->value);
         current = current->next;
     }
 }

@@ -105,4 +105,5 @@ int	expansion_token(char *work_line, int pos, t_token *tok);
 void	two_symbols_token(char *symbols, int len, int pos, t_token *tok);
 void	symbol_token(char symbol, int pos, t_token *tok);
 int	in_quotes_token(char *line, int pos, char sym, t_token *tok);
+int		ft_isalnum(int c);
 #endif
