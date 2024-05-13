@@ -12,8 +12,7 @@ SRC = 	main.c \
 		errors.c \
 		free_env.c \
 		lexer_utils.c \
-		lexer.c \
-		lexer_tokenizers.c \
+		parsing.c \
 
 OBJ = $(SRC:.c=.o)
 

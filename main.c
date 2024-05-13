@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/04/29 19:09:40 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/05/13 19:39:57 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,46 +25,53 @@ void	handle_sigint(int sig)
 
 /*This is where we have instant loop happening. Inside the loop
 we reading the line, adding it in history and call lexer, beginning
-of input parsing*/
+of args->input parsing*/
 int	loop_result(t_args *args)
 {
 	int		exit_status;
-	char	*input;
 
 	exit_status = 0;
 	while (1)
 	{
-		(void)args;
-		input = readline("minishell$ ");
-		if (input == NULL)
+		args->input = readline("minishell$ ");
+		if (args->input == NULL)
 		{
 			write(STDOUT_FILENO, "exit\n", 5);
 			break ;
 		}
-		if (*input)
-			add_history(input);
-		lexer(input);
+		if (!valid_input(args->input))
+		{
+			free_environment(args);
+			exit(SYNTAX_ERR);
+		}
+		add_history(args->input);
+		parser(args);
 	}
 	return (exit_status);
 }
 
 /*We need to create new environment argument and copy envp from main
 arguments because this is safe way to work with environment*/
-void	set_environment(t_args *args, char **envp)
+void set_environment(t_args *args, char **envp) 
 {
-	int	len;
-	int	i;
-
+    int len;
+	int i;
+	
+	len  = 0;
 	i = 0;
-	len = 0;
-	while (envp[len])
-		len++;
-	args->envp = (char **)malloc((len + 2) * sizeof(char *));
+    while (envp[len])
+        len++;
+    args->envp = (char **)malloc((len + 1) * sizeof(char *));
+    if (!args->envp) 
+		exit_with_malloc_error(MALLOC_ERROR);
 	while (i < len)
 	{
-		args->envp[i] = ft_strdup(envp[i]);
+        args->envp[i] = ft_strdup(envp[i]);
+        if (!args->envp[i])
+			panic_and_free_env(args, i);
 		i++;
 	}
+    args->envp[len] = NULL;
 }
 
 /*Here we launch our program, set environment, handle signals.

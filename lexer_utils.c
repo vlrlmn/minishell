@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 16:40:12 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/04/30 17:57:26 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/05/12 15:13:49 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,11 @@ int	is_delimiter(char c)
 
 int		ft_isalnum(int c)
 {
-	if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') ||
-		(c >= '0' && c <= '9'))
-		return (1);
-	return (0);
+	return ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') ||
+		(c >= '0' && c <= '9'));
+}
+
+int is_symbol(char c)
+{
+	return(c == '>' || c == '<' || c == '|' || c == '$');
 }
