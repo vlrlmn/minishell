@@ -1,5 +1,31 @@
 #include "minishell.h"
 
+char *handle_special_symbols(char *s, char *es, int *ret)
+{
+    if(*s == '|')
+        s++;
+    else if(*s == '<')
+    {
+        s++;
+        if (*s == '<') 
+        {
+            *ret = '-';
+            s++;
+        }
+    }
+    else if (*s == '>')
+    {
+        s++;
+        if (*s == '>') 
+        {
+            *ret = '+';
+            s++;
+        }
+    }
+    else
+        handle_words()
+}
+
 int gettoken(char **ps, char *es, char **q, char **eq)
 {
     char *s;
@@ -10,9 +36,14 @@ int gettoken(char **ps, char *es, char **q, char **eq)
         s++;
     if(q)
         *q = s;
-    if (s >= es)
-        ret = 0;
-    
+    ret = *s;
+    handle_special_symbols(&s, es, &ret);
+    if(eq)
+        *eq = s;
+    while(s < es && is_delimiter(*s))
+        s++;
+    *ps = s;
+    return(ret);
 }
 
 int peek(char **ps, char **es, char *toks)
