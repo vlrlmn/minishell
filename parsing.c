@@ -1,41 +1,51 @@
 #include "minishell.h"
 
-void parse_args(t_execcmd *exec, char **ps, char *es)
+t_cmd *execcmd(void)
 {
-    int tok;
+    t_execcmd *exec;
+
+    exec = malloc(sizeof(*exec));
+    ft_memset(exec, 0, sizeof(*exec));
+    exec->type = EXEC;
+    return((t_cmd *)exec);
+}
+
+void parse_args(t_cmd **pcmd, t_execcmd *exec, char **ps, char *es) 
+{
     char *q;
     char *eq;
     int argc;
+    int tok;
 
     argc = 0;
-    while(!peek(ps, es, "|"))
+    while (!peek(ps, es, "|")) 
     {
         tok = gettoken(ps, es, &q, &eq);
-        if(tok == 0)
-            break ;
+        if (tok == 0)
+            break;
         if (tok != 'a')
             exit(SYNTAX_ERR);
         exec->argv[argc] = q;
         exec->eargv[argc] = eq;
         argc++;
-        if(argc >= MAXARGS)
-            exit_with_err("To many args");
-        exec->argv[argc] = 0;
-        exec->eargv[argc] = 0;
+        if (argc >= MAXARGS)
+            exit_with_err("Too many args");
+        *pcmd = parseredirs(*pcmd, ps, es);
     }
+    exec->argv[argc] = 0;
+    exec->eargv[argc] = 0;
 }
+
 
 t_cmd *parseexec(char **ps, char *es)
 {
     t_execcmd *exec;
     t_cmd *cmd;
-    int argc;
-    int tok;
 
     cmd = execcmd();
     exec = (t_execcmd *)cmd;
     cmd = parseredirs(cmd, ps, es);
-    parse_args(exec, ps, es);
+    parse_args(&cmd, exec, ps, es);
     return(cmd);
 }
 

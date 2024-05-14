@@ -14,6 +14,7 @@ SRC = 	main.c \
 		lexer_utils.c \
 		parsing.c \
 		null_terminator.c \
+		parsing_utils.c \
 
 OBJ = $(SRC:.c=.o)
 

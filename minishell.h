@@ -77,6 +77,8 @@ typedef enum token_type
 /*Errors and free*/
 t_cmd   *nulterminate(t_cmd *cmd);
 int valid_input(char *work_line);
+int gettoken(char **ps, char *es, char **q, char **eq);
+int peek(char **ps, char **es, char *toks);
 void free_envp(t_args *args);
 void parser(t_args *args);
 void panic_and_free_env(t_args *args, int index);
