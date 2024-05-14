@@ -73,10 +73,9 @@ typedef enum token_type
                     EXEC,
                     REDIR
 }			t_type;
-/*Lexer*/
-void lexer(char *input);
 
 /*Errors and free*/
+t_cmd   *nulterminate(t_cmd *cmd);
 int valid_input(char *work_line);
 void free_envp(t_args *args);
 void parser(t_args *args);

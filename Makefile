@@ -13,6 +13,7 @@ SRC = 	main.c \
 		free_env.c \
 		lexer_utils.c \
 		parsing.c \
+		null_terminator.c \
 
 OBJ = $(SRC:.c=.o)
 
