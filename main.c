@@ -28,7 +28,7 @@ we reading the line, adding it in history and call lexer, beginning
 of args->input parsing*/
 int	loop_result(t_args *args)
 {
-	int		exit_status;
+	int	exit_status;
 
 	exit_status = 0;
 	while (1)
@@ -52,31 +52,31 @@ int	loop_result(t_args *args)
 
 /*We need to create new environment argument and copy envp from main
 arguments because this is safe way to work with environment*/
-void set_environment(t_args *args, char **envp) 
+void	set_environment(t_args *args, char **envp)
 {
-    int len;
-	int i;
-	
-	len  = 0;
+	int	len;
+	int	i;
+
+	len = 0;
 	i = 0;
-    while (envp[len])
-        len++;
-    args->envp = (char **)malloc((len + 1) * sizeof(char *));
-    if (!args->envp) 
+	while (envp[len])
+		len++;
+	args->envp = (char **)malloc((len + 1) * sizeof(char *));
+	if (!args->envp)
 		exit_with_malloc_error(MALLOC_ERROR);
 	while (i < len)
 	{
-        args->envp[i] = ft_strdup(envp[i]);
-        if (!args->envp[i])
+		args->envp[i] = ft_strdup(envp[i]);
+		if (!args->envp[i])
 			panic_and_free_env(args, i);
 		i++;
 	}
-    args->envp[len] = NULL;
+	args->envp[len] = NULL;
 }
 
 /*Here we launch our program, set environment, handle signals.
 For saving history and mowing with arrows through
-previously written commands we use rl_clear_history();
+previously written commands we use	rl_clear_history(void);
 In the end we clear everything and free memory*/
 int	main(int argc, char **argv, char **envp)
 {

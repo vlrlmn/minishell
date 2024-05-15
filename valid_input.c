@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-int valid_quotes(char *input)
+int	valid_quotes(char *input)
 {
-    int	count_single;
+	int	count_single;
 	int	count_double;
 	int	i;
 	int	total_quotes;
@@ -18,24 +18,24 @@ int valid_quotes(char *input)
 			count_single++;
 		i++;
 	}
-    if(count_single % 2 != 0 || count_double % 2 != 0)
-        return(0);
-    else 
-        return(1);
+	if (count_single % 2 != 0 || count_double % 2 != 0)
+		return (0);
+	else
+		return (1);
 }
 
-int valid_input(char *work_line)
+int	valid_input(char *work_line)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while(is_delimiter(work_line[i]))
-        i++;
-    if(!work_line[i])
-        return(0);
-    if (!valid_quotes(work_line))
-    {
-        write(2, "Close quotes\n", 19);
-        return(0);
-    }
+	i = 0;
+	while (is_delimiter(work_line[i]))
+		i++;
+	if (!work_line[i])
+		return (0);
+	if (!valid_quotes(work_line))
+	{
+		write(2, "Close quotes\n", 19);
+		return (0);
+	}
 }

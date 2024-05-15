@@ -25,15 +25,15 @@ void	free_environment(t_args *shell_context)
 	free(shell_context->envp);
 }
 
-void    free_line_tokens(char **line_tokens)
+void	free_line_tokens(char **line_tokens)
 {
-    int i;
+	int i;
 
-    i = 0;
-    while(line_tokens[i])
-    {
-        free(line_tokens[i]);
-        i++;
-    }
-    free(line_tokens);
+	i = 0;
+	while (line_tokens[i])
+	{
+		free(line_tokens[i]);
+		i++;
+	}
+	free(line_tokens);
 }

@@ -16,17 +16,17 @@ void	free_structs(void) //TO_DO
 {
 }
 
-void free_envp(t_args *args)
+void	free_envp(t_args *args)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(args->envp[i])
+	while (args->envp[i])
 	{
 		free(args->envp[i]);
 		i++;
 	}
-	free(args->envp);	
+	free(args->envp);
 }
 
 void	exit_with_syntax_err(t_args *args, int err_code)
@@ -42,12 +42,12 @@ void	exit_with_malloc_error(int err_code)
 	exit(err_code);
 }
 
-void panic_and_free_env(t_args *args, int index)
+void	panic_and_free_env(t_args *args, int index)
 {
 	int i;
 
 	i = 0;
-	while(i < index)
+	while (i < index)
 	{
 		free(args->envp[i]);
 		i++;

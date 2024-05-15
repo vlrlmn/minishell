@@ -17,13 +17,13 @@ int	is_delimiter(char c)
 	return (c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r');
 }
 
-int		ft_isalnum(int c)
+int	ft_isalnum(int c)
 {
 	return ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') ||
-		(c >= '0' && c <= '9'));
+			(c >= '0' && c <= '9'));
 }
 
-int is_symbol(char c)
+int	is_symbol(char c)
 {
-	return(c == '>' || c == '<' || c == '|' || c == '$');
+	return (c == '>' || c == '<' || c == '|' || c == '$');
 }
