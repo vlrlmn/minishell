@@ -6,7 +6,7 @@
 /*   By: vlomakin <vlomakin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/15 15:53:02 by vlomakin         ###   ########.fr       */
+/*   Updated: 2024/05/15 17:08:27 by vlomakin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	handle_sigint(int sig)
 	if (sig == SIGINT)
 	{
 		write(STDERR_FILENO, "\n", 1);
-		// rl_replace_line("", 0);
+		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
 	}
@@ -45,9 +45,13 @@ int	loop_result(t_args *args)
 			free_envp(args);
 			exit(SYNTAX_ERR);
 		}
-		add_history(args->input);
-		cmd = parse(args);
-		exit_status = run_cmd(cmd);
+		if (fork1() == 0)
+		{
+			add_history(args->input);
+			cmd = parse(args);
+			exit_status = run_cmd(cmd);
+		}
+		wait();
 	}
 	return (exit_status);
 }
@@ -91,7 +95,7 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
 	exit_status = loop_result(&shell_context);
-	// rl_clear_history();
+	rl_clear_history();
 	free_envp (&shell_context);
 	return (exit_status);
 }

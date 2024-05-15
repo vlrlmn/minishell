@@ -6,7 +6,7 @@
 /*   By: vlomakin <vlomakin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/15 15:52:58 by vlomakin         ###   ########.fr       */
+/*   Updated: 2024/05/15 17:31:27 by vlomakin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ typedef enum token_type
 /*Errors and free*/
 t_cmd		*nulterminate(t_cmd *cmd);
 int			valid_input(char *work_line);
+int			fork1(void);
 int			run_cmd(t_cmd *cmd);
 int			gettoken(char **ps, char *es, char **q, char **eq);
 void		exit_with_err(char *msg);

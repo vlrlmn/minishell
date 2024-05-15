@@ -18,6 +18,7 @@ SRC = 	main.c \
 		parse_redir.c \
 		valid_input.c \
 		fill_tree.c \
+		exec_utils.c \
 
 OBJ = $(SRC:.c=.o)
 
