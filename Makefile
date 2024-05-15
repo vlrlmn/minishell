@@ -10,11 +10,13 @@ LDFLAGS = -L/usr/local/opt/readline/lib -lreadline
 
 SRC = 	main.c \
 		errors.c \
-		free_env.c \
+		free_memory.c \
 		lexer_utils.c \
 		parsing.c \
 		null_terminator.c \
 		parsing_utils.c \
+		parse_redir.c \
+		valid_input.c \
 
 OBJ = $(SRC:.c=.o)
 

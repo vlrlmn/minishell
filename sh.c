@@ -448,7 +448,7 @@ parseexec(char **ps, char *es)
 	}
 	cmd->argv[argc] = 0;
 	cmd->eargv[argc] = 0;
-	return ret;
+	return (ret);
 }
 
 // NUL-terminate all the counted strings.
@@ -463,7 +463,7 @@ nulterminate(struct cmd *cmd)
 	struct redircmd	*rcmd;
 
 	if (cmd == 0)
-		return 0;
+		return (0);
 	switch (cmd->type)
 	{
 	case EXEC:
@@ -491,5 +491,5 @@ nulterminate(struct cmd *cmd)
 		nulterminate(bcmd->cmd);
 		break ;
 	}
-	return cmd;
+	return (cmd);
 }
