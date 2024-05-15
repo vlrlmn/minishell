@@ -6,7 +6,7 @@
 /*   By: vlomakin <vlomakin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/15 12:43:12 by vlomakin         ###   ########.fr       */
+/*   Updated: 2024/05/15 14:11:26 by vlomakin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,9 @@ t_cmd		*nulterminate(t_cmd *cmd);
 int			valid_input(char *work_line);
 int			gettoken(char **ps, char *es, char **q, char **eq);
 int			peek(char **ps, char **es, char *toks);
-t_redir		*parseredir(t_cmd **pcmd, char **ps, char *es);
+t_redir		*parseredir(t_cmd *cmd, char **ps, char *es);
 void		free_envp(t_args *args);
+t_pipe		*pipecmd(t_cmd *left, t_cmd *right);
 void		free_envp(t_args *args);
 void		parser(t_args *args);
 void		panic_and_free_env(t_args *args, int index);

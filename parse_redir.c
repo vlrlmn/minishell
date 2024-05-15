@@ -6,7 +6,7 @@
 /*   By: vlomakin <vlomakin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:38:32 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/15 13:01:03 by vlomakin         ###   ########.fr       */
+/*   Updated: 2024/05/15 14:24:00 by vlomakin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ t_redir	*redircmd(t_cmd *subcmd, char *file, char *efile, int mode, int fd)
 	redircmd->fd = fd;
 	return ((t_cmd *)redircmd);
 }
+
 
 t_redir	*parseredir(t_cmd *cmd, char **ps, char *es)
 {

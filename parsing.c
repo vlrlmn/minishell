@@ -6,7 +6,7 @@
 /*   By: vlomakin <vlomakin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:27:36 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/15 12:44:00 by vlomakin         ###   ########.fr       */
+/*   Updated: 2024/05/15 14:27:31 by vlomakin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,7 @@ void	parse_args(t_cmd **pcmd, t_execcmd *exec, char **ps, char *es)
 		exec->eargv[argc] = eq;
 		argc++;
 		if (argc >= MAXARGS)
-			exit_with_err("Too many args"); //HANDLE ERRORS
-				- MAYBE RETURN ERROR STATUS NUM
+			exit_with_err("Too many args"); //HANDLE ERRORS - MAYBE RETURN ERROR STATUS NUM
 		*pcmd = parseredirs(*pcmd, ps, es);
 	}
 	exec->argv[argc] = 0;
@@ -74,7 +73,7 @@ t_cmd	*parsepipe(char **ps, char *es)
 	return (cmd);
 }
 
-void	parser(t_args *args)
+t_cmd	*parser(t_args *args)
 {
 	char	*es;
 	t_cmd	*cmd;

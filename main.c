@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: vlomakin <vlomakin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/13 19:39:57 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/05/15 14:27:59 by vlomakin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ we reading the line, adding it in history and call lexer, beginning
 of args->input parsing*/
 int	loop_result(t_args *args)
 {
+	t_cmd	*cmd;
 	int	exit_status;
 
 	exit_status = 0;
@@ -45,7 +46,8 @@ int	loop_result(t_args *args)
 			exit(SYNTAX_ERR);
 		}
 		add_history(args->input);
-		parser(args);
+		cmd = parser(args);
+		runcmd(cmd);
 	}
 	return (exit_status);
 }
@@ -90,6 +92,6 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGQUIT, SIG_IGN);
 	exit_status = loop_result(&shell_context);
 	rl_clear_history();
-	free_environment(&shell_context); // TO_DO
+	free_environment (&shell_context);
 	return (exit_status);
 }
