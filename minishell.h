@@ -6,7 +6,7 @@
 /*   By: vlomakin <vlomakin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/15 14:11:26 by vlomakin         ###   ########.fr       */
+/*   Updated: 2024/05/15 15:52:58 by vlomakin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,13 +86,16 @@ typedef enum token_type
 /*Errors and free*/
 t_cmd		*nulterminate(t_cmd *cmd);
 int			valid_input(char *work_line);
+int			run_cmd(t_cmd *cmd);
 int			gettoken(char **ps, char *es, char **q, char **eq);
-int			peek(char **ps, char **es, char *toks);
-t_redir		*parseredir(t_cmd *cmd, char **ps, char *es);
+void		exit_with_err(char *msg);
+int			peek(char **ps, char *es, char *toks);
+t_cmd		*parseredir(t_cmd *cmd, char **ps, char *es);
 void		free_envp(t_args *args);
-t_pipe		*pipecmd(t_cmd *left, t_cmd *right);
+t_cmd		*pipecmd(t_cmd *left, t_cmd *right);
+t_cmd		*parsepipe(char **ps, char *es);
 void		free_envp(t_args *args);
-void		parser(t_args *args);
+t_cmd		*parse(t_args *args);
 void		panic_and_free_env(t_args *args, int index);
 void		exit_with_syntax_err(t_args *args, int err_code);
 void		exit_with_malloc_error(int err_code);

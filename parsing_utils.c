@@ -6,45 +6,35 @@
 /*   By: vlomakin <vlomakin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:52:25 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/15 12:27:28 by vlomakin         ###   ########.fr       */
+/*   Updated: 2024/05/15 15:46:56 by vlomakin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	process_word(char **s, char *es)
+void	process_operators(char **s, int *ret)
 {
-	while (*s < es && !is_delimiter(*s) && !ft_strchr("|<>", *s))
-	{
-		//PROCESS QUOTES//
-		*s++;
-	}
-}
-
-void	process_operators(char **s, char *es, int *ret)
-{
-	if (*s == '|')
+	if (**s == '|')
 		s++;
-	else if (*s == '<')
+	else if (**s == '<')
 	{
 		s++;
-		if (*s == '<')
+		if (**s == '<')
 		{
 			*ret = '-';
 			s++;
 		}
 	}
-	else if (*s == '>')
+	else if (**s == '>')
 	{
 		s++;
-		if (*s == '>')
+		if (**s == '>')
 		{
 			*ret = '+';
 			s++;
 		}
 	}
-	else
-		*ret = 'a';
+	*ret = 'a';
 }
 
 int	gettoken(char **ps, char *es, char **q, char **eq)
@@ -58,9 +48,15 @@ int	gettoken(char **ps, char *es, char **q, char **eq)
 	if (q)
 		*q = s;
 	ret = *s;
-	process_operators(&s, es, &ret);
+	process_operators(&s, &ret);
 	if (ret == 'a')
-		process_word(&s, es);
+	{
+		while (s < es && !is_delimiter(*s) && !ft_strchr("|<>", *s))
+		{
+			//PROCESS QUOTES//
+			s++;
+		}
+	}
 	if (eq)
 		*eq = s;
 	while (s < es && is_delimiter(*s))
@@ -69,7 +65,7 @@ int	gettoken(char **ps, char *es, char **q, char **eq)
 	return (ret);
 }
 
-int	peek(char **ps, char **es, char *toks)
+int	peek(char **ps, char *es, char *toks)
 {
 	char	*s;
 

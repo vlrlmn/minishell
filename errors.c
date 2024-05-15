@@ -6,7 +6,7 @@
 /*   By: vlomakin <vlomakin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:03 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/15 12:33:39 by vlomakin         ###   ########.fr       */
+/*   Updated: 2024/05/15 15:11:46 by vlomakin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,5 @@ void	panic_and_free_env(t_args *args, int index)
 
 void	exit_with_err(char *msg)
 {
-	write(2, "Too many args", 14);
+	write(2, msg, ft_strlen(msg));
 }

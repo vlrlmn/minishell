@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   valid_input.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vlomakin <vlomakin@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/15 15:48:13 by vlomakin          #+#    #+#             */
+/*   Updated: 2024/05/15 15:48:52 by vlomakin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	valid_quotes(char *input)
@@ -5,7 +17,6 @@ int	valid_quotes(char *input)
 	int	count_single;
 	int	count_double;
 	int	i;
-	int	total_quotes;
 
 	i = 0;
 	count_double = 0;
@@ -38,4 +49,5 @@ int	valid_input(char *work_line)
 		write(2, "Close quotes\n", 19);
 		return (0);
 	}
+	return (1);
 }
