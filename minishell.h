@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlomakin <vlomakin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/15 17:31:27 by vlomakin         ###   ########.fr       */
+/*   Updated: 2024/05/16 18:01:02 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@
 
 # define MALLOC_ERROR 69
 # define SYNTAX_ERR 2
-# define MAXARGS 10
+# define MAXARGS 1024
 
 typedef struct s_args
 {
 	char	*input;
-	char	**envp;
+	const char	**envp;
 }			t_args;
 
 typedef struct s_execmd
@@ -48,6 +48,7 @@ typedef struct s_execmd
 typedef struct s_cmd
 {
 	int		type;
+	t_args	*params;
 }			t_cmd;
 
 typedef struct s_pipe
@@ -87,7 +88,7 @@ typedef enum token_type
 t_cmd		*nulterminate(t_cmd *cmd);
 int			valid_input(char *work_line);
 int			fork1(void);
-int			run_cmd(t_cmd *cmd);
+void			run_cmd(t_cmd *cmd);
 int			gettoken(char **ps, char *es, char **q, char **eq);
 void		exit_with_err(char *msg);
 int			peek(char **ps, char *es, char *toks);

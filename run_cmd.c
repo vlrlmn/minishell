@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   run_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlomakin <vlomakin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:26:37 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/15 17:29:05 by vlomakin         ###   ########.fr       */
+/*   Updated: 2024/05/16 18:11:21 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	run_pipe(t_cmd *cmd)
+void	run_pipe(t_cmd **cmd)
 {
 	t_pipe	*pcmd;
 	int	p[2];
@@ -38,11 +38,11 @@ void	run_pipe(t_cmd *cmd)
 	}
 	close(p[0]);
 	close(p[1]);
-	wait();
-	wait();
+	wait(0);
+	wait(0);
 }
 
-void	run_redir(t_cmd *cmd)
+void	run_redir(t_cmd **cmd)
 {
 	t_redir *rcmd;
 
@@ -50,27 +50,27 @@ void	run_redir(t_cmd *cmd)
 	close(rcmd->fd);
 	if(open(rcmd->file, rcmd->mode) < 0)
 	{
-		printf(2, "open %s failed\n", rcmd->file);
-		exit();
+		printf("open %s failed\n", rcmd->file);
+		exit(126);
 	}
-	runcmd(rcmd->cmd);
+	run_cmd(rcmd->cmd);
 }
 
-void	run_exec(t_cmd *cmd)
+void	run_exec(t_cmd **cmd)
 {
 	t_execcmd	*ecmd;
 
-	ecmd = (t_execcmd *)cmd;
+	ecmd = (t_execcmd *)*cmd;
 	if (ecmd->argv[0] == 0)
-		exit();
-	exec(ecmd->argv[0], ecmd->argv);
-	printf(2, "exec %s failed\n", ecmd->argv[0]);
+		exit(127);
+	execve(ecmd->argv[0], ecmd->argv, ecmd->params->envp);
+	printf("exec %s failed\n", ecmd->argv[0]);
 }
 
-int	run_cmd(t_cmd *cmd)
+void	run_cmd(t_cmd *cmd)
 {
 	if (!cmd)
-		exit();
+		exit(127);
 	if (cmd->type == EXEC)
 		run_exec(&cmd);
 	else if (cmd->type == REDIR)

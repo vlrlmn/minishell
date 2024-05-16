@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlomakin <vlomakin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:03 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/15 15:11:46 by vlomakin         ###   ########.fr       */
+/*   Updated: 2024/05/16 18:03:14 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	exit_with_syntax_err(t_args *args, int err_code)
 {
 	free_envp(args);
-	write(2, "Quotes err\n", 12);
+	write(2, "Syntax err\n", 12);
 	exit(err_code);
 }
 
@@ -32,7 +32,7 @@ void	panic_and_free_env(t_args *args, int index)
 	i = 0;
 	while (i < index)
 	{
-		free(args->envp[i]);
+		free((void*)args->envp[i]);
 		i++;
 	}
 	free(args->envp);

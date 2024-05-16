@@ -19,6 +19,7 @@ SRC = 	main.c \
 		valid_input.c \
 		fill_tree.c \
 		exec_utils.c \
+		run_cmd.c \
 
 OBJ = $(SRC:.c=.o)
 

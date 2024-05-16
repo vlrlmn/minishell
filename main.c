@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlomakin <vlomakin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/15 17:08:27 by vlomakin         ###   ########.fr       */
+/*   Updated: 2024/05/16 18:01:25 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,7 @@ of args->input parsing*/
 int	loop_result(t_args *args)
 {
 	t_cmd	*cmd;
-	int	exit_status;
 
-	exit_status = 0;
 	while (1)
 	{
 		args->input = readline("minishell$ ");
@@ -49,11 +47,11 @@ int	loop_result(t_args *args)
 		{
 			add_history(args->input);
 			cmd = parse(args);
-			exit_status = run_cmd(cmd);
+			run_cmd(cmd);
 		}
-		wait();
+		wait(0);
 	}
-	return (exit_status);
+	return (0);
 }
 
 /*We need to create new environment argument and copy envp from main
@@ -67,7 +65,7 @@ void	set_environment(t_args *args, char **envp)
 	i = 0;
 	while (envp[len])
 		len++;
-	args->envp = (char **)malloc((len + 1) * sizeof(char *));
+	args->envp = (const char **)malloc((len + 1) * sizeof(char *));
 	if (!args->envp)
 		exit_with_malloc_error(MALLOC_ERROR);
 	while (i < len)
