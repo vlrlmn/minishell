@@ -6,13 +6,13 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:26:37 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/16 18:11:21 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/05/22 14:59:17 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	run_pipe(t_cmd **cmd)
+void	run_pipe(t_cmd *cmd)
 {
 	t_pipe	*pcmd;
 	int	p[2];
@@ -42,7 +42,7 @@ void	run_pipe(t_cmd **cmd)
 	wait(0);
 }
 
-void	run_redir(t_cmd **cmd)
+void	run_redir(t_cmd *cmd)
 {
 	t_redir *rcmd;
 
@@ -56,15 +56,30 @@ void	run_redir(t_cmd **cmd)
 	run_cmd(rcmd->cmd);
 }
 
-void	run_exec(t_cmd **cmd)
+void	run_exec(t_cmd *cmd)
 {
 	t_execcmd	*ecmd;
+	char	*cmd_path;
+	int	builtin_status;
 
-	ecmd = (t_execcmd *)*cmd;
+	ecmd = (t_execcmd *)cmd;
 	if (ecmd->argv[0] == 0)
 		exit(127);
-	execve(ecmd->argv[0], ecmd->argv, ecmd->params->envp);
-	printf("exec %s failed\n", ecmd->argv[0]);
+	builtin_status = run_buildin(ecmd, cmd->params);
+	if (builtin_status == 0)
+		return ;
+	else if (builtin_status == 1)
+		exit_with_err("Command not executed");
+	cmd_path = find_command_path(ecmd->argv[0], cmd->params->envp);
+	if(!cmd_path)
+	{
+		printf("Command not found: %s", ecmd->argv[0]);
+		exit(127);
+	}
+	execve(cmd_path, ecmd->argv, cmd->params->envp);
+	perror("execve");
+	free(cmd_path);
+	exit(1);
 }
 
 void	run_cmd(t_cmd *cmd)
@@ -72,10 +87,10 @@ void	run_cmd(t_cmd *cmd)
 	if (!cmd)
 		exit(127);
 	if (cmd->type == EXEC)
-		run_exec(&cmd);
+		run_exec(cmd);
 	else if (cmd->type == REDIR)
-		run_redir(&cmd);
+		run_redir(cmd);
 	else if (cmd->type == PIPE)
-		run_pipe(&cmd);
+		run_pipe(cmd);
 }
 

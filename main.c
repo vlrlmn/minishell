@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/16 18:01:25 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/05/21 12:58:58 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int	loop_result(t_args *args)
 		{
 			add_history(args->input);
 			cmd = parse(args);
+			cmd->params = args;
 			run_cmd(cmd);
 		}
 		wait(0);
@@ -65,7 +66,7 @@ void	set_environment(t_args *args, char **envp)
 	i = 0;
 	while (envp[len])
 		len++;
-	args->envp = (const char **)malloc((len + 1) * sizeof(char *));
+	args->envp = (char **)malloc((len + 1) * sizeof(char *));
 	if (!args->envp)
 		exit_with_malloc_error(MALLOC_ERROR);
 	while (i < len)

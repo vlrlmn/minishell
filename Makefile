@@ -20,6 +20,8 @@ SRC = 	main.c \
 		fill_tree.c \
 		exec_utils.c \
 		run_cmd.c \
+		exec_path_cmd.c \
+		exec_buildin.c \
 
 OBJ = $(SRC:.c=.o)
 

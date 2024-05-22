@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/16 18:01:02 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/05/22 14:58:36 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 typedef struct s_args
 {
 	char	*input;
-	const char	**envp;
+	char	**envp;
 }			t_args;
 
 typedef struct s_execmd
@@ -88,7 +88,10 @@ typedef enum token_type
 t_cmd		*nulterminate(t_cmd *cmd);
 int			valid_input(char *work_line);
 int			fork1(void);
+void free_split(char **arr);
 void			run_cmd(t_cmd *cmd);
+int run_buildin(t_execcmd	*ecmd, t_args *params);
+char *find_command_path(char *cmd, char **envp);
 int			gettoken(char **ps, char *es, char **q, char **eq);
 void		exit_with_err(char *msg);
 int			peek(char **ps, char *es, char *toks);
