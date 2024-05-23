@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:39:06 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/05/22 17:45:05 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/05/23 16:11:03 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,12 @@ char *get_env_value (char *name, char **envp)
     }
 }
 
+void *relative_path(char *path, t_execcmd *ecmd)
+{
+    char cwd[1024];
+    
+}
+
 int cd_cmd(t_execcmd *ecmd, t_args *params)
 {
     char *path;
@@ -41,11 +47,14 @@ int cd_cmd(t_execcmd *ecmd, t_args *params)
             return (1);
         }
     }
-    else
+    else if (ecmd->argv[1][0] == '/')
         path = ecmd->argv[1];
+    else
+        relative_path(&path, ecmd);
     if (chdir(path))
     {
         perror ("cd");
         return (1);
     }
+    return (0);
 }

@@ -22,6 +22,7 @@ SRC = 	main.c \
 		run_cmd.c \
 		exec_path_cmd.c \
 		exec_buildin.c \
+		cd.c \
 
 OBJ = $(SRC:.c=.o)
 
