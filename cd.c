@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:39:06 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/05/23 16:11:03 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/05/23 17:58:14 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,15 @@ char *get_env_value (char *name, char **envp)
 void *relative_path(char *path, t_execcmd *ecmd)
 {
     char cwd[1024];
-    
+
+    if (getcwd(cwd, sizeof(cwd) == NULL))
+    {
+        perror("getcwd");
+        return (1);
+    }
+    ft_strlcat(cwd, '/', sizeof(cwd));
+    ft_strlcat (cwd, ecmd->argv[1], sizeof(cwd));
+    path = cwd;
 }
 
 int cd_cmd(t_execcmd *ecmd, t_args *params)
@@ -40,7 +48,7 @@ int cd_cmd(t_execcmd *ecmd, t_args *params)
     path = NULL;
     if(ecmd->argv[1] == NULL || ft_strncmp(ecmd->argv[1], "~", 1) == 0)
     {
-        path = get_env_value("HOME", params->envp);
+        path = get_env_value("HOME", params->envp); //can we change to getenv?
         if (!path)
         {
             exit_with_err("cd: HOME not set\n");
