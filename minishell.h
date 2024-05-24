@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/23 17:49:40 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/05/24 17:55:27 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ typedef enum token_type
 int cd_cmd(t_execcmd *ecmd, t_args *params);
 int echo_cmd(t_execcmd *ecmd);
 int pwd_cmd(t_execcmd *ecmd);
-int export_cmd(t_execcmd *ecmd);
+int export_cmd(t_execcmd *ecmd, t_args *params);
 
 t_cmd		*nulterminate(t_cmd *cmd);
 int			valid_input(char *work_line);
