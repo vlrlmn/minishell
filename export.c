@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:48:27 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/05/24 18:47:18 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/05/27 12:37:57 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int export_cmd(t_execcmd *ecmd, t_args *params)
         if (equal_sign)
         {
             equal_sign = '\0';
-            set_env(ecmd->argv[1], equal_sign + 1, params);
+            set_env(ecmd->argv[1], equal_sign + 1, params); //TO_DO
             equal_sign = '=';
         }
         else
