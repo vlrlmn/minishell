@@ -1,27 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/23 17:46:04 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/05/23 17:48:20 by lomakinaval      ###   ########.fr       */
+/*   Created: 2024/05/15 17:30:44 by vlomakin          #+#    #+#             */
+/*   Updated: 2024/05/27 15:34:20 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
-int pwd_cmd(t_execcmd *ecmd)
+int	fork1(void)
 {
-    char cwd[1024];
+	int	pid;
 
-    if(getcwd(cwd, sizeof(cwd)))
-        printf("%s", cwd);
-    else
-    {
-        perror("pwd");
-        return (1);
-    }
-    return (0);
+	pid = fork();
+	if (pid == -1)
+		exit_with_err("fork");
+	return (pid);
 }

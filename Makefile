@@ -11,21 +11,21 @@ LDFLAGS = -L/usr/local/opt/readline/lib -lreadline
 SRC = 	main.c \
 		errors.c \
 		free_memory.c \
-		lexer_utils.c \
-		parsing.c \
-		null_terminator.c \
-		parsing_utils.c \
-		parse_redir.c \
 		valid_input.c \
-		fill_tree.c \
-		exec_utils.c \
-		run_cmd.c \
-		exec_path_cmd.c \
-		exec_buildin.c \
-		cd.c \
-		echo.c \
-		pwd.c \
-		export.c \
+		parsing/lexer_utils.c \
+		parsing/parsing.c \
+		parsing/null_terminator.c \
+		parsing/parsing_utils.c \
+		parsing/parse_redir.c \
+		parsing/fill_tree.c \
+		exec/exec_utils.c \
+		exec/run_cmd.c \
+		exec/exec_path_cmd.c \
+		exec/exec_buildin.c \
+		exec/cd.c \
+		exec/echo.c \
+		exec/pwd.c \
+		exec/export.c \
 
 OBJ = $(SRC:.c=.o)
 

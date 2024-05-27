@@ -6,11 +6,11 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 16:40:12 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/05/12 15:13:49 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/05/27 15:31:56 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 int	is_delimiter(char c)
 {

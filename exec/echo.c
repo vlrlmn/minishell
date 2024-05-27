@@ -6,11 +6,11 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:18:22 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/05/23 17:30:52 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/05/27 15:34:09 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 int echo_cmd(t_execcmd *ecmd)
 {
