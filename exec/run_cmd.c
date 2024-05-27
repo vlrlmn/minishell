@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:26:37 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/27 15:34:30 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/05/27 18:55:48 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	run_redir(t_cmd *cmd)
 
 	rcmd = (t_redir *)cmd;
 	close(rcmd->fd);
-	if(open(rcmd->file, rcmd->mode) < 0)
+	if (open(rcmd->file, rcmd->mode) < 0)
 	{
 		printf("open %s failed\n", rcmd->file);
 		exit(126);
