@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:27:36 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/27 17:09:46 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/05/27 18:02:41 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,20 @@ void	parse_args(t_cmd **pcmd, t_execcmd *exec, char **ps, char *es)
 			break ;
 		if (tok != 'a')
 			exit(SYNTAX_ERR);
+		printf("Token %d: %.*s\n", argc, (int)(eq - q), q);
 		exec->argv[argc] = q;
 		exec->eargv[argc] = eq;
 		argc++;
 		if (argc >= MAXARGS)
+		{
 			exit_with_err("Too many args\n"); //HANDLE ERRORS - MAYBE RETURN ERROR STATUS NUM
+			exit (SYNTAX_ERR);
+		}
 		*pcmd = parseredir(*pcmd, ps, es);
 	}
 	exec->argv[argc] = 0;
 	exec->eargv[argc] = 0;
+	printf("Total args: %d\n", argc);
 }
 
 t_cmd	*parseexec(char **ps, char *es)

@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:26:37 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/27 15:34:30 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/05/27 17:35:29 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	run_exec(t_cmd *cmd)
 		exit(127);
 	builtin_status = run_buildin(ecmd, cmd->params);
 	if (builtin_status == 0)
-		return ;
+		exit (0);
 	else if (builtin_status == 1)
 		exit_with_err("Command not executed");
 	cmd_path = find_command_path(ecmd->argv[0], cmd->params->envp);

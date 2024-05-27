@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:53:53 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/05/27 15:46:43 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/05/27 17:36:52 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,6 @@ int run_buildin(t_execcmd *ecmd, t_args *params)
     //     status = unset_cmd(); //TO_DO
     // else if(ft_strncmp(ecmd->argv[0], "env", 3) == 0)
     //     status = env_cmd(); //TO_DO
+    //THIS PART IS COMMENTED BECAUSE FUNCTIONS UNSET AND ENV AREN'T WRITTED //
     return(status);
 }

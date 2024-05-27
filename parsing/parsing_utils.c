@@ -6,72 +6,82 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:52:25 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/27 17:18:30 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/05/27 18:28:42 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void process_operators(char **s, int *ret) 
+void handle_special_tokens(char **s, int *token) 
 {
-    if (**s == '|') 
-	{
-        *ret = '|';
+    if (*token == '\0')
+        *token = '\0';
+    else if (*token == '|')
         (*s)++;
-    } 
-	else if (**s == '<') 
-	{
-        (*s)++;
-        if (**s == '<') 
-		{
-            *ret = '-';
-            (*s)++;
-        } 
-		else
-            *ret = '<';
-    } 
-	else if (**s == '>') 
-	{
+    else if (*token == '>')
+    {
         (*s)++;
         if (**s == '>') 
-		{
-            *ret = '+';
+        {
+            *token = '+';
             (*s)++;
-        } 
-		else
-            *ret = '>';
-    }
+        }
+    } 
+    else if (*token == '<') 
+    {
+        (*s)++;
+        if (**s == '<') 
+        {
+            *token = '-';
+            (*s)++;
+        }
+    } 
     else
-        *ret = 'a';
+        *token = 'a';
 }
 
-int	gettoken(char **ps, char *es, char **q, char **eq)
+void skip_until_special_or_whitespace(char **s, char *es) 
 {
-	char	*s;
-	int		ret;
-
-	s = *ps;
-	while (s < es && is_delimiter(*s))
-		s++;
-	if (q)
-		*q = s;
-	ret = *s;
-	process_operators(&s, &ret);
-	if (ret == 'a')
-	{
-		while (s < es && !is_delimiter(*s) && !ft_strchr("|<>", *s))
-		{
-			//PROCESS QUOTES//
-			s++;
-		}
-	}
-	if (eq)
-		*eq = s;
-	while (s < es && is_delimiter(*s))
-		s++;
-	*ps = s;
-	return (ret);
+    while (*s < es && !is_delimiter(**s) && !ft_strchr("<|>", **s)) 
+    {
+        if (**s == '\"') 
+        {
+            (*s)++;
+            while (*s < es && **s != '\"')
+                (*s)++;
+        } 
+        else if (**s == '\'') 
+        {
+            (*s)++;
+            while (*s < es && **s != '\'')
+                (*s)++;
+        }
+        if (*s < es)
+            (*s)++;
+    }
 }
+
+int gettoken(char **ps, char *es, char **q, char **eq) 
+{
+    int token;
+    char *s = *ps;
+
+    while (s < es && is_delimiter(*s))
+        s++;
+    if (q)
+        *q = s;
+    token = *s;
+    handle_special_tokens(&s, &token);
+    if (token == 'a')
+        skip_until_special_or_whitespace(&s, es);
+    if (eq)
+        *eq = s;
+    while (s < es && is_delimiter(*s))
+        s++;
+    *ps = s;
+    return token;
+}
+
 
 int	peek(char **ps, char *es, char *toks)
 {
