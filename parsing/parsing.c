@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:27:36 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/27 15:32:13 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/05/27 17:09:46 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	parse_args(t_cmd **pcmd, t_execcmd *exec, char **ps, char *es)
 	int		tok;
 
 	argc = 0;
-	while (peek(ps, es, "|"))
+	while (!peek(ps, es, "|"))
 	{
 		tok = gettoken(ps, es, &q, &eq);
 		if (tok == 0)
@@ -80,7 +80,8 @@ t_cmd	*parse(t_args *args)
 
 	es = args->input + ft_strlen(args->input);
 	cmd = parsepipe(&args->input, es);
-	peek(&args->input, es, "");
+	while(args->input < es && is_delimiter(*args->input))
+		args->input++;
 	if (args->input != es)
 		exit_with_syntax_err(args, SYNTAX_ERR);
 	nulterminate(cmd);

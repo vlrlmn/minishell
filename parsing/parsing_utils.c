@@ -6,35 +6,43 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:52:25 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/27 15:32:09 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/05/27 17:18:30 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	process_operators(char **s, int *ret)
+void process_operators(char **s, int *ret) 
 {
-	if (**s == '|')
-		s++;
-	else if (**s == '<')
+    if (**s == '|') 
 	{
-		s++;
-		if (**s == '<')
-		{
-			*ret = '-';
-			s++;
-		}
-	}
-	else if (**s == '>')
+        *ret = '|';
+        (*s)++;
+    } 
+	else if (**s == '<') 
 	{
-		s++;
-		if (**s == '>')
+        (*s)++;
+        if (**s == '<') 
 		{
-			*ret = '+';
-			s++;
-		}
-	}
-	*ret = 'a';
+            *ret = '-';
+            (*s)++;
+        } 
+		else
+            *ret = '<';
+    } 
+	else if (**s == '>') 
+	{
+        (*s)++;
+        if (**s == '>') 
+		{
+            *ret = '+';
+            (*s)++;
+        } 
+		else
+            *ret = '>';
+    }
+    else
+        *ret = 'a';
 }
 
 int	gettoken(char **ps, char *es, char **q, char **eq)
