@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:53:49 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/05/27 18:57:04 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/05/28 12:46:18 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char *find_path(char **envp)
     char *path = NULL;
 
     while (envp[i]) {
-        if (strncmp(envp[i], "PATH=", 5) == 0) 
+        if (ft_strncmp(envp[i], "PATH=", 5) == 0) 
         {
             path = envp[i] + 5;
             break;

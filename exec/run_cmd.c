@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:26:37 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/27 17:35:29 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/05/28 11:28:04 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,16 +61,20 @@ void	run_exec(t_cmd *cmd)
 	t_execcmd	*ecmd;
 	char	*cmd_path;
 	int	builtin_status;
+	char *path;
 
 	ecmd = (t_execcmd *)cmd;
 	if (ecmd->argv[0] == 0)
 		exit(127);
+	printf("Running command: %s\n", ecmd->argv[0]); // Debug message
 	builtin_status = run_buildin(ecmd, cmd->params);
 	if (builtin_status == 0)
 		exit (0);
 	else if (builtin_status == 1)
 		exit_with_err("Command not executed");
-	cmd_path = find_command_path(ecmd->argv[0], cmd->params->envp);
+	printf("Executing command: %s\n", ecmd->argv[0]); // Отладочное сообщение
+	path = getenv("PATH");
+	cmd_path = find_command_path(ecmd->argv[0], &path);
 	if(!cmd_path)
 	{
 		printf("Command not found: %s", ecmd->argv[0]);
