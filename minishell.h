@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/27 15:46:21 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/05/28 18:08:18 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int			fork1(void);
 void free_split(char **arr);
 void			run_cmd(t_cmd *cmd);
 int run_buildin(t_execcmd	*ecmd, t_args *params);
-char *find_command_path(char *cmd, char **envp);
+char *find_command_path(char *cmd, char *path);
 int			gettoken(char **ps, char *es, char **q, char **eq);
 void		exit_with_err(char *msg);
 int			peek(char **ps, char *es, char *toks);

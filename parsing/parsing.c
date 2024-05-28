@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:27:36 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/28 11:27:19 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/05/28 17:39:02 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,10 @@ void	parse_args(t_cmd **pcmd, t_execcmd *exec, char **ps, char *es)
 			break ;
 		if (tok != 'a')
 			exit(SYNTAX_ERR);
-		printf("Token %d: %.*s\n", argc, (int)(eq - q), q);
+		printf("Token %d: %.*s\n", argc, (int)(eq - q), q); // Debug message
 		exec->argv[argc] = q;
 		exec->eargv[argc] = eq;
-		// Debugging message to check what is being stored in argv
-        printf("Argument %d: %.*s\n", argc, (int)(eq - q), q);
+        printf("Argument %d: %.*s\n", argc, (int)(eq - q), q); // Debug message
 		argc++;
 		if (argc >= MAXARGS)
 		{
