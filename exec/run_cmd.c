@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:26:37 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/29 15:33:47 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/05/29 16:36:56 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ char	*get_env(char *path, char **envp)
 	i = 0;
 	while (envp[i])
 	{
-		if (ft_strncmp(path, envp[i], sizeof(path)) == 0)
+		if (ft_strncmp(path, envp[i], 5) == 0)
 			return (envp[i]);
 		i++;
 	}
@@ -101,7 +101,7 @@ void	run_exec(t_cmd *cmd)
 	else
 	{
 		printf("Executing command: %s\n", ecmd->argv[0]); // Debug message
-		path = get_env("PATH", cmd->params->envp);
+		path = get_env("PATH=", cmd->params->envp);
 		cmd_path = find_command_path(ecmd->argv[0], path);
 		if(!cmd_path)
 		{

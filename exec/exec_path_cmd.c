@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:53:49 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/05/29 15:18:57 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/05/29 16:39:42 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ char *find_command_path(char *cmd, char *path)
         cmd_path = ft_strjoin(path_arr[i], command);
         if (access (cmd_path, X_OK) == 0)
         {
-            free(cmd);
             free(path_arr);
             return (cmd_path);
         }
