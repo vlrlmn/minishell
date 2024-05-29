@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:52:25 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/27 18:43:05 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/05/29 18:36:26 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,27 +61,24 @@ void skip_until_special_or_whitespace(char **s, char *es)
     }
 }
 
-int gettoken(char **ps, char *es, char **q, char **eq) 
+int gettoken(char **ps, char *es, char **q, char **eq)
 {
-    int token;
-    char *s = *ps;
-
-    while (s < es && is_delimiter(*s))
-        s++;
-    if (q)
-        *q = s;
-    token = *s;
-    handle_special_tokens(&s, &token);
-    if (token == 'a')
-        skip_until_special_or_whitespace(&s, es);
-    if (eq)
-        *eq = s;
-    while (s < es && is_delimiter(*s))
-        s++;
-    *ps = s;
-    return token;
+    while (*ps < es && (**ps == ' ' || **ps == '\t' || **ps == '\n'))
+        (*ps)++;
+    if (*ps >= es)
+        return 0;
+    *q = *ps;
+    if (**ps == '|' || **ps == '<' || **ps == '>')
+    {
+        (*ps)++;
+        *eq = *ps;
+        return **q;
+    }
+    while (*ps < es && (**ps != ' ' && **ps != '\t' && **ps != '\n'))
+        (*ps)++;
+    *eq = *ps;
+    return ('a');
 }
-
 
 int	peek(char **ps, char *es, char *toks)
 {
