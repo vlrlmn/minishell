@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/28 18:08:18 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/05/29 15:31:52 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,18 +38,20 @@ typedef struct s_args
 	char	**envp;
 }			t_args;
 
-typedef struct s_execmd
-{
-	int		type;
-	char	*argv[MAXARGS];
-	char	*eargv[MAXARGS];
-}			t_execcmd;
-
 typedef struct s_cmd
 {
 	int		type;
 	t_args	*params;
 }			t_cmd;
+
+typedef struct s_execmd
+{
+	int		type;
+	t_args	*params;
+	char	*argv[MAXARGS];
+	char	*eargv[MAXARGS];
+}			t_execcmd;
+
 
 typedef struct s_pipe
 {

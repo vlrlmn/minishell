@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:53:49 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/05/28 18:10:10 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/05/29 15:18:57 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ char *find_command_path(char *cmd, char *path)
         free(cmd_path);
         i++;
     }
-    free(command);
     free(path_arr);
     return NULL;
 }

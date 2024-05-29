@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:27:36 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/28 17:39:02 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/05/29 14:56:35 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,14 +82,19 @@ t_cmd	*parsepipe(char **ps, char *es)
 t_cmd	*parse(t_args *args)
 {
 	char	*es;
+	char	*ps;
 	t_cmd	*cmd;
 
-	es = args->input + ft_strlen(args->input);
-	cmd = parsepipe(&args->input, es);
+	ps = args->input;
+	es = ps + ft_strlen(args->input);
+	cmd = parsepipe(&ps, es);
+	peek(&ps, es, "");
+	if (ps != es)
+		exit_with_err("Syntax err\n");
 	while(args->input < es && is_delimiter(*args->input))
 		args->input++;
-	if (args->input != es)
-		exit_with_syntax_err(args, SYNTAX_ERR);
+	// if (args->input != es)
+	// 	exit_with_syntax_err(args, SYNTAX_ERR);
 	nulterminate(cmd);
 	return (cmd);
 }
