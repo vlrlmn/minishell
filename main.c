@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/27 18:39:19 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/05/30 14:25:26 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,25 @@ void	handle_sigint(int sig)
 		rl_on_new_line();
 		rl_redisplay();
 	}
+}
+
+int ft_launch_minishell(t_args *args)
+{
+	t_cmd	*cmd;
+    if (args->input == NULL)
+	{
+		write(STDOUT_FILENO, "exit\n", 5);
+		return 1;
+	}
+	if (!valid_input(args->input))
+	{
+		free_envp(args);
+		exit(SYNTAX_ERR);
+	}
+	cmd = parse(args);
+	cmd->params = args;
+	run_cmd(cmd);
+	return 0;
 }
 
 /*This is where we have instant loop happening. Inside the loop
@@ -93,8 +112,17 @@ int	main(int argc, char **argv, char **envp)
 	set_environment(&shell_context, envp);
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
+
+	if (argc >= 3 && !ft_strncmp(argv[1], "-c", 3))
+	{
+		shell_context.input = argv[2];
+		exit_status = ft_launch_minishell(&shell_context);
+		return (exit_status);
+	}
+
 	exit_status = loop_result(&shell_context);
 	rl_clear_history();
 	free_envp (&shell_context);
 	return (exit_status);
 }
+//HELLO//

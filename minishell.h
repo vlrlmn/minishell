@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/27 18:27:47 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/05/30 14:25:37 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,18 +38,20 @@ typedef struct s_args
 	char	**envp;
 }			t_args;
 
-typedef struct s_execmd
-{
-	int		type;
-	char	*argv[MAXARGS];
-	char	*eargv[MAXARGS];
-}			t_execcmd;
-
 typedef struct s_cmd
 {
 	int		type;
 	t_args	*params;
 }			t_cmd;
+
+typedef struct s_execmd
+{
+	int		type;
+	t_args	*params;
+	char	*argv[MAXARGS];
+	char	*eargv[MAXARGS];
+}			t_execcmd;
+
 
 typedef struct s_pipe
 {
@@ -96,7 +98,7 @@ int			fork1(void);
 void free_split(char **arr);
 void			run_cmd(t_cmd *cmd);
 int run_buildin(t_execcmd	*ecmd, t_args *params);
-char *find_command_path(char *cmd, char **envp);
+char *find_command_path(char *cmd, char *path);
 int			gettoken(char **ps, char *es, char **q, char **eq);
 void		exit_with_err(char *msg);
 int			peek(char **ps, char *es, char *toks);

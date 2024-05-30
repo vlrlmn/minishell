@@ -6,90 +6,33 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:53:49 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/05/27 15:34:16 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/05/29 16:39:42 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char *find_path(char **envp) 
+char *find_command_path(char *cmd, char *path)
 {
-    int i = 0;
-    char *path = NULL;
-
-    while (envp[i]) {
-        if (strncmp(envp[i], "PATH=", 5) == 0) 
-        {
-            path = envp[i] + 5;
-            break;
-        }
-        i++;
-    }
-    return path;
-}
-
-char	*add_cmd_to_line_in_path(char *line, char *cmd)
-{
-	char	*path_line;
-
-	path_line = ft_strjoin(line, cmd);
-	if (!path_line)
-	{
-		free(path_line);
-		return (NULL);
-	}
-	return (path_line);
-}
-
-int if_path_to_cmd(char *path_line) 
-{
-    if (access(path_line, F_OK) == -1)
-        return 0;
-    if (access(path_line, X_OK) == -1) 
-    {
-        perror("cmd is not executable");
-        return 0;
-    }
-    return 1;
-}
-
-char *check_if_cmd_exists(char **path_arr, char *cmd) 
-{
-    int counter;
-    char *path_line;
-
-    counter = 0;
-    path_line = NULL;
-    while (path_arr[counter]) 
-    {
-        path_line = add_cmd_to_line_in_path(path_arr[counter], cmd);
-        if (!path_line)
-            return NULL;
-        if (if_path_to_cmd(path_line))
-            return path_line;
-        free(path_line);
-        counter++;
-    }
-    return NULL;
-}
-
-char *find_command_path(char *cmd, char **envp)
-{
-    char *path;
     char *cmd_path;
     char **path_arr;
+    char *command;
+    int i;
 
-    path = find_path(envp);
-    if (!path) {
-        write(2, "PATH not found\n", 16);
-        return NULL;
-    }
+    i = 0;
     path_arr = ft_split(path, ':');
-    if (!path_arr)
-        return NULL;
-    cmd_path = check_if_cmd_exists(path_arr, cmd);
-    free_split(path_arr);
-    if (!cmd_path)
-        return NULL;
-    return cmd_path;
+    command = ft_strjoin("/", cmd);
+    while(path_arr[i])
+    {
+        cmd_path = ft_strjoin(path_arr[i], command);
+        if (access (cmd_path, X_OK) == 0)
+        {
+            free(path_arr);
+            return (cmd_path);
+        }
+        free(cmd_path);
+        i++;
+    }
+    free(path_arr);
+    return NULL;
 }

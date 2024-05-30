@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:26:37 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/27 18:55:48 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/05/30 14:26:00 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,28 +56,61 @@ void	run_redir(t_cmd *cmd)
 	run_cmd(rcmd->cmd);
 }
 
+int is_buildin(char *cmd)
+{
+ 	return (ft_strncmp(cmd, "cd", 2) == 0 || ft_strncmp(cmd, "exit", 2) == 0 || ft_strncmp(cmd, "echo", 2) == 0
+				|| ft_strncmp(cmd, "pwd", 2) == 0 || ft_strncmp(cmd, "export", 2) == 0 || ft_strncmp(cmd, "env", 2) == 0
+					|| ft_strncmp(cmd, "unset", 2) == 0);
+}
+
+char	*get_env(char *path, char **envp)
+{
+	int i;
+
+	i = 0;
+	while (envp[i])
+	{
+		if (ft_strncmp(path, envp[i], 5) == 0)
+			return (envp[i]);
+		i++;
+	}
+	return (NULL);
+}
+
 void	run_exec(t_cmd *cmd)
 {
 	t_execcmd	*ecmd;
 	char	*cmd_path;
 	int	builtin_status;
-
+	char *path;
+	
 	ecmd = (t_execcmd *)cmd;
+	cmd_path = NULL;
 	if (ecmd->argv[0] == 0)
 		exit(127);
-	builtin_status = run_buildin(ecmd, cmd->params);
-	if (builtin_status == 0)
-		return ;
-	else if (builtin_status == 1)
-		exit_with_err("Command not executed");
-	cmd_path = find_command_path(ecmd->argv[0], cmd->params->envp);
-	if(!cmd_path)
+	if (is_buildin(ecmd->argv[0]))
 	{
-		printf("Command not found: %s", ecmd->argv[0]);
-		exit(127);
+		printf("Running command: %s\n", ecmd->argv[0]); // Debug message
+		builtin_status = run_buildin(ecmd, cmd->params);
+		if (builtin_status == 0)
+			exit (0);
+		else if (builtin_status == 1)
+			exit_with_err("Command not executed\n");
+		printf("STATUS %d\n", builtin_status);
 	}
-	execve(cmd_path, ecmd->argv, cmd->params->envp);
-	perror("execve");
+	else
+	{
+		printf("Executing command: %s\n", ecmd->argv[0]); // Debug message
+		path = get_env("PATH=", cmd->params->envp);
+		cmd_path = find_command_path(ecmd->argv[0], path);
+		if(!cmd_path)
+		{
+			printf("Command not found: %s\n", ecmd->argv[0]);
+			exit(127);
+		}
+		execve(cmd_path, ecmd->argv, cmd->params->envp);
+		perror("execve");
+	}
 	free(cmd_path);
 	exit(1);
 }
