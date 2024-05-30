@@ -6,7 +6,7 @@
             "type": "lldb",
             "request": "launch",
             "program": "${cwd}/minishell",
-            "args": ["-c", "ls"],
+            "args": ["-c", "ps | grep hhtpd"],
             "cwd": "${workspaceFolder}",
             "preLaunchTask": "Make build"
         }

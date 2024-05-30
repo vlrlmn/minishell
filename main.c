@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/29 15:50:56 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/05/30 14:18:18 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int ft_launch_minishell(t_args *args)
 		free_envp(args);
 		exit(SYNTAX_ERR);
 	}
+	add_history(args->input);
 	cmd = parse(args);
 	cmd->params = args;
 	run_cmd(cmd);
@@ -69,7 +70,7 @@ int	loop_result(t_args *args)
 			cmd->params = args;
 			run_cmd(cmd);
 		}
-		wait(0);
+		wait (0);
 	}
 	return (0);
 }
