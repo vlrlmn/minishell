@@ -6,9 +6,11 @@
             "type": "lldb",
             "request": "launch",
             "program": "${cwd}/minishell",
-            "args": ["-c", "ps | grep hhtpd"],
+            "args": ["-c", "ls -l | grep 21"],
             "cwd": "${workspaceFolder}",
-            "preLaunchTask": "Make build"
+            "initCommands": [
+                "settings set target.process.follow-fork-mode child"
+            ]
         }
     ]
 }
