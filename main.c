@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/30 14:25:26 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/05/30 17:08:44 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,15 @@ void	handle_sigint(int sig)
 	if (sig == SIGINT)
 	{
 		write(STDERR_FILENO, "\n", 1);
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
+		write_new_promt();
 	}
+}
+
+void	write_new_promt(void)
+{
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
 }
 
 int ft_launch_minishell(t_args *args)
@@ -57,6 +62,11 @@ int	loop_result(t_args *args)
 			write(STDOUT_FILENO, "exit\n", 5);
 			break ;
 		}
+		// if (!ft_strncmp(args->input, "\n", 2))
+		// {
+		// 	write_new_promt();
+		// 	break;
+		// }
 		if (!valid_input(args->input))
 		{
 			free_envp(args);
@@ -125,4 +135,14 @@ int	main(int argc, char **argv, char **envp)
 	free_envp (&shell_context);
 	return (exit_status);
 }
+
+/*
+
+about signals
+1) should ctrl+c clear all memory or returning promt is enough? should there be ^C after pressing this cmd?
+2) if 'return' pressed, should it quit? errno = 2
+3) ctrl D -> "exit" str in the promt, not on the new line
+
+*/
+
 //HELLO//

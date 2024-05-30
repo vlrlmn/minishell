@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/30 14:25:37 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/05/30 17:02:01 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,4 +117,7 @@ int			is_delimiter(char c);
 
 int			ft_isalnum(int c);
 int			is_symbol(char c);
+
+/* sofa */
+void	write_new_promt(void);
 #endif
