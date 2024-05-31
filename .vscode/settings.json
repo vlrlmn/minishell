@@ -4,6 +4,7 @@
         "termios.h": "c",
         "libft.h": "c",
         "sysexits.h": "c",
-        "__config": "c"
+        "__config": "c",
+        "algorithm": "c"
     }
 }

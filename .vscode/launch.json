@@ -1,12 +1,13 @@
 {
     "version": "0.2.0",
     "configurations": [
+
         {
             "name": "debug",
             "type": "lldb",
             "request": "launch",
             "program": "${cwd}/minishell",
-            "args": ["-c", "ls"],
+            "args": ["-c", "cd", ".."],
             "cwd": "${workspaceFolder}",
             "preLaunchTask": "Make build"
         }

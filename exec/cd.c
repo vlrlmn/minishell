@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:39:06 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/05/27 15:46:15 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/05/31 16:00:15 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,10 @@ int cd_cmd(t_execcmd *ecmd)
         perror("cd");
         return (1);
     }
+    if (getcwd(path, sizeof(path)) != NULL)
+        printf("Current working directory after: %s\n", path);
+    else
+        perror("getcwd() error");
+    // printf("argv[1]: %s\npath:%s\n", ecmd->argv[1], )
     return (0);
 }
