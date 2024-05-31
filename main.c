@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/30 17:24:19 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/05/31 16:17:23 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,36 @@ void	handle_sigint(int sig)
 	}
 }
 
+void PrintTree(t_cmd	*cmd)
+{
+	t_execcmd *exec;
+	t_pipe *pipe;
+
+	int i = 0;
+
+	if (cmd->type == EXEC)
+	{
+		exec = (t_execcmd*) cmd;
+		i=0;
+		while(exec->argv[i])
+		{
+			printf("Arg %d: %.*s\n", i, (int)(exec->eargv[i] - exec->argv[i]), exec->argv[i]);
+			i++;
+		}
+	}
+	else if (cmd->type == PIPE)
+	{
+		pipe = (t_pipe*) cmd;
+		PrintTree(pipe->left);
+		PrintTree(pipe->right);
+	}
+}
+
 int ft_launch_minishell(t_args *args)
 {
 	t_cmd	*cmd;
+	
+
     if (args->input == NULL)
 	{
 		write(STDOUT_FILENO, "exit\n", 5);
@@ -39,6 +66,7 @@ int ft_launch_minishell(t_args *args)
 	//if (fork1() == 0)
 	//{
 		cmd = parse(args);
+		PrintTree(cmd);
 		cmd->params = args;
 		run_cmd(cmd);
 	//}

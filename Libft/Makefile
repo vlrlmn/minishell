@@ -6,13 +6,13 @@
 #    By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/25 10:45:42 by vlomakin          #+#    #+#              #
-#    Updated: 2023/12/18 15:06:29 by lomakinaval      ###   ########.fr        #
+#    Updated: 2024/05/31 15:36:34 by lomakinaval      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libft.a
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = --debug -Wall -Wextra -Werror
 AR = ar rcs
 RM = rm -f
 

@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/29 15:31:52 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/05/31 15:21:00 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,9 @@ typedef enum quotes_handler
 
 typedef enum token_type
 {
-	PIPE,
-	EXEC,
-	REDIR
+	PIPE = 0,
+	EXEC = 1,
+	REDIR = 2
 }			t_type;
 
 /*Errors and free*/

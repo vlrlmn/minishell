@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:26:37 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/30 13:11:35 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/05/31 11:37:31 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	run_pipe(t_cmd *cmd)
 	int	p[2];
 
 	pcmd = (t_pipe *)cmd;
+	printf("PIPE\n");
 	if (pipe(p) < 0)
 		exit_with_err("Pipe error");
 	if (fork1() == 0)

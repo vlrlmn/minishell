@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:03:40 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/30 13:06:33 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/05/31 11:43:30 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ t_cmd	*pipecmd(t_cmd *left, t_cmd *right)
 {
 	t_pipe	*cmd;
 
+	printf("Pipecmd\n");
 	cmd = (t_pipe*)malloc(sizeof(t_pipe));
 	if (!cmd)
 		exit_with_malloc_error(MALLOC_ERROR);
