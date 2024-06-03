@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/31 16:17:23 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/03 13:57:00 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,14 @@ void PrintTree(t_cmd	*cmd)
 
 	int i = 0;
 
+	printf("\nCmd Type %d\n", cmd->type);
 	if (cmd->type == EXEC)
 	{
 		exec = (t_execcmd*) cmd;
 		i=0;
 		while(exec->argv[i])
 		{
+			
 			printf("Arg %d: %.*s\n", i, (int)(exec->eargv[i] - exec->argv[i]), exec->argv[i]);
 			i++;
 		}
@@ -45,6 +47,9 @@ void PrintTree(t_cmd	*cmd)
 		pipe = (t_pipe*) cmd;
 		PrintTree(pipe->left);
 		PrintTree(pipe->right);
+	}
+	else{
+		printf("Unknown Type\n");
 	}
 }
 
@@ -94,11 +99,19 @@ int	loop_result(t_args *args)
 			free_envp(args);
 			exit(SYNTAX_ERR);
 		}
+		printf("input: %s\n", args->input);
+
 		if (fork1() == 0)
 		{
 			add_history(args->input);
 			cmd = parse(args);
+			printf("--------- parse0 -----------\n");
+			PrintTree(cmd);
+			printf("-----------------------------\n");
 			cmd->params = args;
+			printf("--------- parse -----------\n");
+			PrintTree(cmd);
+			printf("----------------------------\n");
 			run_cmd(cmd);
 		}
 		wait (0);

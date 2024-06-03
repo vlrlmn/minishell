@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:26:37 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/31 11:37:31 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/03 13:25:57 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,25 @@ void	run_pipe(t_cmd *cmd)
 		exit_with_err("Pipe error");
 	if (fork1() == 0)
 	{
-		close(1);
-		dup(p[1]);
+		printf("Fork for left\n");
 		close(p[0]);
+		printf("Fork for left1 \n");
+		dup(p[1]);
+		printf("Fork for left2 \n");
 		close(p[1]);
+		
+
+		printf("Run Left\n");
 		run_cmd(pcmd->left);
 	}
 	if (fork1() == 0)
 	{
-		close(0);
-		dup(p[0]);
-		close(p[0]);
-		close(p[1]);
+		printf("Fork for right\n");
+        close(p[1]);
+	    dup2(p[0], STDIN_FILENO);
+	    close(p[0]);
+
+		printf("Run right\n");
 		run_cmd(pcmd->right);
 	}
 	close(p[0]);
@@ -87,6 +94,7 @@ void	run_exec(t_cmd *cmd)
 	
 	ecmd = (t_execcmd *)cmd;
 	cmd_path = NULL;
+	printf("run_exec"); // Debug message
 	if (ecmd->argv[0] == 0)
 		exit(127);
 	if (is_buildin(ecmd->argv[0]))
@@ -118,13 +126,20 @@ void	run_exec(t_cmd *cmd)
 
 void	run_cmd(t_cmd *cmd)
 {
+	printf("run_cmd\n");
 	if (!cmd)
+	{
+		printf("no cmd\n");
 		exit(127);
+	}
 	if (cmd->type == EXEC)
 		run_exec(cmd);
 	else if (cmd->type == REDIR)
 		run_redir(cmd);
 	else if (cmd->type == PIPE)
 		run_pipe(cmd);
+	else
+		printf("Unknown type %d\n", cmd->type);
+
 }
 

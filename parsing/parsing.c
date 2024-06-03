@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:27:36 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/31 15:43:02 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/03 13:53:37 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ t_cmd	*parsepipe(char **ps, char *es)
     char *q, *eq;
 
 	cmd = parseexec(ps, es);
-    printf("\n\nParsed exec\n\n");
+    printf("\nParsed exec\n");
 	if (peek(ps, es, "|"))
 	{
         printf("Parse pipe\n");
@@ -76,6 +76,10 @@ t_cmd	*parse(t_args *args)
 	ps = args->input;
 	es = ps + ft_strlen(args->input);
 	cmd = parsepipe(&ps, es);
+	printf("--------- parsepipe -----------\n");
+	PrintTree(cmd);
+	printf("--------------------------------\n");
+
 	if (peek(&ps, es, ""))
     {
         if (ps != es)
@@ -84,5 +88,10 @@ t_cmd	*parse(t_args *args)
 	while(args->input < es && is_delimiter(*args->input))
 		args->input++;
 	nulterminate(cmd);
+
+	printf("--------- nulterminate -----------\n");
+	PrintTree(cmd);
+	printf("----------------------------------\n");
+
 	return (cmd);
 }

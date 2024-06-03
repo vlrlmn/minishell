@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/31 15:21:00 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/03 14:00:28 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,9 @@ typedef struct s_execmd
 typedef struct s_pipe
 {
 	int		type;
+	t_args	*params;
+	char	*argv[MAXARGS];
+	char	*eargv[MAXARGS];
 	t_cmd	*left;
 	t_cmd	*right;
 }			t_pipe;
@@ -117,4 +120,6 @@ int			is_delimiter(char c);
 
 int			ft_isalnum(int c);
 int			is_symbol(char c);
+
+void PrintTree(t_cmd	*cmd);
 #endif
