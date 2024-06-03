@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/30 17:02:01 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/03 15:05:51 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,9 @@ typedef struct s_execmd
 typedef struct s_pipe
 {
 	int		type;
+	t_args	*params;
+	char	*argv[MAXARGS];
+	char	*eargv[MAXARGS];
 	t_cmd	*left;
 	t_cmd	*right;
 }			t_pipe;
@@ -81,9 +84,9 @@ typedef enum quotes_handler
 
 typedef enum token_type
 {
-	PIPE,
-	EXEC,
-	REDIR
+	PIPE = 0,
+	EXEC = 1,
+	REDIR = 2
 }			t_type;
 
 /*Errors and free*/
@@ -120,4 +123,5 @@ int			is_symbol(char c);
 
 /* sofa */
 void	write_new_promt(void);
+void PrintTree(t_cmd	*cmd);
 #endif

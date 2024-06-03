@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/30 17:08:44 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/03 15:06:23 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,41 @@ void	write_new_promt(void)
 	rl_redisplay();
 }
 
+void PrintTree(t_cmd	*cmd)
+{
+	t_execcmd *exec;
+	t_pipe *pipe;
+
+	int i = 0;
+
+	printf("\nCmd Type %d\n", cmd->type);
+	if (cmd->type == EXEC)
+	{
+		exec = (t_execcmd*) cmd;
+		i=0;
+		while(exec->argv[i])
+		{
+			
+			printf("Arg %d: %.*s\n", i, (int)(exec->eargv[i] - exec->argv[i]), exec->argv[i]);
+			i++;
+		}
+	}
+	else if (cmd->type == PIPE)
+	{
+		pipe = (t_pipe*) cmd;
+		PrintTree(pipe->left);
+		PrintTree(pipe->right);
+	}
+	else{
+		printf("Unknown Type\n");
+	}
+}
+
 int ft_launch_minishell(t_args *args)
 {
 	t_cmd	*cmd;
+	
+
     if (args->input == NULL)
 	{
 		write(STDOUT_FILENO, "exit\n", 5);
@@ -41,10 +73,15 @@ int ft_launch_minishell(t_args *args)
 		free_envp(args);
 		exit(SYNTAX_ERR);
 	}
-	cmd = parse(args);
-	cmd->params = args;
-	run_cmd(cmd);
-	return 0;
+	//if (fork1() == 0)
+	//{
+		cmd = parse(args);
+		PrintTree(cmd);
+		cmd->params = args;
+		run_cmd(cmd);
+	//}
+	//wait (0);
+	return (0);
 }
 
 /*This is where we have instant loop happening. Inside the loop
@@ -72,14 +109,22 @@ int	loop_result(t_args *args)
 			free_envp(args);
 			exit(SYNTAX_ERR);
 		}
+		printf("input: %s\n", args->input);
+
 		if (fork1() == 0)
 		{
 			add_history(args->input);
 			cmd = parse(args);
+			printf("--------- parse0 -----------\n");
+			PrintTree(cmd);
+			printf("-----------------------------\n");
 			cmd->params = args;
+			printf("--------- parse -----------\n");
+			PrintTree(cmd);
+			printf("----------------------------\n");
 			run_cmd(cmd);
 		}
-		wait(0);
+		wait (0);
 	}
 	return (0);
 }
