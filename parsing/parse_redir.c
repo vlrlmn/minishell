@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:38:32 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/27 15:32:05 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/04 17:35:48 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,10 @@ t_cmd	*parseredir(t_cmd *cmd, char **ps, char *es)
 	int		tok;
 	char	*q;
 	char	*eq;
-
+	
 	while (peek(ps, es, "<>"))
 	{
 		tok = gettoken(ps, es, &q, &eq);
-		if (tok != 'a')
-			exit_with_err("Missed file for redirection");
 		if (tok == '<')
 			cmd = redircmd(cmd, q, eq, O_RDONLY, 0);
 		else if (tok == '>')
@@ -48,6 +46,10 @@ t_cmd	*parseredir(t_cmd *cmd, char **ps, char *es)
 			cmd = redircmd(cmd, q, eq, O_WRONLY | O_CREAT, 1);
 		else if (tok == '-')
 			cmd = redircmd(cmd, q, eq, O_WRONLY | O_CREAT, 1);
+		printf("\n--------PS: %s --------\n", *ps);
+        printf("\n--------ES: %s --------\n", es);
+        printf("\n--------Q: %.*s --------\n", (int)(eq - q), q); // Properly print the token
+        printf("\n--------EQ: %s --------\n", eq);
 	}
 	return (cmd);
 }

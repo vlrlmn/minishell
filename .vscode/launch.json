@@ -6,7 +6,7 @@
             "type": "lldb",
             "request": "launch",
             "program": "${cwd}/minishell",
-            "args": ["-c", "ls -l | grep 21"],
+            "args": ["-c", "ls > outfile"],
             "cwd": "${workspaceFolder}",
             "preLaunchTask": "Make build"
         }

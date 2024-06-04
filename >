@@ -1,0 +1,18 @@
+total 280
+-rw-r--r--@  1 lomakinavaleria  staff      0 Jun  4 20:36 >
+drwxr-xr-x@ 91 lomakinavaleria  staff   2912 Jun  4 20:24 Libft
+-rw-r--r--@  1 lomakinavaleria  staff   1157 May 29 17:46 Makefile
+-rwxr-xr-x@  1 lomakinavaleria  staff  33560 Jun  3 20:14 a.out
+-rw-r--r--@  1 lomakinavaleria  staff   1375 May 21 13:43 errors.c
+-rw-r--r--@  1 lomakinavaleria  staff   3560 Jun  4 20:23 errors.o
+drwxr-xr-x@ 18 lomakinavaleria  staff    576 Jun  4 19:42 exec
+-rw-r--r--@  1 lomakinavaleria  staff   1179 May 22 14:53 free_memory.c
+-rw-r--r--@  1 lomakinavaleria  staff   2744 Jun  4 20:23 free_memory.o
+-rw-r--r--@  1 lomakinavaleria  staff   4136 Jun  4 17:49 main.c
+-rw-r--r--@  1 lomakinavaleria  staff   8232 Jun  4 20:23 main.o
+-rwxr-xr-x@  1 lomakinavaleria  staff  46272 Jun  4 20:37 minishell
+-rw-r--r--@  1 lomakinavaleria  staff   3234 Jun  4 19:41 minishell.h
+drwxr-xr-x@ 15 lomakinavaleria  staff    480 Jun  4 20:37 parsing
+-rw-r--r--@  1 lomakinavaleria  staff   1517 Jun  3 19:53 test.c
+-rw-r--r--@  1 lomakinavaleria  staff   1473 May 28 15:08 valid_input.c
+-rw-r--r--@  1 lomakinavaleria  staff   2952 Jun  4 20:23 valid_input.o

@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/04 12:15:49 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/04 19:41:38 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ typedef struct s_args
 typedef struct s_cmd
 {
 	int		type;
-	// t_args	*params;
 }			t_cmd;
 
 typedef struct s_execmd
@@ -50,7 +49,7 @@ typedef struct s_execmd
 	int		type;
 	char	*argv[MAXARGS];
 	char	*eargv[MAXARGS];
-	char	**envp;
+	// char	**envp;
 }			t_execcmd;
 
 
@@ -61,12 +60,14 @@ typedef struct s_pipe
 	char	*eargv[MAXARGS];
 	t_cmd	*left;
 	t_cmd	*right;
-	char	**envp;
+	// char	**envp;
 }			t_pipe;
 
 typedef struct s_redir
 {
 	int		type;
+	char	*argv[MAXARGS];
+	char	*eargv[MAXARGS];
 	t_cmd	*cmd;
 	char	*file;
 	char	*efile;

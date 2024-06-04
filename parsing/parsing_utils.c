@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:52:25 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/31 15:40:23 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/04 21:15:48 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,17 +63,30 @@ void skip_until_special_or_whitespace(char **s, char *es)
 
 int gettoken(char **ps, char *es, char **q, char **eq)
 {
+    int token;
     while (*ps < es && (**ps == ' ' || **ps == '\t' || **ps == '\n'))
         (*ps)++;
     if (*ps >= es)
         return 0;
-    *q = *ps;
-    if (**ps == '|' || **ps == '<' || **ps == '>')
+    token = **ps;
+    if (**ps == '|')
     {
         (*ps)++;
         *eq = *ps;
         return **q;
     }
+    else if (**ps == '<' || **ps == '>')
+    {
+        (*ps)++;
+        while(is_delimiter(**ps))
+            (*ps)++;
+        *q = *ps;
+        while(!is_delimiter(**ps) && !ft_strchr("|<>", **ps))
+            (*ps)++;
+        *eq = *ps;
+        return token;
+    }
+    *q = *ps;
     while (*ps < es && (**ps != ' ' && **ps != '\t' && **ps != '\n'))
         (*ps)++;
     *eq = *ps;

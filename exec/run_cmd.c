@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:26:37 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/04 12:15:30 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/04 17:23:49 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,9 @@ void	run_redir(t_cmd *cmd, t_args *params)
 
 	rcmd = (t_redir *)cmd;
 	close(rcmd->fd);
-	if(open(rcmd->file, rcmd->mode) < 0)
+	fprintf(stderr, "\nRCMD FILE %s\n", rcmd->file);
+	PrintTree(rcmd->cmd);
+	if(open(rcmd->file, rcmd->mode, 0644) < 0)
 	{
 		printf("open %s failed\n", rcmd->file);
 		exit(126);
@@ -83,16 +85,16 @@ int is_buildin(char *cmd)
 char	*get_env(char *path, char **envp)
 {
 	int i;
-    fprintf(stderr, "get_env in \n");
+    // fprintf(stderr, "get_env in \n");
 	i = 0;
 	while (envp[i])
 	{
-		fprintf(stderr, "envp[%d]: %s \n",i, envp[i]);
+		// fprintf(stderr, "envp[%d]: %s \n",i, envp[i]);
 		if (ft_strncmp(path, envp[i], 5) == 0)
 			return (envp[i]);
 		i++;
 	}
-	fprintf(stderr, "get_env out \n");
+	// fprintf(stderr, "get_env out \n");
 	return (NULL);
 }
 
@@ -137,9 +139,9 @@ void	run_exec(t_cmd *cmd, t_args *params)
 			fprintf(stderr, "!cmd->params->envp \n");
 		}
 		path = get_env("PATH=", params->envp);
-		fprintf(stderr, "get_env \n");
+		// fprintf(stderr, "get_env \n");
 		cmd_path = find_command_path(ecmd->argv[0], path);
-		fprintf(stderr, "find_command_path \n");
+		// fprintf(stderr, "find_command_path \n");
 		if(!cmd_path)
 		{
 			fprintf(stderr, "Command not found: %s\n", ecmd->argv[0]);
