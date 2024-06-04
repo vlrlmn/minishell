@@ -6,5 +6,6 @@
         "sysexits.h": "c",
         "__config": "c",
         "algorithm": "c"
+        // "random": "c"
     }
 }
