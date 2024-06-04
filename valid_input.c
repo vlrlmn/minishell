@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 15:48:13 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/27 18:39:38 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/04 14:40:46 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	valid_input(char *work_line)
 		return (0);
 	if (!valid_quotes(work_line))
 	{
-		write(2, "Close quotes\n", 19);
+		write(2, "Close quotes\n", 14);
 		return (0);
 	}
 	return (1);

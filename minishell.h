@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/04 13:24:23 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/04 17:09:12 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include <termios.h>
 # include <unistd.h>
 # include <fcntl.h>
+# include <sys/wait.h>
 
 # define MALLOC_ERROR 69
 # define SYNTAX_ERR 2
@@ -122,10 +123,7 @@ int			is_delimiter(char c);
 int			ft_isalnum(int c);
 int			is_symbol(char c);
 
-<<<<<<< HEAD
 /* sofa */
 void	write_new_promt(void);
-=======
 void PrintTree(t_cmd	*cmd);
->>>>>>> main
 #endif
