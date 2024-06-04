@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:31:59 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/05/27 15:32:02 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/03 19:48:56 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,31 @@
 
 void	nulterminate_exec(t_execcmd *execcmd)
 {
-	int	i;
+	 int i = 0;
 
-	i = 0;
-	while (execcmd->argv[i])
-	{
-		*execcmd->eargv[i] = 0;
-		i++;
-	}
+    while (execcmd->argv[i]) {
+        if (execcmd->eargv[i]) {
+            *execcmd->eargv[i] = 0;
+        } else {
+            printf("nulterminate_exec: eargv[%d] is NULL\n", i);
+        }
+        i++;
+    }
 }
 
 void	nulterminate_pipe(t_pipe *pipecmd)
 {
-	nulterminate(pipecmd->left);
-	nulterminate(pipecmd->right);
+	 if (!pipecmd->left) {
+        printf("nulterminate_pipe: left is NULL\n");
+    } else {
+        nulterminate(pipecmd->left);
+    }
+
+    if (!pipecmd->right) {
+        printf("nulterminate_pipe: right is NULL\n");
+    } else {
+        nulterminate(pipecmd->right);
+    }
 }
 
 void	nulterminate_redir(t_redir *redircmd)

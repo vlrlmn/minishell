@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/03 14:00:28 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/04 12:15:49 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # include <sysexits.h> //for EX_UNAVAILABLE
 # include <termios.h>
 # include <unistd.h>
+# include <fcntl.h>
 
 # define MALLOC_ERROR 69
 # define SYNTAX_ERR 2
@@ -41,26 +42,26 @@ typedef struct s_args
 typedef struct s_cmd
 {
 	int		type;
-	t_args	*params;
+	// t_args	*params;
 }			t_cmd;
 
 typedef struct s_execmd
 {
 	int		type;
-	t_args	*params;
 	char	*argv[MAXARGS];
 	char	*eargv[MAXARGS];
+	char	**envp;
 }			t_execcmd;
 
 
 typedef struct s_pipe
 {
 	int		type;
-	t_args	*params;
 	char	*argv[MAXARGS];
 	char	*eargv[MAXARGS];
 	t_cmd	*left;
 	t_cmd	*right;
+	char	**envp;
 }			t_pipe;
 
 typedef struct s_redir
@@ -99,7 +100,7 @@ t_cmd		*nulterminate(t_cmd *cmd);
 int			valid_input(char *work_line);
 int			fork1(void);
 void free_split(char **arr);
-void			run_cmd(t_cmd *cmd);
+void			run_cmd(t_cmd *cmd, t_args *params);
 int run_buildin(t_execcmd	*ecmd, t_args *params);
 char *find_command_path(char *cmd, char *path);
 int			gettoken(char **ps, char *es, char **q, char **eq);

@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:27:36 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/03 13:53:37 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/03 16:43:36 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,8 @@ t_cmd	*parsepipe(char **ps, char *es)
     char *q, *eq;
 
 	cmd = parseexec(ps, es);
-    printf("\nParsed exec\n");
 	if (peek(ps, es, "|"))
 	{
-        printf("Parse pipe\n");
 		gettoken(ps, es, &q, &eq);
 		cmd = pipecmd(cmd, parsepipe(ps, es));
 	}
