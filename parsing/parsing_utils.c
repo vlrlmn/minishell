@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:52:25 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/05 15:18:23 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/05 16:11:00 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,18 @@ int gettoken(char **ps, char *es, char **q, char **eq)
     else if (**ps == '<' || **ps == '>')
     {
         (*ps)++;
+        if (**ps == '<')
+        {
+            (*ps)++;
+            token = '+';
+            return (token);
+        }
+        else if (**ps == '>')
+        {
+            (*ps)++;
+            token = '-';
+            return (token);
+        }
         while(is_delimiter(**ps))
             (*ps)++;
         *q = *ps;

@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:26:37 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/04 17:23:49 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/05 16:38:21 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,19 @@ void	run_redir(t_cmd *cmd, t_args *params)
 	close(rcmd->fd);
 	fprintf(stderr, "\nRCMD FILE %s\n", rcmd->file);
 	PrintTree(rcmd->cmd);
-	if(open(rcmd->file, rcmd->mode, 0644) < 0)
+	if (rcmd->type == '-')
 	{
-		printf("open %s failed\n", rcmd->file);
-		exit(126);
+		exec_heredoc(); // TO_DO HEREDOC
 	}
-	run_cmd(rcmd->cmd, params);
+	else
+	{
+		if(open(rcmd->file, rcmd->mode, 0644) < 0)
+		{
+			printf("open %s failed\n", rcmd->file);
+			exit(126);
+		}
+		run_cmd(rcmd->cmd, params);
+	}
 }
 
 int is_buildin(char *cmd)

@@ -1,8 +1,0 @@
-    exit(1);
-        exit(1);
-            exit(1);
-        exit(1);
-            exit(1);
-        exit(1);
-    printf("pid1 exited with status %d\n", WIFEXITED(status) ? WEXITSTATUS(status) : -1);
-    printf("pid2 exited with status %d\n", WIFEXITED(status) ? WEXITSTATUS(status) : -1);
