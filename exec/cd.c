@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:39:06 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/04 17:21:58 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/05 20:47:00 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,18 @@ void relative_path(char *result, t_execcmd *ecmd)
 int cd_cmd(t_execcmd *ecmd, t_args *params) 
 {
     char path[1024];
+    (void)params;
     char *tmp_path;
+    // char oldpath[1024] = "OLDPWD=";
+    // char res_oldpath[1024];
+    // char pwd[1024] = "PWD=";
+    // char res_pwd[1024];
+    char *cur_path;
+    
+    // char *new_path;
 
-    if (getcwd(path, sizeof(path)) != NULL)
-        printf("Current working directory before: %s\n", path);
+    // if (getcwd(path, sizeof(path)) != NULL)
+    //     printf("Current working directory before: %s\n", path);
     
     if (ecmd->argv[1] == NULL || strcmp(ecmd->argv[1], "~") == 0) 
     {
@@ -51,17 +59,35 @@ int cd_cmd(t_execcmd *ecmd, t_args *params)
         path[sizeof(path) - 1] = '\0';
     } 
     else
+    {
+        tmp_path = getcwd(path, sizeof(path));
+        if (tmp_path == NULL)
+            return (1); //ERROR todo
+        setenv("OLDPWD", tmp_path, 1);
+        // printf("tmp_path: %s\n", tmp_path);
+        // printf("oldpath before: %s\n", oldpath);
+        // update_envp_var(oldpath, tmp_path);
+        // ft_strlcat(oldpath, tmp_path, sizeof(oldpath));
+        // ft_strlcpy(res_oldpath, oldpath, sizeof(oldpath));
+        // printf("oldpath after: %s\n", res_oldpath);
+        // putenv(res_oldpath);
+        // printf("RES: %s\n", getenv("OLDPWD"));
         relative_path(path, ecmd);
-    tmp_path = getcwd(path, sizeof(path));
-    if (tmp_path == NULL)
-        return (1); //ERROR todo
+    }
     if (chdir(path) != 0) 
     {
         perror("cd");
         return (1);
     }
-    update_oldpwd(ecmd, params, tmp_path);
-    update_pwd(ecmd, params, path);
+    // char *cur_path;
+    cur_path = getcwd(path, sizeof(path));
+    setenv("PWD", cur_path, 1);
+    // ft_strlcat(pwd, cur_path, sizeof(pwd));
+    // ft_strlcpy(res_pwd, pwd, sizeof(pwd));
+    // putenv(res_pwd);
+    // new_path = getcwd(path, sizeof(path));
+    // update_oldpwd(ecmd, params, tmp_path);
+    // update_pwd(ecmd, params, new_path);
     if (getcwd(path, sizeof(path)) != NULL)
         printf("Current working directory after: %s\n", path);
     else
@@ -70,37 +96,55 @@ int cd_cmd(t_execcmd *ecmd, t_args *params)
     return (0);
 }
 
+// void update_envp_var(char flag, char *src)
+// {
+//     char res_str[1024];
+//     char dest[1024];
+//         if (flag == 'p')
+//             dest = "PWD";
+//     else if (flag == 'o')
+//         cha
+//     ft_strlcat(dest, src, sizeof(dest));
+//     ft_strlcpy(res_str, dest, sizeof(dest));
+//     putenv(res_str);
+// }
+
 int update_oldpwd(t_execcmd *ecmd, t_args *params, char *tmp_path)
 {
     char    *oldpwd_env_var;
     int     len;
-    char    *res;
 
+    (void)ecmd;
+    
     oldpwd_env_var = find_env_var(params->envp, "OLDPWD");
     if (!oldpwd_env_var)
         return(printf("No oldpwd in env vars!\n"), 1);
     len = ft_strlen(oldpwd_env_var);
     oldpwd_env_var = ft_memset(oldpwd_env_var, 0, len);
-    oldpwd_env_var = ft_strlcpy(oldpwd_env_var, tmp_path, (ft_strlen(tmp_path) - 1));
+    // oldpwd_env_var = 
+    ft_strlcpy(oldpwd_env_var, tmp_path, (ft_strlen(tmp_path) - 1));
     oldpwd_env_var[ft_strlen(tmp_path) - 1] = '\0';
     // установить в params->envp новое значение для pwd
     printf("updated oldpwd: %s\n", oldpwd_env_var);
     return (0);
 }
 
-int update_pwd(t_execcmd *ecmd, t_args *params, char tmp_path)
+int update_pwd(t_execcmd *ecmd, t_args *params, char *tmp_path)
 {
     char *pwd_env_var;
     int     len;
+
+    (void)ecmd;
     pwd_env_var = find_env_var(params->envp, "PWD");
     if (!pwd_env_var)
         return(printf("No pwd in env vars!\n"), 1);
     len = ft_strlen(pwd_env_var);
     pwd_env_var = ft_memset(pwd_env_var, 0, len);
-    pwd_env_var = ft_strlcpy(pwd_env_var, tmp_path, (ft_strlen(tmp_path) - 1));
+    // pwd_env_var = 
+    ft_strlcpy(pwd_env_var, tmp_path, (ft_strlen(tmp_path) - 1));
     pwd_env_var[ft_strlen(tmp_path) - 1] = '\0';
     // установить в params->envp новое значение для pwd
-    printf("updated oldpwd: %s\n", pwd_env_var);
+    printf("updated pwd: %s\n", pwd_env_var);
     return (0);
 }
 
@@ -114,31 +158,36 @@ char	*find_env_var(char **envp, char *var)
 	i = 0;
     len = 0;
 	res = NULL;
-    if (ft_strncmp(var, "PATH", 4))
+    if (ft_strncmp(var, "PATH", 4) == 0)
     {
         dest = "PATH";
         len = 4;
     }
-    else if (ft_strncmp(var, "PWD", 3))
+    else if (ft_strncmp(var, "PWD", 3) == 0)
     {
         dest = "PWD";
         len = 3;
     }
-    else if (ft_strncmp(var, "OLDPWD", 6))
+    else if (ft_strncmp(var, "OLDPWD", 6) == 0)
     {
         dest = "OLDPWD";
         len = 6;
     }
+    printf("the dest is: %s\n", dest);
 	while (envp[i])
 	{
-		if (ft_strncmp(envp[i], dest, len))
+		if (ft_strncmp(envp[i], dest, len) == 0)
 		{
 			res = envp[i] + (len + 1);
+			// res = envp[i];
 			break ;
 		}
 		i++;
 	}
 	if (res)
+    {
+        printf("res: %s\n", res);
 		return (res);
+    }
 	return (NULL);
 }

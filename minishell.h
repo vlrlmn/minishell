@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/04 17:09:12 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/05 18:43:41 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ typedef enum token_type
 }			t_type;
 
 /*Errors and free*/
-int cd_cmd(t_execcmd *ecmd);
+int cd_cmd(t_execcmd *ecmd, t_args *params);
 int echo_cmd(t_execcmd *ecmd);
 int pwd_cmd(t_execcmd *ecmd);
 int export_cmd(t_execcmd *ecmd, t_args *params);
@@ -125,5 +125,10 @@ int			is_symbol(char c);
 
 /* sofa */
 void	write_new_promt(void);
+int update_oldpwd(t_execcmd *ecmd, t_args *params, char *tmp_path);
+int update_pwd(t_execcmd *ecmd, t_args *params, char *tmp_path);
+char	*find_env_var(char **envp, char *var);
+void update_envp_var(char dest[1024], char *src);
+
 void PrintTree(t_cmd	*cmd);
 #endif
