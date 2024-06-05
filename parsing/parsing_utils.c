@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:52:25 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/04 21:15:48 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/05 15:18:23 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int gettoken(char **ps, char *es, char **q, char **eq)
     {
         (*ps)++;
         *eq = *ps;
-        return **q;
+        return token;
     }
     else if (**ps == '<' || **ps == '>')
     {
@@ -87,7 +87,7 @@ int gettoken(char **ps, char *es, char **q, char **eq)
         return token;
     }
     *q = *ps;
-    while (*ps < es && (**ps != ' ' && **ps != '\t' && **ps != '\n'))
+    while (*ps < es && (**ps != ' ' && **ps != '\t' && **ps != '\n') && !ft_strchr("<>|", **ps))
         (*ps)++;
     *eq = *ps;
     return ('a');

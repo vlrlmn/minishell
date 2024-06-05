@@ -6,7 +6,7 @@
             "type": "lldb",
             "request": "launch",
             "program": "${cwd}/minishell",
-            "args": ["-c", "ls > outfile"],
+            "args": ["-c", "< test.c grep s|wc -w > outfile"],
             "cwd": "${workspaceFolder}",
             "preLaunchTask": "Make build"
         }
