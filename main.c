@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/06 18:17:49 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/06 21:25:56 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,13 +111,13 @@ int	loop_result(t_args *args)
 		printf("input: %s\n", args->input);
 		add_history(args->input);
 		cmd = parse(args);
-			printf("--------- parse0 -----------\n");
-			PrintTree(cmd);
-			printf("-----------------------------\n");
+			// printf("--------- parse0 -----------\n");
+			// PrintTree(cmd);
+			// printf("-----------------------------\n");
 		// cmd->params = args;
-			printf("--------- parse -----------\n");
-			PrintTree(cmd);
-			printf("----------------------------\n");
+			// printf("--------- parse -----------\n");
+			// PrintTree(cmd);
+			// printf("----------------------------\n");
 		if (check_if_single_builtin(cmd))
 		{
 			// printf("\tsingle builtin!\n");

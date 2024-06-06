@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:39:06 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/06 20:40:23 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/06 20:52:16 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,33 +135,12 @@ int find_env_index(char **envp, char *var)
 {
     int		i;
     int     len;
-    char    *dest;
 
 	i = 0;
-    len = 0;
-    if (ft_strncmp(var, "PATH", 4) == 0)
-    {
-        dest = "PATH";
-        len = 4;
-    }
-    else if (ft_strncmp(var, "PWD", 3) == 0)
-    {
-        dest = "PWD";
-        len = 3;
-    }
-    else if (ft_strncmp(var, "OLDPWD", 6) == 0)
-    {
-        dest = "OLDPWD";
-        len = 6;
-    }
-    else
-    {
-        printf("Wrong envp variable!\n");
-        return (1);
-    }
+    len = ft_strlen(var);
 	while (envp[i])
 	{
-		if (ft_strncmp(envp[i], dest, len) == 0)
+		if (ft_strncmp(envp[i], var, len) == 0)
             return (i);
 		i++;
 	}
@@ -174,34 +153,13 @@ char    *find_env_var(char **envp, char *var)
 	int		i;
     int     len;
 	char	*res;
-    char    *dest;
 
 	i = 0;
-    len = 0;
+    len = ft_strlen(var);
 	res = NULL;
-    if (ft_strncmp(var, "PATH", 4) == 0)
-    {
-        dest = "PATH";
-        len = 4;
-    }
-    else if (ft_strncmp(var, "PWD", 3) == 0)
-    {
-        dest = "PWD";
-        len = 3;
-    }
-    else if (ft_strncmp(var, "OLDPWD", 6) == 0)
-    {
-        dest = "OLDPWD";
-        len = 6;
-    }
-    else
-    {
-        printf("Wrong envp variable!\n");
-        return (NULL);
-    }
 	while (envp[i])
 	{
-		if (ft_strncmp(envp[i], dest, len) == 0)
+		if (ft_strncmp(envp[i], var, len) == 0)
 		{
 			res = envp[i] + (len + 1);
 			// res = envp[i];
