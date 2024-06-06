@@ -6,7 +6,11 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/06/03 15:05:51 by sabdulki         ###   ########.fr       */
+=======
+/*   Updated: 2024/06/05 18:43:41 by sabdulki         ###   ########.fr       */
+>>>>>>> 40942bf9bb7a78f7a044fc1f3ee30c2a21ca7e04
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +31,8 @@
 # include <sysexits.h> //for EX_UNAVAILABLE
 # include <termios.h>
 # include <unistd.h>
+# include <fcntl.h>
+# include <sys/wait.h>
 
 # define MALLOC_ERROR 69
 # define SYNTAX_ERR 2
@@ -41,26 +47,26 @@ typedef struct s_args
 typedef struct s_cmd
 {
 	int		type;
-	t_args	*params;
+	// t_args	*params;
 }			t_cmd;
 
 typedef struct s_execmd
 {
 	int		type;
-	t_args	*params;
 	char	*argv[MAXARGS];
 	char	*eargv[MAXARGS];
+	char	**envp;
 }			t_execcmd;
 
 
 typedef struct s_pipe
 {
 	int		type;
-	t_args	*params;
 	char	*argv[MAXARGS];
 	char	*eargv[MAXARGS];
 	t_cmd	*left;
 	t_cmd	*right;
+	char	**envp;
 }			t_pipe;
 
 typedef struct s_redir
@@ -90,7 +96,7 @@ typedef enum token_type
 }			t_type;
 
 /*Errors and free*/
-int cd_cmd(t_execcmd *ecmd);
+int cd_cmd(t_execcmd *ecmd, t_args *params);
 int echo_cmd(t_execcmd *ecmd);
 int pwd_cmd(t_execcmd *ecmd);
 int export_cmd(t_execcmd *ecmd, t_args *params);
@@ -99,7 +105,7 @@ t_cmd		*nulterminate(t_cmd *cmd);
 int			valid_input(char *work_line);
 int			fork1(void);
 void free_split(char **arr);
-void			run_cmd(t_cmd *cmd);
+void			run_cmd(t_cmd *cmd, t_args *params);
 int run_buildin(t_execcmd	*ecmd, t_args *params);
 char *find_command_path(char *cmd, char *path);
 int			gettoken(char **ps, char *es, char **q, char **eq);
@@ -123,5 +129,10 @@ int			is_symbol(char c);
 
 /* sofa */
 void	write_new_promt(void);
+int update_oldpwd(t_execcmd *ecmd, t_args *params, char *tmp_path);
+int update_pwd(t_execcmd *ecmd, t_args *params, char *tmp_path);
+char	*find_env_var(char **envp, char *var);
+void update_envp_var(char dest[1024], char *src);
+
 void PrintTree(t_cmd	*cmd);
 #endif

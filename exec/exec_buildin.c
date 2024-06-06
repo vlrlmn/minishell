@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_buildin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:53:53 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/05/27 17:36:52 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/04 17:03:57 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int run_buildin(t_execcmd *ecmd, t_args *params)
 
     status = -1;
     if(ft_strncmp(ecmd->argv[0], "cd", 2) == 0)
-        status = cd_cmd(ecmd);
+        status = cd_cmd(ecmd, params);
     else if(ft_strncmp(ecmd->argv[0], "exit", 4) == 0)
     {
         free_envp(params);
