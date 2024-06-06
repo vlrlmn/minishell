@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/06 12:50:10 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/06 18:17:49 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	handle_sigint(int sig)
 
 void	write_new_promt(void)
 {
-	rl_replace_line("", 0);
+	// rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();
 }
@@ -118,20 +118,29 @@ int	loop_result(t_args *args)
 			printf("--------- parse -----------\n");
 			PrintTree(cmd);
 			printf("----------------------------\n");
-		pid_t pid = fork1();
-		if (pid == 0)
+		if (check_if_single_builtin(cmd))
 		{
-			run_cmd(cmd, args);
-			exit(0);
-		}
-		else if (pid > 0)
-		{
-			waitpid(pid, NULL, 0);
+			// printf("\tsingle builtin!\n");
+			run_single_builtin(cmd, args);
 		}
 		else
 		{
-			perror("fork");
-			exit(EXIT_FAILURE);
+			printf("\ti'm going to create child proc!\n");
+			pid_t pid = fork1();
+			if (pid == 0)
+			{
+				run_cmd(cmd, args);
+				exit(0);
+			}
+			else if (pid > 0)
+			{
+				waitpid(pid, NULL, 0);
+			}
+			else
+			{
+				perror("fork");
+				exit(EXIT_FAILURE);
+			}
 		}
 	}
 	return (0);
@@ -182,7 +191,8 @@ int	main(int argc, char **argv, char **envp)
 	// 	return (exit_status);
 	// }
 	exit_status = loop_result(&shell_context);
-	rl_clear_history();
+	// rl_clear_history(); //idk why mac arue for it
+	clear_history();
 	free_envp (&shell_context);
 	return (exit_status);
 }

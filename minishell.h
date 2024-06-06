@@ -6,11 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/06/03 15:05:51 by sabdulki         ###   ########.fr       */
-=======
-/*   Updated: 2024/06/05 18:43:41 by sabdulki         ###   ########.fr       */
->>>>>>> 40942bf9bb7a78f7a044fc1f3ee30c2a21ca7e04
+/*   Updated: 2024/06/06 17:06:15 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +29,7 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <sys/wait.h>
+# include <string.h>
 
 # define MALLOC_ERROR 69
 # define SYNTAX_ERR 2
@@ -98,8 +95,9 @@ typedef enum token_type
 /*Errors and free*/
 int cd_cmd(t_execcmd *ecmd, t_args *params);
 int echo_cmd(t_execcmd *ecmd);
-int pwd_cmd(t_execcmd *ecmd);
+int pwd_cmd(t_execcmd *ecmd, t_args *params);
 int export_cmd(t_execcmd *ecmd, t_args *params);
+int env_cmd(t_execcmd *ecmd, t_args *params);
 
 t_cmd		*nulterminate(t_cmd *cmd);
 int			valid_input(char *work_line);
@@ -131,8 +129,11 @@ int			is_symbol(char c);
 void	write_new_promt(void);
 int update_oldpwd(t_execcmd *ecmd, t_args *params, char *tmp_path);
 int update_pwd(t_execcmd *ecmd, t_args *params, char *tmp_path);
-char	*find_env_var(char **envp, char *var);
+char *find_env_var(char **envp, char *var);
+int find_env_index(char **envp, char *var);
 void update_envp_var(char dest[1024], char *src);
+int check_if_single_builtin(t_cmd *cmd);
+int run_single_builtin(t_cmd *cmd, t_args *params);
 
 void PrintTree(t_cmd	*cmd);
 #endif

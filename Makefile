@@ -6,8 +6,8 @@
 NAME = minishell
 CC = cc --debug -Wall -Wextra -Werror
 CFLAGS = -I/usr/local/opt/readline/include
-LDFLAGS = -L/usr/local/opt/readline/lib -lreadline
-
+LDFLAGS = -I/usr/local/include -L/usr/local/lib -lreadline  
+# -L/usr/local/opt/readline/lib -lreadline
 SRC = 	main.c \
 		errors.c \
 		free_memory.c \
@@ -26,6 +26,7 @@ SRC = 	main.c \
 		exec/echo.c \
 		exec/pwd.c \
 		exec/export.c \
+		exec/env.c \
 
 OBJ = $(SRC:.c=.o)
 

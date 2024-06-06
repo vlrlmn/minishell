@@ -5,7 +5,8 @@
         "libft.h": "c",
         "sysexits.h": "c",
         "__config": "c",
-        "algorithm": "c"
-        // "random": "c"
+        "algorithm": "c",
+        "__locale": "c",
+        "cstring": "c"
     }
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:48:27 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/05/27 15:55:51 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/06 18:25:05 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int export_cmd(t_execcmd *ecmd, t_args *params)
 {
     char *equal_sign;
 
-    if(ecmd->argv[1])
+    if (ecmd->argv[1])
     {
         equal_sign = ft_strchr(ecmd->argv[1], '=');
         if (equal_sign)
