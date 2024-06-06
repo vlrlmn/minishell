@@ -18,6 +18,7 @@ SRC = 	main.c \
 		parsing/parsing_utils.c \
 		parsing/parse_redir.c \
 		parsing/fill_tree.c \
+		parsing/lexer.c \
 		exec/exec_utils.c \
 		exec/run_cmd.c \
 		exec/exec_path_cmd.c \

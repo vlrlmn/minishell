@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/04 19:41:38 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/06 17:38:00 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,14 +96,14 @@ int cd_cmd(t_execcmd *ecmd);
 int echo_cmd(t_execcmd *ecmd);
 int pwd_cmd(t_execcmd *ecmd);
 int export_cmd(t_execcmd *ecmd, t_args *params);
-
+void		lexical_analysis(cmd, args);
 t_cmd		*nulterminate(t_cmd *cmd);
 int			valid_input(char *work_line);
 int			fork1(void);
-void free_split(char **arr);
+void			free_split(char **arr);
 void			run_cmd(t_cmd *cmd, t_args *params);
-int run_buildin(t_execcmd	*ecmd, t_args *params);
-char *find_command_path(char *cmd, char *path);
+int				run_buildin(t_execcmd	*ecmd, t_args *params);
+char			*find_command_path(char *cmd, char *path);
 int			gettoken(char **ps, char *es, char **q, char **eq);
 void		exit_with_err(char *msg);
 int			peek(char **ps, char *es, char *toks);
@@ -116,10 +116,7 @@ t_cmd		*parse(t_args *args);
 void		panic_and_free_env(t_args *args, int index);
 void		exit_with_syntax_err(t_args *args, int err_code);
 void		exit_with_malloc_error(int err_code);
-void		free_environment(t_args *shell_context);
-void		free_line_tokens(char **line_tokens);
 int			is_delimiter(char c);
-
 int			ft_isalnum(int c);
 int			is_symbol(char c);
 
