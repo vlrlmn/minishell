@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:39:06 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/06 16:55:20 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/06 20:40:23 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,17 +87,18 @@ int cd_cmd(t_execcmd *ecmd, t_args *params)
     return (0);
 }
 
-// void update_envp_var(char flag, char *src)
+// void update_envp_var(t_args *params, char *env_var, char *new_oldpwd_content)
 // {
-//     char res_str[1024];
-//     char dest[1024];
-//         if (flag == 'p')
-//             dest = "PWD";
-//     else if (flag == 'o')
-//         cha
-//     ft_strlcat(dest, src, sizeof(dest));
-//     ft_strlcpy(res_str, dest, sizeof(dest));
-//     putenv(res_str);
+//     char    *oldpwd;
+//     int     index;
+
+//     oldpwd = ft_strjoin("PWD=", ft_strdup(new_oldpwd_content));
+//     if (!oldpwd)
+//         return (1);
+//     index = find_env_index(params->envp, "PWD");
+//     free(params->envp[index]);
+//     params->envp[index] = oldpwd;
+//     return (0);
 // }
 
 int update_oldpwd(t_execcmd *ecmd, t_args *params, char *new_oldpwd_content)
@@ -113,23 +114,6 @@ int update_oldpwd(t_execcmd *ecmd, t_args *params, char *new_oldpwd_content)
     free(params->envp[index]);
     params->envp[index] = oldpwd;
     return (0);
-    
-    // char    *oldpwd_env_var;
-    // int     len;
-
-    // (void)ecmd;
-    
-    // oldpwd_env_var = find_env_var(params->envp, "OLDPWD");
-    // if (!oldpwd_env_var)
-    //     return(printf("No oldpwd in env vars!\n"), 1);
-    // printf("oldpwd beforre updating: %s\n", oldpwd_env_var);
-    // len = ft_strlen(oldpwd_env_var);
-    // oldpwd_env_var = ft_memset(oldpwd_env_var, 0, len);
-    // // oldpwd_env_var = 
-    // ft_strlcpy(oldpwd_env_var, tmp_path, ft_strlen(tmp_path) + 1);
-    // // установить в params->envp новое значение для pwd
-    // printf("updated oldpwd: %s\n", oldpwd_env_var);
-    // return (0);
 }
 
 int update_pwd(t_execcmd *ecmd, t_args *params, char *new_pwd_content)
@@ -178,12 +162,7 @@ int find_env_index(char **envp, char *var)
 	while (envp[i])
 	{
 		if (ft_strncmp(envp[i], dest, len) == 0)
-		{
-			// res = envp[i] + (len + 1);
-			// res = envp[i];
-			// break ;
             return (i);
-		}
 		i++;
 	}
     printf("No such variable\n");

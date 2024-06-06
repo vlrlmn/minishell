@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/06 17:06:15 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/06 20:08:06 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,8 @@ int find_env_index(char **envp, char *var);
 void update_envp_var(char dest[1024], char *src);
 int check_if_single_builtin(t_cmd *cmd);
 int run_single_builtin(t_cmd *cmd, t_args *params);
+int add_cmd(t_args *params, char *new_env_var);
+
 
 void PrintTree(t_cmd	*cmd);
 #endif
