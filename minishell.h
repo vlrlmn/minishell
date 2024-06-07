@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/07 13:19:55 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/07 13:37:47 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 
 typedef struct s_args
 {
-	char	*input;
+	char	*input; 
 	char	**envp;
 }			t_args;
 
