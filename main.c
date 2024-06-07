@@ -6,9 +6,10 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/07 13:35:54 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/07 13:53:06 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "minishell.h"
 
@@ -17,10 +18,15 @@ void	handle_sigint(int sig)
 	if (sig == SIGINT)
 	{
 		write(STDERR_FILENO, "\n", 1);
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
+		write_new_promt();
 	}
+}
+
+void	write_new_promt(void)
+{
+	// rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
 }
 
 void PrintTree(t_cmd	*cmd)
@@ -103,6 +109,11 @@ int	loop_result(t_args *args)
 			write(STDOUT_FILENO, "exit\n", 5);
 			break ;
 		}
+		// if (!ft_strncmp(args->input, "\n", 2))
+		// {
+		// 	write_new_promt();
+		// 	break;
+		// }
 		if (!valid_input(args->input))
 		{
 			free_envp(args);
@@ -111,23 +122,36 @@ int	loop_result(t_args *args)
 		printf("input: %s\n", args->input);
 		add_history(args->input);
 		cmd = parse(args);
-			printf("\n--------- parse0 -----------\n");
-			PrintTree(cmd);
-			printf("-----------------------------\n");
-		pid_t pid = fork1();
-		if (pid == 0)
+			// printf("--------- parse0 -----------\n");
+			// PrintTree(cmd);
+			// printf("-----------------------------\n");
+		// cmd->params = args;
+			// printf("--------- parse -----------\n");
+			// PrintTree(cmd);
+			// printf("----------------------------\n");
+		if (check_if_single_builtin(cmd))
 		{
-			run_cmd(cmd, args);
-			exit(0);
-		}
-		else if (pid > 0)
-		{
-			waitpid(pid, NULL, 0);
+			// printf("\tsingle builtin!\n");
+			run_single_builtin(cmd, args);
 		}
 		else
 		{
-			perror("fork");
-			exit(EXIT_FAILURE);
+			printf("\ti'm going to create child proc!\n");
+			pid_t pid = fork1();
+			if (pid == 0)
+			{
+				run_cmd(cmd, args);
+				exit(0);
+			}
+			else if (pid > 0)
+			{
+				waitpid(pid, NULL, 0);
+			}
+			else
+			{
+				perror("fork");
+				exit(EXIT_FAILURE);
+			}
 		}
 	}
 	return (0);
@@ -178,7 +202,19 @@ int	main(int argc, char **argv, char **envp)
 		return (exit_status);
 	}
 	exit_status = loop_result(&shell_context);
-	rl_clear_history();
+	// rl_clear_history(); //idk why mac arue for it
+	clear_history();
 	free_envp (&shell_context);
 	return (exit_status);
 }
+
+/*
+
+about signals
+1) should ctrl+c clear all memory or returning promt is enough? should there be ^C after pressing this cmd?
+2) if 'return' pressed, should it quit? errno = 2
+3) ctrl D -> "exit" str in the promt, not on the new line
+
+*/
+
+//HELLO//

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_buildin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:53:53 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/05/27 17:36:52 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/06 21:35:58 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,23 +17,23 @@ int run_buildin(t_execcmd *ecmd, t_args *params)
     int status;
 
     status = -1;
-    if(ft_strncmp(ecmd->argv[0], "cd", 2) == 0)
-        status = cd_cmd(ecmd);
-    else if(ft_strncmp(ecmd->argv[0], "exit", 4) == 0)
+    if (ft_strncmp(ecmd->argv[0], "cd", 2) == 0)
+        status = cd_cmd(ecmd, params); //DEBUG
+    else if (ft_strncmp(ecmd->argv[0], "exit", 4) == 0)
     {
         free_envp(params);
         exit(0);
     }
     else if (ft_strncmp(ecmd->argv[0], "echo", 4) == 0)
         status = echo_cmd(ecmd);
-    else if(ft_strncmp(ecmd->argv[0], "pwd", 3) == 0)
-        status = pwd_cmd(ecmd);
-    else if(ft_strncmp(ecmd->argv[0], "export", 6) == 0)
+    else if (ft_strncmp(ecmd->argv[0], "pwd", 3) == 0)
+        status = pwd_cmd(ecmd, params);
+    else if (ft_strncmp(ecmd->argv[0], "export", 6) == 0)
         status = export_cmd(ecmd, params);
-    // else if (ft_strncmp(ecmd->argv[0], "unset", 5) == 0)
-    //     status = unset_cmd(); //TO_DO
-    // else if(ft_strncmp(ecmd->argv[0], "env", 3) == 0)
-    //     status = env_cmd(); //TO_DO
+    else if (ft_strncmp(ecmd->argv[0], "env", 3) == 0)
+        status = env_cmd(ecmd, params);
+    else if (ft_strncmp(ecmd->argv[0], "unset", 5) == 0)
+        status = unset_cmd(ecmd, params);
     //THIS PART IS COMMENTED BECAUSE FUNCTIONS UNSET AND ENV AREN'T WRITTED //
     return(status);
 }

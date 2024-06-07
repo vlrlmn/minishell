@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/07 13:37:47 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/07 13:54:20 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@
 # include <termios.h>
 # include <unistd.h>
 # include <fcntl.h>
+# include <sys/wait.h>
+# include <string.h>
 
 # define MALLOC_ERROR 69
 # define SYNTAX_ERR 2
@@ -92,11 +94,13 @@ typedef enum token_type
 }			t_type;
 
 /*Errors and free*/
-int cd_cmd(t_execcmd *ecmd);
+int cd_cmd(t_execcmd *ecmd, t_args *params);
 int echo_cmd(t_execcmd *ecmd);
-int pwd_cmd(t_execcmd *ecmd);
+int pwd_cmd(t_execcmd *ecmd, t_args *params);
 int export_cmd(t_execcmd *ecmd, t_args *params);
-void		lexical_analysis(t_cmd *cmd, t_args *args);
+void		lexical_analysis(t_cmd *cmd, t_args *args);int	unset_cmd(t_execcmd *ecmd, t_args *params);
+int env_cmd(t_execcmd *ecmd, t_args *params);
+
 t_cmd		*nulterminate(t_cmd *cmd);
 int			valid_input(char *work_line);
 int			fork1(void);
@@ -119,6 +123,19 @@ void		exit_with_malloc_error(int err_code);
 int			is_delimiter(char c);
 int			ft_isalnum(int c);
 int			is_symbol(char c);
+
+/* sofa */
+void	write_new_promt(void);
+int update_oldpwd(t_execcmd *ecmd, t_args *params, char *tmp_path);
+int update_pwd(t_execcmd *ecmd, t_args *params, char *tmp_path);
+char *find_env_var(char **envp, char *var);
+int find_env_index(char **envp, char *var);
+void update_envp_var(char dest[1024], char *src);
+int check_if_single_builtin(t_cmd *cmd);
+int run_single_builtin(t_cmd *cmd, t_args *params);
+int add_cmd(t_args *params, char *new_env_var);
+int	remove_cmd(t_args *params, char *env_var_to_remove);
+
 
 void PrintTree(t_cmd	*cmd);
 #endif

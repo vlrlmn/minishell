@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:26:37 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/07 13:39:13 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/07 13:51:10 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,12 +119,17 @@ void	run_exec(t_cmd *cmd, t_args *params)
 		exit(127);
 	if (is_buildin(ecmd->argv[0]))
 	{
-		fprintf(stderr, "Running command: %s\n", ecmd->argv[0]); // Debug message
-		builtin_status = run_buildin(ecmd, params);
+		builtin_status = run_single_builtin(cmd, params);
 		if (builtin_status == 0)
 			exit (0);
 		else if (builtin_status == 1)
 			exit_with_err("Command not executed\n");
+		// fprintf(stderr, "Running command: %s\n", ecmd->argv[0]); // Debug message
+		// builtin_status = run_buildin(ecmd, params);
+		// if (builtin_status == 0)
+		// 	exit (0);
+		// else if (builtin_status == 1)
+		// 	exit_with_err("Command not executed\n");
 		fprintf(stderr, "STATUS %d\n", builtin_status);
 	}
 	else
@@ -180,3 +185,24 @@ void run_cmd(t_cmd *cmd, t_args *params)
     }
 }
 
+int check_if_single_builtin(t_cmd *cmd)
+{
+	t_execcmd	*ecmd;
+
+	ecmd = (t_execcmd *)cmd;
+	if (ecmd->argv[0] == 0)
+		exit(127);
+	// or better if (ecmd->type != EXEC && ecmd->type != Redir && is_buildin(ecmd->argv[0]))
+	return (ecmd->type == EXEC && is_buildin(ecmd->argv[0]));
+}
+
+int run_single_builtin(t_cmd *cmd, t_args *params)
+{
+	t_execcmd	*ecmd;
+	int	builtin_status;
+
+	ecmd = (t_execcmd *)cmd;
+	fprintf(stderr, "Running command: %s\n", ecmd->argv[0]); // Debug message
+	builtin_status = run_buildin(ecmd, params);
+	return (builtin_status);
+}

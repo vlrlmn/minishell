@@ -4,10 +4,10 @@
 # 2. -I/usr/local/opt/readline/include -L/usr/local/opt/readline/lib -lreadline libraries for functions like rl_replace_line and rl_redisplay 
 
 NAME = minishell
-CC = cc --debug -Wall -Wextra -Werror
+CC = cc --debug -Wall -Wextra -Werror -g3
 CFLAGS = -I/usr/local/opt/readline/include
-LDFLAGS = -L/usr/local/opt/readline/lib -lreadline
-
+LDFLAGS = -I/usr/local/include -L/usr/local/lib -lreadline  
+# -L/usr/local/opt/readline/lib -lreadline
 SRC = 	main.c \
 		errors.c \
 		free_memory.c \
@@ -27,6 +27,8 @@ SRC = 	main.c \
 		exec/echo.c \
 		exec/pwd.c \
 		exec/export.c \
+		exec/env.c \
+		exec/unset.c \
 
 OBJ = $(SRC:.c=.o)
 
