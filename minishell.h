@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/06 17:38:00 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/07 13:18:22 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int cd_cmd(t_execcmd *ecmd);
 int echo_cmd(t_execcmd *ecmd);
 int pwd_cmd(t_execcmd *ecmd);
 int export_cmd(t_execcmd *ecmd, t_args *params);
-void		lexical_analysis(cmd, args);
+void		lexical_analysis(t_cmd *cmd, t_args *args);
 t_cmd		*nulterminate(t_cmd *cmd);
 int			valid_input(char *work_line);
 int			fork1(void);
