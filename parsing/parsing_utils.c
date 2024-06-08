@@ -6,60 +6,11 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:52:25 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/06 17:13:31 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/08 12:52:36 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void handle_special_tokens(char **s, int *token) 
-{
-    if (*token == '\0')
-        *token = '\0';
-    else if (*token == '|')
-        (*s)++;
-    else if (*token == '>')
-    {
-        (*s)++;
-        if (**s == '>') 
-        {
-            *token = '+';
-            (*s)++;
-        }
-    } 
-    else if (*token == '<') 
-    {
-        (*s)++;
-        if (**s == '<') 
-        {
-            *token = '-';
-            (*s)++;
-        }
-    } 
-    else
-        *token = 'a';
-}
-
-void skip_until_special_or_whitespace(char **s, char *es) 
-{
-    while (*s < es && !is_delimiter(**s) && !ft_strchr("<|>", **s)) 
-    {
-        if (**s == '\"') 
-        {
-            (*s)++;
-            while (*s < es && **s != '\"')
-                (*s)++;
-        } 
-        else if (**s == '\'') 
-        {
-            (*s)++;
-            while (*s < es && **s != '\'')
-                (*s)++;
-        }
-        if (*s < es)
-            (*s)++;
-    }
-}
 
 int gettoken(char **ps, char *es, char **q, char **eq)
 {
@@ -114,7 +65,7 @@ int gettoken(char **ps, char *es, char **q, char **eq)
     {
         (*ps)++;
         *q = *ps;
-        while(*ps < es && *ps != '\'')
+        while(*ps < es && **ps != '\'')
             (*ps)++;
         if (*ps >= es)
             return (0);

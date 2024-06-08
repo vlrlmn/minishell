@@ -6,44 +6,52 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 17:36:36 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/07 13:18:52 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/08 13:53:26 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
+#include "../minishell.h"
 
-void exec_lexer(t_cmd *cmd, t_args *args)
+void lexical_analysis(t_cmd *cmd, t_args *args);
+
+static void process_quotes_inplace(char *token)
 {
-    
 }
 
-void check_file()
+static void clean_quotes(t_cmd *cmd)
 {
+    t_execcmd *exec;
+    t_redir *rcmd;
+    t_pipe *pcmd;
+    int i;
 
-}
-
-void redir_lexer(t_cmd *cmd, t_args *args)
-{
-    t_redir *redircmd;
-
-    redircmd = (t_redir *)cmd;
-    if (redircmd->type == '-')
-        check_file(); // check if type is saved in parsing
-    lexical_analysis(redircmd->cmd, args);
-}
-
-void    lexical_analysis(t_cmd *cmd, t_args *args)
-{
-    t_pipe *pipecmd;
-    
-    if(cmd->type == PIPE)
+    if (cmd->type == EXEC)
     {
-        pipecmd = (t_pipe *)cmd;
-        lexical_analysis(pipecmd->left, args);
-        lexical_analysis(pipecmd->right, args);
+        exec = (t_execcmd *)cmd;
+        while (exec->argv[i])
+        {
+            process_quotes_inplace(exec->argv[i]);
+            i++;
+        }
     }
     else if (cmd->type == REDIR)
-        redir_lexer(cmd, args);
-    else if (cmd->type == EXEC)
-        exec_lexer(cmd, args);
+    {
+        rcmd = (t_redir *)cmd;
+        clean_quotes(rcmd->cmd);
+    }
+    else if (cmd->type == PIPE)
+    {
+        pcmd = (t_pipe *)cmd;
+        clean_quotes(pcmd->left);
+        clean_quotes(pcmd->right);
+    }
+}
+
+void lexical_analysis(t_cmd *cmd, t_args *args)
+{
+    (void)args; // args is not used in this function but might be needed for other purposes
+
+    if (cmd)
+        clean_quotes(cmd);
 }

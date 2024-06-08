@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:26:37 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/07 13:51:10 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/07 14:34:44 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	run_redir(t_cmd *cmd, t_args *params)
 	PrintTree(rcmd->cmd);
 	if (rcmd->type == '-')
 	{
-		exec_heredoc(); // TO_DO HEREDOC
+		// exec_heredoc(); // TO_DO HEREDOC
 	}
 	else
 	{

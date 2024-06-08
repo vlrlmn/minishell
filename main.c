@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/07 13:53:06 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/08 12:23:28 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,11 +109,6 @@ int	loop_result(t_args *args)
 			write(STDOUT_FILENO, "exit\n", 5);
 			break ;
 		}
-		// if (!ft_strncmp(args->input, "\n", 2))
-		// {
-		// 	write_new_promt();
-		// 	break;
-		// }
 		if (!valid_input(args->input))
 		{
 			free_envp(args);
@@ -122,21 +117,6 @@ int	loop_result(t_args *args)
 		printf("input: %s\n", args->input);
 		add_history(args->input);
 		cmd = parse(args);
-			// printf("--------- parse0 -----------\n");
-			// PrintTree(cmd);
-			// printf("-----------------------------\n");
-		// cmd->params = args;
-			// printf("--------- parse -----------\n");
-			// PrintTree(cmd);
-			// printf("----------------------------\n");
-		if (check_if_single_builtin(cmd))
-		{
-			// printf("\tsingle builtin!\n");
-			run_single_builtin(cmd, args);
-		}
-		else
-		{
-			printf("\ti'm going to create child proc!\n");
 			pid_t pid = fork1();
 			if (pid == 0)
 			{
@@ -152,10 +132,9 @@ int	loop_result(t_args *args)
 				perror("fork");
 				exit(EXIT_FAILURE);
 			}
-		}
 	}
 	return (0);
-}
+ }
 
 /*We need to create new environment argument and copy envp from main
 arguments because this is safe way to work with environment*/
