@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/07 13:54:20 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/09 14:35:44 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ typedef struct s_execmd
 	int		type;
 	char	*argv[MAXARGS];
 	char	*eargv[MAXARGS];
-	// char	**envp;
 }			t_execcmd;
 
 
@@ -62,7 +61,6 @@ typedef struct s_pipe
 	char	*eargv[MAXARGS];
 	t_cmd	*left;
 	t_cmd	*right;
-	// char	**envp;
 }			t_pipe;
 
 typedef struct s_redir
@@ -77,6 +75,19 @@ typedef struct s_redir
 	int		fd;
 }			t_redir;
 
+typedef struct s_node
+{
+	void	*data;
+	t_node	*next;
+}			t_node;
+
+typedef struct s_list
+{
+	t_node		*head;
+	t_node		*tail;
+}			t_list;
+
+
 typedef enum quotes_handler
 {
 	QUOTES_ERR,
@@ -85,6 +96,7 @@ typedef enum quotes_handler
 	SINGLE_Q,
 	DOUBLE_Q,
 }			t_quotes;
+
 
 typedef enum token_type
 {

@@ -6,20 +6,43 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 17:36:36 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/08 13:53:26 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/09 15:09:13 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-#include "../minishell.h"
 
-void lexical_analysis(t_cmd *cmd, t_args *args);
-
-static void process_quotes_inplace(char *token)
+int is_parse_symbol(char *s)
 {
+    return(ft_strchr(s, '\'') || ft_strchr(s, '\"') || ft_strchr(s, '~')
+            || ft_strchr(s, '$'));
 }
 
-static void clean_quotes(t_cmd *cmd)
+char *clean_line()
+{
+    
+}
+
+char *clean_cmd (char *line, t_args *args)
+{
+    t_list  args_list;
+    char    *res;
+    char *home_val;
+
+    args_list.head = NULL;
+    args_list.tail = NULL;
+    if (!ft_strchr(line, '~'))
+    {
+        home_val = get_env("PATH=", args->envp);
+        res = ft_strdup(home_val);
+        return (res);
+    }
+    res = clean_line(line, &args_list, args);
+    return(res);
+    
+}
+
+void lexical_analysis(t_cmd *cmd, t_args *args)
 {
     t_execcmd *exec;
     t_redir *rcmd;
@@ -31,27 +54,22 @@ static void clean_quotes(t_cmd *cmd)
         exec = (t_execcmd *)cmd;
         while (exec->argv[i])
         {
-            process_quotes_inplace(exec->argv[i]);
+            if (is_parse_symbol(exec->argv[i]))
+                exec->argv[i] = clean_cmd(exec->argv[i], args);
             i++;
         }
     }
     else if (cmd->type == REDIR)
     {
         rcmd = (t_redir *)cmd;
-        clean_quotes(rcmd->cmd);
+        if (rcmd->type == '-')
+            rcmd->file = clean_file(rcmd->file, args);
+        lexical_analysis(rcmd->cmd, args);
     }
     else if (cmd->type == PIPE)
     {
         pcmd = (t_pipe *)cmd;
-        clean_quotes(pcmd->left);
-        clean_quotes(pcmd->right);
+        lexical_analysis(pcmd->left, args);
+        lexical_analysis(pcmd->right, args);
     }
-}
-
-void lexical_analysis(t_cmd *cmd, t_args *args)
-{
-    (void)args; // args is not used in this function but might be needed for other purposes
-
-    if (cmd)
-        clean_quotes(cmd);
 }
