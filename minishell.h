@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/09 14:35:44 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/09 15:38:00 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,11 @@ void		exit_with_malloc_error(int err_code);
 int			is_delimiter(char c);
 int			ft_isalnum(int c);
 int			is_symbol(char c);
+int			is_parse_symbol(char *s);
+char		*clean_cmd (char *line, t_args *args);
+void add_node(t_list *list, char c);
+char *list_to_string(t_list *list);
+char process_node(t_list *list);
 
 /* sofa */
 void	write_new_promt(void);

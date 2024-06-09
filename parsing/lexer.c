@@ -6,41 +6,11 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 17:36:36 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/09 15:09:13 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/09 15:39:28 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-int is_parse_symbol(char *s)
-{
-    return(ft_strchr(s, '\'') || ft_strchr(s, '\"') || ft_strchr(s, '~')
-            || ft_strchr(s, '$'));
-}
-
-char *clean_line()
-{
-    
-}
-
-char *clean_cmd (char *line, t_args *args)
-{
-    t_list  args_list;
-    char    *res;
-    char *home_val;
-
-    args_list.head = NULL;
-    args_list.tail = NULL;
-    if (!ft_strchr(line, '~'))
-    {
-        home_val = get_env("PATH=", args->envp);
-        res = ft_strdup(home_val);
-        return (res);
-    }
-    res = clean_line(line, &args_list, args);
-    return(res);
-    
-}
 
 void lexical_analysis(t_cmd *cmd, t_args *args)
 {
