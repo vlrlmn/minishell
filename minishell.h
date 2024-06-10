@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/10 16:53:26 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/10 17:48:22 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ typedef struct s_execmd
 	char	*eargv[MAXARGS];
 }			t_execcmd;
 
-
 typedef struct s_pipe
 {
 	int		type;
@@ -77,17 +76,17 @@ typedef struct s_redir
 	int		fd;
 }			t_redir;
 
-typedef struct s_node
+typedef struct s_lexem_node
 {
-	void	*data;
-	t_node	*next;
-}			t_node;
+	void			*data;
+	struct t_lexem_node	*next;
+}			t_lexem_node;
 
-typedef struct s_list
+typedef struct s_lexems
 {
-	t_node		*head;
-	t_node		*tail;
-}			t_list;
+	struct t_lexem_node		*head;
+	struct t_lexem_node		*tail;
+}			t_lexems;
 
 
 typedef enum quotes_handler
@@ -112,7 +111,15 @@ int cd_cmd(t_execcmd *ecmd, t_args *params);
 int echo_cmd(t_execcmd *ecmd);
 int pwd_cmd(t_execcmd *ecmd, t_args *params);
 int export_cmd(t_execcmd *ecmd, t_args *params);
-void		lexical_analysis(t_cmd *cmd, t_args *args);int	unset_cmd(t_execcmd *ecmd, t_args *params);
+void		lexical_analysis(t_cmd *cmd, t_args *args);
+int	unset_cmd(t_execcmd *ecmd, t_args *params);
+
+/*LEXER*/
+void parse_double_quote(int *i, char *line, t_lexems *list, t_args *args);
+void parse_quote(char *line, int *i, t_lexems *list);
+void parse_expander_sign(int *i, char *line, t_lexems *list, t_args *args);
+void parse_expander(int *i, t_lexems *list, char *line, t_args *args);
+
 int env_cmd(t_execcmd *ecmd, t_args *params);
 char	*get_env(char *path, char **envp);
 t_cmd		*nulterminate(t_cmd *cmd);
@@ -136,13 +143,12 @@ void		exit_with_syntax_err(t_args *args, int err_code);
 void		exit_with_malloc_error(int err_code);
 int			is_delimiter(char c);
 int			ft_isalnum(int c);
-int			is_symbol(char c);
-int			is_parse_symbol(char *s);
+int			has_parse_symbol(char *s);
 char		*clean_cmd (char *line, t_args *args);
-void		add_char_node(t_list *list, char c);
-void		add_str_node(t_list *list, char *str);
-char *list_to_string(t_list *list);
-char process_node(t_list *list);
+void		add_char_node(t_lexems *list, char c);
+void		add_str_node(t_lexems *list, char *str);
+char		*list_to_string(t_lexems *list);
+char		process_node(t_lexems *list);
 
 /* sofa */
 void	write_new_promt(void);

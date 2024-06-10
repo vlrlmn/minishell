@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/10 14:43:44 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/10 17:41:35 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,7 +183,7 @@ int	main(int argc, char **argv, char **envp)
 		return (exit_status);
 	}
 	exit_status = loop_result(&shell_context);
-	// rl_clear_history(); //idk why mac arue for it
+	rl_clear_history();
 	clear_history();
 	free_envp (&shell_context);
 	return (exit_status);

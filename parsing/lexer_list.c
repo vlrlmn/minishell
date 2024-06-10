@@ -6,16 +6,16 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 15:36:42 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/10 16:52:56 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/10 17:40:25 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char process_node(t_list *list)
+char process_node(t_lexems *list)
 {
     char res;
-    t_node *tmp;
+    t_lexem_node *tmp;
 
     tmp = list->head;
     list->head = list->head->next;
@@ -24,9 +24,9 @@ char process_node(t_list *list)
     return(res);
 }
 
-char *list_to_string(t_list *list)
+char *list_to_string(t_lexems *list)
 {
-    t_node *tmp;
+    t_lexem_node *tmp;
 
     char *str;
     int i;
@@ -48,11 +48,11 @@ char *list_to_string(t_list *list)
     return (str);
 }
 
-void add_char_node(t_list *list, char c)
+void add_char_node(t_lexems *list, char c)
 {
-    t_node *new;
+    t_lexem_node *new;
 
-    new = (t_node *)malloc(sizeof(t_node));
+    new = (t_lexem_node *)malloc(sizeof(t_lexem_node));
     if (!new)
         return ;
     new->data = c;
@@ -69,7 +69,7 @@ void add_char_node(t_list *list, char c)
     }
 }
 
-void add_str_node(t_list *list, char *str)
+void add_str_node(t_lexems *list, char *str)
 {
     int i;
 

@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 16:40:12 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/09 15:21:48 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/10 17:33:31 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,7 @@ int	ft_isalnum(int c)
 			(c >= '0' && c <= '9'));
 }
 
-int	is_symbol(char c)
-{
-	return (c == '>' || c == '<' || c == '|' || c == '$');
-}
-
-int is_parse_symbol(char *s)
+int has_parse_symbol(char *s)
 {
     return(ft_strchr(s, '\'') || ft_strchr(s, '\"') || ft_strchr(s, '~')
             || ft_strchr(s, '$'));
