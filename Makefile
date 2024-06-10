@@ -28,6 +28,7 @@ SRC = 	main.c \
 		exec/export.c \
 		exec/env.c \
 		exec/unset.c \
+		exec/utils_env.c \
 
 OBJ = $(SRC:.c=.o)
 

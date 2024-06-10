@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:53:53 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/06 21:35:58 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/10 15:25:43 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,5 @@ int run_buildin(t_execcmd *ecmd, t_args *params)
         status = env_cmd(ecmd, params);
     else if (ft_strncmp(ecmd->argv[0], "unset", 5) == 0)
         status = unset_cmd(ecmd, params);
-    //THIS PART IS COMMENTED BECAUSE FUNCTIONS UNSET AND ENV AREN'T WRITTED //
     return(status);
 }

@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/06 21:08:55 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/10 17:03:47 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,11 +128,9 @@ int			is_symbol(char c);
 
 /* sofa */
 void	write_new_promt(void);
-int update_oldpwd(t_execcmd *ecmd, t_args *params, char *tmp_path);
-int update_pwd(t_execcmd *ecmd, t_args *params, char *tmp_path);
 char *find_env_var(char **envp, char *var);
 int find_env_index(char **envp, char *var);
-void update_envp_var(char dest[1024], char *src);
+int update_envp_var(t_args *params, char *env_var, char *new_content);
 int check_if_single_builtin(t_cmd *cmd);
 int run_single_builtin(t_cmd *cmd, t_args *params);
 int add_cmd(t_args *params, char *new_env_var);
