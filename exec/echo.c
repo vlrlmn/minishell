@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:18:22 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/06 19:49:46 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/10 20:36:15 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ int echo_cmd(t_execcmd *ecmd)
         n_flag = 1;
         i = 2;
     }
-    while(ecmd->argv[i])
+    while (ecmd->argv[i])
     {
-        if ((n_flag && i > 2) || i > 1)
+        if ((i > 1 && !n_flag) || (i > 2 && n_flag))
             printf(" ");
         printf("%s", ecmd->argv[i]);
         i++;
