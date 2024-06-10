@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 15:23:28 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/10 17:08:50 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/10 17:25:13 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void parse_quote(char *line, int *i, t_list *list)
     }
 }
 
-void parse_expander_in_quotes(int *i, char *line, t_list *list, t_args *args)
+void parse_expander_sign(int *i, char *line, t_list *list, t_args *args)
 {
     char *env_var;
     char *work_line;
@@ -51,7 +51,7 @@ void parse_expander_in_quotes(int *i, char *line, t_list *list, t_args *args)
 
 void parse_double_quote(int *i, char *line, t_list *list, t_args *args)
 {
-    char *exit_num;
+    char *exit_str;
 
     (*i)++;
     while(line[*i] && line[*i] != '\"')
@@ -63,13 +63,13 @@ void parse_double_quote(int *i, char *line, t_list *list, t_args *args)
         }
         else if (line[*i] == '$' && line[*i + 1] =='?')
         {
-            exit_num = ft_itoa(line[*i + 1]);
+            exit_str = ft_itoa(line[*i + 1]);
             add_str_node(list, exit_status);
-            free(exit_num);
+            free(exit_str);
             (*i) += 2;
         }
         else if (line[*i] == '$')
-            parse_expander_in_quotes(i, line, list, args);
+            parse_expander_sign(i, line, list, args);
         else
         {
             add_char_node(list, line[*i]);
@@ -78,16 +78,33 @@ void parse_double_quote(int *i, char *line, t_list *list, t_args *args)
     }
 }
 
-void parse_expander(int *index, t_list *list, char *line, t_args *args)
+void parse_expander(int *i, t_list *list, char *line, t_args *args)
 {
-    
+    int j;
+    char *exit_str;
+
+    j = 0;
+    (*i)++;
+    if(!line[*i] || is_delimiter(line[*i]))
+    {
+        add_char_node(list, '$');
+        return ;
+    }
+    else if (line[*i] == '?')
+    {
+        exit_str = ft_itoa(exit_status);
+        add_str_node(list, exit_str);
+        free(exit_str);
+        (*i)++;
+    }
+    else
+        parse_expander_sign(i, line, list, args);
 }
 
 char *clean_line(char *line, t_list *list, t_args *args)
 {
     char *res;
     int i;
-    int index;
 
     i = 0;
     while(line[i])
@@ -97,7 +114,7 @@ char *clean_line(char *line, t_list *list, t_args *args)
         else if (line[i] == '\"')
             parse_double_quote(&i, line, list, args);
         else if (line[i] == '$')
-            parse_expander(&i, list, line, args);
+            parse_expander_sign(&i, list, line, args);
         else
         {
             add_node(list, line[i]);
@@ -118,7 +135,7 @@ char *clean_cmd (char *line, t_args *args)
     args_list.tail = NULL;
     if (!ft_strchr(line, '~'))
     {
-        home_val = get_env("PATH=", args->envp);
+        home_val = get_env("HOME", args->envp);
         res = ft_strdup(home_val);
         return (res);
     }
