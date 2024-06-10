@@ -6,18 +6,46 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 15:23:28 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/09 15:39:18 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/10 14:26:49 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void parse_quote()
+void parse_quote(char *line, int *i, t_list *list)
 {
-
+    (*i)++;
+    while(line[*i] && line[*i] != '\'')
+    {
+        add_node(list, line[*i]);
+        (*i)++;
+    }
 }
 
-void parse_dollar()
+void parse_double_quote(int *i, char *line, t_list *list, t_args *args)
+{
+    (*i)++;
+
+    while(line[*i] && line[*i] != '\"')
+    {
+        if (line[*i] == '$' && is_delimiter(line[*i + 1]) || line[*i + 1] == '\"')
+        {
+            add_node(list, '$');
+            (*i)++;
+        }
+        else if (line[*i] == '$' && line[*i + 1] =='?')
+            parse_exit_status();
+        else if (line[*i] == '$')
+            parse_expander(i, line, list, args);
+        else
+        {
+            add_node(list, line[*i]);
+            (*i)++;
+        }
+    }
+}
+
+void parse_dollar(int *index, t_list *list, char *line, t_args *args)
 {
 
 }
@@ -33,6 +61,8 @@ char *clean_line(char *line, t_list *list, t_args *args)
     {
         if (line[i] == '\'')
             parse_quote(line, &i, list);
+        else if (line[i] == '\"')
+            parse_double_quote(&i, line, list, args);
         else if (line[i] == '$')
             parse_dollar(&i, list, line, args);
         else
