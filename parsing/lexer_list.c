@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 15:36:42 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/09 15:38:53 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/10 16:52:56 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char *list_to_string(t_list *list)
     return (str);
 }
 
-void add_node(t_list *list, char c)
+void add_char_node(t_list *list, char c)
 {
     t_node *new;
 
@@ -66,5 +66,17 @@ void add_node(t_list *list, char c)
     {
         list->tail->next = new;
         list->tail = new;
+    }
+}
+
+void add_str_node(t_list *list, char *str)
+{
+    int i;
+
+    i = 0;
+    while(str[i])
+    {
+        add_node(list, str[i]);
+        i++;
     }
 }

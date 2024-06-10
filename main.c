@@ -6,12 +6,14 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/08 12:23:28 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/10 14:43:44 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "minishell.h"
+
+int exit_status = 0;
 
 void	handle_sigint(int sig)
 {

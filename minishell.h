@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/09 15:38:00 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/10 16:53:26 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@
 # define MALLOC_ERROR 69
 # define SYNTAX_ERR 2
 # define MAXARGS 1024
+
+extern int exit_status; // CHECK IF IT IS CORRECT OR NO
 
 typedef struct s_args
 {
@@ -112,7 +114,7 @@ int pwd_cmd(t_execcmd *ecmd, t_args *params);
 int export_cmd(t_execcmd *ecmd, t_args *params);
 void		lexical_analysis(t_cmd *cmd, t_args *args);int	unset_cmd(t_execcmd *ecmd, t_args *params);
 int env_cmd(t_execcmd *ecmd, t_args *params);
-
+char	*get_env(char *path, char **envp);
 t_cmd		*nulterminate(t_cmd *cmd);
 int			valid_input(char *work_line);
 int			fork1(void);
@@ -137,7 +139,8 @@ int			ft_isalnum(int c);
 int			is_symbol(char c);
 int			is_parse_symbol(char *s);
 char		*clean_cmd (char *line, t_args *args);
-void add_node(t_list *list, char c);
+void		add_char_node(t_list *list, char c);
+void		add_str_node(t_list *list, char *str);
 char *list_to_string(t_list *list);
 char process_node(t_list *list);
 
