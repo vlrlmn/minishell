@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:05:31 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/10 17:06:39 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/10 20:02:29 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,14 @@
 
 int update_envp_var(t_args *params, char *env_var, char *new_content)
 {
-    char    *var_content;
+	char	*full_var;
     int     index;
 
     index = find_env_index(params->envp, env_var);
-    ft_strlcat(env_var, "=", sizeof(env_var));
-    var_content = ft_strjoin(env_var, ft_strdup(new_content));
-    if (!var_content)
-        return (1);
-    free(params->envp[index]);
-    params->envp[index] = var_content;
+	full_var = ft_strjoin(env_var, "=");
+	full_var = ft_strjoin(full_var, new_content);	
+	free(params->envp[index]);
+    params->envp[index] = full_var;
     return (0);
 }
 

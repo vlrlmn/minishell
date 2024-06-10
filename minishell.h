@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/10 17:03:47 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/10 18:57:22 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,8 @@ int check_if_single_builtin(t_cmd *cmd);
 int run_single_builtin(t_cmd *cmd, t_args *params);
 int add_cmd(t_args *params, char *new_env_var);
 int	remove_cmd(t_args *params, char *env_var_to_remove);
+char    *get_str_after_equals(char *str);
+char    *get_str_before_equals(const char *str);
 
 
 void PrintTree(t_cmd	*cmd);
