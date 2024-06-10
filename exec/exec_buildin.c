@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:53:53 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/10 17:14:12 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/10 20:29:17 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int run_buildin(t_execcmd *ecmd, t_args *params)
     int i = 0;
     while(ecmd->argv[i])
     {
-        printf("%s\n", ecmd->argv[i]);
+        printf("%d arg: %s\n", i, ecmd->argv[i]);
         i++;
     }
     if (ft_strncmp(ecmd->argv[0], "cd", 2) == 0)
