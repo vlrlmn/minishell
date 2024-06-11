@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:52:25 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/08 12:52:36 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/11 15:08:43 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,5 +88,12 @@ int	peek(char **ps, char *es, char *toks)
 	while (s < es && is_delimiter(*s))
 		s++;
 	*ps = s;
-	return (*s && ft_strchr(toks, *s));
+    /* After the loop, *ps is updated to point to the current position of s. 
+    This modifies the original ps pointer in the calling function to reflect the new position, past any leading delimiters.
+    */
+	return (*s && ft_strchr(toks, *s)); //Checks if the current character is a valid token
+    /* The function returns the result of the logical AND between these two conditions. 
+    If both are true (i.e., *s is not '\0' and *s is in toks), the function returns a non-zero value (true). 
+    Otherwise, it returns zero (false). */
 }
+

@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:05:31 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/10 20:02:29 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/11 15:59:16 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ char    *find_env_var(char **envp, char *var)
 		{
 			res = envp[i] + (len + 1);
 			// res = envp[i];
-            return (res);
+			// maybe dould add substr to allocate memory for this substring
+			return (ft_strdup(res));
 		}
 		i++;
 	}

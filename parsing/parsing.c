@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:27:36 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/11 14:55:41 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/11 15:25:26 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,16 @@ t_cmd	*parseexec(char **ps, char *es)
 	cmd = execcmd();
 	exec = (t_execcmd *)cmd;
 	cmd = parseredir(cmd, ps, es);
-    while(!peek(ps, es, "|"))
+    while (!peek(ps, es, "|"))
     {
-        if((tok=gettoken(ps, es, &q, &eq)) == 0)
+        if ((tok = gettoken(ps, es, &q, &eq)) == 0)
             break;
-        if(tok != 'a')
+        if (tok != 'a')
             printf("syntax");
         exec->argv[argc] = q;
         exec->eargv[argc] = eq;
         argc++;
-        if(argc >= MAXARGS)
+        if (argc >= MAXARGS)
             printf("too many args");
         cmd = parseredir(cmd, ps, es);
     }
@@ -57,7 +57,7 @@ advancing it as needed during parsing */
 t_cmd	*parsepipe(char **ps, char *es)
 {
 	t_cmd	*cmd;
-    char *q, *eq;
+	char *q, *eq;
 
 	cmd = parseexec(ps, es);
 	if (peek(ps, es, "|"))
@@ -84,7 +84,7 @@ t_cmd	*parse(t_args *args)
         if (ps != es)
             exit_with_err("Syntax err\n");
     }
-	while(args->input < es && is_delimiter(*args->input))
+	while (args->input < es && is_delimiter(*args->input))
 		args->input++;
 	nulterminate(cmd);
 	lexical_analysis(cmd, args);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_expander.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:34:57 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/11 12:31:38 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/11 16:00:00 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,14 @@ void parse_expander_sign(int *i, char *line, t_lexems *list, t_args *args)
         k = work_line[j] - '0';
         env_var = ft_itoa(k);
     }
-    while(work_line[j] && (ft_isalnum(work_line[j])))
+    while (work_line[j] && (ft_isalnum(work_line[j])))
         j++;
     env_var = ft_substr(work_line, 0, j);
-    var_name = get_env(env_var, args->envp);
+    // var_name = get_env(env_var, args->envp);
+    var_name = find_env_var(args->envp, env_var);
+    if (!var_name)
+        return ;
+    printf("exp: %s\n", var_name);
     if (var_name)
         add_str_node(list, var_name);
     (*i) += ft_strlen(var_name);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 17:36:36 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/11 13:58:29 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/11 15:29:08 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char *clean_line(char *line, t_lexems *list, t_args *args)
     return (res);
 }
 
-char *clean_cmd (char *line, t_args *args)
+char *clean_cmd(char *line, t_args *args)
 {
     t_lexems  args_list;
     char    *res;
