@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/10 17:48:22 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/11 12:26:40 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,13 +79,13 @@ typedef struct s_redir
 typedef struct s_lexem_node
 {
 	void			*data;
-	struct t_lexem_node	*next;
+	struct s_lexem_node	*next;
 }			t_lexem_node;
 
 typedef struct s_lexems
 {
-	struct t_lexem_node		*head;
-	struct t_lexem_node		*tail;
+	t_lexem_node		*head;
+	t_lexem_node		*tail;
 }			t_lexems;
 
 
@@ -115,13 +115,12 @@ void		lexical_analysis(t_cmd *cmd, t_args *args);
 int	unset_cmd(t_execcmd *ecmd, t_args *params);
 
 /*LEXER*/
-void parse_double_quote(int *i, char *line, t_lexems *list, t_args *args);
-void parse_quote(char *line, int *i, t_lexems *list);
-void parse_expander_sign(int *i, char *line, t_lexems *list, t_args *args);
-void parse_expander(int *i, t_lexems *list, char *line, t_args *args);
-
-int env_cmd(t_execcmd *ecmd, t_args *params);
-char	*get_env(char *path, char **envp);
+void		parse_double_quote(int *i, char *line, t_lexems *list, t_args *args);
+void		parse_quote(char *line, int *i, t_lexems *list);
+void		parse_expander_sign(int *i, char *line, t_lexems *list, t_args *args);
+void		parse_expander(int *i, t_lexems *list, char *line, t_args *args);
+int			env_cmd(t_execcmd *ecmd, t_args *params);
+char		*get_env(char *path, char **envp);
 t_cmd		*nulterminate(t_cmd *cmd);
 int			valid_input(char *work_line);
 int			fork1(void);

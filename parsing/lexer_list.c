@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 15:36:42 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/10 17:40:25 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/11 12:30:33 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,11 @@ char process_node(t_lexems *list)
     char res;
     t_lexem_node *tmp;
 
+    if (list->head == NULL)
+        return 0;
     tmp = list->head;
     list->head = list->head->next;
-    res = tmp->data;
+    res = *(char *)tmp->data;
     free(tmp);
     return(res);
 }
@@ -51,11 +53,16 @@ char *list_to_string(t_lexems *list)
 void add_char_node(t_lexems *list, char c)
 {
     t_lexem_node *new;
+    char *data;
 
     new = (t_lexem_node *)malloc(sizeof(t_lexem_node));
     if (!new)
         return ;
-    new->data = c;
+    data = (char *)malloc(sizeof(char));
+    if (!data)
+        free(new);
+    *data = c;
+    new->data = data;
     new->next = NULL;
     if (list->head == NULL)
     {
@@ -76,7 +83,7 @@ void add_str_node(t_lexems *list, char *str)
     i = 0;
     while(str[i])
     {
-        add_node(list, str[i]);
+        add_char_node(list, str[i]);
         i++;
     }
 }

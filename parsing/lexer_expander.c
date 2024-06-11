@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:34:57 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/10 17:38:56 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/11 12:31:38 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,8 @@ void parse_expander_sign(int *i, char *line, t_lexems *list, t_args *args)
 
 void parse_expander(int *i, t_lexems *list, char *line, t_args *args)
 {
-    int j;
     char *exit_str;
 
-    j = 0;
     (*i)++;
     if(!line[*i] || is_delimiter(line[*i]))
     {
