@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:34:57 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/11 12:31:38 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/11 16:51:17 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void parse_expander_sign(int *i, char *line, t_lexems *list, t_args *args)
     while(work_line[j] && (ft_isalnum(work_line[j])))
         j++;
     env_var = ft_substr(work_line, 0, j);
-    var_name = get_env(env_var, args->envp);
+    var_name = ft_strdup(get_env(env_var, args->envp));
     if (var_name)
         add_str_node(list, var_name);
     (*i) += ft_strlen(var_name);

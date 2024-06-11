@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/11 13:51:38 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/11 16:24:30 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ int	loop_result(t_args *args)
 		if (!valid_input(args->input))
 		{
 			free_envp(args);
-			exit(SYNTAX_ERR);
+			exit_status = 2;
 		}
 		add_history(args->input);
 		cmd = parse(args);
