@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:27:36 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/03 16:43:36 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/11 14:50:36 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,9 @@ t_cmd	*parseexec(char **ps, char *es)
 	return (cmd);
 }
 
+/* By passing &ps (which is a char **), parsepipe can modify the value of ps directly. 
+In parsepipe: ps is passed as a char ** so that parsepipe can modify the ps pointer itself, 
+advancing it as needed during parsing */
 t_cmd	*parsepipe(char **ps, char *es)
 {
 	t_cmd	*cmd;
@@ -72,7 +75,8 @@ t_cmd	*parse(t_args *args)
 	t_cmd	*cmd;
 
 	ps = args->input;
-	es = ps + ft_strlen(args->input);
+	es = ps + ft_strlen(args->input); //The pointer es is set to point to the end of the input string
+	// es points to the memory location right after the last character of the input string.
 	cmd = parsepipe(&ps, es);
 	printf("--------- parsepipe -----------\n");
 	PrintTree(cmd);
