@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:26:37 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/06 17:05:47 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/11 13:57:57 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,21 @@ void	run_redir(t_cmd *cmd, t_args *params)
 
 	rcmd = (t_redir *)cmd;
 	close(rcmd->fd);
-	if (open(rcmd->file, rcmd->mode) < 0)
+	fprintf(stderr, "\nRCMD FILE %s\n", rcmd->file);
+	PrintTree(rcmd->cmd);
+	if (rcmd->type == '-')
 	{
-		printf("open %s failed\n", rcmd->file);
-		exit(126);
+		// exec_heredoc(); // TO_DO HEREDOC
 	}
-	run_cmd(rcmd->cmd, params);
+	else
+	{
+		if(open(rcmd->file, rcmd->mode, 0644) < 0)
+		{
+			printf("open %s failed\n", rcmd->file);
+			exit(126);
+		}
+		run_cmd(rcmd->cmd, params);
+	}
 }
 
 int is_buildin(char *cmd)
@@ -83,18 +92,43 @@ int is_buildin(char *cmd)
 char	*get_env(char *path, char **envp)
 {
 	int i;
-    fprintf(stderr, "get_env in \n");
+    // fprintf(stderr, "get_env in \n");
 	i = 0;
 	while (envp[i])
 	{
-		fprintf(stderr, "envp[%d]: %s \n",i, envp[i]);
+		// fprintf(stderr, "envp[%d]: %s \n",i, envp[i]);
 		if (ft_strncmp(path, envp[i], 5) == 0)
 			return (envp[i]);
 		i++;
 	}
-	fprintf(stderr, "get_env out \n");
+	// fprintf(stderr, "get_env out \n");
 	return (NULL);
 }
+
+void check_arguments(t_execcmd *ecmd)
+{
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+    while (ecmd->argv[i])
+    {
+        if (ecmd->argv[i][0] != '\0')
+        {
+            if (i != j)
+            {
+                ecmd->argv[j] = ecmd->argv[i];
+                ecmd->eargv[j] = ecmd->eargv[i];
+            }
+            j++;
+        }
+        i++;
+    }
+    ecmd->argv[j] = NULL;
+    ecmd->eargv[j] = NULL;
+}
+
 
 void	run_exec(t_cmd *cmd, t_args *params)
 {
@@ -108,6 +142,7 @@ void	run_exec(t_cmd *cmd, t_args *params)
 	cmd_path = NULL;
 	if (ecmd->argv[0] == 0)
 		exit(127);
+	check_arguments(ecmd);
 	if (is_buildin(ecmd->argv[0]))
 	{
 		builtin_status = run_single_builtin(cmd, params);
@@ -142,9 +177,9 @@ void	run_exec(t_cmd *cmd, t_args *params)
 			fprintf(stderr, "!cmd->params->envp \n");
 		}
 		path = get_env("PATH=", params->envp);
-		fprintf(stderr, "get_env \n");
+		// fprintf(stderr, "get_env \n");
 		cmd_path = find_command_path(ecmd->argv[0], path);
-		fprintf(stderr, "find_command_path \n");
+		// fprintf(stderr, "find_command_path \n");
 		if(!cmd_path)
 		{
 			fprintf(stderr, "Command not found: %s\n", ecmd->argv[0]);

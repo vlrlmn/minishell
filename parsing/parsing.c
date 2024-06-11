@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:27:36 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/11 14:50:36 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/11 14:55:41 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,6 @@ t_cmd	*parse(t_args *args)
 	es = ps + ft_strlen(args->input); //The pointer es is set to point to the end of the input string
 	// es points to the memory location right after the last character of the input string.
 	cmd = parsepipe(&ps, es);
-	printf("--------- parsepipe -----------\n");
-	PrintTree(cmd);
-	printf("--------------------------------\n");
 
 	if (peek(&ps, es, ""))
     {
@@ -90,10 +87,7 @@ t_cmd	*parse(t_args *args)
 	while(args->input < es && is_delimiter(*args->input))
 		args->input++;
 	nulterminate(cmd);
-
-	printf("--------- nulterminate -----------\n");
+	lexical_analysis(cmd, args);
 	PrintTree(cmd);
-	printf("----------------------------------\n");
-
 	return (cmd);
 }
