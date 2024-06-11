@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:27:36 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/09 14:35:53 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/11 13:56:32 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,5 +84,6 @@ t_cmd	*parse(t_args *args)
 		args->input++;
 	nulterminate(cmd);
 	lexical_analysis(cmd, args);
+	PrintTree(cmd);
 	return (cmd);
 }

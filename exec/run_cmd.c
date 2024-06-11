@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:26:37 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/07 14:34:44 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/11 13:57:57 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,31 @@ char	*get_env(char *path, char **envp)
 	return (NULL);
 }
 
+void check_arguments(t_execcmd *ecmd)
+{
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+    while (ecmd->argv[i])
+    {
+        if (ecmd->argv[i][0] != '\0')
+        {
+            if (i != j)
+            {
+                ecmd->argv[j] = ecmd->argv[i];
+                ecmd->eargv[j] = ecmd->eargv[i];
+            }
+            j++;
+        }
+        i++;
+    }
+    ecmd->argv[j] = NULL;
+    ecmd->eargv[j] = NULL;
+}
+
+
 void	run_exec(t_cmd *cmd, t_args *params)
 {
 	t_execcmd	*ecmd;
@@ -117,6 +142,7 @@ void	run_exec(t_cmd *cmd, t_args *params)
 	cmd_path = NULL;
 	if (ecmd->argv[0] == 0)
 		exit(127);
+	check_arguments(ecmd);
 	if (is_buildin(ecmd->argv[0]))
 	{
 		builtin_status = run_single_builtin(cmd, params);

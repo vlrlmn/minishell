@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/11 12:34:23 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/11 13:51:38 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,9 @@ void PrintTree(t_cmd	*cmd)
 		while(exec->argv[i])
 		{
 			
-			printf("Arg %d: %.*s\n", i, (int)(exec->eargv[i] - exec->argv[i]), exec->argv[i]);
+			// printf("Arg %d: %.*s\n", i, (int)(exec->eargv[i] - exec->argv[i]), exec->argv[i]);
+			printf("EARGV %s\n", exec->argv[i]);
+			printf("ARGV %s\n", exec->eargv[i]);
 			i++;
 		}
 	}
@@ -116,24 +118,23 @@ int	loop_result(t_args *args)
 			free_envp(args);
 			exit(SYNTAX_ERR);
 		}
-		printf("input: %s\n", args->input);
 		add_history(args->input);
 		cmd = parse(args);
-			pid_t pid = fork1();
-			if (pid == 0)
-			{
-				run_cmd(cmd, args);
-				exit(0);
-			}
-			else if (pid > 0)
-			{
-				waitpid(pid, NULL, 0);
-			}
-			else
-			{
-				perror("fork");
-				exit(EXIT_FAILURE);
-			}
+		pid_t pid = fork1();
+		if (pid == 0)
+		{
+			run_cmd(cmd, args);
+			exit(0);
+		}
+		else if (pid > 0)
+		{
+			waitpid(pid, NULL, 0);
+		}
+		else
+		{
+			perror("fork");
+			exit(EXIT_FAILURE);
+		}
 	}
 	return (0);
  }

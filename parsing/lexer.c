@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 17:36:36 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/10 17:47:15 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/11 13:58:29 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ char *clean_cmd (char *line, t_args *args)
 
     args_list.head = NULL;
     args_list.tail = NULL;
-    if (!ft_strchr(line, '~'))
+    printf("\nHERE 2\n");
+    if (ft_strchr(line, '~'))
     {
         home_val = get_env("HOME", args->envp);
         res = ft_strdup(home_val);
