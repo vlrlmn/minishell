@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 17:36:36 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/11 15:29:08 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/12 13:02:39 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char *clean_cmd(char *line, t_args *args)
     printf("\nHERE 2\n");
     if (ft_strchr(line, '~'))
     {
-        home_val = get_env("HOME", args->envp);
+        home_val = get_env("HOME=", args->envp);
         res = ft_strdup(home_val);
         return (res);
     }

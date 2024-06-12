@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/11 14:55:58 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/12 13:02:51 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # include <fcntl.h>
 # include <sys/wait.h>
 # include <string.h>
+# include <sys/stat.h>
 
 # define MALLOC_ERROR 69
 # define SYNTAX_ERR 2
@@ -120,7 +121,7 @@ void		parse_quote(char *line, int *i, t_lexems *list);
 void		parse_expander_sign(int *i, char *line, t_lexems *list, t_args *args);
 void		parse_expander(int *i, t_lexems *list, char *line, t_args *args);
 int			env_cmd(t_execcmd *ecmd, t_args *params);
-char		*get_env(char *path, char **envp);
+char		*get_env(char *value, char **envp);
 t_cmd		*nulterminate(t_cmd *cmd);
 int			valid_input(char *work_line);
 int			fork1(void);

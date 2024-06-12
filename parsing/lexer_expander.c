@@ -6,7 +6,11 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:34:57 by lomakinaval       #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/06/11 16:00:00 by sabdulki         ###   ########.fr       */
+=======
+/*   Updated: 2024/06/11 16:51:17 by lomakinaval      ###   ########.fr       */
+>>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +41,7 @@ void parse_expander_sign(int *i, char *line, t_lexems *list, t_args *args)
     if (!var_name)
         return ;
     printf("exp: %s\n", var_name);
+    // var_name = ft_strdup(get_env(env_var, args->envp)); lera's
     if (var_name)
         add_str_node(list, var_name);
     (*i) += ft_strlen(var_name);

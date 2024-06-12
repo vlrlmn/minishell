@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/11 14:56:19 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/12 13:03:01 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ int	loop_result(t_args *args)
 		if (!valid_input(args->input))
 		{
 			free_envp(args);
-			exit(SYNTAX_ERR);
+			exit_status = 2;
 		}
 		add_history(args->input);
 		cmd = parse(args);

@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:26:37 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/11 13:57:57 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/11 17:41:38 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int is_buildin(char *cmd)
 					|| ft_strncmp(cmd, "unset", 2) == 0);
 }
 
-char	*get_env(char *path, char **envp)
+char	*get_env(char *value, char **envp)
 {
 	int i;
     // fprintf(stderr, "get_env in \n");
@@ -97,7 +97,7 @@ char	*get_env(char *path, char **envp)
 	while (envp[i])
 	{
 		// fprintf(stderr, "envp[%d]: %s \n",i, envp[i]);
-		if (ft_strncmp(path, envp[i], 5) == 0)
+		if (ft_strncmp(value, envp[i], ft_strlen(value)) == 0)
 			return (envp[i]);
 		i++;
 	}
@@ -128,7 +128,6 @@ void check_arguments(t_execcmd *ecmd)
     ecmd->argv[j] = NULL;
     ecmd->eargv[j] = NULL;
 }
-
 
 void	run_exec(t_cmd *cmd, t_args *params)
 {
