@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:27:36 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/11 15:25:26 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/12 14:22:24 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ t_cmd	*parseexec(char **ps, char *es)
 	cmd = execcmd();
 	exec = (t_execcmd *)cmd;
 	cmd = parseredir(cmd, ps, es);
+	// cmd = parseheredoc(cmd, ps, es);
     while (!peek(ps, es, "|"))
     {
         if ((tok = gettoken(ps, es, &q, &eq)) == 0)
@@ -45,6 +46,7 @@ t_cmd	*parseexec(char **ps, char *es)
         if (argc >= MAXARGS)
             printf("too many args");
         cmd = parseredir(cmd, ps, es);
+		//cmd = parseheredoc(cmd, ps, es);
     }
     exec->argv[argc] = 0;
     exec->eargv[argc] = 0;

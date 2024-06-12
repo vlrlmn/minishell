@@ -7,7 +7,7 @@
             "type": "lldb",
             "request": "launch",
             "program": "${cwd}/minishell",
-            "args": ["-c", "$HOME"],
+            "args": ["-c", "ls > out"],
             "cwd": "${workspaceFolder}",
             "preLaunchTask": "Make build"
         }

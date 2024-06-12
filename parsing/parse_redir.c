@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_redir.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:38:32 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/05 16:11:41 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/12 17:24:15 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_cmd	*redircmd(t_cmd *subcmd, char *file, char *efile, int mode, int fd)
 		exit_with_malloc_error(MALLOC_ERROR);
 	ft_memset(redircmd, 0, sizeof(redircmd));
 	redircmd->type = REDIR;
-	redircmd->cmd = subcmd;
+	redircmd->cmd = subcmd; //points to the sub-command that is being redirected
 	redircmd->file = file;
 	redircmd->efile = efile;
 	redircmd->mode = mode;
@@ -42,9 +42,9 @@ t_cmd	*parseredir(t_cmd *cmd, char **ps, char *es)
 			cmd = redircmd(cmd, q, eq, O_RDONLY, 0);
 		else if (tok == '>')
 			cmd = redircmd(cmd, q, eq, O_WRONLY | O_CREAT | O_TRUNC, 1);
-		else if (tok == '+')
+		else if (tok == '+') // it's << actually
 			cmd = redircmd(cmd, q, eq, O_WRONLY | O_CREAT, 1);
-		else if (tok == '-')
+		else if (tok == '-') // >>
 			cmd = redircmd(cmd, q, eq, O_RDONLY, 1);
 		printf("\n--------PS: %s --------\n", *ps);
         printf("\n--------ES: %s --------\n", es);

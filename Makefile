@@ -17,6 +17,7 @@ SRC = 	main.c \
 		parsing/null_terminator.c \
 		parsing/parsing_utils.c \
 		parsing/parse_redir.c \
+		parsing/parse_heredoc.c \
 		parsing/fill_tree.c \
 		parsing/lexer.c \
 		parsing/lexer_list.c \

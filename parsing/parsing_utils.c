@@ -6,12 +6,15 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:52:25 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/11 15:08:43 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/12 17:22:10 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+/* add condition for << and >> */
+// 'q' marks the beginning of the token.
+// 'eq' marks the end of token
 int gettoken(char **ps, char *es, char **q, char **eq)
 {
     int token;

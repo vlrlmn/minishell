@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:26:37 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/11 17:41:38 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/12 18:01:27 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	run_redir(t_cmd *cmd, t_args *params)
 	t_redir *rcmd;
 
 	rcmd = (t_redir *)cmd;
-	close(rcmd->fd);
+	close(rcmd->fd); //This ensures that the file descriptor is available to be reused.
 	fprintf(stderr, "\nRCMD FILE %s\n", rcmd->file);
 	PrintTree(rcmd->cmd);
 	if (rcmd->type == '-')
@@ -73,12 +73,17 @@ void	run_redir(t_cmd *cmd, t_args *params)
 	}
 	else
 	{
-		if(open(rcmd->file, rcmd->mode, 0644) < 0)
+		/* закрыли rcmd->fd, a open присвоит новый fd только что закрытому фдишнику. 
+		When you close a file descriptor and then open a file, 
+		the new file descriptor returned by open can reuse the recently closed file descriptor.*/
+		if (open(rcmd->file, rcmd->mode, 0644) < 0) //Implicit File Descriptor Assignment
 		{
 			printf("open %s failed\n", rcmd->file);
 			exit(126);
 		}
-		run_cmd(rcmd->cmd, params);
+		/* If the file descriptor 1 (stdout) was the last one closed, the open call will return 1. 
+		This effectively redirects stdout to the newly opened file.*/
+		run_cmd(rcmd->cmd, params); //it calls run_cmd to execute the sub-command (rcmd->cmd)
 	}
 }
 
