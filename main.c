@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/12 17:28:10 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/12 18:50:45 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,8 @@ void PrintTree(t_cmd	*cmd)
 	else if (cmd->type == REDIR)
 	{
 		redir = (t_redir*)cmd;
-		printf("\nredir mode %d\n", redir->mode);
+		printf("\nsubtype %d\n", redir->subtype);
+		printf("redir mode %d\n", redir->mode);
 		printf("redir file %s\n", redir->file);
 		printf("redir efile %s\n", redir->efile);
 		PrintTree(redir->cmd);

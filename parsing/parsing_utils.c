@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:52:25 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/12 17:22:10 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/12 19:43:45 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 int gettoken(char **ps, char *es, char **q, char **eq)
 {
     int token;
+
+    printf("Current character: %c\n", **ps);
     while (*ps < es && (**ps == ' ' || **ps == '\t' || **ps == '\n'))
         (*ps)++;
     if (*ps >= es)
@@ -35,19 +37,31 @@ int gettoken(char **ps, char *es, char **q, char **eq)
         if (**ps == '<')
         {
             (*ps)++;
+            while (is_delimiter(**ps))
+                (*ps)++;
+            *q = *ps; // mark the start of limiter name
+            while (!is_delimiter(**ps) && !ft_strchr("|<>", **ps))
+                (*ps)++;
+            *eq = *ps;
             token = '+';
             return (token);
         }
         else if (**ps == '>')
         {
             (*ps)++;
+            while (is_delimiter(**ps))
+                (*ps)++;
+            *q = *ps; // mark the start of limiter name
+            while (!is_delimiter(**ps) && !ft_strchr("|<>", **ps))
+                (*ps)++;
+            *eq = *ps;
             token = '-';
             return (token);
         }
-        while(is_delimiter(**ps))
+        while (is_delimiter(**ps))
             (*ps)++;
         *q = *ps;
-        while(!is_delimiter(**ps) && !ft_strchr("|<>", **ps))
+        while (!is_delimiter(**ps) && !ft_strchr("|<>", **ps))
             (*ps)++;
         *eq = *ps;
         return token;

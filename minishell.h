@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/12 13:02:51 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/12 20:56:48 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ typedef struct s_pipe
 typedef struct s_redir
 {
 	int		type;
+	int		subtype;
 	char	*argv[MAXARGS];
 	char	*eargv[MAXARGS];
 	t_cmd	*cmd;
@@ -104,7 +105,9 @@ typedef enum token_type
 {
 	PIPE = 0,
 	EXEC = 1,
-	REDIR = 2
+	REDIR = 2,
+	HEREDOC = 3,
+	APPEND = 4
 }			t_type;
 
 /*Errors and free*/
@@ -162,6 +165,10 @@ int	remove_cmd(t_args *params, char *env_var_to_remove);
 char    *get_str_after_equals(char *str);
 char    *get_str_before_equals(const char *str);
 
+/* heredoc */
+char	*heredoc_get_tmp_file(void);
+int	heredoc(t_redir *rcmd);
+void	redir(t_redir *rcmd);
 
 void PrintTree(t_cmd	*cmd);
 #endif

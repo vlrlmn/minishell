@@ -4,7 +4,7 @@
 # 2. -I/usr/local/opt/readline/include -L/usr/local/opt/readline/lib -lreadline libraries for functions like rl_replace_line and rl_redisplay 
 
 NAME = minishell
-CC = cc --debug -Wall -Wextra -Werror -g3
+CC = cc --debug -Wall -Wextra -Werror -g3 -fsanitize=address
 CFLAGS = -I/usr/local/opt/readline/include
 LDFLAGS = -I/usr/local/include -L/usr/local/lib -lreadline  
 # -L/usr/local/opt/readline/lib -lreadline
@@ -17,7 +17,6 @@ SRC = 	main.c \
 		parsing/null_terminator.c \
 		parsing/parsing_utils.c \
 		parsing/parse_redir.c \
-		parsing/parse_heredoc.c \
 		parsing/fill_tree.c \
 		parsing/lexer.c \
 		parsing/lexer_list.c \
@@ -25,6 +24,7 @@ SRC = 	main.c \
 		parsing/lexer_quotes.c \
 		exec/exec_utils.c \
 		exec/run_cmd.c \
+		exec/redirections.c \
 		exec/exec_path_cmd.c \
 		exec/exec_buildin.c \
 		exec/cd.c \

@@ -1,0 +1,19 @@
+Libft
+Makefile
+errors.c
+errors.o
+exec
+free_memory.c
+free_memory.o
+main.c
+main.o
+minishell
+minishell 2
+minishell.h
+o
+out
+output.txt
+parsing
+test.c
+valid_input.c
+valid_input.o
