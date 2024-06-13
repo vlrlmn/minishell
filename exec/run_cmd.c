@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:26:37 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/13 17:01:52 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/13 20:25:21 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,9 @@ void	run_pipe(t_cmd *cmd, t_args *params)
 	pcmd = (t_pipe *)cmd;
 	if (pipe(p) < 0)
 		exit_with_err("Pipe error");
-	pid1 = fork1();
+	pid1 = fork();
+	if (pid1 == -1)
+		exit_with_err("fork");
 	if (pid1 == 0)
 	{
 		printf("Fork for left\n");
@@ -40,7 +42,9 @@ void	run_pipe(t_cmd *cmd, t_args *params)
 		exit(0);
 	}
 	
-	pid2 = fork1();
+	pid2 = fork();
+	if (pid1 == -1)
+		exit_with_err("fork");
 	if (pid2 == 0)
 	{
 		printf("Fork for right\n");
@@ -57,7 +61,6 @@ void	run_pipe(t_cmd *cmd, t_args *params)
 	waitpid(pid2, &status, 0);
 	printf("\npid2 STATUS %d\n", status);
 }
-
 
 void	run_redir(t_cmd *cmd, t_args *params)
 {
@@ -81,29 +84,6 @@ void	run_redir(t_cmd *cmd, t_args *params)
 		redir(rcmd);
 	}
 	run_cmd(rcmd->cmd, params); //it calls run_cmd to execute the sub-command (rcmd->cmd)
-}
-
-int is_buildin(char *cmd)
-{
- 	return (ft_strncmp(cmd, "cd", 2) == 0 || ft_strncmp(cmd, "exit", 2) == 0 || ft_strncmp(cmd, "echo", 2) == 0
-				|| ft_strncmp(cmd, "pwd", 2) == 0 || ft_strncmp(cmd, "export", 2) == 0 || ft_strncmp(cmd, "env", 2) == 0
-					|| ft_strncmp(cmd, "unset", 2) == 0);
-}
-
-char	*get_env(char *value, char **envp)
-{
-	int i;
-    // fprintf(stderr, "get_env in \n");
-	i = 0;
-	while (envp[i])
-	{
-		// fprintf(stderr, "envp[%d]: %s \n",i, envp[i]);
-		if (ft_strncmp(value, envp[i], ft_strlen(value)) == 0)
-			return (envp[i]);
-		i++;
-	}
-	// fprintf(stderr, "get_env out \n");
-	return (NULL);
 }
 
 void check_arguments(t_execcmd *ecmd)
@@ -130,16 +110,73 @@ void check_arguments(t_execcmd *ecmd)
     ecmd->eargv[j] = NULL;
 }
 
+void	run(t_execcmd	*ecmd, t_args *params)
+{
+	int		i;
+	int		status;
+	char	*cmd_path;
+	char	*path;
+
+	i = 0;
+	cmd_path = NULL;
+	while (ecmd->argv[i])
+	{
+		fprintf(stderr, "Arg %d: %.*s\n", i, (int)(ecmd->eargv[i] - ecmd->argv[i]), ecmd->argv[i]);
+		i++;
+	}
+	fprintf(stderr, "Executing command: %s\n", ecmd->argv[0]); // Debug message
+	if (!params)
+	{
+		fprintf(stderr, "!cmd->params && !cmd->params->envp\n");
+	}
+	path = get_env("PATH=", params->envp);
+	cmd_path = find_command_path(ecmd->argv[0], path);
+	if (!cmd_path)
+	{
+		fprintf(stderr, "Command not found: %s\n", ecmd->argv[0]);
+		exit(127);
+	}
+	//current program ceases to exist and the new program takes its place
+	status = execve(cmd_path, ecmd->argv, params->envp);
+	fprintf(stderr,"\texecve!");
+	free(cmd_path);
+	exit(status);
+	//exit only if run_exec_cmd failed (??)
+	//had to add one more exit from the child proc if it was successfull!!
+}
+
+void	run_exec_cmd(t_execcmd	*ecmd, t_args *params)
+{
+	
+	pid_t pid = fork();
+	if (pid == -1)
+		exit_with_err("fork"); // need to return true or false if child proc was created or not;
+	if (pid == 0)
+	{
+		run(ecmd, params);
+		// exit (0);
+	}
+	else if (pid > 0)
+	{
+		waitpid(pid, NULL, 0);
+		
+		// if exit(0); there, it'll exit from parent proc, -> from the minishell itself
+	}
+	else
+	{
+		perror("fork");
+		//free leaks and close fd-s
+		// exit(EXIT_FAILURE);
+	}
+	return ;
+}
+
 void	run_exec(t_cmd *cmd, t_args *params)
 {
 	t_execcmd	*ecmd;
-	char	*cmd_path;
 	int	builtin_status;
-	char *path;
-	int i;
 
 	ecmd = (t_execcmd *)cmd;
-	cmd_path = NULL;
 	if (ecmd->argv[0] == 0)
 		exit(127);
 	check_arguments(ecmd);
@@ -147,49 +184,17 @@ void	run_exec(t_cmd *cmd, t_args *params)
 	{
 		builtin_status = run_single_builtin(cmd, params);
 		if (builtin_status == 0)
-			exit (0);
+			return ;
 		else if (builtin_status == 1)
 			exit_with_err("Command not executed\n");
-		// fprintf(stderr, "Running command: %s\n", ecmd->argv[0]); // Debug message
-		// builtin_status = run_buildin(ecmd, params);
-		// if (builtin_status == 0)
-		// 	exit (0);
-		// else if (builtin_status == 1)
-		// 	exit_with_err("Command not executed\n");
 		fprintf(stderr, "STATUS %d\n", builtin_status);
 	}
 	else
 	{
 		//try to add fork1() here!!!!!!! insted of do fork in the main() function
-		i = 0;
-		while(ecmd->argv[i])
-		{
-			fprintf(stderr, "Arg %d: %.*s\n", i, (int)(ecmd->eargv[i] - ecmd->argv[i]), ecmd->argv[i]);
-			i++;
-		}
-		fprintf(stderr, "Executing command: %s\n", ecmd->argv[0]); // Debug message
-		if (!params)
-		{
-			fprintf(stderr, "!cmd->params \n");
-		}
-		if (!params)
-		{
-			fprintf(stderr, "!cmd->params->envp \n");
-		}
-		path = get_env("PATH=", params->envp);
-		// fprintf(stderr, "get_env \n");
-		cmd_path = find_command_path(ecmd->argv[0], path);
-		// fprintf(stderr, "find_command_path \n");
-		if(!cmd_path)
-		{
-			fprintf(stderr, "Command not found: %s\n", ecmd->argv[0]);
-			exit(127);
-		}
-		execve(cmd_path, ecmd->argv, params->envp);
-		perror("execve");
+		run_exec_cmd(ecmd, params);
 	}
-	free(cmd_path);
-	exit(126);
+	return ;
 }
 
 void run_cmd(t_cmd *cmd, t_args *params)
@@ -199,6 +204,7 @@ void run_cmd(t_cmd *cmd, t_args *params)
         exit(127);
     }
     //printf("Running command type: %d\n", cmd->type);
+	// create linked list there and fill it recursively
     if (cmd->type == EXEC)
         run_exec(cmd, params);
     else if (cmd->type == REDIR)
@@ -209,26 +215,5 @@ void run_cmd(t_cmd *cmd, t_args *params)
         printf("run_cmd: Unknown command type\n");
         exit(127);
     }
-}
-
-int check_if_single_builtin(t_cmd *cmd)
-{
-	t_execcmd	*ecmd;
-
-	ecmd = (t_execcmd *)cmd;
-	if (ecmd->argv[0] == 0)
-		exit(127);
-	// or better if (ecmd->type != EXEC && ecmd->type != Redir && is_buildin(ecmd->argv[0]))
-	return (ecmd->type == EXEC && is_buildin(ecmd->argv[0]));
-}
-
-int run_single_builtin(t_cmd *cmd, t_args *params)
-{
-	t_execcmd	*ecmd;
-	int	builtin_status;
-
-	ecmd = (t_execcmd *)cmd;
-	fprintf(stderr, "Running command: %s\n", ecmd->argv[0]); // Debug message
-	builtin_status = run_buildin(ecmd, params);
-	return (builtin_status);
+	return ;
 }

@@ -82,22 +82,14 @@ void	redir(t_redir *rcmd)
 {
 	int		new_fd;
 
-	printf("open '%s' failed\n", rcmd->file);
 	new_fd = open(rcmd->file, rcmd->mode, 0644);
-	/* закрыли rcmd->fd, a open присвоит новый fd только что закрытому фдишнику. 
-	When you close a file descriptor and then open a file, 
-	the new file descriptor returned by open can reuse the recently closed file descriptor.*/
 	if (new_fd < 0) //Implicit File Descriptor Assignment
 	{
 		printf("open '%s' failed\n", rcmd->file);
-		exit(126);
+		// exit(126);
+		return ;
 	}
-	if (new_fd != rcmd->fd)
-	{
-		// Close the old file descriptor if they are different
+	if (new_fd != rcmd->fd) // Close the old file descriptor if they are different
 		close(rcmd->fd);
-	}
 	rcmd->fd = new_fd;
-	/* If the file descriptor 1 (stdout) was the last one closed, the open call will return 1. 
-	This effectively redirects stdout to the newly opened file.*/
 }

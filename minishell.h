@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/12 20:56:48 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/13 18:15:26 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,19 +111,14 @@ typedef enum token_type
 }			t_type;
 
 /*Errors and free*/
-int cd_cmd(t_execcmd *ecmd, t_args *params);
-int echo_cmd(t_execcmd *ecmd);
-int pwd_cmd(t_execcmd *ecmd, t_args *params);
-int export_cmd(t_execcmd *ecmd, t_args *params);
 void		lexical_analysis(t_cmd *cmd, t_args *args);
-int	unset_cmd(t_execcmd *ecmd, t_args *params);
 
 /*LEXER*/
 void		parse_double_quote(int *i, char *line, t_lexems *list, t_args *args);
 void		parse_quote(char *line, int *i, t_lexems *list);
 void		parse_expander_sign(int *i, char *line, t_lexems *list, t_args *args);
 void		parse_expander(int *i, t_lexems *list, char *line, t_args *args);
-int			env_cmd(t_execcmd *ecmd, t_args *params);
+
 char		*get_env(char *value, char **envp);
 t_cmd		*nulterminate(t_cmd *cmd);
 int			valid_input(char *work_line);
@@ -155,19 +150,35 @@ char		process_node(t_lexems *list);
 
 /* sofa */
 void	write_new_promt(void);
-char *find_env_var(char **envp, char *var);
-int find_env_index(char **envp, char *var);
-int update_envp_var(t_args *params, char *env_var, char *new_content);
+
+/* builtins */
+
+int is_buildin(char *cmd);
 int check_if_single_builtin(t_cmd *cmd);
 int run_single_builtin(t_cmd *cmd, t_args *params);
-int add_cmd(t_args *params, char *new_env_var);
-int	remove_cmd(t_args *params, char *env_var_to_remove);
-char    *get_str_after_equals(char *str);
-char    *get_str_before_equals(const char *str);
+
+int cd_cmd(t_execcmd *ecmd, t_args *params);
+int echo_cmd(t_execcmd *ecmd);
+int pwd_cmd(t_execcmd *ecmd, t_args *params);
+int	env_cmd(t_execcmd *ecmd, t_args *params);
+int export_cmd(t_execcmd *ecmd, t_args *params);
+int	unset_cmd(t_execcmd *ecmd, t_args *params);
+
+char	*get_str_after_equals(char *str); //export
+char	*get_str_before_equals(const char *str); //export
+int		add_cmd(t_args *params, char *new_env_var); //export
+int		remove_cmd(t_args *params, char *env_var_to_remove); //unset
+
+/* env utils */
+int update_envp_var(t_args *params, char *env_var, char *new_content);
+char *find_env_var(char **envp, char *var);
+int find_env_index(char **envp, char *var);
 
 /* heredoc */
 char	*heredoc_get_tmp_file(void);
-int	heredoc(t_redir *rcmd);
+int		heredoc(t_redir *rcmd);
+
+
 void	redir(t_redir *rcmd);
 
 void PrintTree(t_cmd	*cmd);
