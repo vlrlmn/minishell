@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:26:37 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/12 21:05:43 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/13 17:01:52 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	run_pipe(t_cmd *cmd, t_args *params)
 		printf("Fork for left\n");
 		close(p[0]);
 		printf("Fork for left1 \n");
-		PrintTree(pcmd->left);
+		// PrintTree(pcmd->left);
 		dup2(p[1], STDOUT_FILENO);
 		//PrintTree(pcmd->left);
 		//printf("Fork for left2 \n");
@@ -47,7 +47,7 @@ void	run_pipe(t_cmd *cmd, t_args *params)
         close(p[1]);
 	    dup2(p[0], STDIN_FILENO);
 	    close(p[0]);
-		printf("Run right\n");
+		fprintf(stderr, "Run right\n");
 		run_cmd(pcmd->right, params);
 		exit(0);
 	}
@@ -65,22 +65,22 @@ void	run_redir(t_cmd *cmd, t_args *params)
 
 	rcmd = (t_redir *)cmd;
 	close(rcmd->fd); //This ensures that the file descriptor is available to be reused.
-	fprintf(stderr, "\nRCMD FILE %s\n", rcmd->file);
+	fprintf(stderr, "\nRCMD FILE in exec: '%s'\n", rcmd->file);
 	fprintf(stderr, "subtype: %d\n", rcmd->subtype);
 	PrintTree(rcmd->cmd);
-	if (rcmd->subtype == HEREDOC)
-	{
-		fprintf(stderr, "heredoc!\n");
-		if (heredoc(rcmd))
-			return ;
-		run_cmd(rcmd->cmd, params);
-		return ;
-	}
-	else //for < and >
+	// if (rcmd->subtype == HEREDOC)
+	// {
+	// 	fprintf(stderr, "heredoc!\n");
+	// 	if (heredoc(rcmd))
+	// 		return ;
+	// 	run_cmd(rcmd->cmd, params);
+	// 	return ;
+	// }
+	if (rcmd->subtype == 2) //for < and >
 	{
 		redir(rcmd);
-		run_cmd(rcmd->cmd, params); //it calls run_cmd to execute the sub-command (rcmd->cmd)
 	}
+	run_cmd(rcmd->cmd, params); //it calls run_cmd to execute the sub-command (rcmd->cmd)
 }
 
 int is_buildin(char *cmd)
@@ -160,6 +160,7 @@ void	run_exec(t_cmd *cmd, t_args *params)
 	}
 	else
 	{
+		//try to add fork1() here!!!!!!! insted of do fork in the main() function
 		i = 0;
 		while(ecmd->argv[i])
 		{

@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/12 18:50:45 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/13 17:03:24 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,10 @@ void PrintTree(t_cmd	*cmd)
 	else if (cmd->type == REDIR)
 	{
 		redir = (t_redir*)cmd;
-		printf("\nsubtype %d\n", redir->subtype);
-		printf("redir mode %d\n", redir->mode);
-		printf("redir file %s\n", redir->file);
-		printf("redir efile %s\n", redir->efile);
+		printf("\nsubtype '%d'\n", redir->subtype);
+		printf("redir mode '%d'\n", redir->mode);
+		printf("redir file '%s'\n", redir->file);
+		printf("redir efile '%s'\n", redir->efile);
 		PrintTree(redir->cmd);
 		
 	}
@@ -121,6 +121,7 @@ int	loop_result(t_args *args)
 		}
 		add_history(args->input);
 		cmd = parse(args);
+		//it creates child proc ONCE for one input. For second input it'll create another child proc etc...
 		pid_t pid = fork1();
 		if (pid == 0)
 		{
@@ -178,12 +179,12 @@ int	main(int argc, char **argv, char **envp)
 	set_environment(&shell_context, envp);
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
-	if (argc >= 3 && !ft_strncmp(argv[1], "-c", 3))
-	{
-		shell_context.input = argv[2];
-		exit_status = ft_launch_minishell(&shell_context);
-		return (exit_status);
-	}
+	// if (argc >= 3 && !ft_strncmp(argv[1], "-c", 3))
+	// {
+	// 	shell_context.input = argv[2];
+	// 	exit_status = ft_launch_minishell(&shell_context);
+	// 	return (exit_status);
+	// }
 	exit_status = loop_result(&shell_context);
 	// rl_clear_history(); //idk why mac argue for it
 	// rl_clear_history();
@@ -193,12 +194,8 @@ int	main(int argc, char **argv, char **envp)
 }
 
 /*
-
 about signals
 1) should ctrl+c clear all memory or returning promt is enough? should there be ^C after pressing this cmd?
 2) if 'return' pressed, should it quit? errno = 2
 3) ctrl D -> "exit" str in the promt, not on the new line
-
 */
-
-//HELLO//

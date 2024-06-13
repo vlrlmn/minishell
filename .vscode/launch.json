@@ -7,7 +7,8 @@
             "type": "lldb",
             "request": "launch",
             "program": "${cwd}/minishell",
-            "args": ["-c", "ls > o"],
+            // "args": ["-c", "<<", "limiter", "grep", "a"],
+            "args": ["-c", "ls > out | grep m"],
             "cwd": "${workspaceFolder}",
             "preLaunchTask": "Make build"
         }

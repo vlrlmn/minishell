@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   null_terminator.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:31:59 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/03 19:48:56 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/13 16:41:23 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,10 @@ void	nulterminate_pipe(t_pipe *pipecmd)
 
 void	nulterminate_redir(t_redir *redircmd)
 {
+    fprintf(stderr, "\nRCMD FILE in nultrm: '%s'\n", redircmd->file);
 	nulterminate(redircmd->cmd);
 	*redircmd->efile = 0;
+    fprintf(stderr, "\nRCMD FILE in after nultrm: '%s'\n", redircmd->file);
 }
 
 t_cmd	*nulterminate(t_cmd *cmd)

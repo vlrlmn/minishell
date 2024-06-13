@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:27:36 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/12 14:22:24 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/13 16:49:30 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ t_cmd	*parseexec(char **ps, char *es)
 /* By passing &ps (which is a char **), parsepipe can modify the value of ps directly. 
 In parsepipe: ps is passed as a char ** so that parsepipe can modify the ps pointer itself, 
 advancing it as needed during parsing */
-t_cmd	*parsepipe(char **ps, char *es)
+t_cmd	*parsepipe(char **ps, char *es) // The address of the pointer ps;
 {
 	t_cmd	*cmd;
 	char *q, *eq;
@@ -79,17 +79,20 @@ t_cmd	*parse(t_args *args)
 	ps = args->input;
 	es = ps + ft_strlen(args->input); //The pointer es is set to point to the end of the input string
 	// es points to the memory location right after the last character of the input string.
-	cmd = parsepipe(&ps, es);
+	cmd = parsepipe(&ps, es); // The address of the pointer ps;
+	//By passing the address of ps, parsepipe can update ps to point to 
+	//a new position within the input string as it parses it.
 
 	if (peek(&ps, es, ""))
     {
         if (ps != es)
             exit_with_err("Syntax err\n");
     }
-	while (args->input < es && is_delimiter(*args->input))
+	while (args->input < es && is_delimiter(*args->input)) //reach the end of str
 		args->input++;
 	nulterminate(cmd);
 	lexical_analysis(cmd, args);
+	printf("\tprint tree from parsing!");
 	PrintTree(cmd);
 	return (cmd);
 }

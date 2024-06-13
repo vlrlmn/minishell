@@ -51,10 +51,12 @@ int	heredoc(t_redir *rcmd)
 		close(rcmd->fd);
 	rcmd->fd = new_fd;
 	limiter = rcmd->file;
+	// limiter = rcmd->file - rcmd->efile;
+	fprintf(stderr, "limiter: %s\n", limiter); 
 	rcmd->file = filename;
 	while (1)
 	{
-		fprintf(stdout, "> ");
+		printf("> ");
 		//does the fact that heredoc is running in child proc affect to the func?
 		input = get_next_line(STDIN_FILENO);
 		if (!input) // if ctrl + d. TODO ahnde ctrl+c
@@ -80,13 +82,14 @@ void	redir(t_redir *rcmd)
 {
 	int		new_fd;
 
+	printf("open '%s' failed\n", rcmd->file);
 	new_fd = open(rcmd->file, rcmd->mode, 0644);
 	/* закрыли rcmd->fd, a open присвоит новый fd только что закрытому фдишнику. 
 	When you close a file descriptor and then open a file, 
 	the new file descriptor returned by open can reuse the recently closed file descriptor.*/
 	if (new_fd < 0) //Implicit File Descriptor Assignment
 	{
-		printf("open %s failed\n", rcmd->file);
+		printf("open '%s' failed\n", rcmd->file);
 		exit(126);
 	}
 	if (new_fd != rcmd->fd)
