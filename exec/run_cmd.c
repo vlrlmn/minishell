@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:26:37 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/13 20:25:21 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/14 15:01:22 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,8 @@ void	run_redir(t_cmd *cmd, t_args *params)
 	if (rcmd->subtype == 2) //for < and >
 	{
 		redir(rcmd);
+		run_cmd(rcmd->cmd, params); //it calls run_cmd to execute the sub-command (rcmd->cmd)
 	}
-	run_cmd(rcmd->cmd, params); //it calls run_cmd to execute the sub-command (rcmd->cmd)
 }
 
 void check_arguments(t_execcmd *ecmd)
@@ -110,7 +110,7 @@ void check_arguments(t_execcmd *ecmd)
     ecmd->eargv[j] = NULL;
 }
 
-void	run(t_execcmd	*ecmd, t_args *params)
+void	run_exec_cmd(t_execcmd	*ecmd, t_args *params)
 {
 	int		i;
 	int		status;
@@ -145,36 +145,11 @@ void	run(t_execcmd	*ecmd, t_args *params)
 	//had to add one more exit from the child proc if it was successfull!!
 }
 
-void	run_exec_cmd(t_execcmd	*ecmd, t_args *params)
-{
-	
-	pid_t pid = fork();
-	if (pid == -1)
-		exit_with_err("fork"); // need to return true or false if child proc was created or not;
-	if (pid == 0)
-	{
-		run(ecmd, params);
-		// exit (0);
-	}
-	else if (pid > 0)
-	{
-		waitpid(pid, NULL, 0);
-		
-		// if exit(0); there, it'll exit from parent proc, -> from the minishell itself
-	}
-	else
-	{
-		perror("fork");
-		//free leaks and close fd-s
-		// exit(EXIT_FAILURE);
-	}
-	return ;
-}
-
 void	run_exec(t_cmd *cmd, t_args *params)
 {
 	t_execcmd	*ecmd;
 	int	builtin_status;
+	pid_t pid;
 
 	ecmd = (t_execcmd *)cmd;
 	if (ecmd->argv[0] == 0)
@@ -191,8 +166,24 @@ void	run_exec(t_cmd *cmd, t_args *params)
 	}
 	else
 	{
-		//try to add fork1() here!!!!!!! insted of do fork in the main() function
-		run_exec_cmd(ecmd, params);
+		pid = fork();
+		if (pid == 0)
+		{
+			run_exec_cmd(ecmd, params);
+			// exit (0);
+		}
+		else if (pid > 0)
+		{
+			waitpid(pid, NULL, 0);
+			
+			// if exit(0); there, it'll exit from parent proc, -> from the minishell itself
+		}
+		else
+		{
+			perror("fork");
+			//free leaks and close fd-s
+			// exit(EXIT_FAILURE);
+		}
 	}
 	return ;
 }
