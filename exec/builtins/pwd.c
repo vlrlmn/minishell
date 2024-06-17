@@ -1,27 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/06 14:20:59 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/06 20:32:07 by sabdulki         ###   ########.fr       */
+/*   Created: 2024/05/23 17:46:04 by lomakinaval       #+#    #+#             */
+/*   Updated: 2024/06/17 17:30:22 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
-int env_cmd(t_execcmd *ecmd, t_args *params)
+//after cd have to update pwd !!
+int pwd_cmd(t_execcmd *ecmd, t_args *params)
 {
-	int	i;
+    // char cwd[1024];
+    char *pwd;
 
-	i = 0;
-	(void)ecmd;
-	while (params->envp[i])
-	{
-		printf("%d: %s\n", i, params->envp[i]);
-		i++;
-	}
-	return (0);
+    (void)ecmd;
+    
+    // if (getcwd(cwd, sizeof(cwd)))
+    //     printf("%s\n", cwd);
+    pwd = find_env_var(params->envp, "PWD");
+    if (pwd)
+        printf("%s\n", pwd);
+    else
+    {
+        perror("pwd");
+        return (1);
+    }
+    return (0);
 }

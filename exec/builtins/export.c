@@ -6,11 +6,11 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:48:27 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/10 20:01:46 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/17 17:30:19 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 int export_cmd(t_execcmd *ecmd, t_args *params)
 {

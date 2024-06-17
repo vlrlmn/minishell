@@ -6,10 +6,9 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/13 18:07:18 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/17 17:22:53 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "minishell.h"
 
@@ -121,23 +120,22 @@ int	loop_result(t_args *args)
 		}
 		add_history(args->input);
 		cmd = parse(args);
-		run_cmd(cmd, args);
 		//it creates child proc ONCE for one input. For second input it'll create another child proc etc...
-		// pid_t pid = fork1();
-		// if (pid == 0)
-		// {
-			// run_cmd(cmd, args);
+		pid_t pid = fork1();
+		if (pid == 0)
+		{
+			run_cmd(cmd, args);
 			// exit(0);
-		// }
-		// else if (pid > 0)
-		// {
-		// 	waitpid(pid, NULL, 0);
-		// }
-		// else
-		// {
-		// 	perror("fork");
-		// 	exit(EXIT_FAILURE);
-		// }
+		}
+		else if (pid > 0)
+		{
+			waitpid(pid, NULL, 0);
+		}
+		else
+		{
+			perror("fork");
+			exit(EXIT_FAILURE);
+		}
 	}
 	return (0);
 }

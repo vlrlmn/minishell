@@ -1,0 +1,9 @@
+EARGV grep
+ARGV 
+EARGV f
+ARGV 
+Libft
+Makefile
+free_memory.c
+free_memory.o
+infile

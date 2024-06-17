@@ -1,3 +1,4 @@
+Running command type: 1
 Libft
 Makefile
 errors.c
@@ -8,12 +9,10 @@ free_memory.c
 free_memory.o
 grep
 infile
-iuy
 main.c
 main.o
 minishell
 minishell.h
-oiu
 out
 outa
 outp

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fill_tree.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:03:40 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/03 19:52:57 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/17 14:37:39 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 t_cmd	*pipecmd(t_cmd *left, t_cmd *right)
 {
 	t_pipe	*cmd;
-	int i = 0;
+	// int i = 0;
 	t_execcmd *ecmd;
 
 	printf("Pipecmd\n");
@@ -27,22 +27,22 @@ t_cmd	*pipecmd(t_cmd *left, t_cmd *right)
 	cmd->left = left;
 	cmd->right = right;
 	ecmd = (t_execcmd*)cmd->left;
-	printf("Left %d\n", ecmd->type);
-	i=0;
-	while(ecmd->argv[i])
-	{
-		printf("Arg %d: %.*s\n", i, (int)(ecmd->eargv[i] - ecmd->argv[i]), ecmd->argv[i]);
-		i++;
-	}
+	// printf("Left %d\n", ecmd->type);
+	// i=0;
+	// while(ecmd->argv[i])
+	// {
+	// 	printf("Arg %d: %.*s\n", i, (int)(ecmd->eargv[i] - ecmd->argv[i]), ecmd->argv[i]);
+	// 	i++;
+	// }
 	
 	ecmd = (t_execcmd*)cmd->right;
-	printf("Right %d\n", ecmd->type);
-	i=0;
-	while(ecmd->argv[i])
-	{
-		printf("Arg %d: %.*s\n", i, (int)(ecmd->eargv[i] - ecmd->argv[i]), ecmd->argv[i]);
-		i++;
-	}
+	// printf("Right %d\n", ecmd->type);
+	// i=0;
+	// while(ecmd->argv[i])
+	// {
+	// 	printf("Arg %d: %.*s\n", i, (int)(ecmd->eargv[i] - ecmd->argv[i]), ecmd->argv[i]);
+	// 	i++;
+	// }
 
 	return ((t_cmd *)cmd);
 }
