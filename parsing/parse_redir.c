@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:38:32 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/13 16:51:45 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/17 14:28:04 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 t_cmd	*redircmd(t_cmd *subcmd, char *file, char *efile, int mode, int fd, int subtype)
 {
 	t_redir	*redircmd;
+	// char	*tmp_efile;
 
+	// tmp_efile = efile;
 	redircmd = malloc(sizeof(*redircmd));
 	if (!redircmd)
 		exit_with_malloc_error(MALLOC_ERROR);
@@ -27,12 +29,14 @@ t_cmd	*redircmd(t_cmd *subcmd, char *file, char *efile, int mode, int fd, int su
 	redircmd->efile = efile;
 	redircmd->mode = mode;
 	redircmd->fd = fd;
+	// *redircmd->efile = 0;
 	// if (subtype == 3)
 	// {
 	// 	// do the heredoc -> get the input from user and write it to tmp file, redir fds.
 	// 	if (heredoc(redircmd))
 	// 		printf("heredoc failed!\n"); //and return NULL
 	// }
+	// efile = tmp_efile;
 	return ((t_cmd *)redircmd);
 }
 
@@ -60,5 +64,4 @@ t_cmd	*parseredir(t_cmd *cmd, char **ps, char *es)
 	}
 	return (cmd);
 }
-
 

@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:26:37 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/13 17:01:52 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/14 19:13:55 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,6 @@ void	run_redir(t_cmd *cmd, t_args *params)
 	// 	fprintf(stderr, "heredoc!\n");
 	// 	if (heredoc(rcmd))
 	// 		return ;
-	// 	run_cmd(rcmd->cmd, params);
-	// 	return ;
 	// }
 	if (rcmd->subtype == 2) //for < and >
 	{
@@ -83,28 +81,6 @@ void	run_redir(t_cmd *cmd, t_args *params)
 	run_cmd(rcmd->cmd, params); //it calls run_cmd to execute the sub-command (rcmd->cmd)
 }
 
-int is_buildin(char *cmd)
-{
- 	return (ft_strncmp(cmd, "cd", 2) == 0 || ft_strncmp(cmd, "exit", 2) == 0 || ft_strncmp(cmd, "echo", 2) == 0
-				|| ft_strncmp(cmd, "pwd", 2) == 0 || ft_strncmp(cmd, "export", 2) == 0 || ft_strncmp(cmd, "env", 2) == 0
-					|| ft_strncmp(cmd, "unset", 2) == 0);
-}
-
-char	*get_env(char *value, char **envp)
-{
-	int i;
-    // fprintf(stderr, "get_env in \n");
-	i = 0;
-	while (envp[i])
-	{
-		// fprintf(stderr, "envp[%d]: %s \n",i, envp[i]);
-		if (ft_strncmp(value, envp[i], ft_strlen(value)) == 0)
-			return (envp[i]);
-		i++;
-	}
-	// fprintf(stderr, "get_env out \n");
-	return (NULL);
-}
 
 void check_arguments(t_execcmd *ecmd)
 {
@@ -211,24 +187,3 @@ void run_cmd(t_cmd *cmd, t_args *params)
     }
 }
 
-int check_if_single_builtin(t_cmd *cmd)
-{
-	t_execcmd	*ecmd;
-
-	ecmd = (t_execcmd *)cmd;
-	if (ecmd->argv[0] == 0)
-		exit(127);
-	// or better if (ecmd->type != EXEC && ecmd->type != Redir && is_buildin(ecmd->argv[0]))
-	return (ecmd->type == EXEC && is_buildin(ecmd->argv[0]));
-}
-
-int run_single_builtin(t_cmd *cmd, t_args *params)
-{
-	t_execcmd	*ecmd;
-	int	builtin_status;
-
-	ecmd = (t_execcmd *)cmd;
-	fprintf(stderr, "Running command: %s\n", ecmd->argv[0]); // Debug message
-	builtin_status = run_buildin(ecmd, params);
-	return (builtin_status);
-}

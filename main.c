@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/13 17:03:24 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/17 14:26:33 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ int	loop_result(t_args *args)
 		}
 	}
 	return (0);
- }
+}
 
 /*We need to create new environment argument and copy envp from main
 arguments because this is safe way to work with environment*/

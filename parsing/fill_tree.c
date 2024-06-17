@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fill_tree.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:03:40 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/03 19:52:57 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/17 14:27:46 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:53:53 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/10 20:29:17 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/14 15:40:58 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,33 @@ int run_buildin(t_execcmd *ecmd, t_args *params)
     else if (ft_strncmp(ecmd->argv[0], "unset", 5) == 0)
         status = unset_cmd(ecmd, params);
     return(status);
+}
+
+int is_buildin(char *cmd)
+{
+ 	return (ft_strncmp(cmd, "cd", 2) == 0 || ft_strncmp(cmd, "exit", 2) == 0 || ft_strncmp(cmd, "echo", 2) == 0
+				|| ft_strncmp(cmd, "pwd", 2) == 0 || ft_strncmp(cmd, "export", 2) == 0 || ft_strncmp(cmd, "env", 2) == 0
+					|| ft_strncmp(cmd, "unset", 2) == 0);
+}
+
+int check_if_single_builtin(t_cmd *cmd)
+{
+	t_execcmd	*ecmd;
+
+	ecmd = (t_execcmd *)cmd;
+	if (ecmd->argv[0] == 0)
+		exit(127);
+	// or better if (ecmd->type != EXEC && ecmd->type != Redir && is_buildin(ecmd->argv[0]))
+	return (ecmd->type == EXEC && is_buildin(ecmd->argv[0]));
+}
+
+int run_single_builtin(t_cmd *cmd, t_args *params)
+{
+	t_execcmd	*ecmd;
+	int	builtin_status;
+
+	ecmd = (t_execcmd *)cmd;
+	fprintf(stderr, "Running command: %s\n", ecmd->argv[0]); // Debug message
+	builtin_status = run_buildin(ecmd, params);
+	return (builtin_status);
 }

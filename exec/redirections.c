@@ -56,7 +56,8 @@ int	heredoc(t_redir *rcmd)
 	rcmd->file = filename;
 	while (1)
 	{
-		printf("> ");
+		fprintf(stdin, "> ");
+		// write(STDOUT_FILENO, "> ", 2);
 		//does the fact that heredoc is running in child proc affect to the func?
 		input = get_next_line(STDIN_FILENO);
 		if (!input) // if ctrl + d. TODO ahnde ctrl+c
@@ -75,6 +76,8 @@ int	heredoc(t_redir *rcmd)
 		write(rcmd->fd, input, ft_strlen(input));
 		free(input);
 	}
+	// close (rcmd->fd);
+	close(new_fd);
 	return (0);
 }
 
@@ -84,20 +87,12 @@ void	redir(t_redir *rcmd)
 
 	printf("open '%s' failed\n", rcmd->file);
 	new_fd = open(rcmd->file, rcmd->mode, 0644);
-	/* закрыли rcmd->fd, a open присвоит новый fd только что закрытому фдишнику. 
-	When you close a file descriptor and then open a file, 
-	the new file descriptor returned by open can reuse the recently closed file descriptor.*/
-	if (new_fd < 0) //Implicit File Descriptor Assignment
+	if (new_fd < 0)
 	{
 		printf("open '%s' failed\n", rcmd->file);
 		exit(126);
 	}
-	if (new_fd != rcmd->fd)
-	{
-		// Close the old file descriptor if they are different
+	if (new_fd != rcmd->fd) // Close the old file descriptor if they are different
 		close(rcmd->fd);
-	}
 	rcmd->fd = new_fd;
-	/* If the file descriptor 1 (stdout) was the last one closed, the open call will return 1. 
-	This effectively redirects stdout to the newly opened file.*/
 }
