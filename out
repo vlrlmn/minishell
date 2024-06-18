@@ -1,0 +1,10 @@
+Makefile
+errors.c
+errors.o
+exec
+execution.c
+free_memory.c
+free_memory.o
+minishell
+minishell.h
+test

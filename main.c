@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/18 14:08:22 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/18 19:53:56 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ int	loop_result(t_args *args)
 		}
 		add_history(args->input);
 		cmd = parse(args);
+		fprintf(stderr, "----------------END OF PARSING----------------n");
 		//it creates child proc ONCE for one input. For second input it'll create another child proc etc...
 		pid_t pid = fork1();
 		if (pid == 0)
