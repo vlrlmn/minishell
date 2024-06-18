@@ -27,13 +27,13 @@ SRC = 	main.c \
 		exec/redirections.c \
 		exec/exec_path_cmd.c \
 		exec/exec_buildin.c \
-		exec/cd.c \
-		exec/echo.c \
-		exec/pwd.c \
-		exec/export.c \
-		exec/env.c \
-		exec/unset.c \
 		exec/utils_env.c \
+		exec/builtins/cd.c \
+		exec/builtins/echo.c \
+		exec/builtins/pwd.c \
+		exec/builtins/export.c \
+		exec/builtins/env.c \
+		exec/builtins/unset.c \
 
 OBJ = $(SRC:.c=.o)
 

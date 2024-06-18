@@ -6,10 +6,9 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/17 14:26:33 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/18 13:09:52 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "minishell.h"
 
@@ -81,7 +80,7 @@ int ft_launch_minishell(t_args *args)
 
     if (args->input == NULL)
 	{
-		write(STDOUT_FILENO, "exit\n", 5);
+		write(STDOUT_FILENO, "exit in launch\n", 5);
 		return 1;
 	}
 	if (!valid_input(args->input))
@@ -111,7 +110,7 @@ int	loop_result(t_args *args)
 		args->input = readline("minishell$ ");
 		if (args->input == NULL)
 		{
-			write(STDOUT_FILENO, "exit\n", 5);
+			write(STDOUT_FILENO, "exit in loop\n", 5);
 			break ;
 		}
 		if (!valid_input(args->input))
@@ -126,10 +125,11 @@ int	loop_result(t_args *args)
 		if (pid == 0)
 		{
 			run_cmd(cmd, args);
-			exit(0);
+			// exit(0);
 		}
 		else if (pid > 0)
 		{
+			close_fd(cmd);
 			waitpid(pid, NULL, 0);
 		}
 		else

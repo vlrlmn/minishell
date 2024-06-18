@@ -1,37 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/23 17:18:22 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/10 20:36:15 by sabdulki         ###   ########.fr       */
+/*   Created: 2024/05/23 17:46:04 by lomakinaval       #+#    #+#             */
+/*   Updated: 2024/06/17 17:30:22 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
-int echo_cmd(t_execcmd *ecmd)
+//after cd have to update pwd !!
+int pwd_cmd(t_execcmd *ecmd, t_args *params)
 {
-    int n_flag;
-    int i;
+    // char cwd[1024];
+    char *pwd;
 
-    n_flag = 0;
-    i = 1;
-    if (ecmd->argv[1] && ft_strncmp(ecmd->argv[1], "-n", 2) == 0)
+    (void)ecmd;
+    
+    // if (getcwd(cwd, sizeof(cwd)))
+    //     printf("%s\n", cwd);
+    pwd = find_env_var(params->envp, "PWD");
+    if (pwd)
+        printf("%s\n", pwd);
+    else
     {
-        n_flag = 1;
-        i = 2;
+        perror("pwd");
+        return (1);
     }
-    while (ecmd->argv[i])
-    {
-        if ((i > 1 && !n_flag) || (i > 2 && n_flag))
-            printf(" ");
-        printf("%s", ecmd->argv[i]);
-        i++;
-    }
-    if (!n_flag)
-        printf("\n");
     return (0);
 }

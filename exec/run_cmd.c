@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:26:37 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/14 19:13:55 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/18 13:10:50 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,9 @@ void	run_pipe(t_cmd *cmd, t_args *params)
 	pcmd = (t_pipe *)cmd;
 	if (pipe(p) < 0)
 		exit_with_err("Pipe error");
-	pid1 = fork1();
+	pid1 = fork();
+	if (pid1 == -1)
+		exit_with_err("fork");
 	if (pid1 == 0)
 	{
 		printf("Fork for left\n");
@@ -40,7 +42,9 @@ void	run_pipe(t_cmd *cmd, t_args *params)
 		exit(0);
 	}
 	
-	pid2 = fork1();
+	pid2 = fork();
+	if (pid1 == -1)
+		exit_with_err("fork");
 	if (pid2 == 0)
 	{
 		printf("Fork for right\n");
@@ -58,7 +62,7 @@ void	run_pipe(t_cmd *cmd, t_args *params)
 	printf("\npid2 STATUS %d\n", status);
 }
 
-
+/* TODO : the file descriptor is leaking!!! it showes PrintTree() result in the file */
 void	run_redir(t_cmd *cmd, t_args *params)
 {
 	t_redir *rcmd;
@@ -66,21 +70,11 @@ void	run_redir(t_cmd *cmd, t_args *params)
 	rcmd = (t_redir *)cmd;
 	close(rcmd->fd); //This ensures that the file descriptor is available to be reused.
 	fprintf(stderr, "\nRCMD FILE in exec: '%s'\n", rcmd->file);
-	fprintf(stderr, "subtype: %d\n", rcmd->subtype);
+	fprintf(stderr, "fd: %d\n", rcmd->fd);
 	PrintTree(rcmd->cmd);
-	// if (rcmd->subtype == HEREDOC)
-	// {
-	// 	fprintf(stderr, "heredoc!\n");
-	// 	if (heredoc(rcmd))
-	// 		return ;
-	// }
-	if (rcmd->subtype == 2) //for < and >
-	{
-		redir(rcmd);
-	}
+	redir(rcmd);
 	run_cmd(rcmd->cmd, params); //it calls run_cmd to execute the sub-command (rcmd->cmd)
 }
-
 
 void check_arguments(t_execcmd *ecmd)
 {
@@ -106,16 +100,60 @@ void check_arguments(t_execcmd *ecmd)
     ecmd->eargv[j] = NULL;
 }
 
+// void	run_exec_cmd(t_execcmd	*ecmd, t_args *params)
+// {
+// 	int		i;
+// 	int		status;
+// 	char	*cmd_path;
+// 	char	*path;
+
+// 	i = 0;
+// 	cmd_path = NULL;
+// 	while (ecmd->argv[i])
+// 	{
+// 		fprintf(stderr, "Arg %d: %.*s\n", i, (int)(ecmd->eargv[i] - ecmd->argv[i]), ecmd->argv[i]);
+// 		i++;
+// 	}
+// 	fprintf(stderr, "Executing command: %s\n", ecmd->argv[0]); // Debug message
+// 	if (!params)
+// 	{
+// 		fprintf(stderr, "!cmd->params && !cmd->params->envp\n");
+// 	}
+// 	path = get_env("PATH=", params->envp);
+// 	cmd_path = find_command_path(ecmd->argv[0], path);
+// 	if (!cmd_path)
+// 	{
+// 		fprintf(stderr, "Command not found: %s\n", ecmd->argv[0]);
+// 		exit(127);
+// 	}
+// 	//current program ceases to exist and the new program takes its place
+// 	status = execve(cmd_path, ecmd->argv, params->envp);
+// 	fprintf(stderr,"\texecve!");
+// 	free(cmd_path);
+// 	exit(status);
+// 	//exit only if run_exec_cmd failed (??)
+// 	//had to add one more exit from the child proc if it was successfull!!
+// }
+
+void	close_fd(t_cmd *ecmd)
+{
+	t_redir *rcmd;
+
+	rcmd = (t_redir *)ecmd;
+	close(rcmd->fd);
+	fprintf(stderr, "closed fd!\n");
+}
+
 void	run_exec(t_cmd *cmd, t_args *params)
 {
 	t_execcmd	*ecmd;
-	char	*cmd_path;
 	int	builtin_status;
-	char *path;
-	int i;
+	char	*cmd_path;
+	char	*path;
+	// pid_t pid;
 
-	ecmd = (t_execcmd *)cmd;
 	cmd_path = NULL;
+	ecmd = (t_execcmd *)cmd;
 	if (ecmd->argv[0] == 0)
 		exit(127);
 	check_arguments(ecmd);
@@ -123,22 +161,16 @@ void	run_exec(t_cmd *cmd, t_args *params)
 	{
 		builtin_status = run_single_builtin(cmd, params);
 		if (builtin_status == 0)
-			exit (0);
+			return ;
 		else if (builtin_status == 1)
 			exit_with_err("Command not executed\n");
-		// fprintf(stderr, "Running command: %s\n", ecmd->argv[0]); // Debug message
-		// builtin_status = run_buildin(ecmd, params);
-		// if (builtin_status == 0)
-		// 	exit (0);
-		// else if (builtin_status == 1)
-		// 	exit_with_err("Command not executed\n");
 		fprintf(stderr, "STATUS %d\n", builtin_status);
 	}
 	else
 	{
-		//try to add fork1() here!!!!!!! insted of do fork in the main() function
-		i = 0;
-		while(ecmd->argv[i])
+		fprintf(stderr, "In run_exec function!\n");
+		int i = 0;
+		while (ecmd->argv[i])
 		{
 			fprintf(stderr, "Arg %d: %.*s\n", i, (int)(ecmd->eargv[i] - ecmd->argv[i]), ecmd->argv[i]);
 			i++;
@@ -156,17 +188,21 @@ void	run_exec(t_cmd *cmd, t_args *params)
 		// fprintf(stderr, "get_env \n");
 		cmd_path = find_command_path(ecmd->argv[0], path);
 		// fprintf(stderr, "find_command_path \n");
-		if(!cmd_path)
+		if (!cmd_path)
 		{
 			fprintf(stderr, "Command not found: %s\n", ecmd->argv[0]);
 			exit(127);
 		}
+		fprintf(stderr, "Found the path! : %s\n", cmd_path);
 		execve(cmd_path, ecmd->argv, params->envp);
 		perror("execve");
 	}
+	// close_fd(ecmd); the function is not executing there idk why
 	free(cmd_path);
 	exit(126);
 }
+
+
 
 void run_cmd(t_cmd *cmd, t_args *params)
 {
@@ -174,7 +210,8 @@ void run_cmd(t_cmd *cmd, t_args *params)
         printf("run_cmd: cmd is NULL\n");
         exit(127);
     }
-    //printf("Running command type: %d\n", cmd->type);
+    fprintf(stderr, "Running command type: %d\n", cmd->type);
+	// create linked list there and fill it recursively
     if (cmd->type == EXEC)
         run_exec(cmd, params);
     else if (cmd->type == REDIR)
@@ -185,5 +222,5 @@ void run_cmd(t_cmd *cmd, t_args *params)
         printf("run_cmd: Unknown command type\n");
         exit(127);
     }
+	return ;
 }
-

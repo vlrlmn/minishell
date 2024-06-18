@@ -38,27 +38,25 @@ int	heredoc(t_redir *rcmd)
 	char	*limiter;
 	char	*filename;
 	
+	limiter = rcmd->file;
 	filename = heredoc_get_tmp_file();
 	if (!filename)
 		return (1);
-	new_fd = open(filename, rcmd->mode, 0644);
-	if (new_fd < 0) //Implicit File Descriptor Assignment
+	rcmd->file = filename;
+	new_fd = open(rcmd->file, rcmd->mode, 0777); // 0644
+	if (new_fd < 0)
 	{
 		printf("open %s failed\n", rcmd->file);
 		exit(126);
 	}
 	if (new_fd != rcmd->fd) // Close the old file descriptor if they are different
-		close(rcmd->fd);
+		close(rcmd->fd); // close 0 or 1
 	rcmd->fd = new_fd;
-	limiter = rcmd->file;
-	// limiter = rcmd->file - rcmd->efile;
-	fprintf(stderr, "limiter: %s\n", limiter); 
-	rcmd->file = filename;
+	close (new_fd);
+	fprintf(stderr, "limiter: %s, its len:  %zu\n", limiter, ft_strlen(limiter));
 	while (1)
 	{
-		fprintf(stdin, "> ");
-		// write(STDOUT_FILENO, "> ", 2);
-		//does the fact that heredoc is running in child proc affect to the func?
+		fprintf(stderr, "> ");
 		input = get_next_line(STDIN_FILENO);
 		if (!input) // if ctrl + d. TODO ahnde ctrl+c
 		{
@@ -66,18 +64,17 @@ int	heredoc(t_redir *rcmd)
 			fprintf(stderr, "NULL input\n");
 			return (1);
 		}
-		if ((ft_strlen(limiter) == (ft_strlen(input) - 1)) && \
-			ft_strncmp(limiter, input, ft_strlen(limiter)))
+		// fprintf(stderr, "input len: %zu\n", ft_strlen(input));
+		if ((ft_strncmp(limiter, input, ft_strlen(limiter)) == 0) && (ft_strlen(limiter) == (ft_strlen(input) - 1)))
 		{
 			free(input);
 			break ;
 		}
-		// write into newly created file fd
-		write(rcmd->fd, input, ft_strlen(input));
+		write(rcmd->fd, input, ft_strlen(input)); // write into newly created file fd
 		free(input);
 	}
-	// close (rcmd->fd);
-	close(new_fd);
+	close(rcmd->fd);
+	fprintf(stderr, "heredoc completed\n");
 	return (0);
 }
 
@@ -85,12 +82,12 @@ void	redir(t_redir *rcmd)
 {
 	int		new_fd;
 
-	printf("open '%s' failed\n", rcmd->file);
 	new_fd = open(rcmd->file, rcmd->mode, 0644);
-	if (new_fd < 0)
+	if (new_fd < 0) //Implicit File Descriptor Assignment
 	{
 		printf("open '%s' failed\n", rcmd->file);
-		exit(126);
+		// exit(126);
+		return ;
 	}
 	if (new_fd != rcmd->fd) // Close the old file descriptor if they are different
 		close(rcmd->fd);

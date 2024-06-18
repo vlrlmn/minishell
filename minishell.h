@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/14 15:42:01 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/18 13:13:21 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,9 @@ typedef enum token_type
 	EXEC = 1,
 	REDIR = 2,
 	HEREDOC = 3,
-	APPEND = 4
+	APPEND = 4,
+	REDIRIN = 5,
+	REDIROUT = 6
 }			t_type;
 
 /*Errors and free*/
@@ -170,16 +172,16 @@ int		add_cmd(t_args *params, char *new_env_var); //export
 int		remove_cmd(t_args *params, char *env_var_to_remove); //unset
 
 /* env utils */
-char	*find_env_var(char **envp, char *var);
-int		update_envp_var(t_args *params, char *env_var, char *new_content);
-int		find_env_index(char **envp, char *var);
+int update_envp_var(t_args *params, char *env_var, char *new_content);
+char *find_env_var(char **envp, char *var);
+int find_env_index(char **envp, char *var);
 
 /* heredoc */
 char	*heredoc_get_tmp_file(void);
 int		heredoc(t_redir *rcmd);
 
-
 void	redir(t_redir *rcmd);
+void	close_fd(t_cmd *ecmd);
 
 void PrintTree(t_cmd	*cmd);
 #endif
