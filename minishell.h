@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/13 18:15:26 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/18 13:05:44 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,9 @@ typedef enum token_type
 	EXEC = 1,
 	REDIR = 2,
 	HEREDOC = 3,
-	APPEND = 4
+	APPEND = 4,
+	REDIRIN = 5,
+	REDIROUT = 6
 }			t_type;
 
 /*Errors and free*/
@@ -178,8 +180,8 @@ int find_env_index(char **envp, char *var);
 char	*heredoc_get_tmp_file(void);
 int		heredoc(t_redir *rcmd);
 
-
 void	redir(t_redir *rcmd);
+void	close_fd(t_cmd *ecmd);
 
 void PrintTree(t_cmd	*cmd);
 #endif

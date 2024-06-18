@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:26:37 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/17 19:26:37 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/18 13:03:27 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,45 +62,18 @@ void	run_pipe(t_cmd *cmd, t_args *params)
 	printf("\npid2 STATUS %d\n", status);
 }
 
+/* TODO : the file descriptor is leaking!!! it showes PrintTree() result in the file */
 void	run_redir(t_cmd *cmd, t_args *params)
 {
 	t_redir *rcmd;
 
 	rcmd = (t_redir *)cmd;
-	//close(rcmd->fd); //This ensures that the file descriptor is available to be reused.
+	close(rcmd->fd); //This ensures that the file descriptor is available to be reused.
+	close(rcmd->fd); //This ensures that the file descriptor is available to be reused.
 	fprintf(stderr, "\nRCMD FILE in exec: '%s'\n", rcmd->file);
 	fprintf(stderr, "fd: %d\n", rcmd->fd);
-	// fprintf(stderr, "subtype: %d\n", rcmd->subtype);
 	PrintTree(rcmd->cmd);
-	if (rcmd->subtype == HEREDOC)
-	{
-		// fprintf(stderr, "heredoc!\n");
-		int		new_fd;
-		new_fd = open(rcmd->file, rcmd->mode, 0700);
-		if (new_fd < 0)
-		{
-			printf("open '%s' failed\n", rcmd->file);
-			exit(126);
-			// return ;
-		}
-		if (new_fd != rcmd->fd) // Close the old file descriptor if they are different
-			close(rcmd->fd);
-		rcmd->fd = new_fd;
-	}
-	else if (rcmd->subtype == REDIR) //for < and >
-	{
-		// close(rcmd->fd);
-		// fprintf(stderr, "\nRCMD FILE %s\n", rcmd->file);
-		// PrintTree(rcmd->cmd);
-		// if (open(rcmd->file, rcmd->mode, 0644) < 0)
-		// {
-		// 	printf("open %s failed\n", rcmd->file);
-		// 	exit(126);
-		// }
-		close(rcmd->fd);
-		redir(rcmd);
-	}
-		
+	redir(rcmd);
 	run_cmd(rcmd->cmd, params); //it calls run_cmd to execute the sub-command (rcmd->cmd)
 }
 
@@ -163,6 +136,15 @@ void check_arguments(t_execcmd *ecmd)
 // 	//had to add one more exit from the child proc if it was successfull!!
 // }
 
+void	close_fd(t_cmd *ecmd)
+{
+	t_redir *rcmd;
+
+	rcmd = (t_redir *)ecmd;
+	close(rcmd->fd);
+	fprintf(stderr, "closed fd!\n");
+}
+
 void	run_exec(t_cmd *cmd, t_args *params)
 {
 	t_execcmd	*ecmd;
@@ -216,28 +198,12 @@ void	run_exec(t_cmd *cmd, t_args *params)
 		execve(cmd_path, ecmd->argv, params->envp);
 		perror("execve");
 	}
+	// close_fd(ecmd); the function is not executing there idk why
 	free(cmd_path);
 	exit(126);
-		
-		// pid = fork();
-		// if (pid == 0)
-		// {
-			// run_exec_cmd(ecmd, params);
-		// 	// exit (0);
-		// }
-		// else if (pid > 0)
-		// {
-		// 	waitpid(pid, NULL, 0);
-			
-		// 	// if exit(0); there, it'll exit from parent proc, -> from the minishell itself
-		// }
-		// else
-		// {
-		// 	perror("fork");
-		// 	//free leaks and close fd-s
-		// 	// exit(EXIT_FAILURE);
-		// }
 }
+
+
 
 void run_cmd(t_cmd *cmd, t_args *params)
 {
