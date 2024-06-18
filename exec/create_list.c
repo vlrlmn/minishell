@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 17:20:39 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/18 19:46:46 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/18 20:15:08 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,10 @@ t_cmd_info *fill_redir(t_cmd *cmd, t_cmd *params, t_cmd_info *new_cmd)
 	new_cmd->file_read = rcmd->file_read;
 	new_cmd->file_write = rcmd->file_write;
 	//add smth else??
-	add_cmd_to_list(new_cmd);
+	if (new_cmd->subcmd== EXEC)
+		add_cmd_to_list(new_cmd);
+	else
+		gothrough_cmd(new_cmd->subcmd, params, new_cmd);
 }
 
 t_cmd_info *fill_exec(t_cmd *cmd, t_cmd *params, t_cmd_info *new_cmd)
