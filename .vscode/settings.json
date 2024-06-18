@@ -8,6 +8,7 @@
         "algorithm": "c",
         "__locale": "c",
         "cstring": "c",
-        "locale": "c"
+        "locale": "c",
+        "ios": "c"
     }
 }

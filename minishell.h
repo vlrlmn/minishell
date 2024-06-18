@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/18 13:05:44 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/18 19:40:41 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,12 @@ typedef struct s_redir
 	char	*argv[MAXARGS];
 	char	*eargv[MAXARGS];
 	t_cmd	*cmd;
-	char	*file;
+	char	*file_read;
+	char	*file_write;
 	char	*efile;
 	int		mode;
-	int		fd;
+	int		fd_read;
+	int		fd_write;
 }			t_redir;
 
 typedef struct s_lexem_node
@@ -111,6 +113,27 @@ typedef enum token_type
 	REDIRIN = 5,
 	REDIROUT = 6
 }			t_type;
+
+
+typedef struct s_cmd_info
+{
+	t_args	*args; //includes input and params
+	int		head;
+	int		type;
+	int		subtype; //heredoc or append
+	t_cmd	*subcmd; //cmd to be executed in redirs
+	// t_cmd	*cmd; insted of T_cmd it should point to the ... ????
+	char	*argv[MAXARGS];
+	char	*eargv[MAXARGS];
+	int		status;
+	int		fd_read;
+	int		fd_write;
+	char	*file_read;
+	char	*file_write;
+	// mode?
+	int		*connection;
+	struct s_cmd_info	*next;
+}	t_cmd_info;
 
 /*Errors and free*/
 void		lexical_analysis(t_cmd *cmd, t_args *args);

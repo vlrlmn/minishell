@@ -24,6 +24,7 @@ SRC = 	main.c \
 		parsing/lexer_quotes.c \
 		exec/exec_utils.c \
 		exec/run_cmd.c \
+		exec/create_list.c \
 		exec/redirections.c \
 		exec/exec_path_cmd.c \
 		exec/exec_buildin.c \

@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:26:37 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/18 13:03:27 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/18 17:18:55 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,8 +202,6 @@ void	run_exec(t_cmd *cmd, t_args *params)
 	free(cmd_path);
 	exit(126);
 }
-
-
 
 void run_cmd(t_cmd *cmd, t_args *params)
 {
