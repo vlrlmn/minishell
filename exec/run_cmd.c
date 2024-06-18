@@ -6,11 +6,12 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:26:37 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/18 13:10:50 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/18 17:17:14 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
 
 void	run_pipe(t_cmd *cmd, t_args *params)
 {
@@ -68,11 +69,13 @@ void	run_redir(t_cmd *cmd, t_args *params)
 	t_redir *rcmd;
 
 	rcmd = (t_redir *)cmd;
+	fprintf(stderr, "\tfd in run_redir before redir(): %d\n", rcmd->fd);
 	close(rcmd->fd); //This ensures that the file descriptor is available to be reused.
 	fprintf(stderr, "\nRCMD FILE in exec: '%s'\n", rcmd->file);
 	fprintf(stderr, "fd: %d\n", rcmd->fd);
 	PrintTree(rcmd->cmd);
 	redir(rcmd);
+	fprintf(stderr, "\tfd after redir(): %d\n", rcmd->fd);
 	run_cmd(rcmd->cmd, params); //it calls run_cmd to execute the sub-command (rcmd->cmd)
 }
 
@@ -140,19 +143,52 @@ void	close_fd(t_cmd *ecmd)
 	t_redir *rcmd;
 
 	rcmd = (t_redir *)ecmd;
-	close(rcmd->fd);
-	fprintf(stderr, "closed fd!\n");
+	if (rcmd->subtype == HEREDOC)
+	{
+		close(rcmd->fd);
+		fprintf(stderr, "closed fd!\n");
+	}
+}
+
+void check_close(int fd) {
+    if (close(fd) == -1) {
+        fprintf(stderr, "Error closing file descriptor %d: %s\n", fd, strerror(errno));
+    } else {
+        fprintf(stderr, "Successfully closed file descriptor %d\n", fd);
+    }
+}
+
+void check_dup2(int oldfd, int newfd) {
+    if (dup2(oldfd, newfd) == -1) {
+        fprintf(stderr, "Error duplicating file descriptor from %d to %d: %s\n", oldfd, newfd, strerror(errno));
+    } else {
+        fprintf(stderr, "Successfully duplicated file descriptor from %d to %d\n", oldfd, newfd);
+    }
 }
 
 void	run_exec(t_cmd *cmd, t_args *params)
 {
 	t_execcmd	*ecmd;
+	// t_redir *rcmd;
+	
 	int	builtin_status;
 	char	*cmd_path;
 	char	*path;
 	// pid_t pid;
 
 	cmd_path = NULL;
+
+	// rcmd = (t_redir *)cmd;
+	// PrintTree(cmd);
+	// fprintf(stderr, "rcmd->subtype in exec: %d\n", rcmd->subtype);
+	// if (rcmd->subtype == HEREDOC)
+	// {
+	// 	check_dup2(rcmd->fd, STDIN_FILENO);
+	// 	check_close(rcmd->fd);
+	// 	fprintf(stderr, "\tchanged the fd!\n");
+	// }
+	// cmd = (t_cmd *)rcmd;
+
 	ecmd = (t_execcmd *)cmd;
 	if (ecmd->argv[0] == 0)
 		exit(127);
@@ -195,9 +231,9 @@ void	run_exec(t_cmd *cmd, t_args *params)
 		}
 		fprintf(stderr, "Found the path! : %s\n", cmd_path);
 		execve(cmd_path, ecmd->argv, params->envp);
-		perror("execve");
+		fprintf(stderr, "execve errno:%d !\n", errno);
 	}
-	// close_fd(ecmd); the function is not executing there idk why
+	close_fd((t_cmd *)ecmd); //the function is not executing there idk why
 	free(cmd_path);
 	exit(126);
 }

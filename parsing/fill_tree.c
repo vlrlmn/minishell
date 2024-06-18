@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:03:40 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/18 13:09:08 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/18 13:22:31 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_cmd	*pipecmd(t_cmd *left, t_cmd *right)
 {
 	t_pipe	*cmd;
 	// int i = 0;
-	t_execcmd *ecmd;
+	// t_execcmd *ecmd;
 
 	printf("Pipecmd\n");
 	cmd = (t_pipe*)malloc(sizeof(t_pipe));
@@ -26,7 +26,7 @@ t_cmd	*pipecmd(t_cmd *left, t_cmd *right)
 	cmd->type = PIPE;
 	cmd->left = left;
 	cmd->right = right;
-	ecmd = (t_execcmd*)cmd->left;
+	// ecmd = (t_execcmd*)cmd->left;
 	// printf("Left %d\n", ecmd->type);
 	// i=0;
 	// while(ecmd->argv[i])
@@ -35,7 +35,7 @@ t_cmd	*pipecmd(t_cmd *left, t_cmd *right)
 	// 	i++;
 	// }
 	
-	ecmd = (t_execcmd*)cmd->right;
+	// ecmd = (t_execcmd*)cmd->right;
 	// printf("Right %d\n", ecmd->type);
 	// i=0;
 	// while(ecmd->argv[i])

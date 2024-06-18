@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/18 13:09:52 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/18 14:08:22 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,8 +129,8 @@ int	loop_result(t_args *args)
 		}
 		else if (pid > 0)
 		{
-			close_fd(cmd);
 			waitpid(pid, NULL, 0);
+			close_fd(cmd); // exited from child process
 		}
 		else
 		{
