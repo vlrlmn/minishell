@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/18 17:29:01 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/19 16:54:36 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,12 +98,30 @@ int ft_launch_minishell(t_args *args)
 	return (0);
 }
 
+void PrintList(t_cmd_info *cmd_list)
+ {
+    t_cmd_info *current = cmd_list;
+    while (current->next != NULL) {
+        printf("type: %d\n", current->type);
+		if (current->next != NULL)
+        	current = current->next;
+		else
+		{
+			printf("ERROR IN PRINTING\n");
+			return ;
+		}
+    }
+	if (current->next == NULL)
+		printf("type: %d\n", current->type);
+}
+
 /*This is where we have instant loop happening. Inside the loop
 we reading the line, adding it in history and call lexer, beginning
 of args->input parsing*/
 int	loop_result(t_args *args)
 {
 	t_cmd	*cmd;
+	t_cmd_info *cmd_list;
 
 	while (1)
 	{
@@ -120,25 +138,26 @@ int	loop_result(t_args *args)
 		}
 		add_history(args->input);
 		cmd = parse(args);
-		create_cmdlist(cmd);
-		PrintTree(cmd);
+		cmd_list = create_cmdlist(cmd);
+		PrintList(cmd_list);
 		//it creates child proc ONCE for one input. For second input it'll create another child proc etc...
-		pid_t pid = fork1();
-		if (pid == 0)
-		{
-			run_cmd(cmd, args);
-			// exit(0);
-		}
-		else if (pid > 0)
-		{
-			close_fd(cmd);
-			waitpid(pid, NULL, 0);
-		}
-		else
-		{
-			perror("fork");
-			exit(EXIT_FAILURE);
-		}
+		// pid_t pid = fork1();
+		// if (pid == 0)
+		// {
+		// 	run_cmd(cmd, args);
+		// 	// exit(0);
+		// }
+		// else if (pid > 0)
+		// {
+		// 	close_fd(cmd);
+		// 	waitpid(pid, NULL, 0);
+		// }
+		// else
+		// {
+		// 	perror("fork");
+		// 	exit(EXIT_FAILURE);
+		// }
+		free_cmd_list(cmd_list);
 	}
 	return (0);
 }
@@ -191,7 +210,7 @@ int	main(int argc, char **argv, char **envp)
 	// rl_clear_history(); //idk why mac argue for it
 	// rl_clear_history();
 	clear_history();
-	free_envp (&shell_context);
+	// free_envp (&shell_context);
 	return (exit_status);
 }
 

@@ -49,9 +49,9 @@ int	heredoc(t_redir *rcmd)
 		printf("open %s failed\n", rcmd->file);
 		exit(126);
 	}
-	if (new_fd != rcmd->fd_read) // Close the old file descriptor if they are different
-		close(rcmd->fd_read);
-	rcmd->fd_read = new_fd;
+	if (new_fd != rcmd->fd) // Close the old file descriptor if they are different
+		close(rcmd->fd);
+	rcmd->fd = new_fd;
 	fprintf(stderr, "limiter: %s, its len:  %zu\n", limiter, ft_strlen(limiter));
 	while (1)
 	{
@@ -69,10 +69,10 @@ int	heredoc(t_redir *rcmd)
 			free(input);
 			break ;
 		}
-		write(rcmd->fd_read, input, ft_strlen(input)); // write into newly created file fd
+		write(rcmd->fd, input, ft_strlen(input)); // write into newly created file fd
 		free(input);
 	}
-	close(rcmd->fd_read);
+	close(rcmd->fd);
 	fprintf(stderr, "heredoc completed\n");
 	return (0);
 }

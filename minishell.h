@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/18 19:40:41 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/19 16:47:29 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 # define SYNTAX_ERR 2
 # define MAXARGS 1024
 
-extern int exit_status; // CHECK IF IT IS CORRECT OR NO
+extern int exit_status; // CHECK IF IT IS CORRECT OR NOT
 
 typedef struct s_args
 {
@@ -72,12 +72,10 @@ typedef struct s_redir
 	char	*argv[MAXARGS];
 	char	*eargv[MAXARGS];
 	t_cmd	*cmd;
-	char	*file_read;
-	char	*file_write;
+	char	*file;
 	char	*efile;
 	int		mode;
-	int		fd_read;
-	int		fd_write;
+	int		fd;
 }			t_redir;
 
 typedef struct s_lexem_node
@@ -102,28 +100,31 @@ typedef enum quotes_handler
 	DOUBLE_Q,
 }			t_quotes;
 
+typedef enum redir_type
+{
+	HEREDOC = 3,
+	APPEND = 4,
+	REDIRIN = 5,
+	REDIROUT = 6
+}	r_type;
+
 
 typedef enum token_type
 {
 	PIPE = 0,
 	EXEC = 1,
 	REDIR = 2,
-	HEREDOC = 3,
-	APPEND = 4,
-	REDIRIN = 5,
-	REDIROUT = 6
 }			t_type;
 
-
+/* if i have only one cmd, i don't need to create connections, only feel fd_read and fd_write. */
 typedef struct s_cmd_info
 {
 	t_args	*args; //includes input and params
-	int		head;
 	int		type;
-	int		subtype; //heredoc or append
+	int		redir_type; //heredoc or append
 	t_cmd	*subcmd; //cmd to be executed in redirs
 	// t_cmd	*cmd; insted of T_cmd it should point to the ... ????
-	char	*argv[MAXARGS];
+	char	*argv[MAXARGS]; //to pass this fiels into execve()
 	char	*eargv[MAXARGS];
 	int		status;
 	int		fd_read;
@@ -137,6 +138,7 @@ typedef struct s_cmd_info
 
 /*Errors and free*/
 void		lexical_analysis(t_cmd *cmd, t_args *args);
+void check_arguments(t_execcmd *ecmd);
 
 /*LEXER*/
 void		parse_double_quote(int *i, char *line, t_lexems *list, t_args *args);
@@ -205,6 +207,18 @@ int		heredoc(t_redir *rcmd);
 
 void	redir(t_redir *rcmd);
 void	close_fd(t_cmd *ecmd);
+
+/* list */
+void	add_cmd_to_list(t_cmd_info *cmd, t_cmd_info	**head);
+void	free_cmd_list(t_cmd_info	*cmd_list);
+void	gothrough_cmd(t_cmd *cmd, t_cmd_info **cmd_list);
+t_cmd_info	*create_cmdlist(t_cmd *cmd);
+void	fill_pipe(t_cmd *cmd, t_cmd_info **cmd_list);
+t_cmd_info	*fill_redir(t_cmd *cmd, t_cmd_info **cmd_list);
+t_cmd_info	*fill_exec(t_cmd *cmd);
+
+void	copy_eargv(t_cmd_info *new_cmd, t_cmd *cmd);
+void	copy_argv(t_cmd_info *new_cmd, t_cmd *cmd);
 
 void PrintTree(t_cmd	*cmd);
 #endif

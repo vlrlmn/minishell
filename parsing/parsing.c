@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:27:36 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/17 14:52:52 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/19 13:09:27 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ t_cmd	*execcmd(void)
 	t_execcmd	*exec;
 
 	exec = malloc(sizeof(*exec));
+	if (!exec)
+		return (NULL);
 	ft_memset(exec, 0, sizeof(*exec));
 	exec->type = EXEC;
 	return ((t_cmd *)exec);

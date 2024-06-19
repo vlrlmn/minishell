@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:38:32 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/18 18:03:38 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/19 15:06:49 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,10 @@ t_cmd	*redircmd(t_cmd *subcmd, char *file, char *efile, int mode, int fd, int su
 	redircmd->type = REDIR;
 	redircmd->subtype = subtype;
 	redircmd->cmd = subcmd; //points to the sub-command that is being redirected
-	if (subtype == REDIRIN)
-		redircmd->file_read = file; // if HEREDOC or APPEND subtype, it's limiter, not file.
-	else if (subtype == REDIROUT)
-		redircmd->file_read = file;
+	redircmd->file = file;
 	redircmd->efile = efile;
 	redircmd->mode = mode;
-	redircmd->fd_write = 1; //the fd that was passed as argument is affecting to the heredoc!!!!
-	redircmd->fd_read = 0;
+	redircmd->fd = fd; //the fd that was passed as argument is affecting to the heredoc!!!!
 	// fprintf(stderr, "fd in parse_redir: %d\n", redircmd->fd);
 	if (subtype == 3)
 	{
@@ -60,9 +56,9 @@ t_cmd	*parseredir(t_cmd *cmd, char **ps, char *es)
 	{
 		tok = gettoken(ps, es, &q, &eq);
 		if (tok == '<')
-			cmd = redircmd(cmd, q, eq, O_RDONLY, 0, REDIR);
+			cmd = redircmd(cmd, q, eq, O_RDONLY, 0, REDIRIN);
 		else if (tok == '>')
-			cmd = redircmd(cmd, q, eq, O_WRONLY | O_CREAT | O_TRUNC, 1, REDIR);
+			cmd = redircmd(cmd, q, eq, O_WRONLY | O_CREAT | O_TRUNC, 1, REDIROUT);
 		else if (tok == '+') // it's << actually
 			cmd = redircmd(cmd, q, eq, O_RDWR, 0, HEREDOC);
 		else if (tok == '-') // >>

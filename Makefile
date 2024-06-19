@@ -24,17 +24,21 @@ SRC = 	main.c \
 		parsing/lexer_quotes.c \
 		exec/exec_utils.c \
 		exec/run_cmd.c \
-		exec/create_list.c \
 		exec/redirections.c \
 		exec/exec_path_cmd.c \
 		exec/exec_buildin.c \
 		exec/utils_env.c \
+		exec/utils_list.c \
+		exec/utils_fill_cmd.c \
+		exec/create_list.c \
 		exec/builtins/cd.c \
 		exec/builtins/echo.c \
 		exec/builtins/pwd.c \
 		exec/builtins/export.c \
 		exec/builtins/env.c \
 		exec/builtins/unset.c \
+
+
 
 OBJ = $(SRC:.c=.o)
 
