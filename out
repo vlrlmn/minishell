@@ -1,26 +1,20 @@
-Libft
-Makefile
-errors.c
-errors.o
-exec
-execution.c
-free_memory.c
-free_memory.o
-grep
-infile
-iuy
-main.c
-main.o
-minishell
-minishell.h
-oiu
-out
-outa
-outp
-outr
-ouy
-parsing
-qwerty
-test
-valid_input.c
-valid_input.o
+SRC_S = stack/ex_join.c \
+		stack/methods.c \
+		stack/moves.c \
+		stack/parsing.c \
+		stack/utils_stack.c \
+		stack/utils.c \
+		stack/sort_2_3.c \
+		stack/create_stack.c
+
+SRC_T = target/create_dictionary.c \
+		target/find_target_num.c \
+		target/utils_dict.c \
+		target/count_steps.c
+
+SRC = 	push_swap.c \
+		sorting.c \
+		make_a_move.c \
+		move_utils.c
+
+SRCS = $(SRC_S) $(SRC_T) $(SRC)
