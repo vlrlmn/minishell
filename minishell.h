@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/19 16:47:29 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/19 17:58:43 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 # include <sys/wait.h>
 # include <string.h>
 # include <sys/stat.h>
+#include <errno.h>
 
 # define MALLOC_ERROR 69
 # define SYNTAX_ERR 2
