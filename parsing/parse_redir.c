@@ -6,11 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:38:32 by vlomakin          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/06/19 15:06:49 by sabdulki         ###   ########.fr       */
-=======
-/*   Updated: 2024/06/18 13:52:42 by sabdulki         ###   ########.fr       */
->>>>>>> sofa
+/*   Updated: 2024/06/20 18:15:49 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +15,7 @@
 t_cmd	*redircmd(t_cmd *subcmd, char *file, char *efile, int mode, int fd, int subtype)
 {
 	t_redir	*redircmd;
-	char 	original_efile_char;
+	// char 	original_efile_char;
 
 	// tmp_efile = efile;
 	redircmd = malloc(sizeof(*redircmd));
@@ -34,20 +30,20 @@ t_cmd	*redircmd(t_cmd *subcmd, char *file, char *efile, int mode, int fd, int su
 	redircmd->mode = mode;
 	redircmd->fd = fd; //the fd that was passed as argument is affecting to the heredoc!!!!
 	// fprintf(stderr, "fd in parse_redir: %d\n", redircmd->fd);
-	if (subtype == 3)
-	{
-		// close(redircmd->fd);
-		original_efile_char = *redircmd->efile; // Save the original character pointed to by efile
-		*redircmd->efile = 0; // Set efile to 0 before calling heredoc
-		// do the heredoc -> get the input from user and write it to tmp file, redir fds.
-		if (heredoc(redircmd))
-		{
-			*redircmd->efile = original_efile_char;
-			printf("heredoc failed!\n");
-			exit (0); //free all
-		}
-		*redircmd->efile = original_efile_char;
-	}
+	// if (subtype == 3)
+	// {
+	// 	// close(redircmd->fd);
+	// 	original_efile_char = *redircmd->efile; // Save the original character pointed to by efile
+	// 	*redircmd->efile = 0; // Set efile to 0 before calling heredoc
+	// 	// do the heredoc -> get the input from user and write it to tmp file, redir fds.
+	// 	if (heredoc(redircmd))
+	// 	{
+	// 		*redircmd->efile = original_efile_char;
+	// 		printf("heredoc failed!\n");
+	// 		exit (0); //free all
+	// 	}
+	// 	*redircmd->efile = original_efile_char;
+	// }
 	// fprintf(stderr, "fd after heredoc: %d\n", redircmd->fd);
 	return ((t_cmd *)redircmd);
 }
@@ -66,9 +62,9 @@ t_cmd	*parseredir(t_cmd *cmd, char **ps, char *es)
 		else if (tok == '>')
 			cmd = redircmd(cmd, q, eq, O_WRONLY | O_CREAT | O_TRUNC, 1, REDIROUT);
 		else if (tok == '+') // it's << actually
-			cmd = redircmd(cmd, q, eq, O_RDWR | O_CREAT, 0, HEREDOC);
+			cmd = redircmd(cmd, q, eq, O_WRONLY | O_CREAT, 0, HEREDOC);
 		else if (tok == '-') // >>
-			cmd = redircmd(cmd, q, eq, O_RDONLY, 1, APPEND);
+			cmd = redircmd(cmd, q, eq, O_RDWR | O_CREAT | APPEND, 1, APPEND);
 		printf("\n--------PS: %s --------\n", *ps);
         printf("\n--------ES: %s --------\n", es);
         printf("\n--------Q: %.*s --------\n", (int)(eq - q), q); // Properly print the token

@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 14:27:29 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/19 16:41:50 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/20 15:58:29 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,10 @@ void	free_cmd_list(t_cmd_info	*cmd_list)
 	{
 		tmp = current->next;
 		// free_cmd(current);
+		if (current->fd_read != 0 && current->fd_read != 1)
+			close(current->fd_read);
+		if (current->fd_write != 0 && current->fd_write != 1)
+			close(current->fd_write);
 		free(current);
 		current = tmp;
 	}

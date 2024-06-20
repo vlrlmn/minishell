@@ -76,8 +76,9 @@ char	*heredoc_get_tmp_file(void)
 	return (filename);
 }
 
-int	heredoc(t_redir *rcmd)
+int	old_heredoc(t_redir *rcmd)
 {
+	// if heredoc gets the expander, it should return its value!
 	int		new_fd;
 	// char	*input;
 	char	*limiter;
@@ -89,6 +90,7 @@ int	heredoc(t_redir *rcmd)
 		return (1);
 	rcmd->file = filename;
 	check_file_access(rcmd->file, R_OK);
+	//
 	new_fd = open(rcmd->file, rcmd->mode, 0777); // 0644
 	if (new_fd < 0)
 	{
@@ -122,6 +124,13 @@ int	heredoc(t_redir *rcmd)
 	fprintf(stderr, "heredoc completed\n");
 	return (0);
 }
+/* When you use >>, 
+Bash opens the specified file in append mode and writes the output of the command to it. 
+If the file does not exist, it will be created. */
+// int	append()
+// {
+
+// }
 
 void	redir(t_redir *rcmd)
 {
@@ -136,4 +145,73 @@ void	redir(t_redir *rcmd)
 	if (new_fd != rcmd->fd) // Close the old file descriptor if they are different
 		close(rcmd->fd);
 	rcmd->fd = new_fd;
+}
+
+/* if ctrl + C -> show new promt (minishell$) and exit with status 1
+if ctrl + D exit with status 0 */
+int	heredoc(int fd, char *file, char *limiter, int mode, t_args *args)
+{
+	// if heredoc gets the expander, it should return its value!
+	char	*input;
+  
+	check_file_access(file, R_OK);
+	fd = get_file_fd(fd, file, mode);
+	fprintf(stderr, "limiter: %s, its len:  %zu\n", limiter, ft_strlen(limiter));
+	while (1)
+	{
+		fprintf(stderr, "> ");
+		input = get_next_line(STDIN_FILENO);
+		if (!input) // if ctrl + d. TODO ahnde ctrl+c
+		{
+			//close fds, free memory
+			close(fd);
+			fprintf(stderr, "NULL input\n");
+			return (1);
+		}
+		// fprintf(stderr, "input len: %zu\n", ft_strlen(input));
+		if ((ft_strncmp(limiter, input, ft_strlen(limiter)) == 0) && (ft_strlen(limiter) == (ft_strlen(input) - 1)))
+		{
+			free(input);
+			break ;
+		}
+		input = add_expantion(input, args);
+		write(fd, input, ft_strlen(input)); // write into newly created file fd
+		free(input);
+	}
+	close(fd);
+	fprintf(stderr, "heredoc completed\n");
+	return (fd);
+}
+
+char	*add_expantion(char *input, t_args *args)
+{
+    size_t	i;
+	char	*var_value;
+	char	*env_var;
+	char	*result;
+
+	i = 0;
+	while (input[i] && input[i] != '$')
+		i++;
+	if (i == (ft_strlen(input))) //if there are no '$'
+	{
+		fprintf(stderr, "no expantions!\n");
+		return (input);
+	}
+	env_var = get_str_after_sign(input, '$'); //free
+	if (!env_var)
+		return (NULL);
+	fprintf(stderr, "env_var: %s\n", env_var);
+	env_var[ft_strlen(env_var) - 1] = '\0';
+    var_value = find_env_var(args->envp, env_var);
+	fprintf(stderr, "var_value: %s\n", var_value);
+    if (!var_value)
+        return (input); // or "\0\n" ??
+    printf("exp: %s\n", var_value);
+	// return input, insted of var name it's meaning
+	result = malloc(sizeof(char) * (i-1) + ft_strlen(var_value) + 2);
+	if (!result)
+		return (NULL);
+	
+    return (result);
 }

@@ -8,7 +8,7 @@
             "request": "launch",
             "program": "${cwd}/minishell",
             // "args": ["-c", "<<", "limiter", "grep", "a"],
-            "args": ["-c", "<< gg grep a"],
+            "args": ["-c", "< infile grep a"],
             "cwd": "${workspaceFolder}",
             "preLaunchTask": "Make build"
         }

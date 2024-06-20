@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:48:27 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/17 17:30:19 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/20 19:51:01 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,9 @@ int export_cmd(t_execcmd *ecmd, t_args *params)
     if (!ecmd->argv[1])
         return (printf("export: invalid argument\n"), 1);  
     env_var = get_str_before_equals(ecmd->argv[1]);    
-    env_value = get_str_after_equals(ecmd->argv[1]);
+    env_value = get_str_after_sign(ecmd->argv[1], '=');
+    if (!env_value)
+        return (1);
     if (find_env_var(params->envp, env_var))
     {
         update_envp_var(params, env_var, env_value);
@@ -94,7 +96,7 @@ char    *get_str_before_equals(const char *str)
     return (result);
 }
 
-char    *get_str_after_equals(char *str)
+char    *get_str_after_sign(char *str, char sign)
 {
     char *result;
     int len;
@@ -103,8 +105,13 @@ char    *get_str_after_equals(char *str)
 
     res_i = 0;
     i = 0;
-    while (str[i] != '=')
+    while (str[i] != sign)
         i++;
+    if (i == (ft_strlen(str))) //if there are no '$'
+	{
+		fprintf(stderr, "no sign!\n");
+		return (NULL);
+	}
     len = ft_strlen(str) - i;
     i += 1;
     result = (char *)malloc(sizeof(char) * (len + 1));

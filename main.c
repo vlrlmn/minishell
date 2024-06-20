@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/19 17:58:10 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/20 19:09:01 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,11 +98,30 @@ int ft_launch_minishell(t_args *args)
 	return (0);
 }
 
+void	print_content(t_cmd_info *current)
+{
+	int i;
+	printf("type: %d\n", current->type);
+	i = 0;
+	while (current->argv[i])
+	{
+		printf("EARGV %s\n", current->eargv[i]);
+		printf("ARGV %s\n", current->argv[i]);
+		i++;
+	}
+	printf("fd_read: %d\n", current->fd_read);
+	printf("file_read: %s\n", current->file_read);
+	printf("fd_write: %d\n", current->fd_write);
+	printf("file_write: %s\n", current->file_write);
+}
+
 void PrintList(t_cmd_info *cmd_list)
  {
     t_cmd_info *current = cmd_list;
-    while (current->next != NULL) {
-        printf("type: %d\n", current->type);
+	printf("-------------PRINTING LIST-------------\n");
+    while (current->next != NULL) 
+	{
+        print_content(current);
 		if (current->next != NULL)
         	current = current->next;
 		else
@@ -112,7 +131,7 @@ void PrintList(t_cmd_info *cmd_list)
 		}
     }
 	if (current->next == NULL)
-		printf("type: %d\n", current->type);
+		print_content(current);
 }
 
 /*This is where we have instant loop happening. Inside the loop
@@ -138,7 +157,8 @@ int	loop_result(t_args *args)
 		}
 		add_history(args->input);
 		cmd = parse(args);
-		cmd_list = create_cmdlist(cmd);
+		printf("-------------END OF PARSING-------------\n");
+		cmd_list = create_cmdlist(cmd, args);
 		PrintList(cmd_list);
 		//it creates child proc ONCE for one input. For second input it'll create another child proc etc...
 		// pid_t pid = fork1();

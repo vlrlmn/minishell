@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/19 17:58:43 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/20 19:33:48 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,8 @@ typedef struct s_cmd_info
 	int		fd_write;
 	char	*file_read;
 	char	*file_write;
-	// mode?
+	int		mode_read;
+	int		mode_write;
 	int		*connection;
 	struct s_cmd_info	*next;
 }	t_cmd_info;
@@ -192,7 +193,7 @@ int	env_cmd(t_execcmd *ecmd, t_args *params);
 int export_cmd(t_execcmd *ecmd, t_args *params);
 int	unset_cmd(t_execcmd *ecmd, t_args *params);
 
-char	*get_str_after_equals(char *str); //export
+char	*get_str_after_sign(char *str, char sign); //export
 char	*get_str_before_equals(const char *str); //export
 int		add_cmd(t_args *params, char *new_env_var); //export
 int		remove_cmd(t_args *params, char *env_var_to_remove); //unset
@@ -202,21 +203,32 @@ int update_envp_var(t_args *params, char *env_var, char *new_content);
 char *find_env_var(char **envp, char *var);
 int find_env_index(char **envp, char *var);
 
-/* heredoc */
-char	*heredoc_get_tmp_file(void);
-int		heredoc(t_redir *rcmd);
-
+/* 			redirections 			*/
 void	redir(t_redir *rcmd);
 void	close_fd(t_cmd *ecmd);
+
+int	get_file_fd(int fd, char *file, int mode);
+int	define_fd(t_cmd_info	*rcmd, t_redir *old_cmd, t_args *args);
+int	define_file(t_cmd_info	*rcmd, t_redir *old_cmd);
+int	add_redir_details(t_cmd_info	*new_cmd, t_redir *rcmd, t_args *args);
+
+char	*heredoc_get_tmp_file(void);
+int		heredoc(int fd, char *file, char *limiter, int mode, t_args *args);
+int		old_heredoc(t_redir *rcmd);
+
+/* expantion */
+char	*add_expantion(char *input, t_args *args);
+
 
 /* list */
 void	add_cmd_to_list(t_cmd_info *cmd, t_cmd_info	**head);
 void	free_cmd_list(t_cmd_info	*cmd_list);
-void	gothrough_cmd(t_cmd *cmd, t_cmd_info **cmd_list);
-t_cmd_info	*create_cmdlist(t_cmd *cmd);
-void	fill_pipe(t_cmd *cmd, t_cmd_info **cmd_list);
-t_cmd_info	*fill_redir(t_cmd *cmd, t_cmd_info **cmd_list);
+void	gothrough_cmd(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args);
+t_cmd_info	*create_cmdlist(t_cmd *cmd, t_args *args);
+void	fill_pipe(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args);
+t_cmd_info	*fill_redir(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args);
 t_cmd_info	*fill_exec(t_cmd *cmd);
+int	more_redir(t_cmd_info *new_cmd, t_redir *rcmd, t_args *args);
 
 void	copy_eargv(t_cmd_info *new_cmd, t_cmd *cmd);
 void	copy_argv(t_cmd_info *new_cmd, t_cmd *cmd);
