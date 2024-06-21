@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:48:27 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/20 19:51:01 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/21 19:13:20 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int export_cmd(t_execcmd *ecmd, t_args *params)
 
     if (!ecmd->argv[1])
         return (printf("export: invalid argument\n"), 1);  
-    env_var = get_str_before_equals(ecmd->argv[1]);    
+    env_var = get_str_before_sign(ecmd->argv[1], '=');    
     env_value = get_str_after_sign(ecmd->argv[1], '=');
     if (!env_value)
         return (1);
@@ -78,14 +78,14 @@ int add_cmd(t_args *params, char *new_env_var)
     return (0);
 }
 
-char    *get_str_before_equals(const char *str) 
+char    *get_str_before_sign(char *str, char sign) 
 {
     char *result;
     int len;
     int i;
 
     i = 0;
-    while(str[i] != '=')
+    while (str[i] != sign)
         i++;
     len = i;
     result = malloc(sizeof(char) * (len + 1));
@@ -117,14 +117,13 @@ char    *get_str_after_sign(char *str, char sign)
     result = (char *)malloc(sizeof(char) * (len + 1));
     if (!result)
         return (perror("malloc"), NULL);
-    while (i < ft_strlen(str))
+    while (i < ft_strlen(str) && !is_delimiter(str[i]))
 	{
 		result[res_i] = str[i];
 		i++;
         res_i++;
 	}
 	result[res_i] = '\0';
-    // printf("res after equals: %s\n", result);
     return (result);
 }
 

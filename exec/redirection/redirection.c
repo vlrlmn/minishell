@@ -1,29 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
+/*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/04 14:36:20 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/21 20:29:12 by sabdulki         ###   ########.fr       */
+/*   Created: 2024/06/21 14:22:40 by sabdulki          #+#    #+#             */
+/*   Updated: 2024/06/21 14:29:24 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../../minishell.h"
 
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
+void	redir(t_redir *rcmd)
 {
-	size_t	i;
+	int		new_fd;
 
-	i = 0;
-	if (dstsize == 0)
-		return (ft_strlen(src));
-	while (src[i] && i < dstsize - 1)
+	new_fd = open(rcmd->file, rcmd->mode, 0644);
+	if (new_fd < 0) //Implicit File Descriptor Assignment
 	{
-		dst[i] = src[i];
-		i++;
+		printf("open '%s' failed in redir\n", rcmd->file);
+		exit(126);
 	}
-	dst[i] = '\0';
-	return (ft_strlen(src));
+	if (new_fd != rcmd->fd) // Close the old file descriptor if they are different
+		close(rcmd->fd);
+	rcmd->fd = new_fd;
 }

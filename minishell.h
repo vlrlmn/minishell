@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/20 19:33:48 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/21 18:21:56 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,7 +194,7 @@ int export_cmd(t_execcmd *ecmd, t_args *params);
 int	unset_cmd(t_execcmd *ecmd, t_args *params);
 
 char	*get_str_after_sign(char *str, char sign); //export
-char	*get_str_before_equals(const char *str); //export
+char	*get_str_before_sign(char *str, char sign); //export
 int		add_cmd(t_args *params, char *new_env_var); //export
 int		remove_cmd(t_args *params, char *env_var_to_remove); //unset
 
@@ -218,6 +218,7 @@ int		old_heredoc(t_redir *rcmd);
 
 /* expantion */
 char	*add_expantion(char *input, t_args *args);
+int	is_expantion(char *input);
 
 
 /* list */
@@ -232,6 +233,7 @@ int	more_redir(t_cmd_info *new_cmd, t_redir *rcmd, t_args *args);
 
 void	copy_eargv(t_cmd_info *new_cmd, t_cmd *cmd);
 void	copy_argv(t_cmd_info *new_cmd, t_cmd *cmd);
+void check_file_access(const char *file_path, int mode);
 
 void PrintTree(t_cmd	*cmd);
 #endif

@@ -6,11 +6,11 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 14:27:19 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/19 16:30:26 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/21 14:29:52 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 void	copy_eargv(t_cmd_info *new_cmd, t_cmd *cmd)
 {
@@ -66,4 +66,47 @@ void	copy_argv(t_cmd_info *new_cmd, t_cmd *cmd)
 		while (i < MAXARGS && pcmd->argv[++i])
         	new_cmd->argv[i] = pcmd->argv[i];
 	}
+}
+
+void check_file_access(const char *file_path, int mode) {
+    if (access(file_path, mode) == 0) {
+        printf("File '%s' is accessible with the specified mode.\n", file_path);
+    } else {
+        // access() failed, check errno to determine the error
+        switch (errno) {
+            case EACCES:
+                printf("Error: Permission denied to access '%s'.\n", file_path);
+                break;
+            case EROFS:
+                printf("Error: Read-only file system, cannot write to '%s'.\n", file_path);
+                break;
+            case ENOENT:
+                printf("Error: File '%s' does not exist.\n", file_path);
+                break;
+            case ENOTDIR:
+                printf("Error: A component of the path '%s' is not a directory.\n", file_path);
+                break;
+            case ENAMETOOLONG:
+                printf("Error: The path '%s' is too long.\n", file_path);
+                break;
+            case ELOOP:
+                printf("Error: Too many symbolic links encountered while accessing '%s'.\n", file_path);
+                break;
+            case EFAULT:
+                printf("Error: Bad address for file '%s'.\n", file_path);
+                break;
+            case EINVAL:
+                printf("Error: Invalid mode specified for accessing '%s'.\n", file_path);
+                break;
+            case ENOMEM:
+                printf("Error: Insufficient kernel memory to access '%s'.\n", file_path);
+                break;
+            case ETXTBSY:
+                printf("Error: Text file busy, cannot write to '%s'.\n", file_path);
+                break;
+            default:
+                printf("Error: Failed to access '%s' with error code %d (%s).\n", file_path, errno, strerror(errno));
+                break;
+        }
+    }
 }

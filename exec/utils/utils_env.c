@@ -6,11 +6,11 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:05:31 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/20 20:10:24 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/21 18:40:21 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 int update_envp_var(t_args *params, char *env_var, char *new_content)
 {
@@ -61,15 +61,17 @@ int find_env_index(char **envp, char *var)
 char    *find_env_var(char **envp, char *var)
 {
 	int		i;
-    int     len;
+	size_t	len;
 	char	*res;
 
 	i = 0;
-    len = ft_strlen(var);
 	res = NULL;
+	if (!var)
+		return (NULL);
+    len = ft_strlen(var);
 	while (envp[i])
 	{
-		if (ft_strncmp(envp[i], var, len) == 0)
+		if (ft_strncmp(envp[i], var, len) == 0 && (ft_strlen(get_str_before_sign(envp[i], '=')) == len))
 		{
 			res = envp[i] + (len + 1);
 			// res = envp[i];

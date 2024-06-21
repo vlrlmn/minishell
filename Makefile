@@ -19,7 +19,14 @@ SRC_PARSING = ./parsing/lexer_utils.c \
 				./parsing/lexer_list.c \
 				./parsing/lexer_expander.c \
 				./parsing/lexer_quotes.c \
+				./parsing/valid_input.c \
 
+SRC_EXECUTION = ./exec/run_cmd.c \
+				./exec/exec_path_cmd.c \
+				./exec/exec_buildin.c \
+				./exec/create_list.c \
+				./exec/expantion.c \
+				
 SRC_BUILTIN = ./exec/builtins/cd.c \
 			./exec/builtins/echo.c \
 			./exec/builtins/pwd.c \
@@ -27,22 +34,20 @@ SRC_BUILTIN = ./exec/builtins/cd.c \
 			./exec/builtins/env.c \
 			./exec/builtins/unset.c \
 
-SRC_EXECUTION = ./exec/exec_utils.c \
-				./exec/run_cmd.c \
-				./exec/redirections.c \
-				./exec/exec_path_cmd.c \
-				./exec/exec_buildin.c \
-				./exec/utils_env.c \
-				./exec/utils_list.c \
-				./exec/utils_fill_cmd.c \
-				./exec/create_list.c \
+SRC_REDIR = ./exec/redirection/heredoc.c \
+			./exec/redirection/redir_cmdlist.c \
+			./exec/redirection/redirection.c \
+
+SRC_UTILS = ./exec/utils/utils_env.c \
+			./exec/utils/utils_fill_cmd.c \
+			./exec/utils/utils_list.c \
+			
 
 SRC = 			main.c \
 				errors.c \
 				free_memory.c \
-				valid_input.c \
 
-SRCS = $(SRC) $(SRC_PARSING) $(SRC_EXECUTION) $(SRC_BUILTIN)
+SRCS = $(SRC) $(SRC_PARSING) $(SRC_EXECUTION) $(SRC_BUILTIN) $(SRC_REDIR) $(SRC_UTILS)
 
 OBJ = $(SRCS:.c=.o)
 

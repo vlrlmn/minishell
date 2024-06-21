@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 17:30:44 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/27 15:34:20 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/06/21 14:31:36 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
-int	fork1(void)
-{
-	int	pid;
+// int	fork1(void)
+// {
+// 	int	pid;
 
-	pid = fork();
-	if (pid == -1)
-		exit_with_err("fork");
-	return (pid);
-}
+// 	pid = fork();
+// 	if (pid == -1)
+// 		exit_with_err("fork");
+// 	return (pid);
+// }

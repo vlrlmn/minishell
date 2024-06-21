@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/20 19:09:01 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/21 14:48:03 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,11 @@ void	print_content(t_cmd_info *current)
 	i = 0;
 	while (current->argv[i])
 	{
-		printf("EARGV %s\n", current->eargv[i]);
-		printf("ARGV %s\n", current->argv[i]);
+		if (current->argv[i] && current->eargv[i])
+		{
+			printf("EARGV %s\n", current->eargv[i]);
+			printf("ARGV %s\n", current->argv[i]);
+		}
 		i++;
 	}
 	printf("fd_read: %d\n", current->fd_read);
@@ -115,23 +118,23 @@ void	print_content(t_cmd_info *current)
 	printf("file_write: %s\n", current->file_write);
 }
 
-void PrintList(t_cmd_info *cmd_list)
- {
+int PrintList(t_cmd_info *cmd_list)
+{
     t_cmd_info *current = cmd_list;
 	printf("-------------PRINTING LIST-------------\n");
+	if (!current)
+		return (printf("no list nodes, error\n"), 1);
     while (current->next != NULL) 
 	{
         print_content(current);
 		if (current->next != NULL)
         	current = current->next;
 		else
-		{
-			printf("ERROR IN PRINTING\n");
-			return ;
-		}
+			return (printf("ERROR IN PRINTING\n"), 1);
     }
 	if (current->next == NULL)
 		print_content(current);
+	return (0);
 }
 
 /*This is where we have instant loop happening. Inside the loop
