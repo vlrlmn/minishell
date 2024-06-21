@@ -97,28 +97,24 @@ int	define_file(t_cmd_info	*rcmd, t_redir *old_cmd)
 
 int	define_fd(t_cmd_info *rcmd, t_redir *old_cmd, t_args *args)
 {
+	/* if fd == -1, i have to bring the command to execution with invalis fd.
+	and exit wit status 1 in child proc, if fd od command == -1 */ 
 	if (rcmd->redir_type == REDIRIN)
 	{
 		rcmd->fd_read = get_file_fd(rcmd->fd_read, rcmd->file_read, rcmd->mode_read); //open and check if it's -1
-		if (rcmd->fd_read == -1)
-			return (1);
 	}
 	if (rcmd->redir_type == REDIROUT)
 	{
 		rcmd->fd_write = get_file_fd(rcmd->fd_write, rcmd->file_write, rcmd->mode_write);
-		if (rcmd->fd_write == -1)
-			return (1);
 	}
 	if (rcmd->redir_type == HEREDOC)
 	{
 		rcmd->fd_read = heredoc(rcmd->fd_read, rcmd->file_read, old_cmd->file, rcmd->mode_read, args) ; // call heredoc function HERE, not in parsing. TODO
-		if (rcmd->fd_read == -1)
-			return (1);
 	}
 	if (rcmd->redir_type == APPEND)
 	{
 		rcmd->fd_write = get_file_fd(rcmd->fd_write, rcmd->file_write, rcmd->mode_write);
-		if (rcmd->fd_write == -1)
+		if (append(rcmd->fd_write, rcmd->argv, args))
 			return (1);
 	}
 	return (0);
@@ -128,6 +124,8 @@ int	get_file_fd(int fd, char *file, int mode)
 {
 	int	new_fd;
 
+	if (check_file_access(file, R_OK))
+		return (-1);
 	new_fd = open(file, mode, 0644); //the permissions for each redir are different!!!! maybe??
 	if (new_fd < 0)
 	{

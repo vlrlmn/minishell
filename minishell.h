@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/21 18:21:56 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/21 22:10:57 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,6 +216,8 @@ char	*heredoc_get_tmp_file(void);
 int		heredoc(int fd, char *file, char *limiter, int mode, t_args *args);
 int		old_heredoc(t_redir *rcmd);
 
+int	append(int fd, char **eargv, t_args *args);
+
 /* expantion */
 char	*add_expantion(char *input, t_args *args);
 int	is_expantion(char *input);
@@ -233,7 +235,7 @@ int	more_redir(t_cmd_info *new_cmd, t_redir *rcmd, t_args *args);
 
 void	copy_eargv(t_cmd_info *new_cmd, t_cmd *cmd);
 void	copy_argv(t_cmd_info *new_cmd, t_cmd *cmd);
-void check_file_access(const char *file_path, int mode);
+int check_file_access(const char *file_path, int mode);
 
 void PrintTree(t_cmd	*cmd);
 #endif

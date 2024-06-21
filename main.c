@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/21 14:48:03 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/21 21:31:21 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ void PrintTree(t_cmd	*cmd)
 		{
 			
 			// printf("Arg %d: %.*s\n", i, (int)(exec->eargv[i] - exec->argv[i]), exec->argv[i]);
-			printf("EARGV %s\n", exec->argv[i]);
-			printf("ARGV %s\n", exec->eargv[i]);
+			printf("EARGV %s\n", exec->eargv[i]);
+			printf("ARGV %s\n", exec->argv[i]);
 			i++;
 		}
 	}

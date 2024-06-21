@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:38:32 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/20 18:15:49 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/21 21:33:31 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ t_cmd	*parseredir(t_cmd *cmd, char **ps, char *es)
 		else if (tok == '+') // it's << actually
 			cmd = redircmd(cmd, q, eq, O_WRONLY | O_CREAT, 0, HEREDOC);
 		else if (tok == '-') // >>
-			cmd = redircmd(cmd, q, eq, O_RDWR | O_CREAT | APPEND, 1, APPEND);
+			cmd = redircmd(cmd, q, eq, O_RDWR | O_CREAT | O_APPEND, 1, APPEND);
 		printf("\n--------PS: %s --------\n", *ps);
         printf("\n--------ES: %s --------\n", es);
         printf("\n--------Q: %.*s --------\n", (int)(eq - q), q); // Properly print the token

@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 14:19:33 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/21 20:36:00 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/21 21:44:55 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,7 @@ int	is_expantion(char *input)
 char	*add_expantion(char *input, t_args *args)
 {
     size_t	i;
-	int		j;
-	size_t		k;
+	size_t	k;
 	char	*var_value;
 	char	*env_var;
 	char	*res;
@@ -60,7 +59,6 @@ char	*add_expantion(char *input, t_args *args)
 	int		len;
 
 	i = 0;
-	j = 0;
 	k = 0;
 	middle = 0;
 	// res = NULL;
@@ -85,6 +83,7 @@ char	*add_expantion(char *input, t_args *args)
 	input_before_exp = get_str_before_sign(input, '$');
 	// printf("input_before_exp: %s\n", input_before_exp);
 	res = ft_strjoin(input_before_exp, var_value); // return input + meaning of exp
+	free_add_exp(var_value, env_var, input_before_exp); //or input
 	if (middle == 1 && res)
 	{
 		len = ft_strlen(input) - k;
@@ -93,9 +92,8 @@ char	*add_expantion(char *input, t_args *args)
 		if (is_expantion(rem))
 			rem = add_expantion(rem, args);
 		res = ft_strjoin(res, rem);
+		free(rem);
 	}
-	if (!res)
-		return (free_add_exp(var_value, env_var, input_before_exp), NULL); //or input
 	fprintf(stderr, "result_str: '%s'\n", res);
     return (res);
 }

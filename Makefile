@@ -37,6 +37,7 @@ SRC_BUILTIN = ./exec/builtins/cd.c \
 SRC_REDIR = ./exec/redirection/heredoc.c \
 			./exec/redirection/redir_cmdlist.c \
 			./exec/redirection/redirection.c \
+			./exec/redirection/append.c \
 
 SRC_UTILS = ./exec/utils/utils_env.c \
 			./exec/utils/utils_fill_cmd.c \

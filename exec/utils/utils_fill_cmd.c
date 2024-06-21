@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 14:27:19 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/21 14:29:52 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/21 22:09:27 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,9 @@ void	copy_argv(t_cmd_info *new_cmd, t_cmd *cmd)
 	}
 }
 
-void check_file_access(const char *file_path, int mode) {
+int check_file_access(const char *file_path, int mode) {
     if (access(file_path, mode) == 0) {
-        printf("File '%s' is accessible with the specified mode.\n", file_path);
+        return (printf("File '%s' is accessible with the specified mode.\n", file_path), 0);
     } else {
         // access() failed, check errno to determine the error
         switch (errno) {
@@ -109,4 +109,5 @@ void check_file_access(const char *file_path, int mode) {
                 break;
         }
     }
+    return (1);
 }

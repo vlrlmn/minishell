@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 14:17:50 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/21 20:34:57 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/21 22:18:07 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ int	heredoc(int fd, char *file, char *limiter, int mode, t_args *args)
 	char	*input_exp;
 
 	input_exp = NULL;
-	check_file_access(file, R_OK);
+	if (check_file_access(file, R_OK))
+		return (-1);
 	fd = get_file_fd(fd, file, mode);
 	fprintf(stderr, "limiter: %s, its len:  %zu\n", limiter, ft_strlen(limiter));
 	while (1)
@@ -72,8 +73,6 @@ int	heredoc(int fd, char *file, char *limiter, int mode, t_args *args)
 	fprintf(stderr, "heredoc completed\n");
 	return (fd);
 }
-
-
 
 
 
