@@ -6,13 +6,13 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 20:52:48 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/17 17:30:25 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/22 17:05:52 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	unset_cmd(t_execcmd *ecmd, t_args *params)
+int	unset_cmd(t_cmd_info *ecmd, t_args *params)
 {
 	if (ecmd->argv[1])
     {

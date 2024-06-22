@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:31:59 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/17 14:32:19 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/22 20:47:38 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 void	nulterminate_exec(t_execcmd *execcmd)
 {
-	 int i = 0;
+	int i = 0;
 
-    while (execcmd->argv[i]) {
+    while (execcmd->argv[i]) 
+    {
         if (execcmd->eargv[i]) {
             *execcmd->eargv[i] = 0;
         } else {

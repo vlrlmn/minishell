@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:27:36 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/19 13:09:27 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/22 20:52:49 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ t_cmd	*parse(t_args *args)
 		args->input++;
 	nulterminate(cmd);
 	lexical_analysis(cmd, args);
-	printf("\tprint tree from parsing!");
+	printf("print tree from parsing!\n");
 	PrintTree(cmd);
 	return (cmd);
 }

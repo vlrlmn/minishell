@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:26:37 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/19 17:59:24 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/22 19:39:12 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	run_redir(t_cmd *cmd, t_args *params)
 	run_cmd(rcmd->cmd, params); //it calls run_cmd to execute the sub-command (rcmd->cmd)
 }
 
-void check_arguments(t_execcmd *ecmd)
+void old_check_arguments(t_execcmd *ecmd)
 {
 	int i;
 	int j;
@@ -166,12 +166,12 @@ void check_dup2(int oldfd, int newfd) {
     }
 }
 
-void	run_exec(t_cmd *cmd, t_args *params)
+void	old_run_exec(t_cmd *cmd, t_args *params)
 {
 	t_execcmd	*ecmd;
 	// t_redir *rcmd;
 	
-	int	builtin_status;
+	// int	builtin_status;
 	char	*cmd_path;
 	char	*path;
 	// pid_t pid;
@@ -192,18 +192,18 @@ void	run_exec(t_cmd *cmd, t_args *params)
 	ecmd = (t_execcmd *)cmd;
 	if (ecmd->argv[0] == 0)
 		exit(127);
-	check_arguments(ecmd);
-	if (is_buildin(ecmd->argv[0]))
-	{
-		builtin_status = run_single_builtin(cmd, params);
-		if (builtin_status == 0)
-			return ;
-		else if (builtin_status == 1)
-			exit_with_err("Command not executed\n");
-		fprintf(stderr, "STATUS %d\n", builtin_status);
-	}
-	else
-	{
+	old_check_arguments(ecmd);
+	// if (is_buildin(ecmd->argv[0]))
+	// {
+	// 	builtin_status = run_single_builtin(cmd, params);
+	// 	if (builtin_status == 0)
+	// 		return ;
+	// 	else if (builtin_status == 1)
+	// 		exit_with_err("Command not executed\n");
+	// 	fprintf(stderr, "STATUS %d\n", builtin_status);
+	// }
+	// else
+	// {
 		fprintf(stderr, "In run_exec function!\n");
 		int i = 0;
 		while (ecmd->argv[i])
@@ -232,7 +232,7 @@ void	run_exec(t_cmd *cmd, t_args *params)
 		fprintf(stderr, "Found the path! : %s\n", cmd_path);
 		execve(cmd_path, ecmd->argv, params->envp);
 		fprintf(stderr, "execve errno:%d !\n", errno);
-	}
+	// }
 	close_fd((t_cmd *)ecmd); //the function is not executing there idk why
 	free(cmd_path);
 	exit(126);
@@ -247,7 +247,7 @@ void run_cmd(t_cmd *cmd, t_args *params)
     fprintf(stderr, "Running command type: %d\n", cmd->type);
 	// create linked list there and fill it recursively
     if (cmd->type == EXEC)
-        run_exec(cmd, params);
+        old_run_exec(cmd, params);
     else if (cmd->type == REDIR)
         run_redir(cmd, params);
     else if (cmd->type == PIPE)

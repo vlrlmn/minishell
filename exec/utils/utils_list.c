@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 14:27:29 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/21 20:38:05 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/22 19:34:55 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,21 +17,41 @@ void	add_cmd_to_list(t_cmd_info *cmd, t_cmd_info	**head)
 {
 	t_cmd_info	*current;
 	t_cmd_info	*new_cmd;
+	static int	i_list;
 
+	i_list += 1;
 	new_cmd = cmd;
 	new_cmd->next = NULL;
 	if (!*head)
 	{
 		*head = new_cmd;
+		new_cmd->head = 1;
 	}
 	else
 	{
 		current = *head;
 		while (current->next != NULL) // reach the last node
 			current = current->next;
+		new_cmd->head = 0;
 		current->next = new_cmd;
 	}
+	new_cmd->index = i_list;
 	return ;
+}
+
+int	list_size(t_cmd_info *cmd_list)
+{
+	t_cmd_info	*current_cmd;
+	int			size;
+
+	size = 0;
+	current_cmd = cmd_list;
+	while (current_cmd)
+	{
+		size++;
+		current_cmd = current_cmd->next;
+	}
+	return (size);
 }
 
 void	free_cmd_list(t_cmd_info	*cmd_list)

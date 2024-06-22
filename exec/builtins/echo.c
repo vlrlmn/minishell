@@ -6,13 +6,13 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:18:22 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/17 17:30:10 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/22 17:05:39 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int echo_cmd(t_execcmd *ecmd)
+int echo_cmd(t_cmd_info *ecmd)
 {
     int n_flag;
     int i;

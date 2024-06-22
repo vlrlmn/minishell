@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:39:06 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/17 17:29:57 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/22 17:05:34 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 // TODO errors handling EVERYWHERE where return(1);
 
-void    relative_path(char *result, t_execcmd *ecmd) 
+void    relative_path(char *result, t_cmd_info *ecmd) 
 {
     char cwd[1024];
 
@@ -28,7 +28,7 @@ void    relative_path(char *result, t_execcmd *ecmd)
     ft_strlcpy(result, cwd, sizeof(cwd));
 }
 
-int cd_cmd(t_execcmd *ecmd, t_args *params) 
+int cd_cmd(t_cmd_info *ecmd, t_args *params) 
 {
     char path[1024];
     char *old_path;

@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 17:20:39 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/21 14:32:55 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/22 21:18:28 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ t_cmd_info	*fill_redir(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args)
 	if (!new_cmd)
 		return (NULL);
 	// FT_MEMSET FOR new_cmd!
+	// check_arguments(ecmd);
 	new_cmd->type = rcmd->type;
 	new_cmd->subcmd = rcmd->cmd;
 	copy_argv(new_cmd, new_cmd->subcmd);
@@ -91,17 +92,20 @@ t_cmd_info	*fill_redir(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args)
 	new_cmd->file_write = NULL;
 	new_cmd->fd_read = 0;
 	new_cmd->fd_write = 1;
+	// rcmd->mode_read = 0 ???
+	// rcmd->mode_write = 0 ???
+	if (connection_content(new_cmd))
+		return (NULL);
 	if (add_redir_details(new_cmd, rcmd, args))
 		return (NULL);
 	printf("new_cmd->subcmd->type: %d\n", new_cmd->subcmd->type);
 	if (new_cmd->subcmd->type == PIPE)
 		gothrough_cmd(new_cmd->subcmd, cmd_list, args);
-	//it should smth like recursive, because there culd be more than 2 redirs!
+	//it should be smth like recursive, because there could be more than 2 redirs!
 	if (new_cmd->subcmd->type == REDIR) 
 	{
 		more_redir(new_cmd, rcmd, args);
 	}
-		// return (fill_redir(new_cmd->subcmd, cmd_list));
 	return (new_cmd);
 }
 
@@ -114,13 +118,17 @@ t_cmd_info	*fill_exec(t_cmd *cmd)
 	new_cmd = malloc(sizeof(t_cmd_info));
 	if (!new_cmd)
 		return (NULL);
-	check_arguments(ecmd);
+	// check_arguments(new_cmd);
 	// FT_MEMSET FOR new_cmd!
 	new_cmd->type = EXEC;
 	copy_argv(new_cmd, cmd);
 	copy_eargv(new_cmd, cmd);
 	new_cmd->fd_read = 0; //change if redirs
 	new_cmd->fd_write = 1; //change if redirs
-	// new_cmd->connection //create a pipe for connectiona and fill it smwh else
+	new_cmd->file_read = NULL;
+	new_cmd->file_write = NULL;
+	if (connection_content(new_cmd))
+		return (NULL);
+	// new_cmd->connection //create a pipe for connections and fill it smwh else
 	return (new_cmd);
 }

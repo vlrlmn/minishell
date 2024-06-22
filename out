@@ -1,0 +1,16 @@
+Libft
+Makefile
+errors.c
+errors.o
+example.c
+exec
+free_memory.c
+free_memory.o
+infile
+main.c
+main.o
+minishell
+minishell.h
+out
+parsing
+test

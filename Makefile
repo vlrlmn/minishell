@@ -26,6 +26,8 @@ SRC_EXECUTION = ./exec/run_cmd.c \
 				./exec/exec_buildin.c \
 				./exec/create_list.c \
 				./exec/expantion.c \
+				./exec/built_connections.c \
+				./exec/execution.c \
 				
 SRC_BUILTIN = ./exec/builtins/cd.c \
 			./exec/builtins/echo.c \

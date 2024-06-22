@@ -68,8 +68,6 @@ int		add_redir_details(t_cmd_info *new_cmd, t_redir *rcmd, t_args *args)
 
 int	define_file(t_cmd_info	*rcmd, t_redir *old_cmd)
 {
-	// rcmd->mode_read = 0 ???
-	// rcmd->mode_write = 0 ???
 	if (rcmd->redir_type == REDIRIN)
 	{
 		rcmd->file_read = old_cmd->file;
@@ -124,8 +122,8 @@ int	get_file_fd(int fd, char *file, int mode)
 {
 	int	new_fd;
 
-	if (check_file_access(file, R_OK))
-		return (-1);
+	// if (check_file_access(file, R_OK))
+	// 	return (-1);
 	new_fd = open(file, mode, 0644); //the permissions for each redir are different!!!! maybe??
 	if (new_fd < 0)
 	{

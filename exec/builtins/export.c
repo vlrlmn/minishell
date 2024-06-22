@@ -6,13 +6,13 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:48:27 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/21 21:39:49 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/22 17:05:45 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int export_cmd(t_execcmd *ecmd, t_args *params)
+int export_cmd(t_cmd_info *ecmd, t_args *params)
 {
     char    *env_var;
     char    *env_value;

@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/21 21:31:21 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/22 22:01:38 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ void PrintTree(t_cmd	*cmd)
 		{
 			
 			// printf("Arg %d: %.*s\n", i, (int)(exec->eargv[i] - exec->argv[i]), exec->argv[i]);
-			printf("EARGV %s\n", exec->eargv[i]);
 			printf("ARGV %s\n", exec->argv[i]);
+			printf("EARGV %s\n", exec->eargv[i]);
 			i++;
 		}
 	}
@@ -73,30 +73,30 @@ void PrintTree(t_cmd	*cmd)
 	}
 }
 
-int ft_launch_minishell(t_args *args)
-{
-	t_cmd	*cmd;
+// int ft_launch_minishell(t_args *args)
+// {
+// 	t_cmd	*cmd;
 	
 
-    if (args->input == NULL)
-	{
-		write(STDOUT_FILENO, "exit in launch\n", 5);
-		return 1;
-	}
-	if (!valid_input(args->input))
-	{
-		free_envp(args);
-		exit(SYNTAX_ERR);
-	}
-	//if (fork1() == 0)
-	//{
-		cmd = parse(args);
-		PrintTree(cmd);
-		run_cmd(cmd, args);
-	//}
-	//wait (0);
-	return (0);
-}
+//     if (args->input == NULL)
+// 	{
+// 		write(STDOUT_FILENO, "exit in launch\n", 5);
+// 		return 1;
+// 	}
+// 	if (!valid_input(args->input))
+// 	{
+// 		free_envp(args);
+// 		exit(SYNTAX_ERR);
+// 	}
+// 	//if (fork1() == 0)
+// 	//{
+// 		cmd = parse(args);
+// 		PrintTree(cmd);
+// 		run_cmd(cmd, args);
+// 	//}
+// 	//wait (0);
+// 	return (0);
+// }
 
 void	print_content(t_cmd_info *current)
 {
@@ -105,13 +105,12 @@ void	print_content(t_cmd_info *current)
 	i = 0;
 	while (current->argv[i])
 	{
-		if (current->argv[i] && current->eargv[i])
-		{
-			printf("EARGV %s\n", current->eargv[i]);
-			printf("ARGV %s\n", current->argv[i]);
-		}
+		printf("ARGV %s\n", current->argv[i]);
+		printf("EARGV %s\n", current->eargv[i]);
 		i++;
 	}
+	printf("con[0] %d\n", current->connection[0]);
+	printf("con[1] %d\n", current->connection[1]);
 	printf("fd_read: %d\n", current->fd_read);
 	printf("file_read: %s\n", current->file_read);
 	printf("fd_write: %d\n", current->fd_write);
@@ -137,13 +136,52 @@ int PrintList(t_cmd_info *cmd_list)
 	return (0);
 }
 
+void	printPipeArr(int **pipe_arr)
+{
+	int	i;
+
+	i = 0;
+	printf("going to print pipe arr\n");
+	if (!pipe_arr)
+		return ;
+	while (pipe_arr[i])
+	{
+		fprintf(stderr, "pipe_arr[%d][0] = %d\n", i, pipe_arr[i][0]);
+		fprintf(stderr, "pipe_arr[%d][1] = %d\n\n", i, pipe_arr[i][1]);
+		i++;
+	}
+}
+
+int	exec(t_cmd	*cmd, t_args *args)
+{
+	t_cmd_info	*cmd_list;
+	int			**pipe_arr;
+	int			exit_status;
+	int			cmd_status;
+
+	pipe_arr = NULL;
+	cmd_list = create_cmdlist(cmd, args);
+	pipe_arr = connections(cmd_list);
+	PrintList(cmd_list);
+	// if (!pipe_arr)
+	// 	return (free_cmd_list(cmd_list), 1);
+	cmd_status = run_cmds(cmd_list, pipe_arr, args);
+		
+	close_free_pipe_arr(pipe_arr);
+	exit_status = wait_cmds(cmd_list);
+	free_cmd_list(cmd_list);
+	if (cmd_status != 0) //any but not the zero
+		exit(cmd_status);
+	return (exit_status);
+}
+
 /*This is where we have instant loop happening. Inside the loop
 we reading the line, adding it in history and call lexer, beginning
 of args->input parsing*/
 int	loop_result(t_args *args)
 {
 	t_cmd	*cmd;
-	t_cmd_info *cmd_list;
+	int		status;
 
 	while (1)
 	{
@@ -161,8 +199,8 @@ int	loop_result(t_args *args)
 		add_history(args->input);
 		cmd = parse(args);
 		printf("-------------END OF PARSING-------------\n");
-		cmd_list = create_cmdlist(cmd, args);
-		PrintList(cmd_list);
+		status = exec(cmd, args);
+		
 		//it creates child proc ONCE for one input. For second input it'll create another child proc etc...
 		// pid_t pid = fork1();
 		// if (pid == 0)
@@ -180,7 +218,6 @@ int	loop_result(t_args *args)
 		// 	perror("fork");
 		// 	exit(EXIT_FAILURE);
 		// }
-		free_cmd_list(cmd_list);
 	}
 	return (0);
 }

@@ -6,13 +6,13 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:53:53 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/18 13:12:44 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/22 17:05:12 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int run_buildin(t_execcmd *ecmd, t_args *params)
+int run_buildin(t_cmd_info *ecmd, t_args *params)
 {
     int status;
 
@@ -50,24 +50,19 @@ int is_buildin(char *cmd)
 					|| ft_strncmp(cmd, "unset", 2) == 0);
 }
 
-int check_if_single_builtin(t_cmd *cmd)
+int check_if_single_builtin(t_cmd_info *cmd)
 {
-	t_execcmd	*ecmd;
-
-	ecmd = (t_execcmd *)cmd;
-	if (ecmd->argv[0] == 0)
+	if (cmd->argv[0] == 0)
 		exit(127);
 	// or better if (ecmd->type != EXEC && ecmd->type != Redir && is_buildin(ecmd->argv[0]))
-	return (ecmd->type == EXEC && is_buildin(ecmd->argv[0]));
+	return (cmd->type == EXEC && is_buildin(cmd->argv[0]));
 }
 
-int run_single_builtin(t_cmd *cmd, t_args *params)
+int run_single_builtin(t_cmd_info *cmd, t_args *params)
 {
-	t_execcmd	*ecmd;
 	int	builtin_status;
 
-	ecmd = (t_execcmd *)cmd;
-	fprintf(stderr, "Running command: %s\n", ecmd->argv[0]); // Debug message
-	builtin_status = run_buildin(ecmd, params);
+	fprintf(stderr, "Running command: %s\n", cmd->argv[0]); // Debug message
+	builtin_status = run_buildin(cmd, params);
 	return (builtin_status);
 }
