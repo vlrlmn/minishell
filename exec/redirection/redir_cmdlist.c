@@ -108,12 +108,14 @@ int	define_fd(t_cmd_info *rcmd, t_redir *old_cmd, t_args *args)
 	if (rcmd->redir_type == HEREDOC)
 	{
 		rcmd->fd_read = heredoc(rcmd->fd_read, rcmd->file_read, old_cmd->file, rcmd->mode_read, args) ; // call heredoc function HERE, not in parsing. TODO
+		rcmd->fd_read = get_file_fd(rcmd->fd_read, rcmd->file_read, rcmd->mode_read);
 	}
 	if (rcmd->redir_type == APPEND)
 	{
 		rcmd->fd_write = get_file_fd(rcmd->fd_write, rcmd->file_write, rcmd->mode_write);
-		if (append(rcmd->fd_write, rcmd->argv, args))
-			return (1);
+		// if (append(rcmd->fd_write, rcmd->argv, args))
+		// 	return (1);
+		// rcmd->fd_write = get_file_fd(rcmd->fd_write, rcmd->file_write, rcmd->mode_write);
 	}
 	return (0);
 }

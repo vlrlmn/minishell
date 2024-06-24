@@ -6,12 +6,13 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 21:25:09 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/21 22:19:54 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/24 16:14:13 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
+/* if cmd didn't execute, don't need to append */
 int	append(int fd, char **argv, t_args *args)
 {
 	char	*input;

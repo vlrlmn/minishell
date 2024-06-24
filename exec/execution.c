@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 14:51:13 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/22 21:57:32 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/24 16:39:28 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,24 +30,28 @@ int	run_cmds(t_cmd_info *cmd_list, int **pipe_arr, t_args *args)
 
 int	execute_cmd(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *params)
 {
-	int	builtin_status;
+	int	status;
 
 	if (cmd->argv[0] == 0)
 		return (1); //error
 	check_arguments(cmd);
 	if (is_buildin(cmd->argv[0]))
 	{
-		builtin_status = run_single_builtin(cmd, params);
-			return (builtin_status);
-		fprintf(stderr, "STATUS %d\n", builtin_status);
+		fprintf(stderr, "Executing BUILTIN command: %s\n", cmd->argv[0]); // Debug message
+		status = run_single_builtin(cmd, params);
 	}
 	else
 	{	
 		fprintf(stderr, "Executing command: %s\n", cmd->argv[0]); // Debug message
-		if (run_exec(cmd, cmd_list, pipe_arr, params))
-			return (1);
+		status = run_exec(cmd, cmd_list, pipe_arr, params);
 	}
-	return (0);
+	if (status == 0 && cmd->redir_type == APPEND)
+	{
+		if (append(cmd->fd_write, cmd->argv, params))
+			return (1); // or another status that should be there
+	}
+	fprintf(stderr, "STATUS %d\n", status);
+	return (status);
 }
 
 int	if_path_to_cmd(char *path_line)
@@ -88,17 +92,19 @@ int	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *para
 		if (if_path_to_cmd(cmd_path))
 			return (1);
 		fprintf(stderr, "Found the path! : %s\n", cmd_path);
+			dup2(cmd->connection[0], STDIN_FILENO);
+			fprintf(stderr, "did dup2 for con[0]!\n");
 		if (cmd->connection[0] != 0)
 		{
-			dup2(cmd->connection[0], STDIN_FILENO);
 			close(cmd->connection[0]);
-			fprintf(stderr, "did dup2 for con[0]!\n");
+			fprintf(stderr, "closed %d fd !\n", cmd->connection[0]);
 		}
+			dup2(cmd->connection[1], STDOUT_FILENO);
+			fprintf(stderr, "did dup2 for con[1]!\n");
 		if (cmd->connection[1] != 1)
 		{
-			dup2(cmd->connection[1], STDOUT_FILENO);
 			close(cmd->connection[1]);
-			fprintf(stderr, "did dup2 for con[1]!\n");
+			fprintf(stderr, "closed %d fd !\n", cmd->connection[1]);
 		}
 		status = execve(cmd_path, cmd->argv, params->envp);
 		fprintf(stderr, "execve errno: %d\n", status);
@@ -113,7 +119,7 @@ int	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *para
 			close(cmd->connection[0]);
 		if (cmd->connection[1] != 1)
 			close(cmd->connection[1]);
-		return (0);
+		return (0); //default success
 	}
 }
 

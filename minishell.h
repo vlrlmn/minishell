@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/22 21:17:47 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/24 15:13:06 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@
 # define MALLOC_ERROR 69
 # define SYNTAX_ERR 2
 # define MAXARGS 1024
+# define Y "\033[1;33m"   /* Bold Yellow for promt */
+# define RST "\033[0m"      /* Reset to default color */
 
 extern int exit_status; // CHECK IF IT IS CORRECT OR NOT
 

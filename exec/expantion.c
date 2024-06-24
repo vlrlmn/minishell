@@ -6,19 +6,11 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 14:19:33 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/21 21:44:55 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/24 16:37:48 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void	set_null(char *s1, char *s2, char *s3, char *s4)
-{
-	s1 = NULL;
-	s2 = NULL;
-	s3 = NULL;
-	s4 = NULL;
-}
 
 void	free_add_exp(char *s1, char *s2, char *s3)
 {

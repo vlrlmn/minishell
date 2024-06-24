@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 14:17:50 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/22 21:52:44 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/24 15:28:04 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ char	*heredoc_get_tmp_file(void)
 	if (!num_str)
 		return (NULL);
 	filename = ft_strjoin("/var/tmp/heredoc_", num_str);
+	free(num_str);
 	if (!filename)
 		return (printf("strjoin failed\n"), NULL);
-	free(num_str);
 	return (filename);
 }
 

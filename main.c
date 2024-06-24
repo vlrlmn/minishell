@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/22 22:01:38 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/24 16:35:51 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,10 +181,11 @@ of args->input parsing*/
 int	loop_result(t_args *args)
 {
 	t_cmd	*cmd;
-	int		status;
+	// int		status;
 
 	while (1)
 	{
+		printf(Y"NEW_PROMT:"RST);
 		args->input = readline("minishell$ ");
 		if (args->input == NULL)
 		{
@@ -199,7 +200,8 @@ int	loop_result(t_args *args)
 		add_history(args->input);
 		cmd = parse(args);
 		printf("-------------END OF PARSING-------------\n");
-		status = exec(cmd, args);
+		// status = exec(cmd, args);
+		exec(cmd, args);
 		
 		//it creates child proc ONCE for one input. For second input it'll create another child proc etc...
 		// pid_t pid = fork1();

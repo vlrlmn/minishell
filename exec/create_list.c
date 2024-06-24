@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 17:20:39 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/22 21:18:28 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/24 16:37:22 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,9 @@ void	gothrough_cmd(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args)
         cmd_node = fill_exec(cmd);
     else if (cmd->type == REDIR)
         cmd_node = fill_redir(cmd, cmd_list, args);
-    else if (cmd->type == PIPE)
+    else //PIPE type
         fill_pipe(cmd, cmd_list, args);
+    // else if (cmd->type == PIPE) //PIPE type
 	if (cmd_node)
 		add_cmd_to_list(cmd_node, cmd_list);
 	return ;
@@ -111,10 +112,8 @@ t_cmd_info	*fill_redir(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args)
 
 t_cmd_info	*fill_exec(t_cmd *cmd)
 {
-	t_execcmd	*ecmd;
 	t_cmd_info	*new_cmd;
 
-	ecmd = (t_execcmd *)cmd;
 	new_cmd = malloc(sizeof(t_cmd_info));
 	if (!new_cmd)
 		return (NULL);
