@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:05:31 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/21 18:40:21 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/25 19:10:05 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int find_env_index(char **envp, char *var)
             return (i);
 		i++;
 	}
-    printf("No such env variable\n");
+    // printf("No such env variable\n");
     return (1);
 }
 
@@ -80,7 +80,7 @@ char    *find_env_var(char **envp, char *var)
 		}
 		i++;
 	}
-    printf("No such env variable\n");
+    // printf("No such env variable\n");
 	return (NULL);
 }
 

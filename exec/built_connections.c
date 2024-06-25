@@ -6,13 +6,13 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 15:21:12 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/22 21:41:25 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/25 16:35:11 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-/* there should be list_size-1 amount of connections, 
+/* there should be pipe_amount-1 amount of connections, 
 and the last in pipe_ar should be NULL */
 int	**connections(t_cmd_info *cmd_list)
 {
