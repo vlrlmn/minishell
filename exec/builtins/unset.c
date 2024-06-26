@@ -6,24 +6,34 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 20:52:48 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/22 17:05:52 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/25 19:31:52 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	unset_cmd(t_cmd_info *ecmd, t_args *params)
+int pre_unset_cmd(t_cmd_info *ecmd, t_args *params)
 {
-	if (ecmd->argv[1])
+    int     i;
+
+    i = 1;
+    while(ecmd->argv[i])
     {
-        if (find_env_var(params->envp, ecmd->argv[1]))
-            remove_cmd(params, ecmd->argv[1]);
+        unset_cmd(ecmd, params, i);
+        i++;
     }
-    else
-    {
-        printf("\tunset: invalid argument\n"); // free memory where necessary
-        return(1);
-    }
+    return (0);
+}
+
+int	unset_cmd(t_cmd_info *ecmd, t_args *params, int i)
+{
+    char    *env_var;
+
+	if (!ecmd->argv[i])
+        return (printf("unset: invalid argument\n"), 1);
+    env_var = get_env(ecmd->argv[i], params->envp);
+    if (remove_cmd(params, env_var))
+        return (printf("\tunset: invalid argument\n"), 1); // free memory where necessary
     return (0);
 }
 
@@ -38,6 +48,9 @@ int	remove_cmd(t_args *params, char *env_var_to_remove)
     i = 0;
 	i_new = 0;
     size = 0;
+    if (!env_var_to_remove)
+        return (1);
+    fprintf(stderr, "var: %s\n", env_var_to_remove);
     while (params->envp[size])
         size++;
     new_env_list = malloc(sizeof(char *) * size);

@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/24 16:41:29 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/26 13:33:45 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,7 @@ int	exec(t_cmd	*cmd, t_args *args)
 	t_cmd_info	*cmd_list;
 	int			**pipe_arr;
 	int			exit_status;
-	int			cmd_status;
+	// int			cmd_status;
 
 	pipe_arr = NULL;
 	cmd_list = create_cmdlist(cmd, args);
@@ -166,13 +166,13 @@ int	exec(t_cmd	*cmd, t_args *args)
 	PrintList(cmd_list);
 	// if (!pipe_arr)
 	// 	return (free_cmd_list(cmd_list), 1);
-	cmd_status = run_cmds(cmd_list, pipe_arr, args);
-		
-	close_free_pipe_arr(pipe_arr);
+	// cmd_status = run_cmds(cmd_list, pipe_arr, args);
+	exit_status = run_cmds(cmd_list, pipe_arr, args);
+	if (list_size(cmd_list) == 1 && is_buildin(cmd_list->argv[0]))
+		return (exit_status);
 	exit_status = wait_cmds(cmd_list);
+	close_free_pipe_arr(pipe_arr);
 	free_cmd_list(cmd_list);
-	if (cmd_status != 0) //any but not the zero
-		exit(cmd_status);
 	return (exit_status);
 }
 

@@ -6,21 +6,36 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:48:27 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/22 17:05:45 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/25 18:32:51 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int export_cmd(t_cmd_info *ecmd, t_args *params)
+int pre_export_cmd(t_cmd_info *ecmd, t_args *params)
+{
+    int     i;
+
+    i = 1;
+    while(ecmd->argv[i])
+    {
+        export_cmd(ecmd, params, i);
+        i++;
+    }
+    return (0);
+}
+
+int export_cmd(t_cmd_info *ecmd, t_args *params, int i)
 {
     char    *env_var;
     char    *env_value;
-
-    if (!ecmd->argv[1])
+    
+    if (!ecmd->argv[i])
         return (printf("export: invalid argument\n"), 1);  
-    env_var = get_str_before_sign(ecmd->argv[1], '=');    
-    env_value = get_str_after_sign(ecmd->argv[1], '=');
+    env_var = get_str_before_sign(ecmd->argv[i], '=');
+    if (is_var_valid(env_var))
+        return (1);
+    env_value = get_str_after_sign(ecmd->argv[i], '=');
     if (!env_value)
         return (1);
     if (find_env_var(params->envp, env_var))
@@ -28,9 +43,9 @@ int export_cmd(t_cmd_info *ecmd, t_args *params)
         update_envp_var(params, env_var, env_value);
         printf("changed\n");
     }
-    else if (ft_strchr(ecmd->argv[1], '='))
+    else if (ft_strchr(ecmd->argv[i], '='))
     {
-        add_cmd(params, ecmd->argv[1]);
+        add_cmd(params, ecmd->argv[i]);
         printf("added new var!\n");
     }
     else
@@ -39,6 +54,20 @@ int export_cmd(t_cmd_info *ecmd, t_args *params)
         free(env_var);
         free(env_value);
         return (1);
+    }
+    return (0);
+}
+
+int is_var_valid(char *env_var)
+{
+    int i;
+
+    i = 0;
+    while(env_var[i])
+    {
+        if (!isalpha(env_var[i]))
+            return (fprintf(stderr, "invalid argument\n"), 1);
+        i++;
     }
     return (0);
 }

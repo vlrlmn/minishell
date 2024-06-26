@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 14:51:13 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/24 19:45:43 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/26 13:35:30 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,11 @@ int	execute_cmd(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *p
 {
 	int	status;
 
+	status = 0; // or another value?
 	if (cmd->argv[0] == 0)
 		return (1); //error
 	check_arguments(cmd);
-	if (is_buildin(cmd->argv[0]))
+	if (is_buildin(cmd->argv[0]) && list_size(cmd_list) == 1)
 	{
 		fprintf(stderr, "Executing BUILTIN command: %s\n", cmd->argv[0]); // Debug message
 		status = run_single_builtin(cmd, params);
@@ -43,14 +44,14 @@ int	execute_cmd(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *p
 	else
 	{	
 		fprintf(stderr, "Executing command: %s\n", cmd->argv[0]); // Debug message
-		status = run_exec(cmd, cmd_list, pipe_arr, params);
+		run_exec(cmd, cmd_list, pipe_arr, params);
 	}
 	// if (status == 0 && cmd->redir_type == APPEND)
 	// {
 	// 	if (append(cmd->fd_write, cmd->argv, params))
 	// 		return (1); // or another status that should be there
 	// }
-	fprintf(stderr, "STATUS %d\n", status);
+	// fprintf(stderr, "STATUS %d\n", status);
 	return (status);
 }
 
@@ -66,6 +67,7 @@ int	if_path_to_cmd(char *path_line)
 	return (0);
 }
 
+/* DO NOT RETURN!!! it should exit*/
 int	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *params)
 {
 	char	*cmd_path;
@@ -83,26 +85,32 @@ int	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *para
 	{
 		if (!params)
 			fprintf(stderr, "!cmd->params && !cmd->params->envp\n");
-		path = get_env("PATH=", params->envp);
-		cmd_path = find_command_path(cmd->argv[0], path);
-		if (!cmd_path)
+		if (cmd->argv[0][0] == '/')
+			cmd_path = cmd->argv[0];
+		else
 		{
-			fprintf(stderr, "Command not found: %s\n", cmd->argv[0]);
-			//free all, close all fds
-			exit(127);
+			path = get_env("PATH=", params->envp);
+			cmd_path = find_command_path(cmd->argv[0], path);
+			if (!cmd_path)
+			{
+				fprintf(stderr, "Command not found: %s\n", cmd->argv[0]);
+				exit (127);
+			}
 		}
 		if (if_path_to_cmd(cmd_path))
-			exit (1);
-		// fprintf(stderr, "Found the path! : %s\n", cmd_path);
-			dup2(cmd->connection[0], STDIN_FILENO);
-			// fprintf(stderr, "did dup2 for con[0]!\n");
+				exit (1); //is it 1 in bash?
+		fprintf(stderr, "Found the path! : %s\n", cmd_path);
+		if (cmd->connection[0] == -1 || cmd->connection[1] == -1)
+			exit(1);
+		dup2(cmd->connection[0], STDIN_FILENO);
+			fprintf(stderr, "did dup2 for con[0]!\n");
 		if (cmd->connection[0] != 0)
 		{
 			close(cmd->connection[0]);
 			fprintf(stderr, "closed %d fd !\n", cmd->connection[0]);
 		}
-			dup2(cmd->connection[1], STDOUT_FILENO);
-			// fprintf(stderr, "did dup2 for con[1]!\n");
+		dup2(cmd->connection[1], STDOUT_FILENO);
+			fprintf(stderr, "did dup2 for con[1]!\n");
 		if (cmd->connection[1] != 1)
 		{
 			close(cmd->connection[1]);
@@ -115,7 +123,7 @@ int	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *para
 		free_cmd_list(cmd_list);
 		// close_free_pipe_arr(pipe_arr);
 		// exit(status);
-		exit(status);
+		exit (status);
 	}
 	else
 	{

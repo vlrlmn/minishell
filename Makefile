@@ -38,7 +38,9 @@ SRC_BUILTIN = ./exec/builtins/cd.c \
 			./exec/builtins/pwd.c \
 			./exec/builtins/export.c \
 			./exec/builtins/env.c \
-			./exec/builtins/unset.c
+			./exec/builtins/unset.c \
+			./exec/builtins/exit.c \
+
 
 SRC_REDIR = ./exec/redirection/heredoc.c \
 			./exec/redirection/redir_cmdlist.c \
