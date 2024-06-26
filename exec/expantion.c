@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 14:19:33 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/24 16:37:48 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/26 15:45:59 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ char	*add_expantion(char *input, t_args *args)
 	{
 		len = ft_strlen(input) - k;
 		rem = malloc(sizeof(char) * (len + 1));
+		if (!rem)
+			return (NULL);
 		ft_strlcpy(rem, &input[k], ft_strlen(rem));
 		if (is_expantion(rem))
 			rem = add_expantion(rem, args);

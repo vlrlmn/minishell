@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:48:27 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/25 18:32:51 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/26 16:42:22 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,36 +17,69 @@ int pre_export_cmd(t_cmd_info *ecmd, t_args *params)
     int     i;
 
     i = 1;
-    while(ecmd->argv[i])
+    if (!ecmd->argv[i])
     {
-        export_cmd(ecmd, params, i);
+        export_print(params);
+        return (0);
+    }
+    while (ecmd->argv[i])
+    {
+        export_cmd(ecmd->argv[i], params);
         i++;
     }
     return (0);
 }
 
-int export_cmd(t_cmd_info *ecmd, t_args *params, int i)
+int export_print(t_args *params)
+{
+    int     i;
+	char	*value;
+    char    *before_sign;
+
+	i = 0;
+	while (params->envp[i])
+	{
+		//if value of variable is "", do not print it.
+		//should print if value contain only spaces (CHECK IN BASH 3.2)
+		value = get_str_after_sign(params->envp[i], '=');
+        before_sign = get_str_before_sign(params->envp[i], '=');
+		// if (value[0] == '\0')
+            // printf("declare -x %s\n", before_sign);
+        // else
+			printf("declare -x %s=\"%s\"\n", before_sign, value);
+        free(before_sign);
+		free(value);
+		i++;
+	}
+	return (0);
+}
+
+int export_cmd(char *str, t_args *params)
 {
     char    *env_var;
     char    *env_value;
     
-    if (!ecmd->argv[i])
-        return (printf("export: invalid argument\n"), 1);  
-    env_var = get_str_before_sign(ecmd->argv[i], '=');
-    if (is_var_valid(env_var))
-        return (1);
-    env_value = get_str_after_sign(ecmd->argv[i], '=');
+    if (!str)
+        return (printf("export: invalid argument\n"), 1);
+    printf("str: '%s'\n", str);
+    env_var = get_str_before_sign(str, '=');
+    if (ft_isdigit(env_var[0]))
+        return (printf("export: '%s': not a valid identofier\n", env_var), 1);
+    env_value = get_str_after_sign(str, '=');
     if (!env_value)
+    {
+        free(env_var);
         return (1);
+    }
     if (find_env_var(params->envp, env_var))
     {
         update_envp_var(params, env_var, env_value);
-        printf("changed\n");
+        // printf("changed\n");
     }
-    else if (ft_strchr(ecmd->argv[i], '='))
+    else if (ft_strchr(str, '='))
     {
-        add_cmd(params, ecmd->argv[i]);
-        printf("added new var!\n");
+        add_cmd(params, str);
+        // printf("added new var!\n");
     }
     else
     {
@@ -54,20 +87,6 @@ int export_cmd(t_cmd_info *ecmd, t_args *params, int i)
         free(env_var);
         free(env_value);
         return (1);
-    }
-    return (0);
-}
-
-int is_var_valid(char *env_var)
-{
-    int i;
-
-    i = 0;
-    while(env_var[i])
-    {
-        if (!isalpha(env_var[i]))
-            return (fprintf(stderr, "invalid argument\n"), 1);
-        i++;
     }
     return (0);
 }

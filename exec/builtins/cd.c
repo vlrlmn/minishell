@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:39:06 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/22 17:05:34 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/26 15:35:27 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,31 +33,38 @@ int cd_cmd(t_cmd_info *ecmd, t_args *params)
     char path[1024];
     char *old_path;
     char *new_path;
+    char *prevdir;
     char oldpwd[1024] = "OLDPWD";
     char pwd[1024] = "PWD";
 
     old_path = getcwd(path, sizeof(path));
     if (!old_path)
         return (1); // TODO errors handling
-    old_path = ft_strdup(old_path);
+    old_path = ft_strdup(old_path); //free
     if (old_path == NULL)
         return (1); //ERROR todo
     if ((ecmd->argv[1] == NULL) || (strcmp(ecmd->argv[1], "~") == 0)) //forbidden func!
     {
         char *home = getenv("HOME");
         if (!home) 
-        {
-            printf("cd: HOME not set\n");
-            return (1);
-        }
-        ft_strlcpy(path, home, sizeof(path) - 1);
-        path[sizeof(path) - 1] = '\0';
-    } 
+            return(printf("cd: HOME not set\n"), 1);
+        ft_strlcpy(path, home, sizeof(path));
+    }
     else if (ecmd->argv[1][0] == '/') 
     {
-        ft_strlcpy(path, ecmd->argv[1], sizeof(path) - 1);
-        path[sizeof(path) - 1] = '\0';
-    } 
+        ft_strlcpy(path, ecmd->argv[1], sizeof(path));
+    }
+    else if (ecmd->argv[1][0] == '-')
+    {
+        //go to oldpwd
+        //oldpwd becomes current direcrory
+        prevdir = find_env_var(params->envp, "OLDPWD"); //attention //free
+        if (prevdir[0] == '\0')
+            return (printf("cd: OLDPWD not set\n"), 1);
+        printf("'%s'\n", prevdir); //don't delete this printf, it needs for bash replication
+        ft_strlcpy(path, prevdir, sizeof(path));
+        free(prevdir);
+    }
     else
         relative_path(path, ecmd);
     if (chdir(path) != 0) 
@@ -65,7 +72,11 @@ int cd_cmd(t_cmd_info *ecmd, t_args *params)
         perror("cd");
         return (1);
     }
-    update_envp_var(params, oldpwd, old_path); //what if result is 1? handle error
+    if (find_env_index(params->envp, "OLDPWD") == -1)
+        export_cmd("OLDPWD=", params);
+    if (find_env_index(params->envp, "PWD") != -1)
+        update_envp_var(params, oldpwd, old_path); //what if result is 1? handle error
+    free(old_path);
     new_path = getcwd(path, sizeof(path));
     if (!new_path)
         return (1);

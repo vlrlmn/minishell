@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:05:31 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/25 19:10:05 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/26 15:40:16 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,15 @@
 int update_envp_var(t_args *params, char *env_var, char *new_content)
 {
 	char	*full_var;
+	char	*before_sign;
     int     index;
 
     index = find_env_index(params->envp, env_var);
-	full_var = ft_strjoin(env_var, "=");
-	full_var = ft_strjoin(full_var, new_content);	
+	if (index == -1)
+		return (1);
+	before_sign = ft_strjoin(env_var, "=");
+	full_var = ft_strjoin(before_sign, new_content);
+	free(before_sign);
 	free(params->envp[index]);
     params->envp[index] = full_var;
     return (0);
@@ -55,7 +59,7 @@ int find_env_index(char **envp, char *var)
 		i++;
 	}
     // printf("No such env variable\n");
-    return (1);
+    return (-1);
 }
 
 char    *find_env_var(char **envp, char *var)
@@ -63,6 +67,7 @@ char    *find_env_var(char **envp, char *var)
 	int		i;
 	size_t	len;
 	char	*res;
+	char	*before_sign;
 
 	i = 0;
 	res = NULL;
@@ -71,13 +76,16 @@ char    *find_env_var(char **envp, char *var)
     len = ft_strlen(var);
 	while (envp[i])
 	{
-		if (ft_strncmp(envp[i], var, len) == 0 && (ft_strlen(get_str_before_sign(envp[i], '=')) == len))
+		before_sign = get_str_before_sign(envp[i], '=');
+		if (ft_strncmp(envp[i], var, len) == 0 && (ft_strlen(before_sign) == len))
 		{
 			res = envp[i] + (len + 1);
-			// res = envp[i];
+			free(before_sign);
 			// maybe dould add substr to allocate memory for this substring
-			return (ft_strdup(res));
+			// return (ft_strdup(res));
+			return (res);
 		}
+		free(before_sign);
 		i++;
 	}
     // printf("No such env variable\n");

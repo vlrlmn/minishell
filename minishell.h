@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/26 13:33:54 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/26 16:23:09 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,15 +195,15 @@ int echo_cmd(t_cmd_info *ecmd);
 int pwd_cmd(t_cmd_info *ecmd, t_args *params);
 int	env_cmd(t_cmd_info *ecmd, t_args *params);
 int pre_export_cmd(t_cmd_info *ecmd, t_args *params);
-int export_cmd(t_cmd_info *ecmd, t_args *params, int i);
+int export_cmd(char *str, t_args *params);
 int pre_unset_cmd(t_cmd_info *ecmd, t_args *params);
-int	unset_cmd(t_cmd_info *ecmd, t_args *params, int i);
+int	unset_cmd(char *str, t_args *params);
 void	exit_cmd(t_cmd_info *ecmd, t_args *params);
 
 char	*get_str_after_sign(char *str, char sign); //export
 char	*get_str_before_sign(char *str, char sign); //export
 int		add_cmd(t_args *params, char *new_env_var); //export
-int		is_var_valid(char *env_var); //export
+int		export_print(t_args *params); //export
 int		remove_cmd(t_args *params, char *env_var_to_remove); //unset
 
 

@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/26 13:33:45 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/26 15:51:54 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,6 +247,7 @@ void	set_environment(t_args *args, char **envp)
 		i++;
 	}
 	args->envp[len] = NULL;
+	unset_cmd("OLDPWD", args);
 }
 
 /*Here we launch our program, set environment, handle signals.

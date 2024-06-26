@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:46:04 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/22 17:05:47 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/26 14:28:38 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,12 @@
 //after cd have to update pwd !!
 int pwd_cmd(t_cmd_info *ecmd, t_args *params)
 {
-    // char cwd[1024];
-    char *pwd;
+    char cwd[1024];
 
     (void)ecmd;
-    
-    // if (getcwd(cwd, sizeof(cwd)))
-    //     printf("%s\n", cwd);
-    pwd = find_env_var(params->envp, "PWD");
-    if (pwd)
-        printf("%s\n", pwd);
+    (void)params;
+    if (getcwd(cwd, sizeof(cwd)))
+        printf("%s\n", cwd);
     else
     {
         perror("pwd");
