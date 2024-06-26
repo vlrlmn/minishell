@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 17:20:39 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/24 16:37:22 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/24 16:54:04 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ t_cmd_info	*fill_exec(t_cmd *cmd)
 	// check_arguments(new_cmd);
 	// FT_MEMSET FOR new_cmd!
 	new_cmd->type = EXEC;
+	new_cmd->redir_type = NONE;
 	copy_argv(new_cmd, cmd);
 	copy_eargv(new_cmd, cmd);
 	new_cmd->fd_read = 0; //change if redirs

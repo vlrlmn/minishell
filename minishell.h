@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/24 15:13:06 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/24 16:54:17 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,8 @@ typedef enum redir_type
 	HEREDOC = 3,
 	APPEND = 4,
 	REDIRIN = 5,
-	REDIROUT = 6
+	REDIROUT = 6,
+	NONE = -1
 }	r_type;
 
 

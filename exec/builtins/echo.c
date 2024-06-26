@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:18:22 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/24 16:03:15 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/24 17:43:50 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ int echo_cmd(t_cmd_info *ecmd)
         n_flag = 1;
         i = 2;
     }
-    if (ecmd->redir_type == APPEND)
-        return (0);
+    // if (ecmd->redir_type == APPEND)
+    //     return (0);
     while (ecmd->argv[i])
     {
         if ((i > 1 && !n_flag) || (i > 2 && n_flag))

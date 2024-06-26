@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 15:21:12 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/22 21:41:25 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/24 17:39:40 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,11 +124,11 @@ int	close_free_pipe_arr(int **pipe_arr)
 		return (0);
 	while (pipe_arr[i])
 	{
-		// if (pipe_arr[i][0] != 0 && pipe_arr[i][0] != 1)
-		if (pipe_arr[i][0])
+		// if (pipe_arr[i][0])
+		if (pipe_arr[i][0] != 0 && pipe_arr[i][0] != 1)
 			close(pipe_arr[i][0]);
-		// if (pipe_arr[i][1] != 0 && pipe_arr[i][1] != 1)
-		if (pipe_arr[i][1])
+		// if (pipe_arr[i][1])
+		if (pipe_arr[i][1] != 0 && pipe_arr[i][1] != 1)
 			close(pipe_arr[i][1]);
 		free(pipe_arr[i]);
 		i++;

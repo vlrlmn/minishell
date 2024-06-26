@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/24 16:35:51 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/24 16:41:29 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,7 @@ int PrintList(t_cmd_info *cmd_list)
     }
 	if (current->next == NULL)
 		print_content(current);
+	printf("--------------------------------------\n");
 	return (0);
 }
 
@@ -199,7 +200,7 @@ int	loop_result(t_args *args)
 		}
 		add_history(args->input);
 		cmd = parse(args);
-		printf("-------------END OF PARSING-------------\n");
+		// printf("-------------END OF PARSING-------------\n");
 		// status = exec(cmd, args);
 		exec(cmd, args);
 		

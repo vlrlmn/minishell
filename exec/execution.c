@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 14:51:13 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/24 16:39:28 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/24 19:45:43 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,11 @@ int	execute_cmd(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *p
 		fprintf(stderr, "Executing command: %s\n", cmd->argv[0]); // Debug message
 		status = run_exec(cmd, cmd_list, pipe_arr, params);
 	}
-	if (status == 0 && cmd->redir_type == APPEND)
-	{
-		if (append(cmd->fd_write, cmd->argv, params))
-			return (1); // or another status that should be there
-	}
+	// if (status == 0 && cmd->redir_type == APPEND)
+	// {
+	// 	if (append(cmd->fd_write, cmd->argv, params))
+	// 		return (1); // or another status that should be there
+	// }
 	fprintf(stderr, "STATUS %d\n", status);
 	return (status);
 }
@@ -87,31 +87,35 @@ int	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *para
 		cmd_path = find_command_path(cmd->argv[0], path);
 		if (!cmd_path)
 		{
-			return (fprintf(stderr, "Command not found: %s\n", cmd->argv[0]), 1);
+			fprintf(stderr, "Command not found: %s\n", cmd->argv[0]);
+			//free all, close all fds
+			exit(127);
 		}
 		if (if_path_to_cmd(cmd_path))
-			return (1);
-		fprintf(stderr, "Found the path! : %s\n", cmd_path);
+			exit (1);
+		// fprintf(stderr, "Found the path! : %s\n", cmd_path);
 			dup2(cmd->connection[0], STDIN_FILENO);
-			fprintf(stderr, "did dup2 for con[0]!\n");
+			// fprintf(stderr, "did dup2 for con[0]!\n");
 		if (cmd->connection[0] != 0)
 		{
 			close(cmd->connection[0]);
 			fprintf(stderr, "closed %d fd !\n", cmd->connection[0]);
 		}
 			dup2(cmd->connection[1], STDOUT_FILENO);
-			fprintf(stderr, "did dup2 for con[1]!\n");
+			// fprintf(stderr, "did dup2 for con[1]!\n");
 		if (cmd->connection[1] != 1)
 		{
 			close(cmd->connection[1]);
-			fprintf(stderr, "closed %d fd !\n", cmd->connection[1]);
+			// fprintf(stderr, "closed %d fd !\n", cmd->connection[1]);
 		}
+		// close_free_pipe_arr(pipe_arr);
 		status = execve(cmd_path, cmd->argv, params->envp);
 		fprintf(stderr, "execve errno: %d\n", status);
-		// free_cmd_list(cmd_list);
+		// fre ALL memory
+		free_cmd_list(cmd_list);
 		// close_free_pipe_arr(pipe_arr);
 		// exit(status);
-		return (status);
+		exit(status);
 	}
 	else
 	{
