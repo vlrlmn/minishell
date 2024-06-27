@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 14:51:13 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/27 19:53:07 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/27 21:01:37 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *par
 	cmd_path = NULL;
 	pid = fork();
 	if (pid < 0)
-		return (free_all(cmd_list, pipe_arr, params));
+		return (free_all(cmd_list, pipe_arr));
 	if (pid == 0)
 	{
 		if (!params)

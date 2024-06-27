@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 17:20:39 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/27 19:10:54 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/27 21:10:06 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,16 +93,19 @@ t_cmd_info	*fill_redir(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args)
 	{
 		more_redir(new_cmd, rcmd, args); // free
 	}
+	free(rcmd);
 	return (new_cmd);
 }
 
 t_cmd_info	*fill_exec(t_cmd *cmd)
 {
 	t_cmd_info	*new_cmd;
+	t_execcmd	*ecmd;
 
 	new_cmd = malloc(sizeof(t_cmd_info));
 	if (!new_cmd)
 		return (NULL);
+	ecmd = (t_execcmd *)cmd;
 	// check_arguments(new_cmd);
 	// FT_MEMSET FOR new_cmd!
 	new_cmd->type = EXEC;
@@ -117,5 +120,6 @@ t_cmd_info	*fill_exec(t_cmd *cmd)
 	new_cmd->subcmd = 0;
 	if (connection_content(new_cmd))
 		return (NULL);
+	free(ecmd);
 	return (new_cmd);
 }

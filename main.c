@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/27 20:02:56 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/27 21:01:01 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,9 +166,9 @@ int	exec(t_cmd	*cmd, t_args *args)
 	PrintList(cmd_list);
 	exit_status = run_cmds(cmd_list, pipe_arr, args);
 	if (list_size(cmd_list) == 1 && is_buildin(cmd_list->argv[0]))
-		return (free_all(cmd_list, pipe_arr, args), exit_status);
+		return (free_all(cmd_list, pipe_arr), exit_status);
 	exit_status = wait_cmds(cmd_list);
-	free_all(cmd_list, pipe_arr, args);
+	free_all(cmd_list, pipe_arr);
 	return (exit_status);
 }
 

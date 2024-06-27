@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:38:32 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/24 17:45:03 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/27 21:09:20 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,22 +29,6 @@ t_cmd	*redircmd(t_cmd *subcmd, char *file, char *efile, int mode, int fd, int su
 	redircmd->efile = efile;
 	redircmd->mode = mode;
 	redircmd->fd = fd; //the fd that was passed as argument is affecting to the heredoc!!!!
-	// fprintf(stderr, "fd in parse_redir: %d\n", redircmd->fd);
-	// if (subtype == 3)
-	// {
-	// 	// close(redircmd->fd);
-	// 	original_efile_char = *redircmd->efile; // Save the original character pointed to by efile
-	// 	*redircmd->efile = 0; // Set efile to 0 before calling heredoc
-	// 	// do the heredoc -> get the input from user and write it to tmp file, redir fds.
-	// 	if (heredoc(redircmd))
-	// 	{
-	// 		*redircmd->efile = original_efile_char;
-	// 		printf("heredoc failed!\n");
-	// 		exit (0); //free all
-	// 	}
-	// 	*redircmd->efile = original_efile_char;
-	// }
-	// fprintf(stderr, "fd after heredoc: %d\n", redircmd->fd);
 	return ((t_cmd *)redircmd);
 }
 

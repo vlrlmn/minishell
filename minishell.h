@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/27 19:58:05 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/27 21:02:33 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -262,7 +262,7 @@ void	free_envp(t_args *args);
 void	free_cmd_list(t_cmd_info	*cmd_list);
 int		close_free_pipe_arr(int **pipe_arr);
 void	free_hfile_arr(char **hfile_array);
-void    free_all(t_cmd_info	*cmd_list, int **pipe_arr, t_args *params);
+void    free_all(t_cmd_info	*cmd_list, int **pipe_arr);
 void	free_and_exit(int status, t_cmd_info *cmd_list, int **pipe_arr, t_args *params);
 void PrintTree(t_cmd	*cmd);
 #endif
