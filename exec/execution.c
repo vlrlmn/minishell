@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 14:51:13 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/26 13:35:30 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/27 19:53:07 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	execute_cmd(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *p
 	if (is_buildin(cmd->argv[0]) && list_size(cmd_list) == 1)
 	{
 		fprintf(stderr, "Executing BUILTIN command: %s\n", cmd->argv[0]); // Debug message
-		status = run_single_builtin(cmd, params);
+		status = run_single_builtin(cmd, params, cmd_list, pipe_arr);
 	}
 	else
 	{	
@@ -67,8 +67,7 @@ int	if_path_to_cmd(char *path_line)
 	return (0);
 }
 
-/* DO NOT RETURN!!! it should exit*/
-int	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *params)
+void	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *params)
 {
 	char	*cmd_path;
 	char	*path;
@@ -80,7 +79,7 @@ int	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *para
 	cmd_path = NULL;
 	pid = fork();
 	if (pid < 0)
-		return (1);
+		return (free_all(cmd_list, pipe_arr, params));
 	if (pid == 0)
 	{
 		if (!params)
@@ -94,14 +93,14 @@ int	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *para
 			if (!cmd_path)
 			{
 				fprintf(stderr, "Command not found: %s\n", cmd->argv[0]);
-				exit (127);
+				free_and_exit(127, cmd_list, pipe_arr, params);
 			}
 		}
 		if (if_path_to_cmd(cmd_path))
-				exit (1); //is it 1 in bash?
+			free_and_exit(1, cmd_list, pipe_arr, params); //is it 1 in bash?
 		fprintf(stderr, "Found the path! : %s\n", cmd_path);
 		if (cmd->connection[0] == -1 || cmd->connection[1] == -1)
-			exit(1);
+			free_and_exit(1, cmd_list, pipe_arr, params);
 		dup2(cmd->connection[0], STDIN_FILENO);
 			fprintf(stderr, "did dup2 for con[0]!\n");
 		if (cmd->connection[0] != 0)
@@ -116,14 +115,11 @@ int	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *para
 			close(cmd->connection[1]);
 			// fprintf(stderr, "closed %d fd !\n", cmd->connection[1]);
 		}
-		// close_free_pipe_arr(pipe_arr);
+		close_free_pipe_arr(pipe_arr);
 		status = execve(cmd_path, cmd->argv, params->envp);
 		fprintf(stderr, "execve errno: %d\n", status);
 		// fre ALL memory
-		free_cmd_list(cmd_list);
-		// close_free_pipe_arr(pipe_arr);
-		// exit(status);
-		exit (status);
+		free_and_exit(status, cmd_list, pipe_arr, params);
 	}
 	else
 	{
@@ -131,7 +127,7 @@ int	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *para
 			close(cmd->connection[0]);
 		if (cmd->connection[1] != 1)
 			close(cmd->connection[1]);
-		return (0); //default success
+		// return (0); //default success
 	}
 }
 

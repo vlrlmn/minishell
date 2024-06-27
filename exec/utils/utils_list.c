@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 14:27:29 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/22 19:34:55 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/27 19:47:25 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,31 @@ void	free_cmd_list(t_cmd_info	*cmd_list)
 		if (current->fd_write != 0 && current->fd_write != 1)
 			close(current->fd_write);
 		if (current->file_read && current->redir_type == HEREDOC)
+		{
 			unlink(current->file_read);
+			free(current->file_read);
+		}
+		//free current->subcmd ?
+		free(current->connection);
+		if (current->hfile_array)
+			free_hfile_arr(current->hfile_array);
 		free(current);
 		current = tmp;
 	}
 	return ;
+}
+
+void	free_hfile_arr(char **hfile_array)
+{
+	int	i;
+
+	i = 0;
+	if (!hfile_array)
+		return ;
+	while (hfile_array[i])
+	{
+		free(hfile_array[i]);
+		i++;
+	}
+	free(hfile_array);
 }

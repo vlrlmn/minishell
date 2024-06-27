@@ -6,13 +6,13 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 17:05:13 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/25 17:33:14 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/27 19:58:21 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	exit_cmd(t_cmd_info *ecmd, t_args *params)
+void	exit_cmd(t_cmd_info *ecmd, t_args *params, t_cmd_info *cmd_list, int **pipe_arr)
 {
 	int	i;
 	char	*status;
@@ -31,8 +31,7 @@ void	exit_cmd(t_cmd_info *ecmd, t_args *params)
 				if (status[i] != '-')
 				{
 					printf("numeric argument required\n");
-					//free all
-					exit(2);
+					free_and_exit(2, cmd_list, pipe_arr, params);
 				}
 			}
 			i++;
@@ -51,8 +50,6 @@ void	exit_cmd(t_cmd_info *ecmd, t_args *params)
 				num_st = num_st % 256;
 		}
 	}
-	free_envp(params);
-	//free all memory, close fd-s, connections
-	exit(num_st);
+	free_and_exit(num_st, cmd_list, pipe_arr, params);
 }
 

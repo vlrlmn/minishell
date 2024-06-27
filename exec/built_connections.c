@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 15:21:12 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/26 13:34:15 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/27 19:39:32 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ int	**connections(t_cmd_info *cmd_list)
 		i++;
 	}
 	pipe_arr[i - 1] = NULL;
-	// pipe_arr[i - 1] = NULL; was in pipex
 	return (pipe_arr);
 }
 
@@ -59,10 +58,6 @@ int	**fill_pipes(t_cmd_info *cmd, int **pipe_arr, int i, int size)
 		pipe_arr[i] = pfd;
 	}
 	printf("------\n");
-	// printf("fd_read: %d\n", cmd->fd_read);
-	// printf("file_read: %s\n", cmd->file_read);
-	// printf("fd_write: %d\n", cmd->fd_write);
-	// printf("file_write: %s\n", cmd->file_write);
 	if (cmd->head == 1) //for first cmd
 	{
 		fprintf(stderr, "\ti'm head!\n");

@@ -24,23 +24,67 @@ If the file does not exist, it will be created. */
 
 // }
 
+int	count_heredoc_files(t_redir *rcmd)
+{
+	int			type;
+	int			counter;
+	t_redir		*rsubcmd;
+	t_redir		*tmp;
+
+	counter = 0;
+	rsubcmd = (t_redir *)rcmd->cmd;
+	type = REDIR;
+	while(type == REDIR)
+	{
+		if (rsubcmd->subtype == HEREDOC)
+			counter +=1;
+		type = rsubcmd->cmd->type;
+		if (type == REDIR)
+		{
+			tmp = (t_redir *)rsubcmd->cmd;
+			rsubcmd = tmp;
+		}
+	}
+	return (counter);
+}
+
+char	**create_heredoc_file_array(t_redir *rcmd)
+{
+	char	**hfile_arr;
+	int			size;
+
+	size = count_heredoc_files(rcmd);
+	hfile_arr = malloc(sizeof(char *) * (size + 1));
+	if (!hfile_arr)
+		return (NULL);
+	return (hfile_arr);
+}
+
 int	more_redir(t_cmd_info *new_cmd, t_redir *rcmd, t_args *args)
 {
 	int			type;
+	int			counter;
 	char		*file;
 	int			fd;
 	t_redir		*rsubcmd;
 	t_redir		*tmp;
+	
+	char		**hfile_arr;
 
-	(void)new_cmd;
+	counter = 0;
 	rsubcmd = (t_redir *)rcmd->cmd;
 	type = REDIR;
+
+	hfile_arr = create_heredoc_file_array(rcmd);
 	while (type == REDIR && rsubcmd->subtype != APPEND)
 	{
 		if (rsubcmd->subtype == HEREDOC)
 		{
-			file = heredoc_get_tmp_file();
+			file = heredoc_get_tmp_file(); //write this file to some struct to unlink and free it later
 			heredoc(rsubcmd->fd, file, rsubcmd->file, rsubcmd->mode, args);
+			if (hfile_arr)
+				hfile_arr[counter] = file;
+			counter +=1;
 		}
 		else
 		{
@@ -54,6 +98,9 @@ int	more_redir(t_cmd_info *new_cmd, t_redir *rcmd, t_args *args)
 			rsubcmd = tmp;
 		}
 	}
+	if (hfile_arr)
+		hfile_arr[counter] = NULL;
+	new_cmd->hfile_array = hfile_arr;
 	return (0);
 }
 

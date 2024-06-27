@@ -6,13 +6,13 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:53:53 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/25 19:18:02 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/27 19:57:47 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int run_buildin(t_cmd_info *ecmd, t_args *params)
+int run_buildin(t_cmd_info *ecmd, t_args *params, t_cmd_info *cmd_list, int **pipe_arr)
 {
     int status;
 
@@ -26,7 +26,7 @@ int run_buildin(t_cmd_info *ecmd, t_args *params)
     if (ft_strncmp(ecmd->argv[0], "cd", 2) == 0)
         status = cd_cmd(ecmd, params); //DEBUG
     else if (ft_strncmp(ecmd->argv[0], "exit", 4) == 0)
-        exit_cmd(ecmd, params);
+        exit_cmd(ecmd, params, cmd_list, pipe_arr);
     else if (ft_strncmp(ecmd->argv[0], "echo", 4) == 0)
         status = echo_cmd(ecmd);
     else if (ft_strncmp(ecmd->argv[0], "pwd", 3) == 0)
@@ -55,11 +55,11 @@ int check_if_single_builtin(t_cmd_info *cmd)
 	return (cmd->type == EXEC && is_buildin(cmd->argv[0]));
 }
 
-int run_single_builtin(t_cmd_info *cmd, t_args *params)
+int run_single_builtin(t_cmd_info *cmd, t_args *params, t_cmd_info *cmd_list, int **pipe_arr)
 {
 	int	builtin_status;
-
+    
 	fprintf(stderr, "Running command: %s\n", cmd->argv[0]); // Debug message
-	builtin_status = run_buildin(cmd, params);
+	builtin_status = run_buildin(cmd, params, cmd_list, pipe_arr);
 	return (builtin_status);
 }

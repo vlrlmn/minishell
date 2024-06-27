@@ -6,20 +6,18 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 14:19:33 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/26 15:45:59 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/27 17:04:37 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	free_add_exp(char *s1, char *s2, char *s3)
+void	free_add_exp(char *s1, char *s2)
 {
 	if (s1)
 		free(s1);
 	if (s2)
 		free(s2);
-	if (s3)
-		free(s3);
 }
 
 int	is_expantion(char *input)
@@ -68,23 +66,23 @@ char	*add_expantion(char *input, t_args *args)
 		k++;
 	if (k != ft_strlen(input)) //if there are chars after '$EXP  smth'
 		middle = 1;
-	env_var = get_str_after_sign(input, '$');
+	env_var = get_str_after_sign(input, '$'); 				//free DONE
 	// fprintf(stderr, "env_var: '%s'\n", env_var);
     var_value = find_env_var(args->envp, env_var);
     // printf("var_value: %s\n", var_value);
-	input_before_exp = get_str_before_sign(input, '$');
+	input_before_exp = get_str_before_sign(input, '$');		//free DONE
 	// printf("input_before_exp: %s\n", input_before_exp);
-	res = ft_strjoin(input_before_exp, var_value); // return input + meaning of exp
-	free_add_exp(var_value, env_var, input_before_exp); //or input
+	res = ft_strjoin(input_before_exp, var_value); // return input + meaning of exp free
+	free_add_exp(env_var, input_before_exp); //or input
 	if (middle == 1 && res)
 	{
 		len = ft_strlen(input) - k;
-		rem = malloc(sizeof(char) * (len + 1));
+		rem = malloc(sizeof(char) * (len + 1)); //free
 		if (!rem)
-			return (NULL);
+			return (free(res), NULL);
 		ft_strlcpy(rem, &input[k], ft_strlen(rem));
 		if (is_expantion(rem))
-			rem = add_expantion(rem, args);
+			rem = add_expantion(rem, args); //rem becomes input
 		res = ft_strjoin(res, rem);
 		free(rem);
 	}

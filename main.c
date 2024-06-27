@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/26 15:51:54 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/27 20:02:56 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,15 +164,11 @@ int	exec(t_cmd	*cmd, t_args *args)
 	cmd_list = create_cmdlist(cmd, args);
 	pipe_arr = connections(cmd_list);
 	PrintList(cmd_list);
-	// if (!pipe_arr)
-	// 	return (free_cmd_list(cmd_list), 1);
-	// cmd_status = run_cmds(cmd_list, pipe_arr, args);
 	exit_status = run_cmds(cmd_list, pipe_arr, args);
 	if (list_size(cmd_list) == 1 && is_buildin(cmd_list->argv[0]))
-		return (exit_status);
+		return (free_all(cmd_list, pipe_arr, args), exit_status);
 	exit_status = wait_cmds(cmd_list);
-	close_free_pipe_arr(pipe_arr);
-	free_cmd_list(cmd_list);
+	free_all(cmd_list, pipe_arr, args);
 	return (exit_status);
 }
 
@@ -203,25 +199,8 @@ int	loop_result(t_args *args)
 		// printf("-------------END OF PARSING-------------\n");
 		// status = exec(cmd, args);
 		exec(cmd, args);
-		
-		//it creates child proc ONCE for one input. For second input it'll create another child proc etc...
-		// pid_t pid = fork1();
-		// if (pid == 0)
-		// {
-		// 	run_cmd(cmd, args);
-		// 	// exit(0);
-		// }
-		// else if (pid > 0)
-		// {
-		// 	close_fd(cmd);
-		// 	waitpid(pid, NULL, 0);
-		// }
-		// else
-		// {
-		// 	perror("fork");
-		// 	exit(EXIT_FAILURE);
-		// }
 	}
+	free_envp(args);
 	return (0);
 }
 
@@ -234,6 +213,7 @@ void	set_environment(t_args *args, char **envp)
 
 	len = 0;
 	i = 0;
+	args->envp = NULL;
 	while (envp[len])
 		len++;
 	args->envp = (char **)malloc((len + 1) * sizeof(char *));

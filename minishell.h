@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/26 16:23:09 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/27 19:58:05 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ typedef enum token_type
 }			t_type;
 
 /* if i have only one cmd, i don't need to create connections, only feel fd_read and fd_write. */
-typedef struct s_cmd_info
+typedef struct s_cmd_info //free
 {
 	t_args	*args; //includes input and params
 	int		head;
@@ -132,14 +132,15 @@ typedef struct s_cmd_info
 	// t_cmd	*cmd; insted of T_cmd it should point to the ... ????
 	char	*argv[MAXARGS]; //to pass this fiels into execve()
 	char	*eargv[MAXARGS];
-	int		status;
+	int		status; //?
 	int		fd_read;
 	int		fd_write;
-	char	*file_read;
+	char	*file_read; //free if redir_type == HEREDOC
 	char	*file_write;
 	int		mode_read;
 	int		mode_write;
-	int		*connection;
+	int		*connection; //free
+	char	**hfile_array; //free
 	struct s_cmd_info	*next;
 }	t_cmd_info;
 
@@ -164,10 +165,8 @@ int			gettoken(char **ps, char *es, char **q, char **eq);
 void		exit_with_err(char *msg);
 int			peek(char **ps, char *es, char *toks);
 t_cmd		*parseredir(t_cmd *cmd, char **ps, char *es);
-void		free_envp(t_args *args);
 t_cmd		*pipecmd(t_cmd *left, t_cmd *right);
 t_cmd		*parsepipe(char **ps, char *es);
-void		free_envp(t_args *args);
 t_cmd		*parse(t_args *args);
 void		panic_and_free_env(t_args *args, int index);
 void		exit_with_syntax_err(t_args *args, int err_code);
@@ -185,10 +184,10 @@ char		process_node(t_lexems *list);
 void	write_new_promt(void);
 
 /* builtins */
-int	run_buildin(t_cmd_info	*ecmd, t_args *params);
+int	run_buildin(t_cmd_info	*ecmd, t_args *params,  t_cmd_info *cmd_list, int **pipe_arr);
 int is_buildin(char *cmd);
 int check_if_single_builtin(t_cmd_info *cmd);
-int run_single_builtin(t_cmd_info *cmd, t_args *params);
+int run_single_builtin(t_cmd_info *cmd, t_args *params, t_cmd_info *cmd_list, int **pipe_arr);
 
 int cd_cmd(t_cmd_info *ecmd, t_args *params);
 int echo_cmd(t_cmd_info *ecmd);
@@ -198,7 +197,7 @@ int pre_export_cmd(t_cmd_info *ecmd, t_args *params);
 int export_cmd(char *str, t_args *params);
 int pre_unset_cmd(t_cmd_info *ecmd, t_args *params);
 int	unset_cmd(char *str, t_args *params);
-void	exit_cmd(t_cmd_info *ecmd, t_args *params);
+void	exit_cmd(t_cmd_info *ecmd, t_args *params,  t_cmd_info *cmd_list, int **pipe_arr);
 
 char	*get_str_after_sign(char *str, char sign); //export
 char	*get_str_before_sign(char *str, char sign); //export
@@ -236,7 +235,6 @@ t_cmd_info	*create_cmdlist(t_cmd *cmd, t_args *args);
 t_cmd_info	*fill_redir(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args);
 t_cmd_info	*fill_exec(t_cmd *cmd);
 void	add_cmd_to_list(t_cmd_info *cmd, t_cmd_info	**head);
-void	free_cmd_list(t_cmd_info	*cmd_list);
 void	gothrough_cmd(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args);
 void	fill_pipe(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args);
 int		more_redir(t_cmd_info *new_cmd, t_redir *rcmd, t_args *args);
@@ -251,15 +249,20 @@ int		check_file_access(const char *file_path, int mode);
 int		**connections(t_cmd_info *cmd_list);
 int		**fill_pipes(t_cmd_info *cmd, int **pipe_arr, int i, int size);
 int		*create_a_pipe(int **pipe_arr);
-int		close_free_pipe_arr(int **pipe_arr);
 int		connection_content(t_cmd_info	*new_cmd);
 
 /* running cmds */
 int		run_cmds(t_cmd_info *cmd_list, int **pipe_arr, t_args *args);
 int		execute_cmd(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *params);
-int		run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *params);
+void		run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *params);
 int		wait_cmds(t_cmd_info *cmd_head);
 
-
+/* free */
+void	free_envp(t_args *args);
+void	free_cmd_list(t_cmd_info	*cmd_list);
+int		close_free_pipe_arr(int **pipe_arr);
+void	free_hfile_arr(char **hfile_array);
+void    free_all(t_cmd_info	*cmd_list, int **pipe_arr, t_args *params);
+void	free_and_exit(int status, t_cmd_info *cmd_list, int **pipe_arr, t_args *params);
 void PrintTree(t_cmd	*cmd);
 #endif
