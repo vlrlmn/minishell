@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:39:06 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/26 15:35:27 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/27 23:08:14 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ int cd_cmd(t_cmd_info *ecmd, t_args *params)
             return (printf("cd: OLDPWD not set\n"), 1);
         printf("'%s'\n", prevdir); //don't delete this printf, it needs for bash replication
         ft_strlcpy(path, prevdir, sizeof(path));
-        free(prevdir);
     }
     else
         relative_path(path, ecmd);

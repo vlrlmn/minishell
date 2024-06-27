@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:48:27 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/26 16:42:22 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/27 23:13:32 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,12 @@ int export_cmd(char *str, t_args *params)
     }
     else
     {
-        printf("export: invalid argument\n");
         free(env_var);
         free(env_value);
-        return (1);
+        return (printf("export: invalid argument\n"), 1);
     }
+    free(env_var);
+    free(env_value);
     return (0);
 }
 

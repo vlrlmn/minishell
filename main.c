@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/27 21:01:01 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/27 22:44:25 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,15 +100,19 @@ void PrintTree(t_cmd	*cmd)
 
 void	print_content(t_cmd_info *current)
 {
-	int i;
+	// int i;
 	printf("type: %d\n", current->type);
-	i = 0;
-	while (current->argv[i])
-	{
-		printf("ARGV %s\n", current->argv[i]);
-		printf("EARGV %s\n", current->eargv[i]);
-		i++;
-	}
+	// if (current->argv != NULL)
+	// {
+	// 	i = 0;
+	// 	while (current->argv[i] != NULL)
+	// 	{
+	// 		printf("ARGV %s\n", current->argv[i]);
+	// 		printf("EARGV %s\n", current->eargv[i]);
+	// 		i++;
+	// 	}
+	// }
+	
 	printf("con[0] %d\n", current->connection[0]);
 	printf("con[1] %d\n", current->connection[1]);
 	printf("fd_read: %d\n", current->fd_read);
