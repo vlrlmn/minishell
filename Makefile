@@ -6,7 +6,8 @@
 NAME = minishell
 CC = cc --debug -Wall -Wextra -Werror -g3 -fsanitize=address
 CFLAGS = -I/usr/local/opt/readline/include
-LDFLAGS = -I/usr/local/include -L/usr/local/lib -lreadline  
+# LDFLAGS = -I/usr/local/include -L/usr/local/lib -lreadline  
+LDFLAGS = -lreadline  
 # -L/usr/local/opt/readline/lib -lreadline
 
 SRC = 			main.c \

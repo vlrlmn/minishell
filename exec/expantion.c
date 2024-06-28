@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 14:19:33 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/27 17:04:37 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/28 19:03:59 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ char	*add_expantion(char *input, t_args *args)
 	while (input[i] && input[i] != '$') //find the posostion of '$'
 		i++;
 	if (is_delimiter(input[i + 1]) || input[i + 1] == '\0')
-		return (fprintf(stderr, "no expantions, only '$' sign!\n"), input);
+		return (input);
+		// return (fprintf(stderr, "no expantions, only '$' sign!\n"), input);
 	k = i;
 	k += 1;
 	//check if there are some chars after exp. example: '$HOME 123'
@@ -86,6 +87,6 @@ char	*add_expantion(char *input, t_args *args)
 		res = ft_strjoin(res, rem);
 		free(rem);
 	}
-	fprintf(stderr, "result_str: '%s'\n", res);
+	// fprintf(stderr, "result_str: '%s'\n", res);
     return (res);
 }

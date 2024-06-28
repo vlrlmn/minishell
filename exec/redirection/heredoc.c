@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 14:17:50 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/24 15:28:04 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/28 19:06:32 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	heredoc(int fd, char *file, char *limiter, int mode, t_args *args)
 	// if (check_file_access(file, R_OK))
 	// 	return (-1);
 	fd = get_file_fd(fd, file, mode);
-	fprintf(stderr, "limiter: %s, its len:  %zu\n", limiter, ft_strlen(limiter));
+	// fprintf(stderr, "limiter: %s, its len:  %zu\n", limiter, ft_strlen(limiter));
 	while (1)
 	{
 		fprintf(stderr, "> ");
@@ -70,57 +70,6 @@ int	heredoc(int fd, char *file, char *limiter, int mode, t_args *args)
 		free(input);
 	}
 	close(fd);
-	fprintf(stderr, "heredoc completed\n");
+	// fprintf(stderr, "heredoc completed\n");
 	return (fd);
-}
-
-
-
-int	old_heredoc(t_redir *rcmd)
-{
-	// if heredoc gets the expander, it should return its value!
-	int		new_fd;
-	// char	*input;
-	char	*limiter;
-	char	*filename;
-	
-	limiter = rcmd->file;
-	filename = heredoc_get_tmp_file();
-	if (!filename)
-		return (1);
-	rcmd->file = filename;
-	check_file_access(rcmd->file, R_OK);
-	//
-	new_fd = open(rcmd->file, rcmd->mode, 0777); // 0644
-	if (new_fd < 0)
-	{
-		printf("open %s failed in heredoc\n", rcmd->file);
-		exit(126);
-	}
-	rcmd->fd = new_fd;
-	// close (new_fd);
-	fprintf(stderr, "limiter: %s, its len:  %zu\n", limiter, ft_strlen(limiter));
-	// while (1)
-	// {
-	// 	fprintf(stderr, "> ");
-	// 	input = get_next_line(STDIN_FILENO);
-	// 	if (!input) // if ctrl + d. TODO ahnde ctrl+c
-	// 	{
-	// 		//close fds, free memory
-	// 		close(rcmd->fd);
-	// 		fprintf(stderr, "NULL input\n");
-	// 		return (1);
-	// 	}
-	// 	// fprintf(stderr, "input len: %zu\n", ft_strlen(input));
-	// 	if ((ft_strncmp(limiter, input, ft_strlen(limiter)) == 0) && (ft_strlen(limiter) == (ft_strlen(input) - 1)))
-	// 	{
-	// 		free(input);
-	// 		break ;
-	// 	}
-	// 	write(rcmd->fd, input, ft_strlen(input)); // write into newly created file fd
-	// 	free(input);
-	// }
-	close(rcmd->fd);
-	fprintf(stderr, "heredoc completed\n");
-	return (0);
 }

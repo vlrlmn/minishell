@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 20:52:48 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/26 16:32:37 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/28 19:05:35 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	unset_cmd(char *str, t_args *params)
         return (printf("unset: invalid argument\n"), 1);
     env_var = get_env(str, params->envp);
     if (remove_cmd(params, env_var))
-        return (printf("\tunset: invalid argument\n"), 1); // free memory where necessary
+        return (printf("unset: invalid argument\n"), 1); // free memory where necessary
     return (0);
 }
 

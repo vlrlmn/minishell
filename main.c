@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/28 18:31:36 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/28 19:09:52 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,7 @@ int	exec(t_cmd	*cmd, t_args *args)
 	pipe_arr = NULL;
 	cmd_list = create_cmdlist(cmd, args);
 	pipe_arr = connections(cmd_list);
-	PrintList(cmd_list);
+	// PrintList(cmd_list);
 	exit_status = run_cmds(cmd_list, pipe_arr, args);
 	if (list_size(cmd_list) == 1 && is_buildin(cmd_list->argv[0]))
 		return (free_all(cmd_list, pipe_arr), exit_status);
@@ -182,7 +182,7 @@ int	loop_result(t_args *args)
 
 	while (1)
 	{
-		printf(Y"NEW_PROMT:"RST);
+		// printf(Y"NEW_PROMT:"RST);
 		args->input = readline("minishell$ ");
 		if (args->input == NULL)
 		{
@@ -198,8 +198,7 @@ int	loop_result(t_args *args)
 		cmd = parse(args);
 		// printf("-------------END OF PARSING-------------\n");
 		status = exec(cmd, args);
-		printf("\tSTATUS: %d\n", status);
-		// exec(cmd, args);
+		// printf("\tSTATUS: %d\n", status);
 	}
 	free_envp(args);
 	return (0);

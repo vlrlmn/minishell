@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:03:40 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/18 13:22:31 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/28 19:07:13 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_cmd	*pipecmd(t_cmd *left, t_cmd *right)
 	// int i = 0;
 	// t_execcmd *ecmd;
 
-	printf("Pipecmd\n");
+	// printf("Pipecmd\n");
 	cmd = (t_pipe*)malloc(sizeof(t_pipe));
 	if (!cmd)
 		exit_with_malloc_error(MALLOC_ERROR);

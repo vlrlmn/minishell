@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 14:51:13 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/28 16:30:19 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/28 19:03:28 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,12 @@ int	execute_cmd(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *p
 	check_arguments(cmd);
 	if (is_buildin(cmd->argv[0]) && list_size(cmd_list) == 1)
 	{
-		fprintf(stderr, "Executing BUILTIN command: %s\n", cmd->argv[0]); // Debug message
+		// fprintf(stderr, "Executing BUILTIN command: %s\n", cmd->argv[0]); // Debug message
 		status = run_single_builtin(cmd, params, cmd_list, pipe_arr);
 	}
 	else
 	{	
-		fprintf(stderr, "Executing command: %s\n", cmd->argv[0]); // Debug message
+		// fprintf(stderr, "Executing command: %s\n", cmd->argv[0]); // Debug message
 		run_exec(cmd, cmd_list, pipe_arr, params);
 	}
 	// if (status == 0 && cmd->redir_type == APPEND)
@@ -83,7 +83,7 @@ void	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *par
 	if (pid == 0)
 	{
 		if (!params)
-			fprintf(stderr, "!cmd->params && !cmd->params->envp\n");
+			fprintf(stderr, "!cmd->params && !cmd->params->envp\n"); // exit??
 		if (cmd->argv[0][0] == '/')
 			cmd_path = cmd->argv[0];
 		else if (!is_buildin(cmd->argv[0]))
@@ -98,18 +98,18 @@ void	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *par
 		}
 		if (if_path_to_cmd(cmd_path) && !is_buildin(cmd->argv[0]))
 			free_and_exit(1, cmd_list, pipe_arr, params); //is it 1 in bash?
-		fprintf(stderr, "Found the path! : %s\n", cmd_path);
+		// fprintf(stderr, "Found the path! : %s\n", cmd_path);
 		if (cmd->connection[0] == -1 || cmd->connection[1] == -1)
 			free_and_exit(1, cmd_list, pipe_arr, params);
 		dup2(cmd->connection[0], STDIN_FILENO);
-			fprintf(stderr, "did dup2 for con[0]!\n");
+			// fprintf(stderr, "did dup2 for con[0]!\n");
 		if (cmd->connection[0] != 0)
 		{
 			close(cmd->connection[0]);
-			fprintf(stderr, "closed %d fd !\n", cmd->connection[0]);
+			// fprintf(stderr, "closed %d fd !\n", cmd->connection[0]);
 		}
 		dup2(cmd->connection[1], STDOUT_FILENO);
-			fprintf(stderr, "did dup2 for con[1]!\n");
+			// fprintf(stderr, "did dup2 for con[1]!\n");
 		if (cmd->connection[1] != 1)
 		{
 			close(cmd->connection[1]);
@@ -122,8 +122,7 @@ void	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *par
 		}
 		else
 			status = execve(cmd_path, cmd->argv, params->envp);
-		fprintf(stderr, "execve errno: %d\n", status);
-		// fre ALL memory
+		// fprintf(stderr, "execve errno: %d\n", status);
 		free_and_exit(status, cmd_list, pipe_arr, params);
 	}
 	else
@@ -132,7 +131,6 @@ void	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *par
 			close(cmd->connection[0]);
 		if (cmd->connection[1] != 1)
 			close(cmd->connection[1]);
-		// return (0); //default success
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:53:53 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/28 18:40:57 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/28 19:02:56 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ int run_buildin(t_cmd_info *ecmd, t_args *params, t_cmd_info *cmd_list, int **pi
     int status;
 
     status = -1;
-    int i = 0;
-    while (ecmd->argv[i])
-    {
-        printf("%d arg: %s\n", i, ecmd->argv[i]);
-        i++;
-    }
+    // int i = 0;
+    // while (ecmd->argv[i])
+    // {
+    //     printf("%d arg: %s\n", i, ecmd->argv[i]);
+    //     i++;
+    // }
     if (ft_strncmp(ecmd->argv[0], "cd", 2) == 0)
         status = cd_cmd(ecmd, params);
     else if (ft_strncmp(ecmd->argv[0], "exit", 4) == 0)
@@ -59,7 +59,7 @@ int run_single_builtin(t_cmd_info *cmd, t_args *params, t_cmd_info *cmd_list, in
 {
 	int	builtin_status;
     
-	fprintf(stderr, "Running command: %s\n", cmd->argv[0]); // Debug message
+	// fprintf(stderr, "Running command: %s\n", cmd->argv[0]); // Debug message
 	builtin_status = run_buildin(cmd, params, cmd_list, pipe_arr);
 	return (builtin_status);
 }
