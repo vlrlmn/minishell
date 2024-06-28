@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 15:21:12 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/27 19:39:32 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/28 16:32:05 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,16 +61,12 @@ int	**fill_pipes(t_cmd_info *cmd, int **pipe_arr, int i, int size)
 	if (cmd->head == 1) //for first cmd
 	{
 		fprintf(stderr, "\ti'm head!\n");
-		printf("fd_read: %d\n", cmd->fd_read);
 		cmd->connection[0] = cmd->fd_read;
-		printf("fd_read: %d\n", cmd->connection[0]);
 		if (!cmd->file_write && size > 1)
 			cmd->connection[1] = pfd[1]; //pfd1[1]
 		else
 		{
-			printf("fd_write: %d\n", cmd->fd_write);
 			cmd->connection[1] = cmd->fd_write;
-			printf("fd_write: %d\n", cmd->connection[1]);
 		}
 	}
 	else //other cmds
@@ -80,9 +76,9 @@ int	**fill_pipes(t_cmd_info *cmd, int **pipe_arr, int i, int size)
 			cmd->connection[0] = pipe_arr[i - 1][0]; //pfd1[0]
 		else
 			cmd->connection[0] = cmd->fd_read;
-		if (cmd->file_write || cmd->index == size) //isn't last cmd
+		if (cmd->index == size || cmd->file_write) //isn't last cmd
 		{
-			fprintf(stderr, "\tmy index: %d!\n", cmd->index);
+			fprintf(stderr, "\t2: my index: %d!\n", cmd->index);
 			cmd->connection[1] = cmd->fd_write;
 		}
 		else
@@ -110,13 +106,14 @@ int	*create_a_pipe(int **pipe_arr)
 	return (pfd);
 }
 
-int	close_free_pipe_arr(int **pipe_arr)
+/* void * allows to assign NULL to pipe_arr*/
+void	*close_free_pipe_arr(int **pipe_arr)
 {
 	int	i;
 
 	i = 0;
 	if (!pipe_arr)
-		return (0);
+		return (NULL);
 	while (pipe_arr[i])
 	{
 		// if (pipe_arr[i][0])
@@ -129,5 +126,5 @@ int	close_free_pipe_arr(int **pipe_arr)
 		i++;
 	}
 	free(pipe_arr);
-	return (0);
+	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 14:51:13 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/27 21:01:37 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/28 16:30:19 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *par
 			fprintf(stderr, "!cmd->params && !cmd->params->envp\n");
 		if (cmd->argv[0][0] == '/')
 			cmd_path = cmd->argv[0];
-		else
+		else if (!is_buildin(cmd->argv[0]))
 		{
 			path = get_env("PATH=", params->envp);
 			cmd_path = find_command_path(cmd->argv[0], path);
@@ -96,7 +96,7 @@ void	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *par
 				free_and_exit(127, cmd_list, pipe_arr, params);
 			}
 		}
-		if (if_path_to_cmd(cmd_path))
+		if (if_path_to_cmd(cmd_path) && !is_buildin(cmd->argv[0]))
 			free_and_exit(1, cmd_list, pipe_arr, params); //is it 1 in bash?
 		fprintf(stderr, "Found the path! : %s\n", cmd_path);
 		if (cmd->connection[0] == -1 || cmd->connection[1] == -1)
@@ -115,8 +115,13 @@ void	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *par
 			close(cmd->connection[1]);
 			// fprintf(stderr, "closed %d fd !\n", cmd->connection[1]);
 		}
-		close_free_pipe_arr(pipe_arr);
-		status = execve(cmd_path, cmd->argv, params->envp);
+		pipe_arr = close_free_pipe_arr(pipe_arr);
+		if (is_buildin(cmd->argv[0]))
+		{
+			status = run_buildin(cmd, params, cmd_list, pipe_arr);
+		}
+		else
+			status = execve(cmd_path, cmd->argv, params->envp);
 		fprintf(stderr, "execve errno: %d\n", status);
 		// fre ALL memory
 		free_and_exit(status, cmd_list, pipe_arr, params);

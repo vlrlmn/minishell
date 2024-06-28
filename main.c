@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/27 22:44:25 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/28 18:31:36 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,19 +100,15 @@ void PrintTree(t_cmd	*cmd)
 
 void	print_content(t_cmd_info *current)
 {
-	// int i;
+	int i;
 	printf("type: %d\n", current->type);
-	// if (current->argv != NULL)
-	// {
-	// 	i = 0;
-	// 	while (current->argv[i] != NULL)
-	// 	{
-	// 		printf("ARGV %s\n", current->argv[i]);
-	// 		printf("EARGV %s\n", current->eargv[i]);
-	// 		i++;
-	// 	}
-	// }
-	
+	i = 0;
+	while (current->argv[i] != NULL)
+	{
+		printf("ARGV %s\n", current->argv[i]);
+		printf("EARGV %s\n", current->eargv[i]);
+		i++;
+	}
 	printf("con[0] %d\n", current->connection[0]);
 	printf("con[1] %d\n", current->connection[1]);
 	printf("fd_read: %d\n", current->fd_read);
@@ -182,7 +178,7 @@ of args->input parsing*/
 int	loop_result(t_args *args)
 {
 	t_cmd	*cmd;
-	// int		status;
+	int		status;
 
 	while (1)
 	{
@@ -201,8 +197,9 @@ int	loop_result(t_args *args)
 		add_history(args->input);
 		cmd = parse(args);
 		// printf("-------------END OF PARSING-------------\n");
-		// status = exec(cmd, args);
-		exec(cmd, args);
+		status = exec(cmd, args);
+		printf("\tSTATUS: %d\n", status);
+		// exec(cmd, args);
 	}
 	free_envp(args);
 	return (0);
@@ -231,7 +228,8 @@ void	set_environment(t_args *args, char **envp)
 		i++;
 	}
 	args->envp[len] = NULL;
-	unset_cmd("OLDPWD", args);
+	export_cmd("OLDPWD=", args);
+	// unset_cmd("OLDPWD", args);
 }
 
 /*Here we launch our program, set environment, handle signals.
