@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 14:17:50 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/28 19:06:32 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/29 16:38:57 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,12 @@ int	heredoc(int fd, char *file, char *limiter, int mode, t_args *args)
 	{
 		fprintf(stderr, "> ");
 		input = get_next_line(STDIN_FILENO);
+		if (signal(SIGINT, handle_sigint))
+		{
+			free(input);
+			close(fd);
+			return (130);
+		}
 		if (!input) // if ctrl + d. TODO ahnde ctrl+c
 		{
 			close(fd);

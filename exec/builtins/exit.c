@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 17:05:13 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/28 20:29:03 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/29 16:15:42 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,26 +37,10 @@ void	exit_cmd(t_cmd_info *ecmd, t_args *params, t_cmd_info *cmd_list, int **pipe
 			free_and_exit(255, cmd_list, pipe_arr, params);
 	}
 	if (arg_counter > 2)
-	{
-		// printf("exit: too many arguments\n");
 		free_and_exit(1, cmd_list, pipe_arr, params);
-	}
 	if (status)
 	{
-		// while(status[i])
-		// {
-		// 	if (!ft_isdigit(status[i]))
-		// 	{
-		// 		// printf("it's not digit: %c\n", status[i]);
-		// 		if (status[i] != '-' && status[i] != '+')
-		// 		{
-		// 			// printf("numeric argument required: %c\n", status[i]);
-		// 			free_and_exit(255, cmd_list, pipe_arr, params);
-		// 		}
-		// 	}
-		// 	i++;
-		// }
-		while(status[i])
+		while (status[i])
 		{
 			if (ft_isalpha(status[i]) || minus_counter > 1 || plus_counter > 1)
 				free_and_exit(255, cmd_list, pipe_arr, params);
@@ -64,12 +48,9 @@ void	exit_cmd(t_cmd_info *ecmd, t_args *params, t_cmd_info *cmd_list, int **pipe
 				minus_counter++;
 			if (status[i] == '+')
 				plus_counter++;
-				// printf("it's not digit: %c\n", status[i]);
-					// printf("numeric argument required: %c\n", status[i]);
 			i++;
 		}
 		num_st = ft_atoi(status);
-		// printf("num: %d\n", num_st);
 		if (num_st > 255 || num_st < 0) //overflow
 		{
 			if (num_st < 0)
@@ -83,7 +64,6 @@ void	exit_cmd(t_cmd_info *ecmd, t_args *params, t_cmd_info *cmd_list, int **pipe
 				num_st = num_st % 256;
 		}
 	}
-	// printf("num after manipulation: %d\n", num_st);
 	free_and_exit(num_st, cmd_list, pipe_arr, params);
 }
 
