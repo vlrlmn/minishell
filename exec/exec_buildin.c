@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:53:53 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/28 19:02:56 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/30 15:13:43 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int run_single_builtin(t_cmd_info *cmd, t_args *params, t_cmd_info *cmd_list, in
 	int	builtin_status;
     
 	// fprintf(stderr, "Running command: %s\n", cmd->argv[0]); // Debug message
+    // do dup2 for output redirection
 	builtin_status = run_buildin(cmd, params, cmd_list, pipe_arr);
 	return (builtin_status);
 }
