@@ -6,11 +6,15 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 17:20:39 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/01 19:59:02 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/02 00:37:12 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+/* cmd with type NONE -> expantion or heredoc without executable cmd.
+It should be included into the list and into the cmd tree.
+In run_exec I will skip this cmd abdo only do heredoc*/
 
 t_cmd_info	*create_cmdlist(t_cmd *cmd,  t_args *args)
 {
@@ -79,10 +83,20 @@ t_cmd_info	*fill_redir(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args)
 	// }
 	// else
 	// 	return (NULL);
-	
-	copy_argv(new_cmd, new_cmd->subcmd);
-	copy_eargv(new_cmd, new_cmd->subcmd);
-	
+	if (new_cmd->subcmd == REDIR)
+	{
+		/* go through redirs with more_redir(), 
+		open files, close fd-s, go untils type != exec
+		to fill the argv and eargv */
+		more_redir(new_cmd, rcmd, args);
+		/* the last cmd with redir tupe should 
+		write its file to new_cmd */
+	}
+	if (new_cmd->subcmd == EXEC)
+	{
+		copy_argv(new_cmd, new_cmd->subcmd);
+		copy_eargv(new_cmd, new_cmd->subcmd);
+	} 
 	new_cmd->file_read = NULL;
 	new_cmd->file_write = NULL;
 	new_cmd->hfile_array = NULL;
@@ -98,10 +112,10 @@ t_cmd_info	*fill_redir(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args)
 	if (new_cmd->subcmd->type == PIPE)
 		gothrough_cmd(new_cmd->subcmd, cmd_list, args);
 	//it should be smth like recursive, because there could be more than 2 redirs!
-	if (new_cmd->subcmd->type == REDIR) 
-	{
-		more_redir(new_cmd, rcmd, args); // free
-	}
+	// if (new_cmd->subcmd->type == REDIR) 
+	// {
+	// 	more_redir(new_cmd, rcmd, args); // free
+	// }
 	free(rcmd);
 	return (new_cmd);
 }

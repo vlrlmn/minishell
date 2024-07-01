@@ -76,6 +76,9 @@ int	more_redir(t_cmd_info *new_cmd, t_redir *rcmd, t_args *args)
 	type = REDIR;
 
 	hfile_arr = create_heredoc_file_array(rcmd);
+	/* every time I can write fd and filename 
+	to the new_cmd->field. If i have more than 1 redir,
+	it would be rewrited */
 	while (type == REDIR && rsubcmd->subtype != APPEND)
 	{
 		if (rsubcmd->subtype == HEREDOC)
@@ -97,10 +100,13 @@ int	more_redir(t_cmd_info *new_cmd, t_redir *rcmd, t_args *args)
 			tmp = (t_redir *)rsubcmd->cmd;
 			rsubcmd = tmp;
 		}
+		else
+			break ;
 	}
 	if (hfile_arr)
 		hfile_arr[counter] = NULL;
 	new_cmd->hfile_array = hfile_arr;
+	new_cmd->subcmd = rsubcmd->type;
 	return (0);
 }
 
