@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:39:06 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/28 18:47:09 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/01 16:26:39 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int cd_cmd(t_cmd_info *ecmd, t_args *params)
     char *new_path;
     char *prevdir;
     char *home;
+    char    *home1;
     char oldpwd[1024] = "OLDPWD";
     char pwd[1024] = "PWD";
 
@@ -46,13 +47,13 @@ int cd_cmd(t_cmd_info *ecmd, t_args *params)
         return (1); //ERROR todo
     if ((!ecmd->argv[1]) || (ft_strncmp(ecmd->argv[1], "HOME", 4) == 0))
     {
-        if (ecmd->argv[1] == NULL)
-            ecmd->argv[1] = get_env("HOME", params->envp);
-        home = get_str_after_sign(ecmd->argv[1], '=');
-        if (!home) 
+        if (ecmd->argv[1] == NULL) //or if str is empty or contains only white spaces
+            home = get_env("HOME", params->envp);
+        home1 = get_str_after_sign(home, '=');
+        if (!home1)
             return(printf("cd: HOME not set\n"), 1);
-        ft_strlcpy(path, home, sizeof(path));
-        free(home);
+        ft_strlcpy(path, home1, sizeof(path));
+        free(home1);
     }
     else if (ecmd->argv[1][0] == '/') 
     {
