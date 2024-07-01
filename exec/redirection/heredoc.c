@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 14:17:50 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/01 15:23:45 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/01 15:31:40 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	heredoc(int fd, char *file, char *limiter, int mode, t_args *args)
 	// if (check_file_access(file, R_OK))
 	// 	return (-1);
 	fd = get_file_fd(fd, file, mode);
-	fprintf(stderr, "limiter: '%s', its len:  %zu\n", limiter, ft_strlen(limiter));
+	// fprintf(stderr, "limiter: '%s', its len:  %zu\n", limiter, ft_strlen(limiter));
 	while (1)
 	{
 		fprintf(stderr, "> ");
