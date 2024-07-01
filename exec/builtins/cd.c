@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:39:06 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/01 16:26:39 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/01 16:32:12 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int cd_cmd(t_cmd_info *ecmd, t_args *params)
     char oldpwd[1024] = "OLDPWD";
     char pwd[1024] = "PWD";
 
+    home = NULL;
     old_path = getcwd(path, sizeof(path));
     if (!old_path)
         return (1); // TODO errors handling
