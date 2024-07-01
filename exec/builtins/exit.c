@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 17:05:13 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/27 19:58:21 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/01 13:20:08 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,33 @@
 
 void	exit_cmd(t_cmd_info *ecmd, t_args *params, t_cmd_info *cmd_list, int **pipe_arr)
 {
-	int	i;
+	int		i;
 	char	*status;
 	int		num_st;
+	int		arg_counter;
+	int		minus_counter;
+	int		plus_counter;
+	char	*path;
 
 	i = 0;
 	num_st = 0;
+	arg_counter = 0;
+	minus_counter = 0;
+	plus_counter = 0;
 	status = ecmd->argv[1];
-	printf("in exit!\n");
+	while (ecmd->argv[arg_counter])
+		arg_counter++;
+	if (ecmd->argv[2])
+	{
+		path = get_env("PATH=", params->envp);
+		if (is_buildin(ecmd->argv[2]) || find_command_path(ecmd->argv[2], path))
+			free_and_exit(255, cmd_list, pipe_arr, params);
+	}
+	if (arg_counter > 2)
+	{
+		// printf("exit: too many arguments\n");
+		free_and_exit(1, cmd_list, pipe_arr, params);
+	}
 	if (status)
 	{
 		while(status[i])
@@ -52,4 +71,3 @@ void	exit_cmd(t_cmd_info *ecmd, t_args *params, t_cmd_info *cmd_list, int **pipe
 	}
 	free_and_exit(num_st, cmd_list, pipe_arr, params);
 }
-
