@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 14:17:50 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/29 16:38:57 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/01 14:28:40 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,18 +46,20 @@ int	heredoc(int fd, char *file, char *limiter, int mode, t_args *args)
 	{
 		fprintf(stderr, "> ");
 		input = get_next_line(STDIN_FILENO);
-		if (signal(SIGINT, handle_sigint))
-		{
-			free(input);
-			close(fd);
-			return (130);
-		}
+		// if (signal(SIGINT, handle_sigint))
+		// {
+		// 	free(input);
+		// 	close(fd);
+		// 	return (130);
+		// }
 		if (!input) // if ctrl + d. TODO ahnde ctrl+c
 		{
 			close(fd);
 			return (fprintf(stderr, "NULL input\n"), -1);
 		}
 		input[ft_strlen(input) - 1] = '\0'; //remove '/n'
+		// fprintf(stderr, "input: %s, its len:  %zu\n", input, ft_strlen(input));
+
 		if ((ft_strncmp(limiter, input, ft_strlen(limiter)) == 0) && (ft_strlen(limiter) == (ft_strlen(input))))
 		{
 			free(input);
@@ -73,7 +75,7 @@ int	heredoc(int fd, char *file, char *limiter, int mode, t_args *args)
 		}
 		write(fd, input, ft_strlen(input)); // write into newly created file fd
 		write(fd, "\n", 1);
-		free(input);
+		// free(input);
 	}
 	close(fd);
 	// fprintf(stderr, "heredoc completed\n");
