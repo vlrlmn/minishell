@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/30 14:55:23 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/01 20:02:24 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,7 @@ int	exec(t_cmd	*cmd, t_args *args)
 	cmd_list = create_cmdlist(cmd, args);
 	pipe_arr = connections(cmd_list);
 	PrintList(cmd_list);
+	printPipeArr(pipe_arr);
 	exit_status = run_cmds(cmd_list, pipe_arr, args);
 	if (list_size(cmd_list) == 1 && is_buildin(cmd_list->argv[0]))
 		return (free_all(cmd_list, pipe_arr), exit_status);

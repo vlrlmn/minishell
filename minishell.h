@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/29 16:37:53 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/01 19:35:37 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,7 +242,7 @@ int		list_size(t_cmd_info *cmd_list);
 
 void	check_arguments(t_cmd_info *ecmd);
 void	copy_eargv(t_cmd_info *new_cmd, t_cmd *cmd);
-void	copy_argv(t_cmd_info *new_cmd, t_cmd *cmd);
+int		copy_argv(t_cmd_info *new_cmd, t_cmd *cmd);
 int		check_file_access(const char *file_path, int mode);
 
 /* connections between cmds */

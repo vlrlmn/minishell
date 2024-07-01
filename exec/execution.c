@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 14:51:13 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/30 14:56:17 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/01 20:17:41 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,14 +101,25 @@ void	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *par
 		fprintf(stderr, "Found the path! : %s\n", cmd_path);
 		if (cmd->connection[0] == -1 || cmd->connection[1] == -1)
 			free_and_exit(1, cmd_list, pipe_arr, params);
-		dup2(cmd->connection[0], STDIN_FILENO);
+		if (dup2(cmd->connection[0], STDIN_FILENO) == -1)
+		{
+			close(cmd->connection[0]);
+			close(cmd->connection[1]);
+			perror("dup2");
+        	free_and_exit(EXIT_FAILURE, cmd_list, pipe_arr, params);
+		}
 			fprintf(stderr, "did dup2 for con[0]!\n");
 		if (cmd->connection[0] != 0)
 		{
 			close(cmd->connection[0]);
 			fprintf(stderr, "closed %d fd !\n", cmd->connection[0]);
 		}
-		dup2(cmd->connection[1], STDOUT_FILENO);
+		if (dup2(cmd->connection[1], STDOUT_FILENO) == -1)
+		{
+			close(cmd->connection[1]);
+			perror("dup2");
+        	free_and_exit(EXIT_FAILURE, cmd_list, pipe_arr, params);
+		}
 			fprintf(stderr, "did dup2 for con[1]!\n");
 		if (cmd->connection[1] != 1)
 		{
