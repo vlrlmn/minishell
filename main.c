@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/28 18:31:36 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/30 14:55:23 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,7 +199,6 @@ int	loop_result(t_args *args)
 		// printf("-------------END OF PARSING-------------\n");
 		status = exec(cmd, args);
 		printf("\tSTATUS: %d\n", status);
-		// exec(cmd, args);
 	}
 	free_envp(args);
 	return (0);

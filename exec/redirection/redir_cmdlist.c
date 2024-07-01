@@ -154,7 +154,7 @@ int	define_fd(t_cmd_info *rcmd, t_redir *old_cmd, t_args *args)
 	}
 	if (rcmd->redir_type == HEREDOC)
 	{
-		rcmd->fd_read = heredoc(rcmd->fd_read, rcmd->file_read, old_cmd->file, rcmd->mode_read, args) ; // call heredoc function HERE, not in parsing. TODO
+		rcmd->fd_read = heredoc(rcmd->fd_read, rcmd->file_read, old_cmd->file, rcmd->mode_read, args);
 		rcmd->fd_read = get_file_fd(rcmd->fd_read, rcmd->file_read, rcmd->mode_read);
 	}
 	if (rcmd->redir_type == APPEND)

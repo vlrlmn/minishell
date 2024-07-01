@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:48:27 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/28 17:06:38 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/28 19:05:14 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,9 @@ int export_cmd(char *str, t_args *params)
     
     if (!str)
         return (printf("export: invalid argument\n"), 1);
-    printf("str: '%s'\n", str);
     env_var = get_str_before_sign(str, '=');
     if (ft_isdigit(env_var[0]))
-        return (printf("export: '%s': not a valid identofier\n", env_var), 1);
+        return (printf("export: '%s': not a valid identifier\n", env_var), 1);
     env_value = get_str_after_sign(str, '=');
     if (find_env_var(params->envp, env_var))
     {
@@ -148,7 +147,7 @@ char    *get_str_after_sign(char *str, char sign)
         i++;
     if (i == (ft_strlen(str))) //if there are no '$'
 	{
-		fprintf(stderr, "no sign!\n");
+		// fprintf(stderr, "no sign!\n");
 		return (NULL);
 	}
     len = ft_strlen(str) - i;

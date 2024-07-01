@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 14:51:13 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/28 16:30:19 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/30 14:56:17 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *par
 	if (pid == 0)
 	{
 		if (!params)
-			fprintf(stderr, "!cmd->params && !cmd->params->envp\n");
+			fprintf(stderr, "!cmd->params && !cmd->params->envp\n"); // exit??
 		if (cmd->argv[0][0] == '/')
 			cmd_path = cmd->argv[0];
 		else if (!is_buildin(cmd->argv[0]))
@@ -113,7 +113,7 @@ void	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *par
 		if (cmd->connection[1] != 1)
 		{
 			close(cmd->connection[1]);
-			// fprintf(stderr, "closed %d fd !\n", cmd->connection[1]);
+			fprintf(stderr, "closed %d fd !\n", cmd->connection[1]);
 		}
 		pipe_arr = close_free_pipe_arr(pipe_arr);
 		if (is_buildin(cmd->argv[0]))
@@ -123,7 +123,6 @@ void	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *par
 		else
 			status = execve(cmd_path, cmd->argv, params->envp);
 		fprintf(stderr, "execve errno: %d\n", status);
-		// fre ALL memory
 		free_and_exit(status, cmd_list, pipe_arr, params);
 	}
 	else
@@ -132,7 +131,6 @@ void	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *par
 			close(cmd->connection[0]);
 		if (cmd->connection[1] != 1)
 			close(cmd->connection[1]);
-		// return (0); //default success
 	}
 }
 

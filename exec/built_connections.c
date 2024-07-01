@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 15:21:12 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/28 16:32:05 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/28 19:02:21 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	**connections(t_cmd_info *cmd_list)
 	int			size;
 
 	size = list_size(cmd_list);
-	printf("size: %d\n", size);
+	// printf("size: %d\n", size);
 	if (size < 2)
 	{
 		cmd_list->connection[0] = cmd_list->fd_read;
@@ -57,10 +57,10 @@ int	**fill_pipes(t_cmd_info *cmd, int **pipe_arr, int i, int size)
 			return (NULL);
 		pipe_arr[i] = pfd;
 	}
-	printf("------\n");
+	// printf("------\n");
 	if (cmd->head == 1) //for first cmd
 	{
-		fprintf(stderr, "\ti'm head!\n");
+		// fprintf(stderr, "\ti'm head!\n");
 		cmd->connection[0] = cmd->fd_read;
 		if (!cmd->file_write && size > 1)
 			cmd->connection[1] = pfd[1]; //pfd1[1]
@@ -71,14 +71,14 @@ int	**fill_pipes(t_cmd_info *cmd, int **pipe_arr, int i, int size)
 	}
 	else //other cmds
 	{
-		fprintf(stderr, "\there!\n");
+		// fprintf(stderr, "\there!\n");
 		if (!cmd->file_read)
 			cmd->connection[0] = pipe_arr[i - 1][0]; //pfd1[0]
 		else
 			cmd->connection[0] = cmd->fd_read;
 		if (cmd->index == size || cmd->file_write) //isn't last cmd
 		{
-			fprintf(stderr, "\t2: my index: %d!\n", cmd->index);
+			// fprintf(stderr, "\t2: my index: %d!\n", cmd->index);
 			cmd->connection[1] = cmd->fd_write;
 		}
 		else

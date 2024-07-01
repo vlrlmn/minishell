@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:26:37 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/22 19:39:12 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/06/28 19:01:03 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	run_redir(t_cmd *cmd, t_args *params)
 	close(rcmd->fd); //This ensures that the file descriptor is available to be reused.
 	fprintf(stderr, "\nRCMD FILE in exec: '%s'\n", rcmd->file);
 	fprintf(stderr, "fd: %d\n", rcmd->fd);
-	PrintTree(rcmd->cmd);
+	// PrintTree(rcmd->cmd);
 	redir(rcmd);
 	fprintf(stderr, "\tfd after redir(): %d\n", rcmd->fd);
 	run_cmd(rcmd->cmd, params); //it calls run_cmd to execute the sub-command (rcmd->cmd)
