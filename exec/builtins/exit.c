@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 17:05:13 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/28 20:29:03 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/01 13:07:56 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,19 +43,6 @@ void	exit_cmd(t_cmd_info *ecmd, t_args *params, t_cmd_info *cmd_list, int **pipe
 	}
 	if (status)
 	{
-		// while(status[i])
-		// {
-		// 	if (!ft_isdigit(status[i]))
-		// 	{
-		// 		// printf("it's not digit: %c\n", status[i]);
-		// 		if (status[i] != '-' && status[i] != '+')
-		// 		{
-		// 			// printf("numeric argument required: %c\n", status[i]);
-		// 			free_and_exit(255, cmd_list, pipe_arr, params);
-		// 		}
-		// 	}
-		// 	i++;
-		// }
 		while(status[i])
 		{
 			if (ft_isalpha(status[i]) || minus_counter > 1 || plus_counter > 1)
