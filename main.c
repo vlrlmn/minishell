@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/01 16:16:53 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/01 16:29:51 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,7 +198,6 @@ int	loop_result(t_args *args)
 		cmd = parse(args);
 		// printf("-------------END OF PARSING-------------\n");
 		status = exec(cmd, args);
-		// exec(cmd, args);
 		// printf("\tSTATUS: %d\n", status);
 	}
 	free_envp(args);
