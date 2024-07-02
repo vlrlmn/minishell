@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:52:25 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/02 20:03:46 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/02 22:06:37 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,33 +65,31 @@ int gettoken(char **ps, char *es, char **q, char **eq) // we got 3 addresses of 
         *eq = *ps;
         return token;
     }
-    if (**ps == '"')
-    {
-        (*ps)++;
-        *q = *ps;
-        while(*ps < es && **ps != '"')
-            (*ps)++;
-        if (*ps >= es)
-            return (0);
-        *eq = *ps;
-        (*ps)++;
-        return ('a');
-    }
-    /*else if (**ps == '\'')
-    {
-        (*ps)++;
-        *q = *ps;
-        while(*ps < es && **ps != '\'')
-            (*ps)++;
-        if (*ps >= es)
-            return (0);
-        *eq = *ps;
-        (*ps)++;
-        return ('a');
-    }*/
+    //////////
     *q = *ps;
-    while (*ps < es && (**ps != ' ' && **ps != '\t' && **ps != '\n') && !ft_strchr("<>|", **ps))
-        (*ps)++;
+    while (*ps < es && !is_delimiter(**ps) && !ft_strchr("<>|", **ps))
+    {
+        if (**ps == '"')
+        {
+            (*ps)++;
+            while(*ps < es && **ps != '"')
+                (*ps)++;
+            if (*ps >= es)
+                return (0);
+            (*ps)++;
+        }
+        else if (**ps == '\'')
+        {
+            (*ps)++;
+            while(*ps < es && **ps != '\'')
+                (*ps)++;
+            if (*ps >= es)
+                return (0);
+            (*ps)++;    
+        }
+        else if (*ps < es)
+            (*ps)++;
+    }
     *eq = *ps;
     return ('a');
 }
