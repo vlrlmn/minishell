@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/02 11:20:54 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/02 12:54:37 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,6 +175,13 @@ int	exec(t_cmd	*cmd, t_args *args)
 /*This is where we have instant loop happening. Inside the loop
 we reading the line, adding it in history and call lexer, beginning
 of args->input parsing*/
+void	free_args(void *ptr)
+{
+	if (ptr)
+		free(ptr);
+	ptr = NULL;
+}
+
 int	loop_result(t_args *args)
 {
 	t_cmd	*cmd;
@@ -191,8 +198,8 @@ int	loop_result(t_args *args)
 		}
 		if (!valid_input(args->input))
 		{
-			free_envp(args);
-			exit_status = 2;
+			// free_args(args);
+			continue ;
 		}
 		add_history(args->input);
 		cmd = parse(args);
@@ -200,7 +207,7 @@ int	loop_result(t_args *args)
 		exec(cmd, args);
 		// printf("\tSTATUS: %d\n", status);
 	}
-	free_envp(args);
+	// free_envp(args);
 	return (0);
 }
 

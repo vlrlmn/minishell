@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   valid_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 15:48:13 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/21 14:30:08 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/02 12:46:07 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,15 @@ int	valid_input(char *work_line)
 	int	i;
 
 	i = 0;
+	if (ft_strlen(work_line) == 0)
+		return(0);
 	while (is_delimiter(work_line[i]))
 		i++;
 	if (!work_line[i])
 		return (0);
 	if (!valid_quotes(work_line))
 	{
-		printf("Close quotes\n");
+		printf("Close quotes\n"); //TO_DO WRITE EXIT FROM  
 		return (0);
 	}
 	return (1);

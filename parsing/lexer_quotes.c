@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 15:23:28 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/11 12:33:55 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/02 12:33:20 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,6 @@ void parse_double_quote(int *i, char *line, t_lexems *list, t_args *args)
             (*i)++;
         }
     }
+    (*i)++;
 }
 

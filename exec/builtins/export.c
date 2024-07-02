@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:48:27 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/02 11:29:02 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/02 12:38:36 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,22 @@ int export_print(t_args *params)
 	}
 	return (0);
 }
+int	is_valid_variable_name(char *key)
+{
+	int	i;
 
+	i = 0;
+	if (!ft_isalpha(key[i]) && key[i] != '_')
+		return (0);
+	i++;
+	while (key[i])
+	{
+		if (!ft_isalnum(key[i]) && key[i] != '_')
+			return (0);
+		i++;
+	}
+	return (1);
+}
 int export_cmd(char *str, t_args *params)
 {
     char    *env_var;
@@ -62,8 +77,15 @@ int export_cmd(char *str, t_args *params)
     if (!str)
         return (printf("export: invalid argument\n"), 1);
     env_var = get_str_before_sign(str, '=');
-    if (ft_isdigit(env_var[0]))
-        return (printf("export: '%s': not a valid identifier\n", env_var), 1);
+    if (!is_valid_variable_name(env_var))
+		{
+			return (printf("export: '%s': not a valid identifier\n", env_var), 1);
+			exit_status = 1;
+			free(env_var);
+
+		}
+    // if (ft_isdigit(env_var[0]))
+    //     return (printf("export: '%s': not a valid identifier\n", env_var), 1);
     env_value = get_str_after_sign(str, '=');
     if (find_env_var(params->envp, env_var))
     {
