@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 17:20:39 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/02 00:37:12 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/03 00:33:02 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /* cmd with type NONE -> expantion or heredoc without executable cmd.
 It should be included into the list and into the cmd tree.
-In run_exec I will skip this cmd abdo only do heredoc*/
+In run_exec I will skip this cmd abdo only do heredoc */
 
 t_cmd_info	*create_cmdlist(t_cmd *cmd,  t_args *args)
 {
@@ -57,11 +57,16 @@ Buffer Copy Functions: Ensure functions like copy_argv and copy_eargv do not exc
 void	fill_pipe(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args)
 {
 	t_pipe		*pcmd;
+	t_cmd		*left;
+	t_cmd		*right;
 
 	pcmd = (t_pipe *)cmd;
 		// не записывать в лист, а отправить в рекурсию
-	gothrough_cmd(pcmd->left, cmd_list, args);
-	gothrough_cmd(pcmd->right, cmd_list, args);
+	left = pcmd->left;
+	right = pcmd->right;
+	free(pcmd);
+	gothrough_cmd(left, cmd_list, args);
+	gothrough_cmd(right, cmd_list, args);
 }
 
 t_cmd_info	*fill_redir(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args)
@@ -76,14 +81,16 @@ t_cmd_info	*fill_redir(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args)
 	// FT_MEMSET FOR new_cmd! ??
 	new_cmd->type = rcmd->type;
 	new_cmd->subcmd = rcmd->cmd;
-	// if (copy_argv(new_cmd, new_cmd->subcmd) && new_cmd->subcmd->type == REDIR)
-	// {
-	// 	free(new_cmd);
-	// 	fill_redir(rcmd->cmd, cmd_list, args);
-	// }
-	// else
-	// 	return (NULL);
-	if (new_cmd->subcmd == REDIR)
+	
+	new_cmd->file_read = NULL;
+	new_cmd->file_write = NULL;
+	new_cmd->hfile_array = NULL;
+	new_cmd->fd_read = 0;
+	new_cmd->fd_write = 1;
+
+	if (add_redir_details(new_cmd, rcmd, args))
+		return (NULL);
+	if (new_cmd->subcmd->type == REDIR)
 	{
 		/* go through redirs with more_redir(), 
 		open files, close fd-s, go untils type != exec
@@ -92,22 +99,19 @@ t_cmd_info	*fill_redir(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args)
 		/* the last cmd with redir tupe should 
 		write its file to new_cmd */
 	}
-	if (new_cmd->subcmd == EXEC)
+	if (new_cmd->subcmd->type == EXEC)
 	{
 		copy_argv(new_cmd, new_cmd->subcmd);
 		copy_eargv(new_cmd, new_cmd->subcmd);
-	} 
-	new_cmd->file_read = NULL;
-	new_cmd->file_write = NULL;
-	new_cmd->hfile_array = NULL;
-	new_cmd->fd_read = 0;
-	new_cmd->fd_write = 1;
+	}
+	// else
+	// 	return (NULL) ??
 	// rcmd->mode_read = 0 ???
 	// rcmd->mode_write = 0 ???
 	if (connection_content(new_cmd))
 		return (NULL);
-	if (add_redir_details(new_cmd, rcmd, args))
-		return (NULL);
+	// if (add_redir_details(new_cmd, rcmd, args))
+	// 	return (NULL);
 	// printf("new_cmd->subcmd->type: %d\n", new_cmd->subcmd->type);
 	if (new_cmd->subcmd->type == PIPE)
 		gothrough_cmd(new_cmd->subcmd, cmd_list, args);
@@ -116,6 +120,7 @@ t_cmd_info	*fill_redir(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args)
 	// {
 	// 	more_redir(new_cmd, rcmd, args); // free
 	// }
+	free(new_cmd->subcmd);
 	free(rcmd);
 	return (new_cmd);
 }

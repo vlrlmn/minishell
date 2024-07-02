@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 14:17:50 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/01 15:31:40 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/03 01:16:55 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,38 @@ int	heredoc(int fd, char *file, char *limiter, int mode, t_args *args)
 		}
 		write(fd, input, ft_strlen(input)); // write into newly created file fd
 		write(fd, "\n", 1);
-		// free(input);
+		free(input);
 	}
 	close(fd);
 	// fprintf(stderr, "heredoc completed\n");
 	return (fd);
+}
+
+void	call_heredocs(char **arr, t_cmd_info *new_cmd, char **limiter_arr, t_args *args)
+{
+	int	i;
+	int	size;
+	char *limiter;
+	
+	i = -1;
+	size = 0;
+	while (arr[size])
+		size++;
+	size -= 1;
+	while (i < size)
+	{
+		limiter = limiter_arr[size];
+		printf("file: %s, limiter: %s\n", arr[size], limiter);
+		new_cmd->file_read = arr[size];
+		new_cmd->fd_read = heredoc(new_cmd->fd_read, new_cmd->file_read, limiter, new_cmd->mode_read, args);
+		if (size != 0)
+		{
+			unlink(arr[size]);
+			free(arr[size]);
+		}
+		size--;
+	}
+	free(arr);
+	free(limiter_arr);
+	new_cmd->fd_read = get_file_fd(new_cmd->fd_read, new_cmd->file_read, new_cmd->mode_read);
 }

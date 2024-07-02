@@ -1,3 +1,4 @@
+
 Libft
 Makefile
 errors.c
@@ -5,6 +6,9 @@ errors.o
 exec
 free_memory.c
 free_memory.o
+in1
+in2
+in3
 infile
 main.c
 main.o

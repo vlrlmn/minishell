@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/01 20:02:24 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/02 15:55:37 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,7 +187,7 @@ int	loop_result(t_args *args)
 		args->input = readline("minishell$ ");
 		if (args->input == NULL)
 		{
-			write(STDOUT_FILENO, "exit in loop\n", 5);
+			// write(STDOUT_FILENO, "exit in loop\n", 14);
 			break ;
 		}
 		if (!valid_input(args->input))
