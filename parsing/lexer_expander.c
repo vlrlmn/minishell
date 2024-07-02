@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:34:57 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/02 18:12:54 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/02 20:59:31 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,25 @@ void parse_expander_sign(int *i, char *line, t_lexems *list, t_args *args)
 
 	j = i;
 	// (*j)++;
+	var_name = getvar_name(line + *j);
+	var_value = get_env(var_name, args->envp);
+	if (var_value)
+	{
+		var_value += ft_strlen(var_name) + 1;
+		add_str_node(list, var_value);
+	}
+	(*j) += ft_strlen(var_name);
+	free(var_name);
+}
+
+void parse_expander_sign_in_quotes(int *i, char *line, t_lexems *list, t_args *args)
+{
+    char	*var_name;
+	char	*var_value;
+	int		*j;
+
+	j = i;
+	(*j)++;
 	var_name = getvar_name(line + *j);
 	var_value = get_env(var_name, args->envp);
 	if (var_value)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/28 16:31:13 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/02 20:59:40 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,6 +179,7 @@ void		add_char_node(t_lexems *list, char c);
 void		add_str_node(t_lexems *list, char *str);
 char		*list_to_string(t_lexems *list);
 char		process_node(t_lexems *list);
+void parse_expander_sign_in_quotes(int *i, char *line, t_lexems *list, t_args *args);
 
 /* sofa */
 void	write_new_promt(void);
