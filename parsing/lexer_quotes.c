@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 15:23:28 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/02 20:59:23 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/02 22:21:30 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void parse_double_quote(int *i, char *line, t_lexems *list, t_args *args)
         }
         else if (line[*i] == '$' && line[*i + 1] =='?')
         {
-            exit_str = ft_itoa(exit_status);
+            exit_str = ft_itoa(g_exit_status);
             add_str_node(list, exit_str);
             free(exit_str);
             (*i) += 2;

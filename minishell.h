@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/02 20:59:40 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/02 22:20:27 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@
 # define Y "\033[1;33m"   /* Bold Yellow for promt */
 # define RST "\033[0m"      /* Reset to default color */
 
-extern int exit_status; // CHECK IF IT IS CORRECT OR NOT
+extern int g_exit_status; // CHECK IF IT IS CORRECT OR NOT
 
 typedef struct s_args
 {

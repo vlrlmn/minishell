@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:34:57 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/02 20:59:31 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/02 22:19:54 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void parse_expander(int *i, t_lexems *list, char *line, t_args *args)
     }
     else if (line[*i] == '?')
     {
-        exit_str = ft_itoa(exit_status);
+        exit_str = ft_itoa(g_exit_status);
         add_str_node(list, exit_str);
         free(exit_str);
         (*i)++;

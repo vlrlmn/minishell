@@ -6,13 +6,13 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/02 21:15:43 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/02 22:21:07 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int exit_status = 0;
+int g_exit_status = 0;
 
 void	handle_sigint(int sig)
 {
@@ -95,7 +95,7 @@ int ft_launch_minishell(t_args *args)
 		run_cmd(cmd, args);
 	//}
 	//wait (0);
-	return (exit_status);
+	return (0);
 }
 
 void	print_content(t_cmd_info *current)
@@ -157,7 +157,7 @@ int	exec(t_cmd	*cmd, t_args *args)
 {
 	t_cmd_info	*cmd_list;
 	int			**pipe_arr;
-	// int			exit_status;
+	int			exit_status;
 	// int			cmd_status;
 
 	pipe_arr = NULL;
@@ -204,7 +204,7 @@ int	loop_result(t_args *args)
 		add_history(args->input);
 		cmd = parse(args);
 		// printf("-------------END OF PARSING-------------\n");
-		exit_status = exec(cmd, args);
+		g_exit_status = exec(cmd, args);
 		// printf("\tSTATUS: %d\n", status);
 	}
 	// free_envp(args);
