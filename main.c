@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/28 19:09:52 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/02 11:20:54 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,7 @@ of args->input parsing*/
 int	loop_result(t_args *args)
 {
 	t_cmd	*cmd;
-	int		status;
+	// int		status;
 
 	while (1)
 	{
@@ -186,7 +186,7 @@ int	loop_result(t_args *args)
 		args->input = readline("minishell$ ");
 		if (args->input == NULL)
 		{
-			write(STDOUT_FILENO, "exit in loop\n", 5);
+			// write(STDOUT_FILENO, "exit in loop\n", 5);
 			break ;
 		}
 		if (!valid_input(args->input))
@@ -197,7 +197,7 @@ int	loop_result(t_args *args)
 		add_history(args->input);
 		cmd = parse(args);
 		// printf("-------------END OF PARSING-------------\n");
-		status = exec(cmd, args);
+		exec(cmd, args);
 		// printf("\tSTATUS: %d\n", status);
 	}
 	free_envp(args);

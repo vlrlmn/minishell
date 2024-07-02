@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:39:06 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/28 18:47:09 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/02 11:32:49 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,10 @@ int cd_cmd(t_cmd_info *ecmd, t_args *params)
     old_path = ft_strdup(old_path); //free
     if (old_path == NULL)
         return (1); //ERROR todo
-    if ((!ecmd->argv[1]) || (ft_strncmp(ecmd->argv[1], "HOME", 4) == 0))
+    if ((!ecmd->argv[1]) || (ft_strncmp(ecmd->argv[1], "HOME=", 5) == 0))
     {
         if (ecmd->argv[1] == NULL)
-            ecmd->argv[1] = get_env("HOME", params->envp);
+            ecmd->argv[1] = get_env("HOME=", params->envp);
         home = get_str_after_sign(ecmd->argv[1], '=');
         if (!home) 
             return(printf("cd: HOME not set\n"), 1);

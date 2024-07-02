@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:48:27 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/28 19:05:14 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/02 11:29:02 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,12 @@ char    *get_str_after_sign(char *str, char sign)
 
     res_i = 0;
     i = 0;
+
+    if (!str)
+    {
+        return NULL;
+    }
+
     while (str[i] != sign && str[i])
         i++;
     if (i == (ft_strlen(str))) //if there are no '$'
