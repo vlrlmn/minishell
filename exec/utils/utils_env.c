@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:05:31 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/02 18:16:01 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/02 19:53:37 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int update_envp_var(t_args *params, char *env_var, char *new_content)
 		return (1);
 	before_sign = ft_strjoin(env_var, "=");
 	full_var = ft_strjoin(before_sign, new_content);
-	free(before_sign);
+	// free(before_sign);
 	free(params->envp[index]);
     params->envp[index] = full_var;
     return (0);
