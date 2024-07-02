@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 17:36:36 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/24 16:05:39 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/02 17:42:11 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char *clean_line(char *line, t_lexems *list, t_args *args)
         else if (line[i] == '\"')
             parse_double_quote(&i, line, list, args);
         else if (line[i] == '$')
-            parse_expander_sign(&i, line, list, args);
+            parse_expander(&i, list, line, args);
         else
         {
             add_char_node(list, line[i]);
@@ -39,19 +39,17 @@ char *clean_line(char *line, t_lexems *list, t_args *args)
 char *clean_cmd(char *line, t_args *args)
 {
     t_lexems  args_list;
-    char    *res;
-    char *home_val;
+    char *val;
 
     args_list.head = NULL;
     args_list.tail = NULL;
     if (ft_strchr(line, '~'))
     {
-        home_val = get_env("HOME=", args->envp);
-        res = ft_strdup(home_val);
-        return (res);
+        val = ft_strdup(get_env("HOME", args->envp));
+        return (val);
     }
-    res = clean_line(line, &args_list, args);
-    return(res);
+    val = clean_line(line, &args_list, args);
+    return(val);
 }
 
 void lexical_analysis(t_cmd *cmd, t_args *args)

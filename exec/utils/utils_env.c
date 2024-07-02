@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:05:31 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/26 15:40:16 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/02 18:16:01 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	*get_env(char *value, char **envp)
 	while (envp[i])
 	{
 		// fprintf(stderr, "envp[%d]: %s \n",i, envp[i]);
-		if (ft_strncmp(value, envp[i], ft_strlen(value)) == 0)
+		if (ft_strlen(value) && (ft_strncmp(value, envp[i], ft_strlen(value)) == 0))
 			return (envp[i]);
 		i++;
 	}

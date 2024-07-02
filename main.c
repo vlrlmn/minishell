@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/02 12:54:37 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/02 17:30:50 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,30 +73,30 @@ void PrintTree(t_cmd	*cmd)
 	}
 }
 
-// int ft_launch_minishell(t_args *args)
-// {
-// 	t_cmd	*cmd;
+int ft_launch_minishell(t_args *args)
+{
+	t_cmd	*cmd;
 	
 
-//     if (args->input == NULL)
-// 	{
-// 		write(STDOUT_FILENO, "exit in launch\n", 5);
-// 		return 1;
-// 	}
-// 	if (!valid_input(args->input))
-// 	{
-// 		free_envp(args);
-// 		exit(SYNTAX_ERR);
-// 	}
-// 	//if (fork1() == 0)
-// 	//{
-// 		cmd = parse(args);
-// 		PrintTree(cmd);
-// 		run_cmd(cmd, args);
-// 	//}
-// 	//wait (0);
-// 	return (0);
-// }
+    if (args->input == NULL)
+	{
+		write(STDOUT_FILENO, "exit in launch\n", 5);
+		return 1;
+	}
+	if (!valid_input(args->input))
+	{
+		free_envp(args);
+		exit(SYNTAX_ERR);
+	}
+	//if (fork1() == 0)
+	//{
+		cmd = parse(args);
+		PrintTree(cmd);
+		run_cmd(cmd, args);
+	//}
+	//wait (0);
+	return (0);
+}
 
 void	print_content(t_cmd_info *current)
 {
@@ -204,7 +204,7 @@ int	loop_result(t_args *args)
 		add_history(args->input);
 		cmd = parse(args);
 		// printf("-------------END OF PARSING-------------\n");
-		exec(cmd, args);
+		exit_status = exec(cmd, args);
 		// printf("\tSTATUS: %d\n", status);
 	}
 	// free_envp(args);
@@ -250,14 +250,14 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	set_environment(&shell_context, envp);
+	if (argc >= 3 && !ft_strncmp(argv[1], "-c", 3))
+	{
+		shell_context.input = argv[2];
+		exit_status = ft_launch_minishell(&shell_context);
+		return (exit_status);
+	}
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
-	// if (argc >= 3 && !ft_strncmp(argv[1], "-c", 3))
-	// {
-	// 	shell_context.input = argv[2];
-	// 	exit_status = ft_launch_minishell(&shell_context);
-	// 	return (exit_status);
-	// }
 	exit_status = loop_result(&shell_context);
 	// rl_clear_history(); //idk why mac argue for it
 	// rl_clear_history();

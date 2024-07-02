@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 15:23:28 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/02 12:33:20 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/02 18:07:59 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void parse_quote(char *line, int *i, t_lexems *list)
         add_char_node(list, line[*i]);
         (*i)++;
     }
+    if (line[*i] == '\'')
+        (*i)++;
 }
 
 void parse_double_quote(int *i, char *line, t_lexems *list, t_args *args)
@@ -29,7 +31,8 @@ void parse_double_quote(int *i, char *line, t_lexems *list, t_args *args)
     (*i)++;
     while(line[*i] && line[*i] != '\"')
     {
-        if (line[*i] == '$' && (is_delimiter(line[*i + 1]) || line[*i + 1] == '\"'))
+        if (line[*i] == '$' && (is_delimiter(line[*i + 1] || line[*i + 1] == '\"')
+                || line[*i + 1] == '\"'))
         {
             add_char_node(list, '$');
             (*i)++;
@@ -42,13 +45,14 @@ void parse_double_quote(int *i, char *line, t_lexems *list, t_args *args)
             (*i) += 2;
         }
         else if (line[*i] == '$')
-            parse_expander_sign(i, line, list, args);
+            parse_expander(i, list, line, args);
         else
         {
             add_char_node(list, line[*i]);
             (*i)++;
         }
     }
-    (*i)++;
+    if (line[*i] == '\"')
+        (*i)++;
 }
 

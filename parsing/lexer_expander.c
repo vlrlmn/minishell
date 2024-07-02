@@ -6,42 +6,45 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:34:57 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/02 12:34:14 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/02 18:12:54 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+char	*getvar_name(char *arg)
+{
+	int	i;
+	int	n;
+
+	i = 0;
+	if (ft_isdigit(arg[i]))
+	{
+		n = arg[i] - '0';
+		return (ft_itoa(n));
+	}
+	while (arg[i] && ((ft_isalnum(arg[i]) || arg[i] == '_')))
+		i++;
+	return (ft_substr(arg, 0, i));
+}
+
 void parse_expander_sign(int *i, char *line, t_lexems *list, t_args *args)
 {
-    char *env_var;
-    char *work_line;
-    char *var_name;
-    int j;
-    int k;
+    char	*var_name;
+	char	*var_value;
+	int		*j;
 
-    j = 0;
-    k = 0;
-    (*i)++;
-    work_line = line + *i;
-    if (ft_isdigit(work_line[j]))
-    {
-        k = work_line[j] - '0';
-        env_var = ft_itoa(k);
-    }
-    while (work_line[j] && (ft_isalnum(work_line[j])))
-        j++;
-    env_var = ft_substr(work_line, 0, j);
-    var_name = get_env(env_var, args->envp);
-    // var_name = find_env_var(args->envp, env_var);
-    if (!var_name)
-        return ;
-    // printf("exp: %s\n", var_name);
-    // var_name = ft_strdup(get_env(env_var, args->envp)); lera's
-    if (var_name)
-        add_str_node(list, var_name);
-    (*i) += ft_strlen(var_name);
-    free(var_name);
+	j = i;
+	// (*j)++;
+	var_name = getvar_name(line + *j);
+	var_value = get_env(var_name, args->envp);
+	if (var_value)
+	{
+		var_value += ft_strlen(var_name) + 1;
+		add_str_node(list, var_value);
+	}
+	(*j) += ft_strlen(var_name);
+	free(var_name);
 }
 
 void parse_expander(int *i, t_lexems *list, char *line, t_args *args)
