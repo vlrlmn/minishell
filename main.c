@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/03 17:39:54 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/03 23:23:01 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,20 +158,20 @@ int	exec(t_cmd	*cmd, t_args *args)
 	t_cmd_info	*cmd_list;
 	int			**pipe_arr;
 	int			exit_status;
-	// int			status;
-	// int			cmd_status;
 
 	pipe_arr = NULL;
 	cmd_list = create_cmdlist(cmd, args);
 	pipe_arr = connections(cmd_list);
 	PrintList(cmd_list);
 	printPipeArr(pipe_arr);
-	// exit_status = run_cmds(cmd_list, pipe_arr, args);
-	// PrintList(cmd_list);
 	exit_status = run_cmds(cmd_list, pipe_arr, args);
-	if ((list_size(cmd_list) == 1 && is_buildin(cmd_list->argv[0])))
+	printf("status after exec: %d\n", exit_status);
+	if (!cmd_list->argv[0] || cmd_list->argv[0][0] == '\0')
+		return (free_all(cmd_list, pipe_arr), exit_status);
+	if (list_size(cmd_list) == 1 && is_buildin(cmd_list->argv[0]))
 		return (free_all(cmd_list, pipe_arr), exit_status);
 	exit_status = wait_cmds(cmd_list);
+	printf("status after wait: %d\n", exit_status);
 	free_all(cmd_list, pipe_arr);
 	return (exit_status);
 }

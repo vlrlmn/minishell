@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 17:05:13 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/01 13:22:32 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/03 21:51:21 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ void	exit_cmd(t_cmd_info *ecmd, t_args *params, t_cmd_info *cmd_list, int **pipe
 	status = ecmd->argv[1];
 	while (ecmd->argv[arg_counter])
 		arg_counter++;
-	if (ecmd->argv[2])
+	if (ecmd->argv[1])
 	{
 		path = get_env("PATH=", params->envp);
-		if (is_buildin(ecmd->argv[2]) || find_command_path(ecmd->argv[2], path))
+		if (is_buildin(ecmd->argv[1]) || find_command_path(ecmd->argv[1], path))
 			free_and_exit(255, cmd_list, pipe_arr, params);
 	}
 	if (arg_counter > 2)
