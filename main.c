@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/03 15:24:37 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/03 15:54:00 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,7 @@ int	exec(t_cmd	*cmd, t_args *args)
 	t_cmd_info	*cmd_list;
 	int			**pipe_arr;
 	int			exit_status;
-	int			status;
+	// int			status;
 	// int			cmd_status;
 
 	pipe_arr = NULL;
@@ -166,14 +166,14 @@ int	exec(t_cmd	*cmd, t_args *args)
 	pipe_arr = connections(cmd_list);
 	PrintList(cmd_list);
 	printPipeArr(pipe_arr);
-	exit_status = run_cmds(cmd_list, pipe_arr, args);
+	// exit_status = run_cmds(cmd_list, pipe_arr, args);
 	// PrintList(cmd_list);
-	status = run_cmds(cmd_list, pipe_arr, args);
+	exit_status = run_cmds(cmd_list, pipe_arr, args);
 	if (list_size(cmd_list) == 1 && is_buildin(cmd_list->argv[0]))
-		return (free_all(cmd_list, pipe_arr), status);
-	status = wait_cmds(cmd_list);
+		return (free_all(cmd_list, pipe_arr), exit_status);
+	exit_status = wait_cmds(cmd_list);
 	free_all(cmd_list, pipe_arr);
-	return (status);
+	return (exit_status);
 }
 
 /*This is where we have instant loop happening. Inside the loop
@@ -189,7 +189,7 @@ void	free_args(void *ptr)
 int	loop_result(t_args *args)
 {
 	t_cmd	*cmd;
-	int		status;
+	// int		status;
 
 	while (1)
 	{
@@ -208,13 +208,12 @@ int	loop_result(t_args *args)
 		add_history(args->input);
 		cmd = parse(args);
 		// printf("-------------END OF PARSING-------------\n");
-		status = exec(cmd, args);
-		printf("\tSTATUS: %d\n", status);
+		// status = exec(cmd, args);
 		g_exit_status = exec(cmd, args);
+		printf("\tSTATUS: %d\n", g_exit_status);
 		// printf("\tSTATUS: %d\n", status);
 	}
-	return (status);
-	return (0);
+	return (g_exit_status);
 }
 
 /*We need to create new environment argument and copy envp from main

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_path_cmd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:53:49 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/25 19:56:13 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/03 16:09:53 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char *find_command_path(char *cmd, char *path)
 {
-    char *cmd_path;
+    char *cmd_path = NULL;
     char **path_arr;
     char *command;
     int i;
@@ -29,7 +29,7 @@ char *find_command_path(char *cmd, char *path)
     }
     path_arr = ft_split(path, ':');
     command = ft_strjoin("/", cmd);
-    while(path_arr[i])
+    while (path_arr[i])
     {
         cmd_path = ft_strjoin(path_arr[i], command);
         if (access (cmd_path, X_OK) == 0)

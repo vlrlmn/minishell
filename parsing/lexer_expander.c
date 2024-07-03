@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:34:57 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/03 15:32:15 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/03 16:03:41 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,21 @@ char	*getvar_name(char *arg)
 		i++;
 	return (ft_substr(arg, 0, i));
 }
+char	*get_env_exp(char *value, char **envp)
+{
+	int i;
+    // fprintf(stderr, "get_env in \n");
+	i = 0;
+	while (envp[i])
+	{
+		// fprintf(stderr, "envp[%d]: %s \n",i, envp[i]);
+		if (ft_strlen(value) && (ft_strncmp(value, envp[i], ft_strlen(value)) == 0) && envp[i][ft_strlen(value)] == '=')
+			return (envp[i]);
+		i++;
+	}
+	// fprintf(stderr, "get_env out \n");
+	return (NULL);
+}
 
 void parse_expander_sign(int *i, char *line, t_lexems *list, t_args *args)
 {
@@ -37,7 +52,7 @@ void parse_expander_sign(int *i, char *line, t_lexems *list, t_args *args)
 	j = i;
 	// (*j)++;
 	var_name = getvar_name(line + *j);
-	var_value = get_env(var_name, args->envp);
+	var_value = get_env_exp(var_name, args->envp);
 	if (var_value)
 	{
 		var_value += ft_strlen(var_name) + 1;
