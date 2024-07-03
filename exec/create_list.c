@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 17:20:39 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/03 00:33:02 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/03 13:47:25 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ t_cmd_info	*fill_redir(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args)
 		open files, close fd-s, go untils type != exec
 		to fill the argv and eargv */
 		more_redir(new_cmd, rcmd, args);
-		/* the last cmd with redir tupe should 
+		/* the last cmd with redir type should 
 		write its file to new_cmd */
 	}
 	if (new_cmd->subcmd->type == EXEC)
@@ -104,22 +104,13 @@ t_cmd_info	*fill_redir(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args)
 		copy_argv(new_cmd, new_cmd->subcmd);
 		copy_eargv(new_cmd, new_cmd->subcmd);
 	}
-	// else
-	// 	return (NULL) ??
 	// rcmd->mode_read = 0 ???
 	// rcmd->mode_write = 0 ???
 	if (connection_content(new_cmd))
 		return (NULL);
-	// if (add_redir_details(new_cmd, rcmd, args))
-	// 	return (NULL);
 	// printf("new_cmd->subcmd->type: %d\n", new_cmd->subcmd->type);
 	if (new_cmd->subcmd->type == PIPE)
 		gothrough_cmd(new_cmd->subcmd, cmd_list, args);
-	//it should be smth like recursive, because there could be more than 2 redirs!
-	// if (new_cmd->subcmd->type == REDIR) 
-	// {
-	// 	more_redir(new_cmd, rcmd, args); // free
-	// }
 	free(new_cmd->subcmd);
 	free(rcmd);
 	return (new_cmd);

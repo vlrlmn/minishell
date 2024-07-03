@@ -32,20 +32,24 @@ int	 count_files(t_redir *rcmd, int redir_type)
 	t_redir		*tmp;
 
 	counter = 0;
-	rsubcmd = (t_redir *)rcmd->cmd;
-	type = REDIR;
-	while (type == REDIR)
+	if (rcmd->cmd->type == REDIR)
 	{
-		// printf("rsubcmd->file: %s\n", rsubcmd->file);
-		if (rsubcmd->subtype == redir_type) // HEREDOC, REDIRIN, REDIROUT
-			counter += 1;
-		type = rsubcmd->cmd->type;
-		if (type == REDIR)
+		rsubcmd = (t_redir *)rcmd->cmd;
+		type = REDIR;
+		while (type == REDIR)
 		{
-			tmp = (t_redir *)rsubcmd->cmd;
-			rsubcmd = tmp;
+			// printf("rsubcmd->file: %s\n", rsubcmd->file);
+			if (rsubcmd->subtype == redir_type) // HEREDOC, REDIRIN, REDIROUT
+				counter += 1;
+			type = rsubcmd->cmd->type;
+			if (type == REDIR)
+			{
+				tmp = (t_redir *)rsubcmd->cmd;
+				rsubcmd = tmp;
+			}
 		}
 	}
+	counter += 1;
 	return (counter);
 }
 
@@ -56,7 +60,6 @@ char	**create_file_array(t_redir *rcmd, int redir_type)
 
 	hfile_arr = NULL;
 	size = count_files(rcmd, redir_type);
-	size += 1;
 	if (size > 1)
 		hfile_arr = malloc(sizeof(char *) * (size + 1));
 	if (!hfile_arr)
@@ -258,7 +261,8 @@ int		add_redir_details(t_cmd_info *new_cmd, t_redir *rcmd, t_args *args)
 {
 	new_cmd->redir_type = rcmd->subtype;
 	define_file(new_cmd, rcmd);
-	if (new_cmd->redir_type != HEREDOC)
+	// if (new_cmd->redir_type != HEREDOC
+	if (count_files(rcmd, HEREDOC) == 1 || new_cmd->redir_type != HEREDOC)
 	{
 		if (define_fd(new_cmd, rcmd, args))
 			return (1);
@@ -271,7 +275,7 @@ int	define_file(t_cmd_info	*rcmd, t_redir *old_cmd)
 	if (rcmd->redir_type == REDIRIN)
 	{
 		rcmd->file_read = old_cmd->file;
-		rcmd->mode_read = old_cmd->mode;
+	rcmd->mode_read = old_cmd->mode;
 	}
 	if (rcmd->redir_type == REDIROUT)
 	{
