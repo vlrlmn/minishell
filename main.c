@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/02 22:21:07 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/03 09:40:59 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,19 +157,19 @@ int	exec(t_cmd	*cmd, t_args *args)
 {
 	t_cmd_info	*cmd_list;
 	int			**pipe_arr;
-	int			exit_status;
+	int			status;
 	// int			cmd_status;
 
 	pipe_arr = NULL;
 	cmd_list = create_cmdlist(cmd, args);
 	pipe_arr = connections(cmd_list);
 	// PrintList(cmd_list);
-	exit_status = run_cmds(cmd_list, pipe_arr, args);
+	status = run_cmds(cmd_list, pipe_arr, args);
 	if (list_size(cmd_list) == 1 && is_buildin(cmd_list->argv[0]))
-		return (free_all(cmd_list, pipe_arr), exit_status);
-	exit_status = wait_cmds(cmd_list);
+		return (free_all(cmd_list, pipe_arr), status);
+	status = wait_cmds(cmd_list);
 	free_all(cmd_list, pipe_arr);
-	return (exit_status);
+	return (status);
 }
 
 /*This is where we have instant loop happening. Inside the loop
