@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/03 15:10:20 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/03 15:24:37 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,12 +157,16 @@ int	exec(t_cmd	*cmd, t_args *args)
 {
 	t_cmd_info	*cmd_list;
 	int			**pipe_arr;
+	int			exit_status;
 	int			status;
 	// int			cmd_status;
 
 	pipe_arr = NULL;
 	cmd_list = create_cmdlist(cmd, args);
 	pipe_arr = connections(cmd_list);
+	PrintList(cmd_list);
+	printPipeArr(pipe_arr);
+	exit_status = run_cmds(cmd_list, pipe_arr, args);
 	// PrintList(cmd_list);
 	status = run_cmds(cmd_list, pipe_arr, args);
 	if (list_size(cmd_list) == 1 && is_buildin(cmd_list->argv[0]))
@@ -185,29 +189,31 @@ void	free_args(void *ptr)
 int	loop_result(t_args *args)
 {
 	t_cmd	*cmd;
-	// int		status;
+	int		status;
 
 	while (1)
 	{
-		// printf(Y"NEW_PROMT:"RST);
+		printf(Y"NEW_PROMT:"RST);
 		args->input = readline("minishell$ ");
 		if (args->input == NULL)
 		{
+			// write(STDOUT_FILENO, "exit in loop\n", 14);
 			// write(STDOUT_FILENO, "exit in loop\n", 5);
 			break ;
 		}
 		if (!valid_input(args->input))
 		{
-			// free_args(args);
 			continue ;
 		}
 		add_history(args->input);
 		cmd = parse(args);
 		// printf("-------------END OF PARSING-------------\n");
+		status = exec(cmd, args);
+		printf("\tSTATUS: %d\n", status);
 		g_exit_status = exec(cmd, args);
 		// printf("\tSTATUS: %d\n", status);
 	}
-	// free_envp(args);
+	return (status);
 	return (0);
 }
 
@@ -234,7 +240,7 @@ void	set_environment(t_args *args, char **envp)
 		i++;
 	}
 	args->envp[len] = NULL;
-	export_cmd("OLDPWD=", args);
+	export_cmd("OLDPWD", args);
 	// unset_cmd("OLDPWD", args);
 }
 

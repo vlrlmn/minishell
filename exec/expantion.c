@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expantion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 14:19:33 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/28 19:03:59 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/01 15:31:31 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,6 @@ char	*add_expantion(char *input, t_args *args)
 		res = ft_strjoin(res, rem);
 		free(rem);
 	}
-	// fprintf(stderr, "result_str: '%s'\n", res);
+	fprintf(stderr, "result_str: '%s'\n", res);
     return (res);
 }

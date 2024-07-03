@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 15:21:12 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/28 19:02:21 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/01 20:35:22 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,19 +67,28 @@ int	**fill_pipes(t_cmd_info *cmd, int **pipe_arr, int i, int size)
 		else
 		{
 			cmd->connection[1] = cmd->fd_write;
+			// pfd[1] = -1;
 		}
 	}
 	else //other cmds
 	{
 		// fprintf(stderr, "\there!\n");
 		if (!cmd->file_read)
+		{
 			cmd->connection[0] = pipe_arr[i - 1][0]; //pfd1[0]
+			// if (pipe_arr[i - 1][1] == -1)
+				// cmd->connection[0] = -1;
+		}
 		else
+		{
 			cmd->connection[0] = cmd->fd_read;
+			// pipe_arr[i - 1][0] = -1;
+		}
 		if (cmd->index == size || cmd->file_write) //isn't last cmd
 		{
 			// fprintf(stderr, "\t2: my index: %d!\n", cmd->index);
 			cmd->connection[1] = cmd->fd_write;
+			// pfd[1] = -1;
 		}
 		else
 			cmd->connection[1] = pfd[1];
