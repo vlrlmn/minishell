@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/03 15:54:00 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/03 17:39:54 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,7 @@ int	exec(t_cmd	*cmd, t_args *args)
 	// exit_status = run_cmds(cmd_list, pipe_arr, args);
 	// PrintList(cmd_list);
 	exit_status = run_cmds(cmd_list, pipe_arr, args);
-	if (list_size(cmd_list) == 1 && is_buildin(cmd_list->argv[0]))
+	if ((list_size(cmd_list) == 1 && is_buildin(cmd_list->argv[0])))
 		return (free_all(cmd_list, pipe_arr), exit_status);
 	exit_status = wait_cmds(cmd_list);
 	free_all(cmd_list, pipe_arr);
@@ -189,29 +189,20 @@ void	free_args(void *ptr)
 int	loop_result(t_args *args)
 {
 	t_cmd	*cmd;
-	// int		status;
 
 	while (1)
 	{
 		printf(Y"NEW_PROMT:"RST);
 		args->input = readline("minishell$ ");
 		if (args->input == NULL)
-		{
-			// write(STDOUT_FILENO, "exit in loop\n", 14);
-			// write(STDOUT_FILENO, "exit in loop\n", 5);
 			break ;
-		}
 		if (!valid_input(args->input))
-		{
 			continue ;
-		}
 		add_history(args->input);
 		cmd = parse(args);
 		// printf("-------------END OF PARSING-------------\n");
-		// status = exec(cmd, args);
 		g_exit_status = exec(cmd, args);
 		printf("\tSTATUS: %d\n", g_exit_status);
-		// printf("\tSTATUS: %d\n", status);
 	}
 	return (g_exit_status);
 }

@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 20:52:48 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/28 19:05:35 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/03 16:52:50 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,26 +15,35 @@
 int pre_unset_cmd(t_cmd_info *ecmd, t_args *params)
 {
     int     i;
+    int     status;
 
     i = 1;
-    while(ecmd->argv[i])
+    while (ecmd->argv[i])
     {
-        unset_cmd(ecmd->argv[i], params);
+        status = unset_cmd(ecmd->argv[i], params);
         i++;
     }
-    return (0);
+    return (status);
 }
 
 int	unset_cmd(char *str, t_args *params)
 {
     char    *env_var;
+    int     status;
+    static int print_counter;
 
 	if (!str)
-        return (printf("unset: invalid argument\n"), 1);
+        return (printf("str: unset: invalid argument\n"), 1);
+    print_counter += 1;
     env_var = get_env(str, params->envp);
-    if (remove_cmd(params, env_var))
-        return (printf("unset: invalid argument\n"), 1); // free memory where necessary
-    return (0);
+    if (!env_var)
+    {
+        if (print_counter == 1)
+            printf("unset: '%s': invalid argument\n", str);
+        return (1);
+    }
+    status = remove_cmd(params, env_var);
+    return (status);
 }
 
 int	remove_cmd(t_args *params, char *env_var_to_remove)

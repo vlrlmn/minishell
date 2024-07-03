@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 14:51:13 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/03 16:09:22 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/03 17:32:57 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,14 +94,15 @@ void	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *par
 			cmd_path = find_command_path(cmd->argv[0], path);
 			if (!cmd_path)
 			{
+				free(cmd_path);
 				fprintf(stderr, "Command not found: %s\n", cmd->argv[0]);
 				free_and_exit(127, cmd_list, pipe_arr, params);
 			}
 		}
 		if (if_path_to_cmd(cmd_path) && !is_buildin(cmd->argv[0]))
 		{
-			
-			free_and_exit(1, cmd_list, pipe_arr, params); //is it 1 in bash?
+			free(cmd_path);
+			free_and_exit(127, cmd_list, pipe_arr, params); //is it 1 in bash?
 		}
 		fprintf(stderr, "Found the path! : %s\n", cmd_path);
 		if (cmd->connection[0] == -1 || cmd->connection[1] == -1)

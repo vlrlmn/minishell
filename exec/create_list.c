@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_list.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 17:20:39 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/03 15:40:56 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/03 16:29:19 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,12 +119,12 @@ t_cmd_info	*fill_redir(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args)
 t_cmd_info	*fill_exec(t_cmd *cmd)
 {
 	t_cmd_info	*new_cmd;
-	// t_execcmd	*ecmd;
+	t_execcmd	*ecmd;
 
 	new_cmd = malloc(sizeof(t_cmd_info));
 	if (!new_cmd)
 		return (NULL);
-	// ecmd = (t_execcmd *)cmd;
+	ecmd = (t_execcmd *)cmd;
 	// check_arguments(new_cmd);
 	// FT_MEMSET FOR new_cmd!
 	new_cmd->type = EXEC;
@@ -139,6 +139,6 @@ t_cmd_info	*fill_exec(t_cmd *cmd)
 	new_cmd->subcmd = 0;
 	if (connection_content(new_cmd))
 		return (NULL);
-	// free(ecmd);
+	free(ecmd);
 	return (new_cmd);
 }

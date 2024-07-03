@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:48:27 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/03 15:29:49 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/03 16:57:34 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ int pre_export_cmd(t_cmd_info *ecmd, t_args *params)
     i = 1;
     if (!ecmd->argv[i])
     {
-        export_print(params);
-        return (0);
+        status = export_print(params);
+        return (status);
     }
     while (ecmd->argv[i])
     {
@@ -80,11 +80,11 @@ int export_cmd(char *str, t_args *params)
         return (printf("export: invalid argument\n"), 1);
     env_var = get_str_before_sign(str, '=');
     if (!is_valid_variable_name(env_var))
-		{
-			return (printf("export: '%s': not a valid identifier\n", env_var), 1);
-			free(env_var);
-
-		}
+    {
+        printf("export: '%s': not a valid identifier\n", env_var);
+        free(env_var);
+        return (2);
+    }
     // if (ft_isdigit(env_var[0]))
     //     return (printf("export: '%s': not a valid identifier\n", env_var), 1);
     env_value = get_str_after_sign(str, '=');
@@ -94,7 +94,6 @@ int export_cmd(char *str, t_args *params)
     }
     else
         add_cmd(params, str);
-    // return (printf("export: invalid argument\n"), 1);
     free(env_var);
     free(env_value);
     return (0);
@@ -121,9 +120,9 @@ int add_cmd(t_args *params, char *new_env_var)
         i++;
     }
     new_env_list[i] = ft_strdup(new_env_var);
-    if (!new_env_list[i]) {
-        // Free all previously allocated memory
-        while(++j < i)
+    if (!new_env_list[i]) // Free all previously allocated memory
+    {
+        while (++j < i)
             free(new_env_list[j]);
         free(new_env_list);
         return (1);
@@ -166,12 +165,8 @@ char    *get_str_after_sign(char *str, char sign)
 
     res_i = 0;
     i = 0;
-
     if (!str)
-    {
         return NULL;
-    }
-
     while (str[i] != sign && str[i])
         i++;
     if (i == (ft_strlen(str))) //if there are no '$'
@@ -193,34 +188,3 @@ char    *get_str_after_sign(char *str, char sign)
 	result[res_i] = '\0';
     return (result);
 }
-
-//REWRITE FUNCTION
-// int set_env(const char *name, const char *value, t_args *args) 
-// {
-//     size_t len = ft_strlen(name);
-//     int i;
-
-//     i = 0;
-//     for (i = 0; args->envp[i] != NULL; i++) {
-//         if (strncmp(args->envp[i], name, len) == 0 && args->envp[i][len] == '=') 
-//         {
-//             free(args->envp[i]);
-//             args->envp[i] = malloc(len + strlen(value) + 2);
-//             if (args->envp[i] == NULL) {
-//                 perror("malloc");
-//                 return 1;
-//             }
-//             sprintf(args->envp[i], "%s=%s", name, value);
-//             return 0;
-//         }
-//     }
-//     args->envp[i] = malloc(len + strlen(value) + 2);
-//     if (args->envp[i] == NULL) {
-//         perror("malloc");
-//         return 1;
-//     }
-//     sprintf(args->envp[i], "%s=%s", name, value);
-//     args->envp[i + 1] = NULL;
-//     return 0;
-// }
-// REWRITE FUNCTION

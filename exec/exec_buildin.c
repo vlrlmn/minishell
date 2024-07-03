@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:53:53 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/03 14:36:41 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/03 17:20:34 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,9 @@ int run_buildin(t_cmd_info *ecmd, t_args *params, t_cmd_info *cmd_list, int **pi
         status = pre_unset_cmd(ecmd, params);
     else
     {
-        // cmd is not valis
-        return 1;
+        // cmd is not valid
+        fprintf(stderr, "Command not found: %s\n", ecmd->argv[0]);
+        return (127);
     }
     return (status);
 }
