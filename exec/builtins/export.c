@@ -6,17 +6,15 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:48:27 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/03 15:29:49 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/03 16:42:25 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../../minishell.h"
 
 int pre_export_cmd(t_cmd_info *ecmd, t_args *params)
 {
     int     i;
-    int     status;
 
     i = 1;
     if (!ecmd->argv[i])
@@ -26,10 +24,10 @@ int pre_export_cmd(t_cmd_info *ecmd, t_args *params)
     }
     while (ecmd->argv[i])
     {
-        status = export_cmd(ecmd->argv[i], params);
+        export_cmd(ecmd->argv[i], params);
         i++;
     }
-    return (status);
+    return (0);
 }
 
 int export_print(t_args *params)

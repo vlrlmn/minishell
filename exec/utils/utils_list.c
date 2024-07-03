@@ -3,21 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   utils_list.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 14:27:29 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/27 19:47:25 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/03 18:11:38 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
+static int	i_list;
 
 /* modifies head of linked list and addes new cmd_node to the linked list of cmds. */
 void	add_cmd_to_list(t_cmd_info *cmd, t_cmd_info	**head)
 {
 	t_cmd_info	*current;
 	t_cmd_info	*new_cmd;
-	static int	i_list;
 
 	i_list += 1;
 	new_cmd = cmd;
@@ -82,6 +83,7 @@ void	free_cmd_list(t_cmd_info	*cmd_list)
 		free(current);
 		current = tmp;
 	}
+	i_list = 0;
 	return ;
 }
 

@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/03 15:54:00 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/03 17:35:59 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ void PrintTree(t_cmd	*cmd)
 		{
 			
 			// printf("Arg %d: %.*s\n", i, (int)(exec->eargv[i] - exec->argv[i]), exec->argv[i]);
-			printf("ARGV %s\n", exec->argv[i]);
-			printf("EARGV %s\n", exec->eargv[i]);
+			// printf("ARGV %s\n", exec->argv[i]);
+			// printf("EARGV %s\n", exec->eargv[i]);
 			i++;
 		}
 	}
@@ -60,10 +60,10 @@ void PrintTree(t_cmd	*cmd)
 	else if (cmd->type == REDIR)
 	{
 		redir = (t_redir*)cmd;
-		printf("\nsubtype '%d'\n", redir->subtype);
-		printf("redir mode '%d'\n", redir->mode);
-		printf("redir file '%s'\n", redir->file);
-		printf("redir efile '%s'\n", redir->efile);
+		// printf("\nsubtype '%d'\n", redir->subtype);
+		// printf("redir mode '%d'\n", redir->mode);
+		// printf("redir file '%s'\n", redir->file);
+		// printf("redir efile '%s'\n", redir->efile);
 		PrintTree(redir->cmd);
 		
 	}
@@ -164,8 +164,8 @@ int	exec(t_cmd	*cmd, t_args *args)
 	pipe_arr = NULL;
 	cmd_list = create_cmdlist(cmd, args);
 	pipe_arr = connections(cmd_list);
-	PrintList(cmd_list);
-	printPipeArr(pipe_arr);
+	// PrintList(cmd_list);
+	// printPipeArr(pipe_arr);
 	// exit_status = run_cmds(cmd_list, pipe_arr, args);
 	// PrintList(cmd_list);
 	exit_status = run_cmds(cmd_list, pipe_arr, args);
@@ -193,7 +193,7 @@ int	loop_result(t_args *args)
 
 	while (1)
 	{
-		printf(Y"NEW_PROMT:"RST);
+		// printf(Y"NEW_PROMT:"RST);
 		args->input = readline("minishell$ ");
 		if (args->input == NULL)
 		{
@@ -207,10 +207,11 @@ int	loop_result(t_args *args)
 		}
 		add_history(args->input);
 		cmd = parse(args);
+		
 		// printf("-------------END OF PARSING-------------\n");
 		// status = exec(cmd, args);
 		g_exit_status = exec(cmd, args);
-		printf("\tSTATUS: %d\n", g_exit_status);
+		// printf("\tSTATUS: %d\n", g_exit_status);
 		// printf("\tSTATUS: %d\n", status);
 	}
 	return (g_exit_status);

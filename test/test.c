@@ -5,7 +5,7 @@
 #include <sys/wait.h>
 
 void run_exec(char *cmd, char **args, char **envp) {
-    printf("Executing command: %s\n", cmd);
+    // printf("Executing command: %s\n", cmd);
     execve(cmd, args, envp);
     perror("execve");
     exit(1);

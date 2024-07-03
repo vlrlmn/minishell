@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:26:37 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/28 19:01:03 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/03 18:00:05 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,7 +211,7 @@ void	old_run_exec(t_cmd *cmd, t_args *params)
 			fprintf(stderr, "Arg %d: %.*s\n", i, (int)(ecmd->eargv[i] - ecmd->argv[i]), ecmd->argv[i]);
 			i++;
 		}
-		fprintf(stderr, "Executing command: %s\n", ecmd->argv[0]); // Debug message
+		// fprintf(stderr, "Executing command: %s\n", ecmd->argv[0]); // Debug message
 		if (!params)
 		{
 			fprintf(stderr, "!cmd->params \n");

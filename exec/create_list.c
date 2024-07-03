@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 17:20:39 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/03 15:40:56 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/03 16:40:26 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ t_cmd_info	*fill_exec(t_cmd *cmd)
 {
 	t_cmd_info	*new_cmd;
 	// t_execcmd	*ecmd;
+	
 
 	new_cmd = malloc(sizeof(t_cmd_info));
 	if (!new_cmd)
