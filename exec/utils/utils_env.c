@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:05:31 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/02 19:53:37 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/03 11:39:58 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	*get_env(char *value, char **envp)
 	while (envp[i])
 	{
 		// fprintf(stderr, "envp[%d]: %s \n",i, envp[i]);
-		if (ft_strlen(value) && (ft_strncmp(value, envp[i], ft_strlen(value)) == 0))
+		if (ft_strlen(value) && (ft_strncmp(value, envp[i], ft_strlen(value)) == 0) && envp[i][ft_strlen(value)] == '=')
 			return (envp[i]);
 		i++;
 	}
