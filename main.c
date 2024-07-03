@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/02 15:55:37 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/03 15:01:17 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,6 @@ int	exec(t_cmd	*cmd, t_args *args)
 	t_cmd_info	*cmd_list;
 	int			**pipe_arr;
 	int			exit_status;
-	// int			cmd_status;
 
 	pipe_arr = NULL;
 	cmd_list = create_cmdlist(cmd, args);
@@ -192,8 +191,9 @@ int	loop_result(t_args *args)
 		}
 		if (!valid_input(args->input))
 		{
-			free_envp(args);
-			exit_status = 2;
+			// free_envp(args);
+			continue ;
+			// exit_status = 2;
 		}
 		add_history(args->input);
 		cmd = parse(args);
@@ -201,8 +201,8 @@ int	loop_result(t_args *args)
 		status = exec(cmd, args);
 		printf("\tSTATUS: %d\n", status);
 	}
-	free_envp(args);
-	return (0);
+	// free_envp(args);
+	return (status);
 }
 
 /*We need to create new environment argument and copy envp from main
@@ -228,7 +228,7 @@ void	set_environment(t_args *args, char **envp)
 		i++;
 	}
 	args->envp[len] = NULL;
-	export_cmd("OLDPWD=", args);
+	export_cmd("OLDPWD", args);
 	// unset_cmd("OLDPWD", args);
 }
 

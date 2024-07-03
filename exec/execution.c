@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 14:51:13 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/01 20:17:41 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/03 14:56:49 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	run_cmds(t_cmd_info *cmd_list, int **pipe_arr, t_args *args)
 	{
 		status = execute_cmd(cmd, cmd_list, pipe_arr, args);
 		if (status != 0)
-			return (exit_with_err("Command is not executed\n"), 1); //?
+			return (exit_with_err("Command is not executed\n"), status);
 		cmd = cmd->next;
 	}
 	return (0);
@@ -80,6 +80,8 @@ void	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *par
 	pid = fork();
 	if (pid < 0)
 		return (free_all(cmd_list, pipe_arr));
+	/* if cmd->argv[0] != executable cmd, != built, but it is 
+	value of a var in env list, just print it */
 	if (pid == 0)
 	{
 		if (!params)
@@ -97,7 +99,10 @@ void	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *par
 			}
 		}
 		if (if_path_to_cmd(cmd_path) && !is_buildin(cmd->argv[0]))
+		{
+			
 			free_and_exit(1, cmd_list, pipe_arr, params); //is it 1 in bash?
+		}
 		fprintf(stderr, "Found the path! : %s\n", cmd_path);
 		if (cmd->connection[0] == -1 || cmd->connection[1] == -1)
 			free_and_exit(1, cmd_list, pipe_arr, params);

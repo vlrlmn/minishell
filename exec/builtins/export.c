@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:48:27 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/28 19:05:14 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/03 14:51:49 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int pre_export_cmd(t_cmd_info *ecmd, t_args *params)
 {
     int     i;
+    int     status;
 
     i = 1;
     if (!ecmd->argv[i])
@@ -24,10 +25,10 @@ int pre_export_cmd(t_cmd_info *ecmd, t_args *params)
     }
     while (ecmd->argv[i])
     {
-        export_cmd(ecmd->argv[i], params);
+        status = export_cmd(ecmd->argv[i], params);
         i++;
     }
-    return (0);
+    return (status);
 }
 
 int export_print(t_args *params)
@@ -62,8 +63,12 @@ int export_cmd(char *str, t_args *params)
     if (!str)
         return (printf("export: invalid argument\n"), 1);
     env_var = get_str_before_sign(str, '=');
-    if (ft_isdigit(env_var[0]))
-        return (printf("export: '%s': not a valid identifier\n", env_var), 1);
+    if (!ft_isalpha(env_var[0]))
+    {
+        printf("export: '%s': not a valid identifier\n", env_var);
+        return (2);
+    }
+        // return (printf("export: '%s': not a valid identifier\n", env_var), 2); //or 1??
     env_value = get_str_after_sign(str, '=');
     if (find_env_var(params->envp, env_var))
     {
