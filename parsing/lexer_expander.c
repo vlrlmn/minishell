@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:34:57 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/02 22:19:54 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/03 14:55:48 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ void parse_expander_sign(int *i, char *line, t_lexems *list, t_args *args)
 		var_value += ft_strlen(var_name) + 1;
 		add_str_node(list, var_value);
 	}
+	// else
+	// 	add_str_node(list, var_name);
 	(*j) += ft_strlen(var_name);
 	free(var_name);
 }

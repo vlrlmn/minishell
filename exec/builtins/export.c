@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:48:27 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/02 12:38:36 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/03 12:00:35 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ int export_cmd(char *str, t_args *params)
     if (!is_valid_variable_name(env_var))
 		{
 			return (printf("export: '%s': not a valid identifier\n", env_var), 1);
-			exit_status = 1;
 			free(env_var);
 
 		}
