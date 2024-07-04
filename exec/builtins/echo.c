@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:18:22 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/28 15:18:53 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/04 00:48:15 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,18 @@ int echo_cmd(t_cmd_info *ecmd)
     while (ecmd->argv[i])
     {
         if ((i > 1 && !n_flag) || (i - n_counter > 1 && n_flag)) // if more than 1 arg and no -n OR if more than 1 arg with -n
+        {
             printf(" ");
+            // write(1, " ", 1);
+        }
+        // write(1, ecmd->argv[i], ft_strlen(ecmd->argv[i]));
         printf("%s", ecmd->argv[i]);
         i++;
     }
     if (!n_flag)
+    {
+        // write(1, "\n", 1);   
         printf("\n");
+    }
     return (0);
 }

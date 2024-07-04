@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 20:52:48 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/03 17:04:14 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/04 11:32:48 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int pre_unset_cmd(t_cmd_info *ecmd, t_args *params)
     int     status;
 
     i = 1;
-    while(ecmd->argv[i])
+    while (ecmd->argv[i])
     {
         status = unset_cmd(ecmd->argv[i], params);
         i++;
@@ -33,7 +33,7 @@ int	unset_cmd(char *str, t_args *params)
     static int print_counter;
 
 	if (!str)
-        return (printf("unset: invalid argument\n"), 1);
+        return (printf("str: unset: invalid argument\n"), 1);
     print_counter += 1;
     env_var = get_env(str, params->envp);
     if (!env_var)

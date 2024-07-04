@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 14:17:50 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/03 01:16:55 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/03 18:26:26 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	heredoc(int fd, char *file, char *limiter, int mode, t_args *args)
 	// if (check_file_access(file, R_OK))
 	// 	return (-1);
 	fd = get_file_fd(fd, file, mode);
-	// fprintf(stderr, "limiter: '%s', its len:  %zu\n", limiter, ft_strlen(limiter));
+	fprintf(stderr, "limiter: '%s', its len:  %zu\n", limiter, ft_strlen(limiter));
 	while (1)
 	{
 		fprintf(stderr, "> ");
@@ -58,7 +58,7 @@ int	heredoc(int fd, char *file, char *limiter, int mode, t_args *args)
 			return (fprintf(stderr, "NULL input\n"), -1);
 		}
 		input[ft_strlen(input) - 1] = '\0'; //remove '/n'
-		// fprintf(stderr, "input: %s, its len:  %zu\n", input, ft_strlen(input));
+		fprintf(stderr, "input: %s, its len:  %zu\n", input, ft_strlen(input));
 		if ((ft_strncmp(limiter, input, ft_strlen(limiter)) == 0) && (ft_strlen(limiter) == (ft_strlen(input))))
 		{
 			free(input);
@@ -67,11 +67,15 @@ int	heredoc(int fd, char *file, char *limiter, int mode, t_args *args)
 		if (is_expantion(input))
 		{
 			input_exp = add_expantion(input, args);
-			free(input);
+			// free(input);
 			if (!input_exp)
+			{
+				free(input);
 				return (write(fd, "\n", 1), -1);
+			}
 			input = input_exp;
 		}
+		// fprintf(stderr, "input: '%s'\n", input);
 		write(fd, input, ft_strlen(input)); // write into newly created file fd
 		write(fd, "\n", 1);
 		free(input);

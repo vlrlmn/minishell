@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 14:51:13 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/03 17:05:11 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/04 11:26:11 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,11 @@ int	execute_cmd(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *p
 	int	status;
 
 	status = 0; // or another value?
-	if (cmd->argv[0] == 0)
-		return (1); //error
+	if (!cmd->argv[0] || cmd->argv[0][0] == '\0')
+	{
+		fprintf(stderr, "Cmd is not valid! It's NULL!\n");
+		return (0); //error
+	}
 	check_arguments(cmd);
 	if (is_buildin(cmd->argv[0]) && list_size(cmd_list) == 1)
 	{
@@ -57,14 +60,25 @@ int	execute_cmd(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *p
 
 int	if_path_to_cmd(char *path_line)
 {
-	if (access(path_line, F_OK) == -1)
-		return (1);
-	if (access(path_line, X_OK) == -1)
+	if (access(path_line, F_OK) == 0 && access(path_line, X_OK) == 0)
 	{
-		perror("cmd is not executable\n");
-		return (1);
+		fprintf(stderr, "everything is ok!\n");
+		return (0);
 	}
-	return (0);
+	return (1);
+}
+
+int is_executable(const char *path) {
+    struct stat sb;
+
+    // Check if the path exists and is a regular file
+    if (stat(path, &sb) == 0 && S_ISREG(sb.st_mode)) {
+        // Check if the file is executable
+        if (access(path, X_OK) == 0) {
+            return (0); // The path is an executable command
+        }
+    }
+    return 1; // The path is not an executable command
 }
 
 void	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *params)
@@ -84,6 +98,7 @@ void	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *par
 	value of a var in env list, just print it */
 	if (pid == 0)
 	{
+		fprintf(stderr, "cmd->argv[0]: '%s'\n", cmd->argv[0]);
 		if (!params)
 			fprintf(stderr, "!cmd->params && !cmd->params->envp\n"); // exit??
 		if (cmd->argv[0][0] == '/')
@@ -94,16 +109,26 @@ void	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *par
 			cmd_path = find_command_path(cmd->argv[0], path);
 			if (!cmd_path)
 			{
-				fprintf(stderr, "Command not found: %s\n", cmd->argv[0]);
+				free(cmd_path);
+				fprintf(stderr, "command not found: %s\n", cmd->argv[0]);
 				free_and_exit(127, cmd_list, pipe_arr, params);
 			}
 		}
-		if (if_path_to_cmd(cmd_path) && !is_buildin(cmd->argv[0]))
+		if (!is_buildin(cmd->argv[0]))
 		{
-			
-			free_and_exit(1, cmd_list, pipe_arr, params); //is it 1 in bash?
+			if (is_executable(cmd_path))
+			{
+				fprintf(stderr, "%s: is a directory\n", cmd_path);
+				free(cmd_path);
+				free_and_exit(127, cmd_list, pipe_arr, params); //is it 1 in bash?
+			}
 		}
-		// fprintf(stderr, "Found the path! : %s\n", cmd_path);
+		// if (if_path_to_cmd(cmd_path) || !is_buildin(cmd->argv[0]))
+		// {
+		// 	free(cmd_path);
+		// 	free_and_exit(127, cmd_list, pipe_arr, params); //is it 1 in bash?
+		// }
+		fprintf(stderr, "Found the path! : %s\n", cmd_path);
 		if (cmd->connection[0] == -1 || cmd->connection[1] == -1)
 			free_and_exit(1, cmd_list, pipe_arr, params);
 		if (dup2(cmd->connection[0], STDIN_FILENO) == -1)

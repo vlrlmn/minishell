@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 15:21:12 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/01 20:35:22 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/03 18:20:13 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	**fill_pipes(t_cmd_info *cmd, int **pipe_arr, int i, int size)
 		// fprintf(stderr, "\ti'm head!\n");
 		cmd->connection[0] = cmd->fd_read;
 		if (!cmd->file_write && size > 1)
-			cmd->connection[1] = pfd[1]; //pfd1[1]
+			cmd->connection[1] = pfd[1]; // 4
 		else
 		{
 			cmd->connection[1] = cmd->fd_write;
@@ -72,10 +72,10 @@ int	**fill_pipes(t_cmd_info *cmd, int **pipe_arr, int i, int size)
 	}
 	else //other cmds
 	{
-		// fprintf(stderr, "\there!\n");
+		// fprintf(stderr, "\tmy index: %d!\n", cmd->index);
 		if (!cmd->file_read)
 		{
-			cmd->connection[0] = pipe_arr[i - 1][0]; //pfd1[0]
+			cmd->connection[0] = pipe_arr[i - 1][0]; // 3
 			// if (pipe_arr[i - 1][1] == -1)
 				// cmd->connection[0] = -1;
 		}
@@ -84,9 +84,8 @@ int	**fill_pipes(t_cmd_info *cmd, int **pipe_arr, int i, int size)
 			cmd->connection[0] = cmd->fd_read;
 			// pipe_arr[i - 1][0] = -1;
 		}
-		if (cmd->index == size || cmd->file_write) //isn't last cmd
+		if (cmd->index == size || cmd->file_write != NULL) //isn't last cmd
 		{
-			// fprintf(stderr, "\t2: my index: %d!\n", cmd->index);
 			cmd->connection[1] = cmd->fd_write;
 			// pfd[1] = -1;
 		}

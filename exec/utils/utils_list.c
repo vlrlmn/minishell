@@ -6,11 +6,13 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 14:27:29 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/03 18:11:38 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/04 11:30:18 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
+static int	i_list;
 
 static int	i_list;
 
@@ -83,6 +85,7 @@ void	free_cmd_list(t_cmd_info	*cmd_list)
 		free(current);
 		current = tmp;
 	}
+	i_list = 0;
 	i_list = 0;
 	return ;
 }
