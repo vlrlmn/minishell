@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 20:52:48 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/04 11:34:30 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/04 11:35:29 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,13 @@ int pre_unset_cmd(t_cmd_info *ecmd, t_args *params)
 {
     int     i;
     int     status;
-    int     status;
 
     i = 1;
     while (ecmd->argv[i])
     {
         status = unset_cmd(ecmd->argv[i], params);
-        status = unset_cmd(ecmd->argv[i], params);
         i++;
     }
-    return (status);
     return (status);
 }
 
