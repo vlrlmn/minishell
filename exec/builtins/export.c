@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:48:27 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/04 13:53:15 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/04 17:58:56 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int export_cmd(char *str, t_args *params)
     {
         printf("export: '%s': not a valid identifier\n", env_var);
         free(env_var);
-        return (2);
+        return (1);
     }
     // if (ft_isdigit(env_var[0]))
     //     return (printf("export: '%s': not a valid identifier\n", env_var), 1);
