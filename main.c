@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/04 16:09:17 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/04 17:49:05 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,30 +73,6 @@ void PrintTree(t_cmd	*cmd)
 	}
 }
 
-int ft_launch_minishell(t_args *args)
-{
-	t_cmd	*cmd;
-	
-
-    if (args->input == NULL)
-	{
-		write(STDOUT_FILENO, "exit in launch\n", 5);
-		return 1;
-	}
-	if (!valid_input(args->input))
-	{
-		free_envp(args);
-		exit(SYNTAX_ERR);
-	}
-	//if (fork1() == 0)
-	//{
-		cmd = parse(args);
-		// PrintTree(cmd);
-		run_cmd(cmd, args);
-	//}
-	//wait (0);
-	return (0);
-}
 
 void	print_content(t_cmd_info *current)
 {
@@ -186,6 +162,30 @@ void	free_args(void *ptr)
 	ptr = NULL;
 }
 
+int ft_launch_minishell(t_args *args)
+{
+	t_cmd	*cmd;
+
+    if (args->input == NULL)
+	{
+		write(STDOUT_FILENO, "exit in launch\n", 5);
+		return 1;
+	}
+	if (!valid_input(args->input))
+	{
+		free_envp(args);
+		exit(SYNTAX_ERR);
+	}
+	//if (fork1() == 0)
+	//{
+		cmd = parse(args);
+		PrintTree(cmd);
+		g_exit_status = exec(cmd, args);
+	//}
+	//wait (0);
+	return (g_exit_status);
+}
+
 int	loop_result(t_args *args)
 {
 	t_cmd	*cmd;
@@ -200,6 +200,7 @@ int	loop_result(t_args *args)
 			continue ;
 		add_history(args->input);
 		cmd = parse(args);
+		// PrintTree(cmd);
 		g_exit_status = exec(cmd, args);
 	}
 	return (g_exit_status);

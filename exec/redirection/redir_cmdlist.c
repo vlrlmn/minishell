@@ -196,7 +196,7 @@ int	more_redir(t_cmd_info *new_cmd, t_redir *rcmd, t_args *args)
 	{
 		heredoc_arr[i_hd] = new_cmd->file_read;
 		limiter_arr[i_hd] = rcmd->file;
-		printf("index: %d, '%s', limiter: '%s'\n", i_hd, heredoc_arr[i_hd], limiter_arr[i_hd]);
+		// printf("index: %d, '%s', limiter: '%s'\n", i_hd, heredoc_arr[i_hd], limiter_arr[i_hd]);
 		i_hd += 1;
 	}
 	while (type == REDIR) // && rsubcmd->subtype != APPEND)
@@ -216,7 +216,7 @@ int	more_redir(t_cmd_info *new_cmd, t_redir *rcmd, t_args *args)
 			{
 				heredoc_arr[i_hd] = new_cmd->file_read;
 				limiter_arr[i_hd] = rsubcmd->file;
-				printf("index: %d, '%s', limiter: '%s'\n", i_hd, heredoc_arr[i_hd], limiter_arr[i_hd]);
+				// printf("index: %d, '%s', limiter: '%s'\n", i_hd, heredoc_arr[i_hd], limiter_arr[i_hd]);
 			}
 			i_hd += 1;
 		}

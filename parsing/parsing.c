@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:27:36 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/04 16:10:09 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/04 17:48:36 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,8 @@ t_cmd	*parse(t_args *args)
 	while (args->input < es && is_delimiter(*args->input)) //reach the end of str
 		args->input++;
 	nulterminate(cmd);
+	// PrintTree(cmd);
 	lexical_analysis(cmd, args);
 	// printf("print tree from parsing!\n");
-	// PrintTree(cmd);
 	return (cmd);
 }

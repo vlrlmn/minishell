@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 14:17:50 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/03 18:26:26 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/04 17:44:09 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	heredoc(int fd, char *file, char *limiter, int mode, t_args *args)
 	// if (check_file_access(file, R_OK))
 	// 	return (-1);
 	fd = get_file_fd(fd, file, mode);
-	fprintf(stderr, "limiter: '%s', its len:  %zu\n", limiter, ft_strlen(limiter));
+	// fprintf(stderr, "limiter: '%s', its len:  %zu\n", limiter, ft_strlen(limiter));
 	while (1)
 	{
 		fprintf(stderr, "> ");
@@ -52,13 +52,13 @@ int	heredoc(int fd, char *file, char *limiter, int mode, t_args *args)
 		// 	close(fd);
 		// 	return (130);
 		// }
-		if (!input) // if ctrl + d. TODO ahnde ctrl+c
+		if (!input || (input[0] == '\n' && !input[1])) // if ctrl + d. TODO ahnde ctrl+c
 		{
 			close(fd);
 			return (fprintf(stderr, "NULL input\n"), -1);
 		}
 		input[ft_strlen(input) - 1] = '\0'; //remove '/n'
-		fprintf(stderr, "input: %s, its len:  %zu\n", input, ft_strlen(input));
+		// fprintf(stderr, "input: %s, its len:  %zu\n", input, ft_strlen(input));
 		if ((ft_strncmp(limiter, input, ft_strlen(limiter)) == 0) && (ft_strlen(limiter) == (ft_strlen(input))))
 		{
 			free(input);
@@ -99,7 +99,7 @@ void	call_heredocs(char **arr, t_cmd_info *new_cmd, char **limiter_arr, t_args *
 	while (i < size)
 	{
 		limiter = limiter_arr[size];
-		printf("file: %s, limiter: %s\n", arr[size], limiter);
+		// printf("file: %s, limiter: %s\n", arr[size], limiter);
 		new_cmd->file_read = arr[size];
 		new_cmd->fd_read = heredoc(new_cmd->fd_read, new_cmd->file_read, limiter, new_cmd->mode_read, args);
 		if (size != 0)
