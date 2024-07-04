@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/03 15:28:21 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/04 14:39:30 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,6 +181,7 @@ void		add_str_node(t_lexems *list, char *str);
 char		*list_to_string(t_lexems *list);
 char		process_node(t_lexems *list);
 void parse_expander_sign_in_quotes(int *i, char *line, t_lexems *list, t_args *args);
+int	get_token(char **ps, char *es, char **q, char **eq);
 
 /* sofa */
 void	write_new_promt(void);

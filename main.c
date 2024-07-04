@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/04 13:01:54 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/04 16:09:17 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ void PrintTree(t_cmd	*cmd)
 		{
 			
 			// printf("Arg %d: %.*s\n", i, (int)(exec->eargv[i] - exec->argv[i]), exec->argv[i]);
-			// printf("ARGV %s\n", exec->argv[i]);
-			// printf("EARGV %s\n", exec->eargv[i]);
+			printf("ARGV %s\n", exec->argv[i]);
+			printf("EARGV %s\n\n", exec->eargv[i]);
 			i++;
 		}
 	}
@@ -200,10 +200,7 @@ int	loop_result(t_args *args)
 			continue ;
 		add_history(args->input);
 		cmd = parse(args);
-		
-		// printf("-------------END OF PARSING-------------\n");
 		g_exit_status = exec(cmd, args);
-		// printf("\tSTATUS: %d\n", g_exit_status);
 	}
 	return (g_exit_status);
 }

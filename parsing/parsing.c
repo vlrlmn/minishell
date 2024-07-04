@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:27:36 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/03 17:40:26 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/04 16:10:09 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,17 +44,13 @@ t_cmd	*parseexec(char **ps, char *es)
         exec->argv[argc] = q;
         exec->eargv[argc] = eq;
         argc++;
+
         if (argc >= MAXARGS)
             printf("too many args");
         cmd = parseredir(cmd, ps, es);
     }
     exec->argv[argc] = 0;
     exec->eargv[argc] = 0;
-	// printf("argv0: %s\n", exec->argv[0]);
-	// printf("eargv0: %s\n", exec->eargv[0]);
-
-	// printf("argv1: %s\n", exec->argv[1]);
-	// printf("eargv1: %s\n", exec->eargv[1]);
 	return (cmd);
 }
 

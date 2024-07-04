@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:48:27 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/04 11:37:09 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/04 13:53:15 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int export_print(t_args *params)
 		//should print if value contain only spaces (CHECK IN BASH 3.2)
 		value = get_str_after_sign(params->envp[i], '=');
         name = get_str_before_sign(params->envp[i], '=');
-		if ((ft_strncmp(name, "OLDPWD", ft_strlen(name)) == 0 && value[0] == '\0') || value == NULL)
+		if (value == NULL || (ft_strncmp(name, "OLDPWD", ft_strlen(name)) == 0 && value[0] == '\0'))
             printf("declare -x %s\n", name);
         else
 			printf("declare -x %s=\"%s\"\n", name, value);
