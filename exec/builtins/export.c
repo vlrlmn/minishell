@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:48:27 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/04 17:58:56 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/04 22:28:14 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,21 @@ int export_cmd(char *str, t_args *params)
 {
     char    *env_var;
     char    *env_value;
+    int i = 0;
     
     if (!str)
         return (printf("export: invalid argument\n"), 1);
     env_var = get_str_before_sign(str, '=');
+    while(env_var[i] == '-')
+    {
+        i++;
+        if (ft_isalnum(env_var[i])) // check which options are existing for export and exclude them
+        {
+            printf("bash: line 1: export: --: invalid option export: usage: export [-nf] [name[=value] ...] or export -p"); 
+            free(env_var);
+            return (2);
+        }
+    }
     if (!is_valid_variable_name(env_var))
     {
         printf("export: '%s': not a valid identifier\n", env_var);

@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 20:52:48 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/04 11:35:29 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/04 22:01:18 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	unset_cmd(char *str, t_args *params)
     if (!env_var)
     {
         if (print_counter == 1)
-            printf("unset: '%s': invalid argument\n", str);
+            printf("bash: line 1: unset: %s: not a valid identifier", env_var);
         return (1);
     }
     status = remove_cmd(params, env_var);

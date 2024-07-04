@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 15:23:28 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/02 22:21:30 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/04 21:39:16 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@ void parse_quote(char *line, int *i, t_lexems *list)
         add_char_node(list, line[*i]);
         (*i)++;
     }
+    if (is_delimiter(line[*i]))
+    {
+       add_char_node(list, line[*i]);
+       (*i)++;
+    }
     if (line[*i] == '\'')
         (*i)++;
 }
@@ -31,8 +36,7 @@ void parse_double_quote(int *i, char *line, t_lexems *list, t_args *args)
     (*i)++;
     while(line[*i] && line[*i] != '\"')
     {
-        if (line[*i] == '$' && (is_delimiter(line[*i + 1] || line[*i + 1] == '\"')
-                || line[*i + 1] == '\"'))
+        if (line[*i] == '$' && (is_delimiter(line[*i + 1]) || line[*i + 1] == '\"'))
         {
             add_char_node(list, '$');
             (*i)++;

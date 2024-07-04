@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:52:25 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/03 15:33:01 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/04 20:38:09 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,9 @@ int gettoken(char **ps, char *es, char **q, char **eq) // we got 3 addresses of 
                 (*ps)++;
             if (*ps >= es)
                 return (0);
-            (*ps)++;    
+            (*ps)++;  
+            //if (is_delimiter(**ps)) // maybe only space??
+            //    (*ps)++;
         }
         else if (*ps < es)
             (*ps)++;
