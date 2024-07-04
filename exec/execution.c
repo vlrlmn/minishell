@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 14:51:13 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/03 23:16:04 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/04 18:18:29 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,6 @@ int	execute_cmd(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *p
 		fprintf(stderr, "Executing command: %s\n", cmd->argv[0]); // Debug message
 		run_exec(cmd, cmd_list, pipe_arr, params);
 	}
-	// if (status == 0 && cmd->redir_type == APPEND)
-	// {
-	// 	if (append(cmd->fd_write, cmd->argv, params))
-	// 		return (1); // or another status that should be there
-	// }
-	// fprintf(stderr, "STATUS %d\n", status);
 	return (status);
 }
 

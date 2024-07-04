@@ -146,52 +146,19 @@ char *return_last_file(char **arr)
 
 int	more_redir(t_cmd_info *new_cmd, t_redir *rcmd, t_args *args)
 {
-	int			type;
-	// int			i_in;
-	// int			i_out;
-	// int			i_app;
-	int			i_hd;
 	t_redir		*rsubcmd;
 	t_redir		*tmp;
-	// char		*limiter;
-	// char		*file;
-
+	int			type;
+	int			i_hd;
+	int			fd;
 	char		**heredoc_arr;
 	char		**limiter_arr;
-	// int			*redirin_arr;
-	// int			*redirout_arr;
-	// int			*append_arr;
 
-	// i_in = 0;
-	// i_out = 0;
-	// i_app = 0;
 	i_hd = 0;
-	rsubcmd = (t_redir *)rcmd->cmd;
 	type = REDIR;
-	int	fd;
-
-	heredoc_arr = create_file_array(rcmd, HEREDOC); //0
-	limiter_arr = create_file_array(rcmd, HEREDOC); //0
-
-
-	// redirin_arr = create_fd_array(rcmd, REDIRIN); //2
-	// redirout_arr = create_fd_array(rcmd, REDIROUT); //0
-	// append_arr = create_fd_array(rcmd, APPEND); //0
-
-	/* every time I can write fd and filename 
-	to the new_cmd->field. If i have more than 1 redir,
-	it would be rewrited */
-	/* for heredoc I have to save file
-	For redirin, redirout and append i have to save FD! */
-	// i_in = fill_fd_arr(rsubcmd->subtype, redirin_arr, new_cmd, i_in);
-	// i_out = fill_fd_arr(rsubcmd->subtype, redirout_arr, new_cmd, i_out);
-	// i_app = fill_fd_arr(rsubcmd->subtype, append_arr, new_cmd, i_app);
-	// if (rsubcmd->subtype == HEREDOC)
-	// {
-	// 	if (heredoc_arr)
-	// 		heredoc_arr[i_hd] = new_cmd->file_read;
-	// 	i_hd += 1;
-	// }
+	rsubcmd = (t_redir *)rcmd->cmd;
+	heredoc_arr = create_file_array(rcmd, HEREDOC);
+	limiter_arr = create_file_array(rcmd, HEREDOC);
 	if (heredoc_arr)
 	{
 		heredoc_arr[i_hd] = new_cmd->file_read;
@@ -199,19 +166,11 @@ int	more_redir(t_cmd_info *new_cmd, t_redir *rcmd, t_args *args)
 		printf("index: %d, '%s', limiter: '%s'\n", i_hd, heredoc_arr[i_hd], limiter_arr[i_hd]);
 		i_hd += 1;
 	}
-	while (type == REDIR) // && rsubcmd->subtype != APPEND)
+	while (type == REDIR)
 	{
-		// fprintf(stderr, "file: '%s'\n", new_cmd->file_write);
-		// fprintf(stderr, "fd: '%d'\n", new_cmd->fd_write);
-		// add_redir_details(new_cmd, rsubcmd, args);
-
-		// i_in = fill_fd_arr(rsubcmd->subtype, redirin_arr, new_cmd, i_in);
-		// i_out = fill_fd_arr(rsubcmd->subtype, redirout_arr, new_cmd, i_out);
-		// i_app = fill_fd_arr(rsubcmd->subtype, append_arr, new_cmd, i_app);
 		if (rsubcmd->subtype == HEREDOC)
 		{
-			new_cmd->file_read = heredoc_get_tmp_file(); //write this file to some struct to unlink and free it later
-			// heredoc(rsubcmd->fd, file, rsubcmd->file, rsubcmd->mode, args);
+			new_cmd->file_read = heredoc_get_tmp_file();
 			if (heredoc_arr)
 			{
 				heredoc_arr[i_hd] = new_cmd->file_read;
@@ -220,9 +179,9 @@ int	more_redir(t_cmd_info *new_cmd, t_redir *rcmd, t_args *args)
 			}
 			i_hd += 1;
 		}
-		else
+		else //creates a file
 		{
-			fd = get_file_fd(rsubcmd->fd, rsubcmd->file, rsubcmd->mode); //creates a file
+			fd = get_file_fd(rsubcmd->fd, rsubcmd->file, rsubcmd->mode);
 			// check file access
 			close (fd);
 		}
@@ -238,21 +197,8 @@ int	more_redir(t_cmd_info *new_cmd, t_redir *rcmd, t_args *args)
 	{
 		heredoc_arr[i_hd] = NULL;
 		limiter_arr[i_hd] = NULL;
-
-		// print heredoc array
-		// call heredoc() func from h1 to h-n file;
 		call_heredocs(heredoc_arr, new_cmd, limiter_arr, args);
-		// new_cmd->file_read = h3;
-		// new_cmd->fd_read = get_file_fd();
-		// new_cmd->file_read = return_last_file(heredoc_arr);
 	}
-	// printf("i_in: %d\n", i_in);
-	// if (redirin_arr)
-	// 	new_cmd->fd_read = return_last_fd(redirin_arr, i_in);
-	// if (redirout_arr)
-	// 	new_cmd->fd_write = return_last_fd(redirout_arr, i_out);
-	// if (append_arr)
-	// 	new_cmd->fd_write = return_last_fd(append_arr, i_app);
 	new_cmd->subcmd = rsubcmd->cmd;
 	return (0);
 }
@@ -299,8 +245,8 @@ int	define_file(t_cmd_info	*rcmd, t_redir *old_cmd)
 
 int	define_fd(t_cmd_info *rcmd, t_redir *old_cmd, t_args *args)
 {
-	/* if fd == -1, i have to bring the command to execution with invalis fd.
-	and exit wit status 1 in child proc, if fd od command == -1 */ 
+	/* if fd == -1, i have to bring the command to execution with invalid fd.
+	and exit with status 1 in child proc, if fd of command == -1 */ 
 	if (rcmd->redir_type == REDIRIN)
 	{
 		rcmd->fd_read = get_file_fd(rcmd->fd_read, rcmd->file_read, rcmd->mode_read); //open and check if it's -1
@@ -317,9 +263,6 @@ int	define_fd(t_cmd_info *rcmd, t_redir *old_cmd, t_args *args)
 	if (rcmd->redir_type == APPEND)
 	{
 		rcmd->fd_write = get_file_fd(rcmd->fd_write, rcmd->file_write, rcmd->mode_write);
-		// if (append(rcmd->fd_write, rcmd->argv, args))
-		// 	return (1);
-		// rcmd->fd_write = get_file_fd(rcmd->fd_write, rcmd->file_write, rcmd->mode_write);
 	}
 	return (0);
 }
@@ -328,15 +271,15 @@ int	get_file_fd(int fd, char *file, int mode)
 {
 	int	new_fd;
 
-	// if (check_file_access(file, R_OK))
-	// 	return (-1);
-	new_fd = open(file, mode, 0644); //the permissions for each redir are different!!!! maybe??
+	new_fd = open(file, mode, 0777); //the permissions for each redir are different!!!! maybe??
 	if (new_fd < 0)
 	{
 		printf("open '%s' failed in get_file_fd\n", file);
 		return (-1);
 	}
 	if (new_fd != fd && fd != 0 && fd != 1) // Close the old file descriptor if they are different
-		close(fd); // what about closing 0 or 1 fds???
+		close(fd);
+	if (check_file_access(file, mode))
+		return (-1);
 	return (new_fd);
 }

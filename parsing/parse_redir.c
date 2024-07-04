@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:38:32 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/28 19:07:44 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/04 18:18:53 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,7 @@
 t_cmd	*redircmd(t_cmd *subcmd, char *file, char *efile, int mode, int fd, int subtype)
 {
 	t_redir	*redircmd;
-	// char 	original_efile_char;
 
-	// tmp_efile = efile;
 	redircmd = malloc(sizeof(*redircmd));
 	if (!redircmd)
 		exit_with_malloc_error(MALLOC_ERROR);
@@ -48,7 +46,7 @@ t_cmd	*parseredir(t_cmd *cmd, char **ps, char *es)
 		else if (tok == '+') // it's << actually
 			cmd = redircmd(cmd, q, eq, O_RDWR | O_CREAT, 0, HEREDOC);
 		else if (tok == '-') // >>
-			cmd = redircmd(cmd, q, eq, O_CREAT | O_APPEND, 1, APPEND);
+			cmd = redircmd(cmd, q, eq,  O_WRONLY | O_CREAT | O_APPEND, 1, APPEND);
 		// printf("\n--------PS: %s --------\n", *ps);
         // printf("\n--------ES: %s --------\n", es);
         // printf("\n--------Q: %.*s --------\n", (int)(eq - q), q); // Properly print the token
