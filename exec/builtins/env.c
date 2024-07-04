@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 14:20:59 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/28 17:01:02 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/04 11:42:56 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int env_cmd(t_cmd_info *ecmd, t_args *params)
 			i++;
 			continue ;
 		}
-		printf("%s\n", params->envp[i]);
+		// printf("%s\n", params->envp[i]);
 		free(name);
 		free(value);
 		i++;

@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 14:51:13 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/04 11:26:11 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/04 11:40:14 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	execute_cmd(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *p
 	status = 0; // or another value?
 	if (!cmd->argv[0] || cmd->argv[0][0] == '\0')
 	{
-		fprintf(stderr, "Cmd is not valid! It's NULL!\n");
+		// fprintf(stderr, "Cmd is not valid! It's NULL!\n");
 		return (0); //error
 	}
 	check_arguments(cmd);
@@ -62,7 +62,7 @@ int	if_path_to_cmd(char *path_line)
 {
 	if (access(path_line, F_OK) == 0 && access(path_line, X_OK) == 0)
 	{
-		fprintf(stderr, "everything is ok!\n");
+		// fprintf(stderr, "everything is ok!\n");
 		return (0);
 	}
 	return (1);
@@ -98,7 +98,7 @@ void	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *par
 	value of a var in env list, just print it */
 	if (pid == 0)
 	{
-		fprintf(stderr, "cmd->argv[0]: '%s'\n", cmd->argv[0]);
+		// fprintf(stderr, "cmd->argv[0]: '%s'\n", cmd->argv[0]);
 		if (!params)
 			fprintf(stderr, "!cmd->params && !cmd->params->envp\n"); // exit??
 		if (cmd->argv[0][0] == '/')
@@ -128,7 +128,7 @@ void	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *par
 		// 	free(cmd_path);
 		// 	free_and_exit(127, cmd_list, pipe_arr, params); //is it 1 in bash?
 		// }
-		fprintf(stderr, "Found the path! : %s\n", cmd_path);
+		// fprintf(stderr, "Found the path! : %s\n", cmd_path);
 		if (cmd->connection[0] == -1 || cmd->connection[1] == -1)
 			free_and_exit(1, cmd_list, pipe_arr, params);
 		if (dup2(cmd->connection[0], STDIN_FILENO) == -1)

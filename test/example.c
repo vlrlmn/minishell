@@ -11,9 +11,9 @@ void geeks()
     ptr = &var;
 
     // assign the address of a variable to a pointer
-    printf("Value at ptr = %p \n", ptr);
-    printf("Value at var = %d \n", var);
-    printf("Value at *ptr = %d \n", *ptr); // get the value of var to which points the pointer
+    // printf("Value at ptr = %p \n", ptr);
+    // printf("Value at var = %d \n", var);
+    // printf("Value at *ptr = %d \n", *ptr); // get the value of var to which points the pointer
 }
 
 // Driver program

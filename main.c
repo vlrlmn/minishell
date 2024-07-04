@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/04 11:26:58 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/04 13:01:54 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int ft_launch_minishell(t_args *args)
 	//if (fork1() == 0)
 	//{
 		cmd = parse(args);
-		PrintTree(cmd);
+		// PrintTree(cmd);
 		run_cmd(cmd, args);
 	//}
 	//wait (0);
@@ -101,20 +101,20 @@ int ft_launch_minishell(t_args *args)
 void	print_content(t_cmd_info *current)
 {
 	int i;
-	printf("type: %d\n", current->type);
+	// printf("type: %d\n", current->type);
 	i = 0;
 	while (current->argv[i] != NULL)
 	{
-		printf("ARGV %s\n", current->argv[i]);
-		printf("EARGV %s\n", current->eargv[i]);
+		// printf("ARGV %s\n", current->argv[i]);
+		// printf("EARGV %s\n", current->eargv[i]);
 		i++;
 	}
-	printf("con[0] %d\n", current->connection[0]);
-	printf("con[1] %d\n", current->connection[1]);
-	printf("fd_read: %d\n", current->fd_read);
-	printf("file_read: %s\n", current->file_read);
-	printf("fd_write: %d\n", current->fd_write);
-	printf("file_write: %s\n", current->file_write);
+	// printf("con[0] %d\n", current->connection[0]);
+	// printf("con[1] %d\n", current->connection[1]);
+	// printf("fd_read: %d\n", current->fd_read);
+	// printf("file_read: %s\n", current->file_read);
+	// printf("fd_write: %d\n", current->fd_write);
+	// printf("file_write: %s\n", current->file_write);
 }
 
 int PrintList(t_cmd_info *cmd_list)
@@ -162,16 +162,16 @@ int	exec(t_cmd	*cmd, t_args *args)
 	pipe_arr = NULL;
 	cmd_list = create_cmdlist(cmd, args);
 	pipe_arr = connections(cmd_list);
-	PrintList(cmd_list);
-	printPipeArr(pipe_arr);
+	// PrintList(cmd_list);
+	// printPipeArr(pipe_arr);
 	exit_status = run_cmds(cmd_list, pipe_arr, args);
-	printf("status after exec: %d\n", exit_status);
+	// printf("status after exec: %d\n", exit_status);
 	if (!cmd_list->argv[0] || cmd_list->argv[0][0] == '\0')
 		return (free_all(cmd_list, pipe_arr), exit_status);
 	if (list_size(cmd_list) == 1 && is_buildin(cmd_list->argv[0]))
 		return (free_all(cmd_list, pipe_arr), exit_status);
 	exit_status = wait_cmds(cmd_list);
-	printf("status after wait: %d\n", exit_status);
+	// printf("status after wait: %d\n", exit_status);
 	free_all(cmd_list, pipe_arr);
 	return (exit_status);
 }
@@ -203,7 +203,7 @@ int	loop_result(t_args *args)
 		
 		// printf("-------------END OF PARSING-------------\n");
 		g_exit_status = exec(cmd, args);
-		printf("\tSTATUS: %d\n", g_exit_status);
+		// printf("\tSTATUS: %d\n", g_exit_status);
 	}
 	return (g_exit_status);
 }

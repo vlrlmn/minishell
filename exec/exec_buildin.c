@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_buildin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:53:53 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/04 00:48:32 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/04 11:39:16 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int run_buildin(t_cmd_info *ecmd, t_args *params, t_cmd_info *cmd_list, int **pi
     int i = 0;
     while (ecmd->argv[i])
     {
-        printf("%d arg: %s\n", i, ecmd->argv[i]);
+        // printf("%d arg: %s\n", i, ecmd->argv[i]);
         i++;
     }
     if (ft_strncmp(ecmd->argv[0], "cd", 2) == 0)

@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:26:37 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/03 18:00:05 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/04 11:41:41 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,17 @@ void	run_pipe(t_cmd *cmd, t_args *params)
 		exit_with_err("fork");
 	if (pid1 == 0)
 	{
-		printf("Fork for left\n");
+		// printf("Fork for left\n");
 		close(p[0]);
-		printf("Fork for left1 \n");
+		// printf("Fork for left1 \n");
 		// PrintTree(pcmd->left);
 		dup2(p[1], STDOUT_FILENO);
 		//PrintTree(pcmd->left);
 		//printf("Fork for left2 \n");
 		close(p[1]);
-		fprintf(stderr, "Run Left\n");
+		// fprintf(stderr, "Run Left\n");
 		run_cmd(pcmd->left, params);
-		fprintf(stderr, "FINISH RUN LEFT\n");
+		// fprintf(stderr, "FINISH RUN LEFT\n");
 		exit(0);
 	}
 	
@@ -48,11 +48,11 @@ void	run_pipe(t_cmd *cmd, t_args *params)
 		exit_with_err("fork");
 	if (pid2 == 0)
 	{
-		printf("Fork for right\n");
+		// printf("Fork for right\n");
         close(p[1]);
 	    dup2(p[0], STDIN_FILENO);
 	    close(p[0]);
-		fprintf(stderr, "Run right\n");
+		// fprintf(stderr, "Run right\n");
 		run_cmd(pcmd->right, params);
 		exit(0);
 	}
@@ -60,7 +60,7 @@ void	run_pipe(t_cmd *cmd, t_args *params)
 	close(p[1]);
 	waitpid(pid1, NULL, 0);
 	waitpid(pid2, &status, 0);
-	printf("\npid2 STATUS %d\n", status);
+	// printf("\npid2 STATUS %d\n", status);
 }
 
 /* TODO : the file descriptor is leaking!!! it showes PrintTree() result in the file */
@@ -69,13 +69,13 @@ void	run_redir(t_cmd *cmd, t_args *params)
 	t_redir *rcmd;
 
 	rcmd = (t_redir *)cmd;
-	fprintf(stderr, "\tfd in run_redir before redir(): %d\n", rcmd->fd);
+	// fprintf(stderr, "\tfd in run_redir before redir(): %d\n", rcmd->fd);
 	close(rcmd->fd); //This ensures that the file descriptor is available to be reused.
-	fprintf(stderr, "\nRCMD FILE in exec: '%s'\n", rcmd->file);
-	fprintf(stderr, "fd: %d\n", rcmd->fd);
+	// fprintf(stderr, "\nRCMD FILE in exec: '%s'\n", rcmd->file);
+	// fprintf(stderr, "fd: %d\n", rcmd->fd);
 	// PrintTree(rcmd->cmd);
 	redir(rcmd);
-	fprintf(stderr, "\tfd after redir(): %d\n", rcmd->fd);
+	// fprintf(stderr, "\tfd after redir(): %d\n", rcmd->fd);
 	run_cmd(rcmd->cmd, params); //it calls run_cmd to execute the sub-command (rcmd->cmd)
 }
 
@@ -146,7 +146,7 @@ void	close_fd(t_cmd *ecmd)
 	if (rcmd->subtype == HEREDOC)
 	{
 		close(rcmd->fd);
-		fprintf(stderr, "closed fd!\n");
+		// fprintf(stderr, "closed fd!\n");
 	}
 }
 
@@ -204,11 +204,11 @@ void	old_run_exec(t_cmd *cmd, t_args *params)
 	// }
 	// else
 	// {
-		fprintf(stderr, "In run_exec function!\n");
+		// fprintf(stderr, "In run_exec function!\n");
 		int i = 0;
 		while (ecmd->argv[i])
 		{
-			fprintf(stderr, "Arg %d: %.*s\n", i, (int)(ecmd->eargv[i] - ecmd->argv[i]), ecmd->argv[i]);
+			// fprintf(stderr, "Arg %d: %.*s\n", i, (int)(ecmd->eargv[i] - ecmd->argv[i]), ecmd->argv[i]);
 			i++;
 		}
 		// fprintf(stderr, "Executing command: %s\n", ecmd->argv[0]); // Debug message
@@ -229,9 +229,9 @@ void	old_run_exec(t_cmd *cmd, t_args *params)
 			fprintf(stderr, "Command not found: %s\n", ecmd->argv[0]);
 			exit(127);
 		}
-		fprintf(stderr, "Found the path! : %s\n", cmd_path);
+		// fprintf(stderr, "Found the path! : %s\n", cmd_path);
 		execve(cmd_path, ecmd->argv, params->envp);
-		fprintf(stderr, "execve errno:%d !\n", errno);
+		// fprintf(stderr, "execve errno:%d !\n", errno);
 	// }
 	close_fd((t_cmd *)ecmd); //the function is not executing there idk why
 	free(cmd_path);
@@ -244,7 +244,7 @@ void run_cmd(t_cmd *cmd, t_args *params)
         printf("run_cmd: cmd is NULL\n");
         exit(127);
     }
-    fprintf(stderr, "Running command type: %d\n", cmd->type);
+    // fprintf(stderr, "Running command type: %d\n", cmd->type);
 	// create linked list there and fill it recursively
     if (cmd->type == EXEC)
         old_run_exec(cmd, params);

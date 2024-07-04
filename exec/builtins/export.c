@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:48:27 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/04 11:31:55 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/04 11:37:09 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int pre_export_cmd(t_cmd_info *ecmd, t_args *params)
     }
     while (ecmd->argv[i])
     {
-        export_cmd(ecmd->argv[i], params);
+        status = export_cmd(ecmd->argv[i], params);
         i++;
     }
     return (status);
