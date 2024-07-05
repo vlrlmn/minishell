@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:34:57 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/03 16:03:41 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/05 11:59:41 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,6 @@ void parse_expander_sign(int *i, char *line, t_lexems *list, t_args *args)
 		var_value += ft_strlen(var_name) + 1;
 		add_str_node(list, var_value);
 	}
-	// else
-	// 	add_str_node(list, var_name);
 	(*j) += ft_strlen(var_name);
 	free(var_name);
 }
@@ -88,7 +86,7 @@ void parse_expander(int *i, t_lexems *list, char *line, t_args *args)
     char *exit_str;
 
     (*i)++;
-    if(!line[*i] || is_delimiter(line[*i]))
+    if(!line[*i] || is_delimiter(line[*i]) || (line[*i + 1] && line[*i] == '/' && line[*i + 1] == '/'))
     {
         add_char_node(list, '$');
         return ;
@@ -100,6 +98,11 @@ void parse_expander(int *i, t_lexems *list, char *line, t_args *args)
         free(exit_str);
         (*i)++;
     }
+	else if (line[*i] == '0')
+	{
+		add_str_node(list, "bash\n");
+		(*i)++;
+	}
     else
         parse_expander_sign(i, line, list, args);
 }
