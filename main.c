@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/04 18:50:26 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/05 14:53:28 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ int	exec(t_cmd	*cmd, t_args *args)
 	PrintList(cmd_list);
 	printPipeArr(pipe_arr);
 	exit_status = run_cmds(cmd_list, pipe_arr, args);
-	printf("status after exec: %d\n", exit_status);
+	// printf("status after exec: %d\n", exit_status);
 	if (!cmd_list->argv[0] || cmd_list->argv[0][0] == '\0')
 		return (free_all(cmd_list, pipe_arr), exit_status);
 	if (list_size(cmd_list) == 1 && is_buildin(cmd_list->argv[0]))

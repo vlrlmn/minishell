@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 14:27:19 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/04 18:26:40 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/05 15:01:48 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,12 @@ void check_arguments(t_cmd_info *ecmd)
 }
 
 int check_file_access(const char *file_path, int mode) {
+	/* if redir_type heredoc or redirin, check for existance. Dpends on the redir type check 
+	F_OK: Check for existence of the file.
+	R_OK: Check for read permission.
+	W_OK: Check for write permission.
+	*/
+	printf("mode: %d\n", mode);
     if (access(file_path, mode) == 0) {
         return (printf("File '%s' is accessible with the specified mode.\n", file_path), 0);
     } else {

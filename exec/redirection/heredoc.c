@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 14:17:50 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/04 00:51:22 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/05 14:51:44 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	heredoc(int fd, char *file, char *limiter, int mode, t_args *args)
 	input_exp = NULL;
 	// if (check_file_access(file, R_OK))
 	// 	return (-1);
-	fd = get_file_fd(fd, file, mode);
+	fd = get_file_fd(fd, file, mode, HEREDOC);
 	// fprintf(stderr, "limiter: '%s', its len:  %zu\n", limiter, ft_strlen(limiter));
 	while (1)
 	{
@@ -111,5 +111,5 @@ void	call_heredocs(char **arr, t_cmd_info *new_cmd, char **limiter_arr, t_args *
 	}
 	free(arr);
 	free(limiter_arr);
-	new_cmd->fd_read = get_file_fd(new_cmd->fd_read, new_cmd->file_read, new_cmd->mode_read);
+	new_cmd->fd_read = get_file_fd(new_cmd->fd_read, new_cmd->file_read, new_cmd->mode_read, HEREDOC);
 }

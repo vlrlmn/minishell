@@ -181,7 +181,7 @@ int	more_redir(t_cmd_info *new_cmd, t_redir *rcmd, t_args *args)
 		}
 		else //creates a file
 		{
-			fd = get_file_fd(rsubcmd->fd, rsubcmd->file, rsubcmd->mode);
+			fd = get_file_fd(rsubcmd->fd, rsubcmd->file, rsubcmd->mode, rsubcmd->subtype);
 			// check file access
 			close (fd);
 		}
@@ -249,28 +249,30 @@ int	define_fd(t_cmd_info *rcmd, t_redir *old_cmd, t_args *args)
 	and exit with status 1 in child proc, if fd of command == -1 */ 
 	if (rcmd->redir_type == REDIRIN)
 	{
-		rcmd->fd_read = get_file_fd(rcmd->fd_read, rcmd->file_read, rcmd->mode_read); //open and check if it's -1
+		rcmd->fd_read = get_file_fd(rcmd->fd_read, rcmd->file_read, rcmd->mode_read, rcmd->redir_type); //open and check if it's -1
 	}
 	if (rcmd->redir_type == REDIROUT)
 	{
-		rcmd->fd_write = get_file_fd(rcmd->fd_write, rcmd->file_write, rcmd->mode_write);
+		rcmd->fd_write = get_file_fd(rcmd->fd_write, rcmd->file_write, rcmd->mode_write, rcmd->redir_type);
 	}
 	if (rcmd->redir_type == HEREDOC)
 	{
 		rcmd->fd_read = heredoc(rcmd->fd_read, rcmd->file_read, old_cmd->file, rcmd->mode_read, args);
-		rcmd->fd_read = get_file_fd(rcmd->fd_read, rcmd->file_read, rcmd->mode_read);
+		rcmd->fd_read = get_file_fd(rcmd->fd_read, rcmd->file_read, rcmd->mode_read, rcmd->redir_type);
 	}
 	if (rcmd->redir_type == APPEND)
 	{
-		rcmd->fd_write = get_file_fd(rcmd->fd_write, rcmd->file_write, rcmd->mode_write);
+		rcmd->fd_write = get_file_fd(rcmd->fd_write, rcmd->file_write, rcmd->mode_write, rcmd->redir_type);
 	}
 	return (0);
 }
 
-int	get_file_fd(int fd, char *file, int mode)
+int	get_file_fd(int fd, char *file, int mode, int redir_type)
 {
 	int	new_fd;
 
+	if (check_file_access(file, redir_type))
+		return (-1);
 	new_fd = open(file, mode, 0777); //the permissions for each redir are different!!!! maybe??
 	if (new_fd < 0)
 	{
@@ -279,7 +281,5 @@ int	get_file_fd(int fd, char *file, int mode)
 	}
 	if (new_fd != fd && fd != 0 && fd != 1) // Close the old file descriptor if they are different
 		close(fd);
-	if (check_file_access(file, mode))
-		return (-1);
 	return (new_fd);
 }
