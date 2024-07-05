@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 15:36:42 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/07 15:45:56 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/08 17:19:28 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void add_str_node(t_lexems *list, char *str)
     int i;
 
     i = 0;
-    while(str[i])
+    while (str[i])
     {
         add_char_node(list, str[i]);
         i++;

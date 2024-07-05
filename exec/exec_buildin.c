@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:53:53 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/05 15:46:16 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/08 17:17:19 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,28 +73,34 @@ int run_single_builtin(t_cmd_info *cmd, t_args *params, t_cmd_info *cmd_list, in
     
 	// fprintf(stderr, "Running command: %s\n", cmd->argv[0]); // Debug message
     // do dup2 for output redirection
-    saved_stdout = dup(STDOUT_FILENO);
-    if (saved_stdout < 0) {
-        perror("dup");
-        // close fd-s, free all, return 1
-        return (1);
+    if (cmd->redir_type == APPEND)
+    {
+        saved_stdout = dup(STDOUT_FILENO);
+        if (saved_stdout < 0) {
+            perror("dup");
+            // close fd-s, free all, return 1
+            return (1);
+        }
+        // write(1, "after dup()\n", 13);
+        if (dup2(cmd->fd_write, STDOUT_FILENO) < 0) {
+            perror("dup2");
+            close(saved_stdout);
+            // close fd-s, free all, return 1
+            return (1);
+        }
+        // write(1, "after 1 dup2()\n", 16);
     }
-    // write(1, "after dup()\n", 13);
-    if (dup2(cmd->fd_write, STDOUT_FILENO) < 0) {
-        perror("dup2");
-        close(saved_stdout);
-        // close fd-s, free all, return 1
-        return (1);
-    }
-    // write(1, "after 1 dup2()\n", 16);
 	builtin_status = run_buildin(cmd, params, cmd_list, pipe_arr);
-    if (dup2(saved_stdout, STDOUT_FILENO) < 0) {
-        close(saved_stdout);
-        perror("dup2");
-        // close fd-s, free all, return 1
-        return (1);
-    }
-    // write(1, "after 2 dup2()\n", 16);
-    close(saved_stdout);
+	if (cmd->redir_type == APPEND)
+	{
+		if (dup2(saved_stdout, STDOUT_FILENO) < 0) {
+			close(saved_stdout);
+			perror("dup2");
+			// close fd-s, free all, return 1
+			return (1);
+		}
+		// write(1, "after 2 dup2()\n", 16);
+		close(saved_stdout);
+	}
 	return (builtin_status);
 }

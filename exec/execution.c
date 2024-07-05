@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 14:51:13 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/05 17:56:47 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/08 17:18:04 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,8 +164,11 @@ void	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *par
 			status = run_buildin(cmd, params, cmd_list, pipe_arr);
 		}
 		else
+		{
 			status = execve(cmd_path, cmd->argv, params->envp);
-		// fprintf(stderr, "execve errno: %d\n", status);
+			fprintf(stderr, "execve errno: %d\n", status);
+			
+		}
 		free_and_exit(status, cmd_list, pipe_arr, params);
 	}
 	else

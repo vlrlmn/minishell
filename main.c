@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/08 16:07:15 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/08 17:16:23 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,20 +77,21 @@ void PrintTree(t_cmd	*cmd)
 void	print_content(t_cmd_info *current)
 {
 	int i;
-	// printf("type: %d\n", current->type);
+	printf("type: %d\n", current->type);
 	i = 0;
 	while (current->argv[i] != NULL)
 	{
-		// printf("ARGV %s\n", current->argv[i]);
-		// printf("EARGV %s\n", current->eargv[i]);
+		printf("ARGV %s\n", current->argv[i]);
+		printf("EARGV %s\n", current->eargv[i]);
 		i++;
 	}
-	// printf("con[0] %d\n", current->connection[0]);
-	// printf("con[1] %d\n", current->connection[1]);
-	// printf("fd_read: %d\n", current->fd_read);
-	// printf("file_read: %s\n", current->file_read);
-	// printf("fd_write: %d\n", current->fd_write);
-	// printf("file_write: %s\n", current->file_write);
+	printf("redir_type: %d\n", current->redir_type);
+	printf("con[0] %d\n", current->connection[0]);
+	printf("con[1] %d\n", current->connection[1]);
+	printf("fd_read: %d\n", current->fd_read);
+	printf("file_read: %s\n", current->file_read);
+	printf("fd_write: %d\n", current->fd_write);
+	printf("file_write: %s\n", current->file_write);
 }
 
 int PrintList(t_cmd_info *cmd_list)
