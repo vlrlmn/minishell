@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 14:27:19 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/08 17:19:16 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/08 17:22:28 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,14 +83,27 @@ void check_arguments(t_cmd_info *ecmd)
 	ecmd->eargv[j] = NULL;
 }
 
-int check_file_access(const char *file_path, int mode) {
+int check_file_access(const char *file_path, int redir_type) {
 	/* if redir_type heredoc or redirin, check for existance. Dpends on the redir type check 
 	F_OK: Check for existence of the file.
 	R_OK: Check for read permission.
 	W_OK: Check for write permission.
 	*/
+	(void)redir_type;
+	int	res;
+
+	if (redir_type == REDIRIN || redir_type == HEREDOC)
+	{
+		res = access(file_path, F_OK | R_OK);
+	}
+	if (redir_type == REDIROUT || redir_type == APPEND)
+	{
+		res = access(file_path, F_OK | W_OK);
+	}
+	return (res);
+
 	// printf("mode: %d\n", mode);
-    if (access(file_path, mode) == 0) {
+    if (access(file_path, 777) == 0) {
         return (printf("File '%s' is accessible with the specified mode.\n", file_path), 0);
     } else {
         // access() failed, check errno to determine the error

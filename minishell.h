@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/07 17:24:44 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/08 17:21:17 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,7 +191,7 @@ int		define_file(t_cmd_info	*rcmd, t_redir *old_cmd);
 int		add_redir_details(t_cmd_info	*new_cmd, t_redir *rcmd, t_args *args);
 char	*heredoc_get_tmp_file(void);
 int		heredoc(int fd, char *file, char *limiter, int mode, t_args *args);
-void	call_heredocs(char **arr, t_cmd_info *new_cmd, char **limiter_arr, t_args *args);
+int		call_heredocs(char **arr, t_cmd_info *new_cmd, char **limiter_arr, t_args *args);
 int		old_heredoc(t_redir *rcmd);
 int		append(int fd, char **eargv, t_args *args);
 char	*add_expantion(char *input, t_args *args);

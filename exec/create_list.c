@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_list.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 17:20:39 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/04 11:21:35 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/05 19:51:21 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,8 @@ t_cmd_info	*fill_redir(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args)
 		/* go through redirs with more_redir(), 
 		open files, close fd-s, go untils type != exec
 		to fill the argv and eargv */
-		more_redir(new_cmd, rcmd, args);
+		if (more_redir(new_cmd, rcmd, args))
+			return (NULL);
 		/* the last cmd with redir type should 
 		write its file to new_cmd */
 	}

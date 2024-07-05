@@ -4,7 +4,7 @@
 # 2. -I/usr/local/opt/readline/include -L/usr/local/opt/readline/lib -lreadline libraries for functions like rl_replace_line and rl_redisplay 
 
 NAME = minishell
-CC = cc --debug -Wall -Wextra -Werror -g3
+CC = cc --debug -Wall -Wextra -Werror -g3 -fsanitize=address
 CFLAGS = -I/usr/local/opt/readline/include
 # LDFLAGS = -I/usr/local/include -L/usr/local/lib -lreadline  
 LDFLAGS = -lreadline  
