@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 14:51:13 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/05 15:16:02 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/05 17:55:55 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ void	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *par
 			{
 				fprintf(stderr, "%s: is a directory\n", cmd_path);
 				free(cmd_path);
-				free_and_exit(127, cmd_list, pipe_arr, params); //is it 1 in bash?
+				free_and_exit(126, cmd_list, pipe_arr, params); //is it 1 in bash?
 			}
 		}
 		// if (if_path_to_cmd(cmd_path) || !is_buildin(cmd->argv[0]))
@@ -164,8 +164,11 @@ void	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *par
 			status = run_buildin(cmd, params, cmd_list, pipe_arr);
 		}
 		else
+		{
 			status = execve(cmd_path, cmd->argv, params->envp);
-		// fprintf(stderr, "execve errno: %d\n", status);
+			fprintf(stderr, "execve errno: %d\n", status);
+			
+		}
 		free_and_exit(status, cmd_list, pipe_arr, params);
 	}
 	else

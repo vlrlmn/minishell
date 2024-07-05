@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 20:52:48 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/04 22:01:18 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/05 17:45:11 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,10 @@ int	unset_cmd(char *str, t_args *params)
     env_var = get_env(str, params->envp);
     if (!env_var)
     {
+        if (str[0] == '-')
+            return (2);
         if (print_counter == 1)
-            printf("bash: line 1: unset: %s: not a valid identifier", env_var);
+            printf("bash: line 1: unset: %s: not a valid identifier\n", env_var);
         return (1);
     }
     status = remove_cmd(params, env_var);

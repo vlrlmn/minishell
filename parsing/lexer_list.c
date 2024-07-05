@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_list.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 15:36:42 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/01 14:45:14 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/05 16:17:11 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,10 @@ void add_char_node(t_lexems *list, char c)
         return ;
     data = (char *)malloc(sizeof(char));
     if (!data)
+    {
         free(new);
+        return ;
+    }
     *data = c;
     new->data = data;
     new->next = NULL;
@@ -81,7 +84,7 @@ void add_str_node(t_lexems *list, char *str)
     int i;
 
     i = 0;
-    while(str[i])
+    while (str[i])
     {
         add_char_node(list, str[i]);
         i++;

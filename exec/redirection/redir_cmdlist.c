@@ -75,7 +75,7 @@ int	*create_fd_array(t_redir *rcmd, int redir_type)
 	fd_arr = NULL;
 	size = count_files(rcmd, redir_type);
 	size += 1;
-	printf("size: %d\n", size);
+	// printf("size: %d\n", size);
 	if (size > 1)
 		fd_arr = malloc(sizeof(int) * (size));
 	if (!fd_arr)
