@@ -31,13 +31,11 @@ SRC_PARSING = 	./parsing/parser/parsing.c \
 				./parsing/syntax_check/valid_syntax_utils.c \
 
 
-SRC_EXECUTION = ./exec/run_cmd.c \
-				./exec/exec_path_cmd.c \
+SRC_EXECUTION = ./exec/execution.c \
 				./exec/exec_buildin.c \
 				./exec/create_list.c \
-				./exec/expantion.c \
 				./exec/built_connections.c \
-				./exec/execution.c
+				
 				
 SRC_BUILTIN = ./exec/builtins/cd.c \
 			./exec/builtins/echo.c \
@@ -55,7 +53,9 @@ SRC_REDIR = ./exec/redirection/heredoc.c \
 
 SRC_UTILS = ./exec/utils/utils_env.c \
 			./exec/utils/utils_fill_cmd.c \
-			./exec/utils/utils_list.c
+			./exec/utils/utils_list.c \
+			./exec/utils/exec_utils.c \
+			./exec/utils/expantion.c \
 
 SRCS = $(SRC) $(SRC_PARSING) $(SRC_EXECUTION) $(SRC_BUILTIN) $(SRC_REDIR) $(SRC_UTILS)
 
