@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:18:22 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/04 16:26:34 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/05 13:20:09 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ int echo_cmd(t_cmd_info *ecmd)
 	}
 	while (ecmd->argv[i])
 	{
-		printf("%s", ecmd->argv[i]);
+        if (ft_strlen(ecmd->argv[i]) != 2 || ecmd->argv[i][0] != '\'' || ecmd->argv[i][1] != '\'')
+            printf("%s", ecmd->argv[i]);  
 		if (ecmd->argv[i++ + 1])
 			printf(" ");
 	}

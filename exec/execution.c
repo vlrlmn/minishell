@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 14:51:13 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/04 17:17:58 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/05 13:04:19 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,9 @@ int	run_cmds(t_cmd_info *cmd_list, int **pipe_arr, t_args *args)
 int	execute_cmd(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *params)
 {
 	int	status;
+	int i;
 
+	i = 0;
 	status = 0; // or another value?
 	if (!cmd->argv[0] || cmd->argv[0][0] == '\0')
 	{
@@ -39,6 +41,12 @@ int	execute_cmd(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *p
 		return (0); //error
 	}
 	check_arguments(cmd);
+	
+	while(cmd->argv[0][i])
+	{
+		*(cmd->argv[0] + i) = ft_tolower(cmd->argv[0][i]);
+		i++;
+	}
 	if (is_buildin(cmd->argv[0]) && list_size(cmd_list) == 1)
 	{
 		// fprintf(stderr, "Executing BUILTIN command: %s\n", cmd->argv[0]); // Debug message
