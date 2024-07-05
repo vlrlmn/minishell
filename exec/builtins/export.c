@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:48:27 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/05 15:18:17 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/05 15:47:34 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,7 +189,7 @@ char    *get_str_after_sign(char *str, char sign)
     result = (char *)malloc(sizeof(char) * (len + 1));
     if (!result)
         return (perror("malloc"), NULL);
-    while (i < ft_strlen(str) && !is_delimiter(str[i]) && str[i] != sign)
+    while (i < ft_strlen(str) && !is_delimiter(str[i])) //&& str[i] != sign)
 	{
 		result[res_i] = str[i];
 		i++;

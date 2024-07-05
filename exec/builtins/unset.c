@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 20:52:48 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/04 22:01:18 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/05 17:49:45 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,10 @@ int	unset_cmd(char *str, t_args *params)
     env_var = get_env(str, params->envp);
     if (!env_var)
     {
+        if (str[0] == '-')
+        {
+            return (2);
+        }
         if (print_counter == 1)
             printf("bash: line 1: unset: %s: not a valid identifier", env_var);
         return (1);

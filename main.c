@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/05 15:14:04 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/05 16:53:53 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,12 +243,12 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	set_environment(&shell_context, envp);
-	if (argc >= 3 && !ft_strncmp(argv[1], "-c", 3))
-	{
-		shell_context.input = argv[2];
-		exit_status = ft_launch_minishell(&shell_context);
-		return (exit_status);
-	}
+	// if (argc >= 3 && !ft_strncmp(argv[1], "-c", 3))
+	// {
+	// 	shell_context.input = argv[2];
+	// 	exit_status = ft_launch_minishell(&shell_context);
+	// 	return (exit_status);
+	// }
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
 	exit_status = loop_result(&shell_context);

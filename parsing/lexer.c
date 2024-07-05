@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 17:36:36 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/05 12:50:17 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/05 17:54:28 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char *clean_cmd(char *line, t_args *args)
 
     args_list.head = NULL;
     args_list.tail = NULL;
-    if (ft_strchr(line, '~'))
+    if (ft_strchr(line, '~') && !ft_isalnum((*line + 1)))
     {
         val = ft_strdup(get_env("HOME", args->envp));
         return (val);

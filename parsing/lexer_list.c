@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 15:36:42 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/01 14:45:14 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/05 16:17:00 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,10 @@ void add_char_node(t_lexems *list, char c)
         return ;
     data = (char *)malloc(sizeof(char));
     if (!data)
+    {
         free(new);
+        return ;
+    }
     *data = c;
     new->data = data;
     new->next = NULL;

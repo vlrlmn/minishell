@@ -75,7 +75,7 @@ int	*create_fd_array(t_redir *rcmd, int redir_type)
 	fd_arr = NULL;
 	size = count_files(rcmd, redir_type);
 	size += 1;
-	printf("size: %d\n", size);
+	// printf("size: %d\n", size);
 	if (size > 1)
 		fd_arr = malloc(sizeof(int) * (size));
 	if (!fd_arr)
@@ -271,12 +271,13 @@ int	get_file_fd(int fd, char *file, int mode, int redir_type)
 {
 	int	new_fd;
 
-	if (check_file_access(file, redir_type))
-		return (-1);
+	// if (check_file_access(file, redir_type))
+	// 	return (-1);
+	(void)redir_type;
 	new_fd = open(file, mode, 0777); //the permissions for each redir are different!!!! maybe??
 	if (new_fd < 0)
 	{
-		printf("open '%s' failed in get_file_fd\n", file);
+		// printf("open '%s' failed in get_file_fd\n", file);
 		return (-1);
 	}
 	if (new_fd != fd && fd != 0 && fd != 1) // Close the old file descriptor if they are different

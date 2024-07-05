@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 14:17:50 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/05 15:18:38 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/05 15:41:27 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	heredoc(int fd, char *file, char *limiter, int mode, t_args *args)
 		if (!input || (input[0] == '\n' && !input[1])) // if ctrl + d. TODO ahnde ctrl+c
 		{
 			close(fd);
-			return (fprintf(stderr, "NULL input\n"), -1);
+			return (-1);
 		}
 		input[ft_strlen(input) - 1] = '\0'; //remove '/n'
 		// fprintf(stderr, "input: %s, its len:  %zu\n", input, ft_strlen(input));

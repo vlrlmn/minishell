@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:53:53 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/05 15:15:14 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/05 15:46:16 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int run_single_builtin(t_cmd_info *cmd, t_args *params, t_cmd_info *cmd_list, in
 	int	builtin_status;
     int saved_stdout;
     
-	fprintf(stderr, "Running command: %s\n", cmd->argv[0]); // Debug message
+	// fprintf(stderr, "Running command: %s\n", cmd->argv[0]); // Debug message
     // do dup2 for output redirection
     saved_stdout = dup(STDOUT_FILENO);
     if (saved_stdout < 0) {
