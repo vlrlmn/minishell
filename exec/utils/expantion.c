@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   expantion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 14:19:33 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/03 18:05:30 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/05 20:33:17 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 void	free_add_exp(char *s1, char *s2)
 {

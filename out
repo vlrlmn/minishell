@@ -4,6 +4,7 @@ Makefile
 TESTS_FAIL.sh
 errors.c
 errors.o
+ex1
 example
 exec
 f1
