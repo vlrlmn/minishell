@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:53:53 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/05 13:02:27 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/05 15:15:14 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ int run_buildin(t_cmd_info *ecmd, t_args *params, t_cmd_info *cmd_list, int **pi
     int status;
 
     status = -1;
-    int i = 0;
-    while (ecmd->argv[i])
-    {
-        // printf("%d arg: %s\n", i, ecmd->argv[i]);
-        i++;
-    }
+    // int i = 0;
+    // while (ecmd->argv[i])
+    // {
+    //     printf("%d arg: %s\n", i, ecmd->argv[i]);
+    //     i++;
+    // }
     if (ft_strncmp(ecmd->argv[0], "cd", 2) == 0)
         status = cd_cmd(ecmd, params);
     else if (ft_strncmp(ecmd->argv[0], "exit", 4) == 0)
@@ -69,32 +69,32 @@ int check_if_single_builtin(t_cmd_info *cmd)
 int run_single_builtin(t_cmd_info *cmd, t_args *params, t_cmd_info *cmd_list, int **pipe_arr)
 {
 	int	builtin_status;
-    // int saved_stdout;
+    int saved_stdout;
     
-	// fprintf(stderr, "Running command: %s\n", cmd->argv[0]); // Debug message
+	fprintf(stderr, "Running command: %s\n", cmd->argv[0]); // Debug message
     // do dup2 for output redirection
-    // saved_stdout = dup(STDOUT_FILENO);
-    // if (saved_stdout < 0) {
-    //     perror("dup");
-    //     // close fd-s, free all, return 1
-    //     return (1);
-    // }
+    saved_stdout = dup(STDOUT_FILENO);
+    if (saved_stdout < 0) {
+        perror("dup");
+        // close fd-s, free all, return 1
+        return (1);
+    }
     // write(1, "after dup()\n", 13);
-    // if (dup2(cmd->fd_write, STDOUT_FILENO) < 0) {
-    //     perror("dup2");
-    //     close(saved_stdout);
-    //     // close fd-s, free all, return 1
-    //     return (1);
-    // }
+    if (dup2(cmd->fd_write, STDOUT_FILENO) < 0) {
+        perror("dup2");
+        close(saved_stdout);
+        // close fd-s, free all, return 1
+        return (1);
+    }
     // write(1, "after 1 dup2()\n", 16);
 	builtin_status = run_buildin(cmd, params, cmd_list, pipe_arr);
-    // if (dup2(saved_stdout, STDOUT_FILENO) < 0) {
-    //     perror("dup2");
-    //     close(saved_stdout);
-    //     // close fd-s, free all, return 1
-    //     return (1);
-    // }
+    if (dup2(saved_stdout, STDOUT_FILENO) < 0) {
+        close(saved_stdout);
+        perror("dup2");
+        // close fd-s, free all, return 1
+        return (1);
+    }
     // write(1, "after 2 dup2()\n", 16);
-    // close(saved_stdout);
+    close(saved_stdout);
 	return (builtin_status);
 }

@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/04 17:49:05 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/05 15:14:04 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,14 +200,13 @@ int	loop_result(t_args *args)
 			continue ;
 		add_history(args->input);
 		cmd = parse(args);
-		// PrintTree(cmd);
 		g_exit_status = exec(cmd, args);
 	}
 	return (g_exit_status);
 }
 
-/*We need to create new environment argument and copy envp from main
-arguments because this is safe way to work with environment*/
+/* We need to create new environment argument and copy envp from main
+arguments because this is safe way to work with environment */
 void	set_environment(t_args *args, char **envp)
 {
 	int	len;
@@ -230,13 +229,12 @@ void	set_environment(t_args *args, char **envp)
 	}
 	args->envp[len] = NULL;
 	export_cmd("OLDPWD", args);
-	// unset_cmd("OLDPWD", args);
 }
 
-/*Here we launch our program, set environment, handle signals.
+/* Here we launch our program, set environment, handle signals.
 For saving history and mowing with arrows through
 previously written commands we use	rl_clear_history(void);
-In the end we clear everything and free memory*/
+In the end we clear everything and free memory */
 int	main(int argc, char **argv, char **envp)
 {
 	t_args	shell_context;

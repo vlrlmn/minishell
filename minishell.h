@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/04 14:39:30 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/05 15:14:36 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,7 +218,7 @@ int		find_env_index(char **envp, char *var);
 void	redir(t_redir *rcmd);
 void	close_fd(t_cmd *ecmd);
 
-int		get_file_fd(int fd, char *file, int mode);
+int		get_file_fd(int fd, char *file, int mode, int redir_type);
 int		define_fd(t_cmd_info	*rcmd, t_redir *old_cmd, t_args *args);
 int		define_file(t_cmd_info	*rcmd, t_redir *old_cmd);
 int		add_redir_details(t_cmd_info	*new_cmd, t_redir *rcmd, t_args *args);
@@ -246,7 +246,7 @@ int		list_size(t_cmd_info *cmd_list);
 
 void	check_arguments(t_cmd_info *ecmd);
 void	copy_eargv(t_cmd_info *new_cmd, t_cmd *cmd);
-int		copy_argv(t_cmd_info *new_cmd, t_cmd *cmd);
+void	copy_argv(t_cmd_info *new_cmd, t_cmd *cmd);
 int		check_file_access(const char *file_path, int mode);
 
 /* connections between cmds */
