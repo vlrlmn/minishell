@@ -182,8 +182,9 @@ int	more_redir(t_cmd_info *new_cmd, t_redir *rcmd, t_args *args)
 		else //creates a file
 		{
 			fd = get_file_fd(rsubcmd->fd, rsubcmd->file, rsubcmd->mode, rsubcmd->subtype);
-			// check file access
 			close (fd);
+			if (fd == -2)
+				return (1);
 		}
 		type = rsubcmd->cmd->type;
 		if (type == REDIR)
@@ -197,7 +198,8 @@ int	more_redir(t_cmd_info *new_cmd, t_redir *rcmd, t_args *args)
 	{
 		heredoc_arr[i_hd] = NULL;
 		limiter_arr[i_hd] = NULL;
-		call_heredocs(heredoc_arr, new_cmd, limiter_arr, args);
+		if (call_heredocs(heredoc_arr, new_cmd, limiter_arr, args))
+			return (1);
 	}
 	new_cmd->subcmd = rsubcmd->cmd;
 	return (0);
@@ -207,7 +209,6 @@ int		add_redir_details(t_cmd_info *new_cmd, t_redir *rcmd, t_args *args)
 {
 	new_cmd->redir_type = rcmd->subtype;
 	define_file(new_cmd, rcmd);
-	// if (new_cmd->redir_type != HEREDOC
 	if (count_files(rcmd, HEREDOC) == 1 || new_cmd->redir_type != HEREDOC)
 	{
 		if (define_fd(new_cmd, rcmd, args))
@@ -264,6 +265,8 @@ int	define_fd(t_cmd_info *rcmd, t_redir *old_cmd, t_args *args)
 	{
 		rcmd->fd_write = get_file_fd(rcmd->fd_write, rcmd->file_write, rcmd->mode_write, rcmd->redir_type);
 	}
+	if (rcmd->fd_read == -2 || rcmd->fd_write == -2)
+		return (1);
 	return (0);
 }
 
@@ -271,12 +274,12 @@ int	get_file_fd(int fd, char *file, int mode, int redir_type)
 {
 	int	new_fd;
 
-	if (check_file_access(file, redir_type))
-		return (-1);
 	new_fd = open(file, mode, 0777); //the permissions for each redir are different!!!! maybe??
+	if (check_file_access(file, redir_type) != 0)
+		return (printf("bash: %s: Permission denied\n", file), -2);
 	if (new_fd < 0)
 	{
-		printf("open '%s' failed in get_file_fd\n", file);
+		printf("open '%s' failed\n", file);
 		return (-1);
 	}
 	if (new_fd != fd && fd != 0 && fd != 1) // Close the old file descriptor if they are different

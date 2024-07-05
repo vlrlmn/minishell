@@ -4,7 +4,6 @@ Makefile
 TESTS_FAIL.sh
 errors.c
 errors.o
-example
 exec
 f1
 free_memory.c
