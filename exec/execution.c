@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 14:51:13 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/05 17:11:43 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/05 17:56:47 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ void	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *par
 			{
 				fprintf(stderr, "%s: is a directory\n", cmd_path);
 				free(cmd_path);
-				free_and_exit(127, cmd_list, pipe_arr, params); //is it 1 in bash?
+				free_and_exit(126, cmd_list, pipe_arr, params); //is it 1 in bash?
 			}
 		}
 		// if (if_path_to_cmd(cmd_path) || !is_buildin(cmd->argv[0]))

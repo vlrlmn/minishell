@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:48:27 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/05 15:47:34 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/07 12:59:28 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,9 @@ int export_cmd(char *str, t_args *params)
     while(env_var[i] == '-')
     {
         i++;
-        if (ft_isalnum(env_var[i])) // check which options are existing for export and exclude them
+        if (ft_isalnum(env_var[i]))
         {
-            printf("bash: line 1: export: --: invalid option export: usage: export [-nf] [name[=value] ...] or export -p"); 
+            printf("bash: line 1: export: -%c: invalid option \nexport: usage: export [-nf] [name[=value] ...] or export -p", env_var[i]); 
             free(env_var);
             return (2);
         }
@@ -189,7 +189,7 @@ char    *get_str_after_sign(char *str, char sign)
     result = (char *)malloc(sizeof(char) * (len + 1));
     if (!result)
         return (perror("malloc"), NULL);
-    while (i < ft_strlen(str) && !is_delimiter(str[i])) //&& str[i] != sign)
+    while (i < ft_strlen(str) && str[i] !='\n') //&& str[i] != sign)
 	{
 		result[res_i] = str[i];
 		i++;
