@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 14:51:13 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/05 17:55:55 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/07 16:51:27 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int	execute_cmd(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *p
 		*(cmd->argv[0] + i) = ft_tolower(cmd->argv[0][i]);
 		i++;
 	}
+	set_status(IN_CMD); // means that heredocs are done! I'm not in heredoc!
 	if (is_buildin(cmd->argv[0]) && list_size(cmd_list) == 1)
 	{
 		// fprintf(stderr, "Executing BUILTIN command: %s\n", cmd->argv[0]); // Debug message
@@ -167,7 +168,6 @@ void	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *par
 		{
 			status = execve(cmd_path, cmd->argv, params->envp);
 			fprintf(stderr, "execve errno: %d\n", status);
-			
 		}
 		free_and_exit(status, cmd_list, pipe_arr, params);
 	}
@@ -192,6 +192,10 @@ int	wait_cmds(t_cmd_info *cmd_head)
 	{
 		wait(&status);
 		status = WEXITSTATUS(status);
+		if (get_status() == STOP_CMD)
+		{
+			return (130); // or sometimes 1?
+		}
 		i++;
 	}
 	return (status);

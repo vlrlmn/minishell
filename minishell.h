@@ -6,10 +6,9 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/05 19:56:43 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/07 16:29:44 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef MINISHELL
 # define MINISHELL
@@ -32,7 +31,7 @@
 # include <sys/wait.h>
 # include <string.h>
 # include <sys/stat.h>
-#include <errno.h>
+# include <errno.h>
 
 # define MALLOC_ERROR 69
 # define SYNTAX_ERR 2
@@ -94,7 +93,6 @@ typedef struct s_lexems
 	t_lexem_node		*tail;
 }			t_lexems;
 
-
 typedef enum quotes_handler
 {
 	QUOTES_ERR,
@@ -113,7 +111,6 @@ typedef enum redir_type
 	NONE = -1
 }	r_type;
 
-
 typedef enum token_type
 {
 	PIPE = 0,
@@ -121,7 +118,14 @@ typedef enum token_type
 	REDIR = 2,
 }			t_type;
 
-/* if i have only one cmd, i don't need to create connections, only feel fd_read and fd_write. */
+typedef enum signal_status
+{
+	IN_CMD = 0,
+	IN_HEREDOC = 1,
+	STOP_CMD = 2,
+	STOP_HEREDOC = 3,
+}			s_type;
+
 typedef struct s_cmd_info //free
 {
 	t_args	*args; //includes input and params
@@ -158,7 +162,6 @@ void		parse_expander(int *i, t_lexems *list, char *line, t_args *args);
 char		*get_env(char *value, char **envp);
 t_cmd		*nulterminate(t_cmd *cmd);
 int			valid_input(char *work_line);
-int			fork1(void);
 void			free_split(char **arr);
 void			run_cmd(t_cmd *cmd, t_args *params);
 char			*find_command_path(char *cmd, char *path);
@@ -208,7 +211,6 @@ int		add_cmd(t_args *params, char *new_env_var); //export
 int		export_print(t_args *params); //export
 int		remove_cmd(t_args *params, char *env_var_to_remove); //unset
 
-
 /* env utils */
 int		update_envp_var(t_args *params, char *env_var, char *new_content);
 char	*find_env_var(char **envp, char *var);
@@ -226,8 +228,6 @@ int		add_redir_details(t_cmd_info	*new_cmd, t_redir *rcmd, t_args *args);
 char	*heredoc_get_tmp_file(void);
 int		heredoc(int fd, char *file, char *limiter, int mode, t_args *args);
 int		call_heredocs(char **arr, t_cmd_info *new_cmd, char **limiter_arr, t_args *args);
-int		old_heredoc(t_redir *rcmd);
-
 int		append(int fd, char **eargv, t_args *args);
 
 /* expantion */
@@ -271,5 +271,8 @@ void	free_and_exit(int status, t_cmd_info *cmd_list, int **pipe_arr, t_args *par
 void PrintTree(t_cmd	*cmd);
 
 /* signals */
+int	get_status();
+int	set_status(int new_status);
+
 void	handle_sigint(int sig);
 #endif

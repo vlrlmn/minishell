@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 14:17:50 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/05 19:55:49 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/07 23:11:14 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,31 +33,30 @@ char	*heredoc_get_tmp_file(void)
 if ctrl + D exit with status 0 */
 int	heredoc(int fd, char *file, char *limiter, int mode, t_args *args)
 {
-	// if heredoc gets the expander, it should return its value!
 	char	*input;
 	char	*input_exp;
 
 	input_exp = NULL;
-	// if (check_file_access(file, R_OK))
-	// 	return (-1);
 	fd = get_file_fd(fd, file, mode, HEREDOC);
 	if (fd == -2)
 		return (-2);
 	// fprintf(stderr, "limiter: '%s', its len:  %zu\n", limiter, ft_strlen(limiter));
 	while (1)
 	{
+		set_status(IN_HEREDOC);
 		fprintf(stderr, "> ");
 		input = get_next_line(STDIN_FILENO);
-		// if (signal(SIGINT, handle_sigint))
-		// {
-		// 	free(input);
-		// 	close(fd);
-		// 	return (130);
-		// }
+		if (get_status() == STOP_HEREDOC)
+		{
+			free(input);
+			close(fd);
+			return (-2);
+		}
 		if (!input || (input[0] == '\n' && !input[1])) // if ctrl + d. TODO ahnde ctrl+c
 		{
 			close(fd);
-			return (fprintf(stderr, "NULL input\n"), -1);
+			fprintf(stderr, "\nwarning: here-document delimited by end-of-file (wanted `%s')\n", limiter);
+			return (-1);
 		}
 		input[ft_strlen(input) - 1] = '\0'; //remove '/n'
 		// fprintf(stderr, "input: %s, its len:  %zu\n", input, ft_strlen(input));
@@ -69,7 +68,6 @@ int	heredoc(int fd, char *file, char *limiter, int mode, t_args *args)
 		if (is_expantion(input))
 		{
 			input_exp = add_expantion(input, args);
-			// free(input);
 			if (!input_exp)
 			{
 				free(input);
@@ -78,12 +76,15 @@ int	heredoc(int fd, char *file, char *limiter, int mode, t_args *args)
 			input = input_exp;
 		}
 		// fprintf(stderr, "input: '%s'\n", input);
-		write(fd, input, ft_strlen(input)); // write into newly created file fd
+		write(fd, input, ft_strlen(input));
 		write(fd, "\n", 1);
 		free(input);
+		if (get_status() == STOP_HEREDOC)
+			return (-2);
 	}
 	close(fd);
 	// fprintf(stderr, "heredoc completed\n");
+	set_status(IN_CMD);
 	return (fd);
 }
 
@@ -101,7 +102,6 @@ int	call_heredocs(char **arr, t_cmd_info *new_cmd, char **limiter_arr, t_args *a
 	while (i < size)
 	{
 		limiter = limiter_arr[size];
-		// printf("file: %s, limiter: %s\n", arr[size], limiter);
 		new_cmd->file_read = arr[size];
 		new_cmd->fd_read = heredoc(new_cmd->fd_read, new_cmd->file_read, limiter, new_cmd->mode_read, args);
 		if (new_cmd->fd_read == -2)
