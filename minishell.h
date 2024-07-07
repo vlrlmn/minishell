@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/07 15:59:49 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/07 17:24:44 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,4 +230,8 @@ int	get_token(char **ps, char *es, char **q, char **eq);
 int	validate_redirection(char **ps, char *es);
 int	check_invalid_pipe_syntax(char **ps, char *es);
 int	validate_pipe(char **ps, char *es);
+t_cmd *parseexec(char **ps, char *es);
+void handle_quotes(char **ps, char *es);
+void skip_delimiters(char **ps, char *es);
+
 #endif

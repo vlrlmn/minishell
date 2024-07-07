@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:31:59 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/07 15:45:32 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/07 17:30:35 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,11 @@ void	nulterminate_exec(t_execcmd *execcmd)
 
     while (execcmd->argv[i]) 
     {
-        if (execcmd->eargv[i]) {
+        if (execcmd->eargv[i]) 
+        {
             *execcmd->eargv[i] = 0;
-        } else {
+        } else 
+        {
             printf("nulterminate_exec: eargv[%d] is NULL\n", i);
         }
         i++;
@@ -29,25 +31,27 @@ void	nulterminate_exec(t_execcmd *execcmd)
 
 void	nulterminate_pipe(t_pipe *pipecmd)
 {
-	 if (!pipecmd->left) {
+	if (!pipecmd->left) 
+    {
         printf("nulterminate_pipe: left is NULL\n");
-    } else {
+    } else 
+    {
         nulterminate(pipecmd->left);
     }
 
-    if (!pipecmd->right) {
+    if (!pipecmd->right) 
+    {
         printf("nulterminate_pipe: right is NULL\n");
-    } else {
+    } else 
+    {
         nulterminate(pipecmd->right);
     }
 }
 
 void	nulterminate_redir(t_redir *redircmd)
 {
-    // fprintf(stderr, "\nRCMD FILE in nultrm: '%s'\n", redircmd->file);
 	nulterminate(redircmd->cmd);
 	*redircmd->efile = 0;
-    // fprintf(stderr, "\nRCMD FILE in after nultrm: '%s'\n", redircmd->file);
 }
 
 t_cmd	*nulterminate(t_cmd *cmd)

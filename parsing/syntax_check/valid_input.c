@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/07/07 15:54:43 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/07 17:31:44 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,9 @@ int	valid_quotes(char *input)
 		i++;
 	}
 	if (count_single % 2 != 0 || count_double % 2 != 0)
-	{
-		g_exit_status = 258;
 		return (0);
-	}
 	else
-	{
 		return (1);
-	}
 }
 
 int valid_syntax(char *work_line)

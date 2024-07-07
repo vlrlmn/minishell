@@ -1,30 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_utils.c                                      :+:      :+:    :+:   */
+/*   tokens_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/25 16:40:12 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/06/11 13:58:33 by lomakinaval      ###   ########.fr       */
+/*   Created: 2024/07/07 17:23:43 by lomakinaval       #+#    #+#             */
+/*   Updated: 2024/07/07 17:24:52 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
-int	is_delimiter(char c)
+void skip_delimiters(char **ps, char *es)
 {
-	return (c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r' || c == ' ');
+    while (*ps < es && is_delimiter(**ps))
+        (*ps)++;
 }
 
-int	ft_isalnum(int c)
+void handle_quotes(char **ps, char *es)
 {
-	return ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') ||
-			(c >= '0' && c <= '9'));
-}
+    char quote_type = **ps;
 
-int has_parse_symbol(char *s)
-{
-    return(ft_strchr(s, '\'') || ft_strchr(s, '\"') || ft_strchr(s, '~')
-            || ft_strchr(s, '$'));
+    (*ps)++;
+    while (*ps < es && **ps != quote_type)
+        (*ps)++;
+    if (*ps < es)
+        (*ps)++;
 }

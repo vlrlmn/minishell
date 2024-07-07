@@ -6,13 +6,13 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:38:32 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/07 15:45:28 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/07 18:15:27 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-t_cmd	*redircmd(t_cmd *subcmd, char *file, char *efile, int mode, int fd, int subtype)
+t_cmd	*redir_append(t_cmd *subcmd, char *file, char *efile)
 {
 	t_redir	*redircmd;
 
@@ -21,12 +21,66 @@ t_cmd	*redircmd(t_cmd *subcmd, char *file, char *efile, int mode, int fd, int su
 		exit_with_malloc_error(MALLOC_ERROR);
 	ft_memset(redircmd, 0, sizeof(redircmd));
 	redircmd->type = REDIR;
-	redircmd->subtype = subtype;
-	redircmd->cmd = subcmd; //points to the sub-command that is being redirected
+	redircmd->subtype = APPEND;
+	redircmd->cmd = subcmd;
 	redircmd->file = file;
 	redircmd->efile = efile;
-	redircmd->mode = mode;
-	redircmd->fd = fd; //the fd that was passed as argument is affecting to the heredoc!!!!
+	redircmd->mode = O_WRONLY | O_CREAT | O_APPEND;
+	redircmd->fd = 1;
+	return ((t_cmd *)redircmd);
+}
+
+t_cmd	*redir_heredoc(t_cmd *subcmd, char *file, char *efile)
+{
+	t_redir	*redircmd;
+
+	redircmd = malloc(sizeof(*redircmd));
+	if (!redircmd)
+		exit_with_malloc_error(MALLOC_ERROR);
+	ft_memset(redircmd, 0, sizeof(redircmd));
+	redircmd->type = REDIR;
+	redircmd->subtype = HEREDOC;
+	redircmd->cmd = subcmd;
+	redircmd->file = file;
+	redircmd->efile = efile;
+	redircmd->mode = O_RDWR | O_CREAT;
+	redircmd->fd = 0;
+	return ((t_cmd *)redircmd);
+}
+
+t_cmd	*redirout(t_cmd *subcmd, char *file, char *efile)
+{
+	t_redir	*redircmd;
+
+	redircmd = malloc(sizeof(*redircmd));
+	if (!redircmd)
+		exit_with_malloc_error(MALLOC_ERROR);
+	ft_memset(redircmd, 0, sizeof(redircmd));
+	redircmd->type = REDIR;
+	redircmd->subtype = REDIROUT;
+	redircmd->cmd = subcmd;
+	redircmd->file = file;
+	redircmd->efile = efile;
+	redircmd->mode = O_WRONLY | O_CREAT | O_TRUNC;
+	redircmd->fd = 1;
+	return ((t_cmd *)redircmd);
+}
+
+t_cmd	*redirin(t_cmd *subcmd, char *file, char *efile)
+{
+	t_redir	*redircmd;
+
+	redircmd = malloc(sizeof(*redircmd));
+	if (!redircmd)
+		exit_with_malloc_error(MALLOC_ERROR);
+	ft_memset(redircmd, 0, sizeof(redircmd));
+	redircmd->type = REDIR;
+	redircmd->subtype = REDIRIN;
+	redircmd->cmd = subcmd;
+	redircmd->file = file;
+	redircmd->efile = efile;
+	redircmd->mode = O_RDONLY;
+	redircmd->fd = 0;
 	return ((t_cmd *)redircmd);
 }
 
@@ -40,18 +94,13 @@ t_cmd	*parseredir(t_cmd *cmd, char **ps, char *es)
 	{
 		tok = gettoken(ps, es, &q, &eq);
 		if (tok == '<')
-			cmd = redircmd(cmd, q, eq, O_RDONLY, 0, REDIRIN);
+			cmd = redirin(cmd, q, eq);
 		else if (tok == '>')
-			cmd = redircmd(cmd, q, eq, O_WRONLY | O_CREAT | O_TRUNC, 1, REDIROUT);
-		else if (tok == '+') // it's << actually
-			cmd = redircmd(cmd, q, eq, O_RDWR | O_CREAT, 0, HEREDOC);
-		else if (tok == '-') // >>
-			cmd = redircmd(cmd, q, eq,  O_WRONLY | O_CREAT | O_APPEND, 1, APPEND);
-		// printf("\n--------PS: %s --------\n", *ps);
-        // printf("\n--------ES: %s --------\n", es);
-        // printf("\n--------Q: %.*s --------\n", (int)(eq - q), q); // Properly print the token
-        // printf("\n--------EQ: %s --------\n", eq);
+			cmd = redirout(cmd, q, eq);
+		else if (tok == '+')
+			cmd = redir_heredoc(cmd, q, eq);
+		else if (tok == '-')
+			cmd = redir_append(cmd, q, eq);
 	}
 	return (cmd);
 }
-

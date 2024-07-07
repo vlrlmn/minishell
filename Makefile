@@ -15,10 +15,12 @@ SRC = 			main.c \
 				free_memory.c
 
 SRC_PARSING = 	./parsing/parser/parsing.c \
+				./parsing/parser/parse_exec.c \
 				./parsing/parser/null_terminator.c \
 				./parsing/parser/parsing_utils.c \
 				./parsing/parser/parse_redir.c \
 				./parsing/parser/fill_tree.c \
+				./parsing/parser/tokens_utils.c \
 				./parsing/lexer/lexer_expander.c \
 				./parsing/lexer/lexer_quotes.c \
 				./parsing/lexer/lexer_list.c \
