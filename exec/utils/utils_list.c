@@ -61,6 +61,7 @@ void	free_cmd_list(t_cmd_info	*cmd_list)
 {
 	t_cmd_info	*current;
 	t_cmd_info	*tmp;
+	int i;
 
 	if (!cmd_list)
 		return ;
@@ -82,6 +83,16 @@ void	free_cmd_list(t_cmd_info	*cmd_list)
 		free(current->connection);
 		if (current->hfile_array)
 			free_hfile_arr(current->hfile_array);
+
+		i = 0;
+		while (current->argv[i])
+		{
+			free(current->argv[i]);
+			current->argv[i] = NULL;
+			current->eargv[i] = NULL;
+			i++;
+		}
+
 		free(current);
 		current = tmp;
 	}

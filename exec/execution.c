@@ -121,7 +121,7 @@ void	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *par
 			if (is_executable(cmd_path))
 			{
 				fprintf(stderr, "%s: is a directory\n", cmd_path);
-				free(cmd_path);
+				//free(cmd_path); WE DO'NT NEED IT BECAUSE IT WILL MAKE DOUBLE FREE
 				free_and_exit(126, cmd_list, pipe_arr, params); //is it 1 in bash?
 			}
 		}

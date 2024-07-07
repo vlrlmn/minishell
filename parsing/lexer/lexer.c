@@ -12,6 +12,24 @@
 
 #include "../../minishell.h"
 
+void free_list(t_lexems *list)
+{
+    t_lexem_node *current_node;
+    t_lexem_node *next_node;
+
+    if (list == NULL)
+        return;
+
+    current_node = list->head;
+    while (current_node != NULL)
+    {
+        next_node = current_node->next;
+        free(current_node->data);
+        free(current_node);
+        current_node = next_node;
+    }
+}
+
 char *clean_line(char *line, t_lexems *list, t_args *args)
 {
     char *res;
@@ -38,8 +56,8 @@ char *clean_line(char *line, t_lexems *list, t_args *args)
     {
        add_str_node(list, "\'\'");
     }
-
     res = list_to_string(list);
+    //free_list(list);
     return (res);
 }
 
@@ -65,6 +83,7 @@ void lexical_analysis(t_cmd *cmd, t_args *args)
     t_redir *rcmd;
     t_pipe *pcmd;
     int i;
+   // char* tmp;
 
     i = 0;
     if (cmd->type == EXEC)
@@ -74,6 +93,12 @@ void lexical_analysis(t_cmd *cmd, t_args *args)
         {
             if (has_parse_symbol(exec->argv[i]))
                 exec->argv[i] = clean_cmd(exec->argv[i], args);
+            else
+            {
+                //tmp = exec->argv[i];
+                exec->argv[i] = ft_strdup(exec->argv[i]);
+               // free(tmp);
+            }
             i++;
         }
     }

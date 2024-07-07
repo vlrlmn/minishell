@@ -22,6 +22,7 @@ char process_node(t_lexems *list)
     tmp = list->head;
     list->head = list->head->next;
     res = *(char *)tmp->data;
+    free(tmp->data);
     free(tmp);
     return(res);
 }
