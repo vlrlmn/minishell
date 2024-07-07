@@ -6,22 +6,13 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/08 17:21:02 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/08 17:26:09 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int g_exit_status = 0;
-
-void	handle_sigint(int sig)
-{
-	if (sig == SIGINT)
-	{
-		write(STDERR_FILENO, "\n", 1);
-		write_new_promt();
-	}
-}
 
 void	write_new_promt(void)
 {
@@ -147,6 +138,11 @@ int	exec(t_cmd	*cmd, t_args *args)
 	pipe_arr = connections(cmd_list);
 	// PrintList(cmd_list);
 	// printPipeArr(pipe_arr);
+	if (get_status() == STOP_HEREDOC)
+	{
+		// fprintf(stderr, "heredoc stopped\n");
+		return (free_all(cmd_list, pipe_arr), 1); //or not 1?
+	}
 	exit_status = run_cmds(cmd_list, pipe_arr, args);
 	// printf("status after exec: %d\n", exit_status);
 	if (!cmd_list->argv[0] || cmd_list->argv[0][0] == '\0')
@@ -183,13 +179,9 @@ int ft_launch_minishell(t_args *args)
 		free_envp(args);
 		exit(SYNTAX_ERR);
 	}
-	//if (fork1() == 0)
-	//{
-		cmd = parse(args);
-		PrintTree(cmd);
-		g_exit_status = exec(cmd, args);
-	//}
-	//wait (0);
+	cmd = parse(args);
+	PrintTree(cmd);
+	g_exit_status = exec(cmd, args);
 	return (g_exit_status);
 }
 
@@ -258,8 +250,9 @@ int	main(int argc, char **argv, char **envp)
 	// 	return (exit_status);
 	// }
 	signal(SIGINT, handle_sigint);
-	signal(SIGQUIT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN); //after ctrl+d exit status is ALWAYS 0
 	exit_status = loop_result(&shell_context);
+	// fprintf(stderr, "in main!\n");
 	// rl_clear_history(); //idk why mac argue for it
 	// rl_clear_history();
 	clear_history();

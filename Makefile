@@ -33,6 +33,7 @@ SRC_PARSING = 	./parsing/parser/parsing.c \
 
 SRC_EXECUTION = ./exec/execution.c \
 				./exec/exec_buildin.c \
+				./exec/signals.c \
 				./exec/create_list.c \
 				./exec/built_connections.c \
 				

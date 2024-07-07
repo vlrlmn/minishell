@@ -6,10 +6,9 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/08 17:21:17 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/08 17:26:01 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef MINISHELL
 # define MINISHELL
@@ -30,7 +29,7 @@
 # include <sys/wait.h>
 # include <string.h>
 # include <sys/stat.h>
-#include <errno.h>
+# include <errno.h>
 
 # define MALLOC_ERROR 69
 # define SYNTAX_ERR 2
@@ -107,7 +106,15 @@ typedef enum token_type
 	REDIR = 2,
 }			t_type;
 
-typedef struct s_cmd_info
+typedef enum signal_status
+{
+	IN_CMD = 0,
+	IN_HEREDOC = 1,
+	STOP_CMD = 2,
+	STOP_HEREDOC = 3,
+}			s_type;
+
+typedef struct s_cmd_info //free
 {
 	t_args	*args;
 	int		head;
@@ -175,11 +182,14 @@ int export_cmd(char *str, t_args *params);
 int pre_unset_cmd(t_cmd_info *ecmd, t_args *params);
 int	unset_cmd(char *str, t_args *params);
 void	exit_cmd(t_cmd_info *ecmd, t_args *params,  t_cmd_info *cmd_list, int **pipe_arr);
-char	*get_str_after_sign(char *str, char sign);
-char	*get_str_before_sign(char *str, char sign);
-int		add_cmd(t_args *params, char *new_env_var);
-int		export_print(t_args *params);
-int		remove_cmd(t_args *params, char *env_var_to_remove);
+
+char	*get_str_after_sign(char *str, char sign); //export
+char	*get_str_before_sign(char *str, char sign); //export
+int		add_cmd(t_args *params, char *new_env_var); //export
+int		export_print(t_args *params); //export
+int		remove_cmd(t_args *params, char *env_var_to_remove); //unset
+
+/* env utils */
 int		update_envp_var(t_args *params, char *env_var, char *new_content);
 char	*find_env_var(char **envp, char *var);
 int		find_env_index(char **envp, char *var);
@@ -223,6 +233,11 @@ void	free_hfile_arr(char **hfile_array);
 void    free_all(t_cmd_info	*cmd_list, int **pipe_arr);
 void	free_and_exit(int status, t_cmd_info *cmd_list, int **pipe_arr, t_args *params);
 void PrintTree(t_cmd	*cmd);
+
+/* signals */
+int	get_status();
+int	set_status(int new_status);
+
 void	handle_sigint(int sig);
 int	get_token(char **ps, char *es, char **q, char **eq);
 // static void	process_special_tokens(char **s, int *token);
