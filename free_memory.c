@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_memory.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:06 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/27 21:03:03 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/07 15:32:07 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ void	free_envp(t_args *args)
 		return ;
 	while (args->envp[i])
 	{
-		// fprintf(stderr, "envp: '%s'\n", args->envp[i]);
 		free((void*)args->envp[i]);
 		i++;
 	}

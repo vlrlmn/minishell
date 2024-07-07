@@ -14,17 +14,20 @@ SRC = 			main.c \
 				errors.c \
 				free_memory.c
 
-SRC_PARSING = ./parsing/lexer_utils.c \
-				./parsing/parsing.c \
-				./parsing/null_terminator.c \
-				./parsing/parsing_utils.c \
-				./parsing/parse_redir.c \
-				./parsing/fill_tree.c \
-				./parsing/lexer.c \
-				./parsing/lexer_list.c \
-				./parsing/lexer_expander.c \
-				./parsing/lexer_quotes.c \
-				./parsing/valid_input.c
+SRC_PARSING = 	./parsing/parser/parsing.c \
+				./parsing/parser/null_terminator.c \
+				./parsing/parser/parsing_utils.c \
+				./parsing/parser/parse_redir.c \
+				./parsing/parser/fill_tree.c \
+				./parsing/lexer/lexer_expander.c \
+				./parsing/lexer/lexer_quotes.c \
+				./parsing/lexer/lexer_list.c \
+				./parsing/lexer/lexer.c \
+				./parsing/lexer/lexer_utils.c \
+				./parsing/syntax_check/valid_syntax.c \
+				./parsing/syntax_check/valid_input.c \
+				./parsing/syntax_check/valid_syntax_utils.c \
+
 
 SRC_EXECUTION = ./exec/run_cmd.c \
 				./exec/exec_path_cmd.c \
