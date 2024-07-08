@@ -208,7 +208,6 @@ int	more_redir(t_cmd_info *new_cmd, t_redir *rcmd, t_args *args)
 int		add_redir_details(t_cmd_info *new_cmd, t_redir *rcmd, t_args *args)
 {
 	new_cmd->redir_type = rcmd->subtype;
-	printf("redir type: %d\n", new_cmd->redir_type);
 	define_file(new_cmd, rcmd);
 	if (count_files(rcmd, HEREDOC) == 1 || new_cmd->redir_type != HEREDOC)
 	{
@@ -277,7 +276,7 @@ int	get_file_fd(int fd, char *file, int mode, int redir_type)
 
 	new_fd = open(file, mode, 0777); //the permissions for each redir are different!!!! maybe??
 	if (check_file_access(file, redir_type) != 0)
-		return (printf("bash: %s: Permission denied\n", file), -2);
+		return (printf("bash: %s: Permission denied\n", file), -1);
 	if (new_fd < 0)
 	{
 		printf("open '%s' failed\n", file);

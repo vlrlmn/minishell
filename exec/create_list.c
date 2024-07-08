@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 17:20:39 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/05 19:51:21 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/08 18:49:36 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,10 @@ t_cmd_info	*fill_redir(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args)
 	new_cmd->fd_write = 1;
 
 	if (add_redir_details(new_cmd, rcmd, args))
-		return (NULL);
+	{
+		free(new_cmd);	
+		return ((void *)NULL);
+	}
 	if (new_cmd->subcmd->type == REDIR)
 	{
 		/* go through redirs with more_redir(), 

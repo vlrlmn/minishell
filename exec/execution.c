@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 14:51:13 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/08 17:30:22 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/08 18:59:56 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,9 +112,8 @@ void	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *par
 			cmd_path = find_command_path(cmd->argv[0], path);
 			if (!cmd_path)
 			{
-				free(cmd_path);
 				fprintf(stderr, "command not found: %s\n", cmd->argv[0]);
-				free_and_exit(127, cmd_list, pipe_arr, params);
+				free_and_exit(127, cmd_list, pipe_arr, params, cmd_path);
 			}
 		}
 		if (!is_buildin(cmd->argv[0]))
@@ -123,7 +122,7 @@ void	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *par
 			{
 				fprintf(stderr, "%s: is a directory\n", cmd_path);
 				//free(cmd_path); WE DO'NT NEED IT BECAUSE IT WILL MAKE DOUBLE FREE
-				free_and_exit(126, cmd_list, pipe_arr, params); //is it 1 in bash?
+				free_and_exit(126, cmd_list, pipe_arr, params, NULL); //is it 1 in bash?
 			}
 		}
 		// if (if_path_to_cmd(cmd_path) || !is_buildin(cmd->argv[0]))
@@ -133,13 +132,13 @@ void	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *par
 		// }
 		// fprintf(stderr, "Found the path! : %s\n", cmd_path);
 		if (cmd->connection[0] == -1 || cmd->connection[1] == -1)
-			free_and_exit(1, cmd_list, pipe_arr, params);
+			free_and_exit(1, cmd_list, pipe_arr, params, cmd_path);
 		if (dup2(cmd->connection[0], STDIN_FILENO) == -1)
 		{
 			close(cmd->connection[0]);
 			close(cmd->connection[1]);
 			perror("dup2");
-        	free_and_exit(EXIT_FAILURE, cmd_list, pipe_arr, params);
+        	free_and_exit(EXIT_FAILURE, cmd_list, pipe_arr, params, cmd_path);
 		}
 			// fprintf(stderr, "did dup2 for con[0]!\n");
 		if (cmd->connection[0] != 0)
@@ -151,7 +150,7 @@ void	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *par
 		{
 			close(cmd->connection[1]);
 			perror("dup2");
-        	free_and_exit(EXIT_FAILURE, cmd_list, pipe_arr, params);
+        	free_and_exit(EXIT_FAILURE, cmd_list, pipe_arr, params, cmd_path);
 		}
 			// fprintf(stderr, "did dup2 for con[1]!\n");
 		if (cmd->connection[1] != 1)
@@ -169,7 +168,7 @@ void	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *par
 			status = execve(cmd_path, cmd->argv, params->envp);
 			fprintf(stderr, "execve errno: %d\n", status);
 		}
-		free_and_exit(status, cmd_list, pipe_arr, params);
+		free_and_exit(status, cmd_list, pipe_arr, params, cmd_path);
 	}
 	else
 	{

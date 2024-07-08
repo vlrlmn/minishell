@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/08 18:19:58 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/08 19:04:19 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ int	exec(t_cmd	*cmd, t_args *args)
 		return (exit_status); 
 	}
 	pipe_arr = connections(cmd_list);
-	PrintList(cmd_list);
+	// PrintList(cmd_list);
 	// printPipeArr(pipe_arr);
 	if (get_status() == STOP_HEREDOC)
 	{
