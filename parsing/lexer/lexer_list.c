@@ -36,6 +36,8 @@ char *list_to_string(t_lexems *list)
 
     i = 0;
     tmp = list->head;
+    if (!tmp)
+        return NULL;
     while(tmp)
     {
         i++;
