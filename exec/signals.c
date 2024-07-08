@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 15:39:45 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/08 14:40:58 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/08 17:34:34 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void handle_sigint(int sig) {
         if (interrupted == 0) { // Shell is waiting for input
             printf("\n"); // Print a newline to move to the next line
             rl_on_new_line(); // Prepare readline to start a new line
-            rl_replace_line("", 0); // Clear the current input line
+            // rl_replace_line("", 0); // Clear the current input line
             rl_redisplay(); // Redisplay the prompt
             interrupted = 1; // Set the interruption flag
         } else { // Shell is executing a command
