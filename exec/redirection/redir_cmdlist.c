@@ -208,6 +208,7 @@ int	more_redir(t_cmd_info *new_cmd, t_redir *rcmd, t_args *args)
 int		add_redir_details(t_cmd_info *new_cmd, t_redir *rcmd, t_args *args)
 {
 	new_cmd->redir_type = rcmd->subtype;
+	printf("redir type: %d\n", new_cmd->redir_type);
 	define_file(new_cmd, rcmd);
 	if (count_files(rcmd, HEREDOC) == 1 || new_cmd->redir_type != HEREDOC)
 	{
