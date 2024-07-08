@@ -84,7 +84,7 @@ int export_cmd(char *str, t_args *params)
         i++;
         if (ft_isalnum(env_var[i]))
         {
-            printf("bash: line 1: export: -%c: invalid option \nexport: usage: export [-nf] [name[=value] ...] or export -p", env_var[i]); 
+            printf("bash: line 1: export: -%c: invalid option \nexport: usage: export [-nf] [name[=value] ...] or export -p\n", env_var[i]); 
             free(env_var);
             return (2);
         }
