@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:05:31 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/03 15:59:32 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/08 15:46:37 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,14 @@ int update_envp_var(t_args *params, char *env_var, char *new_content)
     index = find_env_index(params->envp, env_var);
 	if (index == -1)
 		return (1);
+	
 	before_sign = ft_strjoin(env_var, "=");
-	full_var = ft_strjoin(before_sign, new_content);
-	// free(before_sign);
+	// free(env_var);
+	// ft_strlcat(env_var, "=", sizeof(env_var));
+	full_var = ft_strjoin(env_var, new_content);
+	// free(new_content);
+	// full_var = ft_strjoin(before_sign, new_content);
+	free(before_sign);
 	free(params->envp[index]);
     params->envp[index] = full_var;
     return (0);

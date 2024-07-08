@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:48:27 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/08 17:18:27 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/08 17:27:48 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,7 @@ char    *get_str_before_sign(char *str, char sign)
     while (str[i] != sign && i < str_len)
         i++;
     len = i;
-    result = malloc(sizeof(char) * (len + 1));
+    result = malloc(sizeof(char) * (len + 1)); //alloc 1
     if (!result)
         return (perror("malloc"), NULL);
     ft_strlcpy(result, str, len + 1);

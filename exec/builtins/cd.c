@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:39:06 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/04 11:42:35 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/08 15:47:51 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,21 @@ int cd_cmd(t_cmd_info *ecmd, t_args *params)
     char *new_path;
     char *prevdir;
     char *home;
-    char oldpwd[1024] = "OLDPWD";
-    char pwd[1024] = "PWD";
+    // char oldpwd[1024] = "OLDPWD";
+    // char pwd[1024] = "PWD";
 
+    char *oldpwd;
+    char *pwd;
+
+    oldpwd = ft_strdup("OLDPWD");
+    if (!oldpwd)
+        return (1);
+    pwd = ft_strdup("PWD");
+    if (!pwd)
+    {
+        free(oldpwd);
+        return (1);
+    }
     old_path = getcwd(path, sizeof(path));
     if (!old_path)
         return (1); // TODO errors handling
@@ -78,10 +90,12 @@ int cd_cmd(t_cmd_info *ecmd, t_args *params)
     if (find_env_index(params->envp, "PWD") != -1)
         update_envp_var(params, oldpwd, old_path); //what if result is 1? handle error
     free(old_path);
+    free(oldpwd);
     new_path = getcwd(path, sizeof(path));
     if (!new_path)
         return (1);
     update_envp_var(params, pwd, new_path);
+    free(pwd);
     // printf("list oldpwd: %s\n", find_env_var(params->envp, "OLDPWD"));
     // printf("list pwd: \t%s\n", find_env_var(params->envp, "PWD"));
     return (0);
