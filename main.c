@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/05 16:53:53 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/08 16:07:15 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,7 +201,7 @@ int	loop_result(t_args *args)
 		add_history(args->input);
 		cmd = parse(args);
 		g_exit_status = exec(cmd, args);	
-		free(args->input);
+		// free(args->input);
 	}
 	return (g_exit_status);
 }
