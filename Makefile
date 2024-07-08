@@ -30,7 +30,6 @@ SRC_PARSING = 	./parsing/parser/parsing.c \
 				./parsing/syntax_check/valid_input.c \
 				./parsing/syntax_check/valid_syntax_utils.c \
 
-
 SRC_EXECUTION = ./exec/execution.c \
 				./exec/exec_buildin.c \
 				./exec/signals.c \

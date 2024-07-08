@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/08 17:26:01 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/08 17:29:49 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,7 +202,6 @@ int		add_redir_details(t_cmd_info	*new_cmd, t_redir *rcmd, t_args *args);
 char	*heredoc_get_tmp_file(void);
 int		heredoc(int fd, char *file, char *limiter, int mode, t_args *args);
 int		call_heredocs(char **arr, t_cmd_info *new_cmd, char **limiter_arr, t_args *args);
-int		old_heredoc(t_redir *rcmd);
 int		append(int fd, char **eargv, t_args *args);
 char	*add_expantion(char *input, t_args *args);
 int		is_expantion(char *input);
@@ -217,7 +216,9 @@ int		list_size(t_cmd_info *cmd_list);
 void	check_arguments(t_cmd_info *ecmd);
 void	copy_eargv(t_cmd_info *new_cmd, t_cmd *cmd);
 void	copy_argv(t_cmd_info *new_cmd, t_cmd *cmd);
-int		check_file_access(const char *file_path, int mode);
+int		check_file_access(const char *file_path, int redir_type); //, int redir_type);
+
+/* connections between cmds */
 int		**connections(t_cmd_info *cmd_list);
 int		**fill_pipes(t_cmd_info *cmd, int **pipe_arr, int i, int size);
 int		*create_a_pipe(int **pipe_arr);
