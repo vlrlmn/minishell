@@ -265,7 +265,7 @@ int	define_fd(t_cmd_info *rcmd, t_redir *old_cmd, t_args *args)
 	{
 		rcmd->fd_write = get_file_fd(rcmd->fd_write, rcmd->file_write, rcmd->mode_write, rcmd->redir_type);
 	}
-	if (rcmd->fd_read == -2 || rcmd->fd_write == -2)
+	if (rcmd->fd_read == -1 || rcmd->fd_write == -1)
 		return (1);
 	return (0);
 }

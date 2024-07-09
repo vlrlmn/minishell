@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 17:05:13 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/03 21:51:21 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/09 15:40:09 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,19 +34,19 @@ void	exit_cmd(t_cmd_info *ecmd, t_args *params, t_cmd_info *cmd_list, int **pipe
 	{
 		path = get_env("PATH=", params->envp);
 		if (is_buildin(ecmd->argv[1]) || find_command_path(ecmd->argv[1], path))
-			free_and_exit(255, cmd_list, pipe_arr, params);
+			free_and_exit(255, cmd_list, pipe_arr, params, NULL);
 	}
 	if (arg_counter > 2)
 	{
 		// printf("exit: too many arguments\n");
-		free_and_exit(1, cmd_list, pipe_arr, params);
+		free_and_exit(1, cmd_list, pipe_arr, params, NULL);
 	}
 	if (status)
 	{
 		while (status[i])
 		{
 			if (ft_isalpha(status[i]) || minus_counter > 1 || plus_counter > 1)
-				free_and_exit(255, cmd_list, pipe_arr, params);
+				free_and_exit(255, cmd_list, pipe_arr, params, NULL);
 			if (status[i] == '-')
 				minus_counter++;
 			if (status[i] == '+')
@@ -67,5 +67,5 @@ void	exit_cmd(t_cmd_info *ecmd, t_args *params, t_cmd_info *cmd_list, int **pipe
 				num_st = num_st % 256;
 		}
 	}
-	free_and_exit(num_st, cmd_list, pipe_arr, params);
+	free_and_exit(num_st, cmd_list, pipe_arr, params, NULL);
 }
