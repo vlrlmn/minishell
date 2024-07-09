@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/08 17:31:57 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/08 19:04:19 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int g_exit_status = 0;
+// int	interrupted = 0;
 
 void	write_new_promt(void)
 {
@@ -192,6 +193,10 @@ int	loop_result(t_args *args)
 	while (1)
 	{
 		// printf(Y"NEW_PROMT:"RST);
+		// if (interrupted) { // Check if an interruption occurred
+        //     interrupted = 0; // Reset the flag
+        //     continue; // Skip to the next iteration, prompting the user again
+        // }
 		args->input = readline("minishell$ ");
 		if (args->input == NULL)
 			break ;

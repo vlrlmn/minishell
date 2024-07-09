@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 17:30:44 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/05 20:27:00 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/08 19:02:53 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ char *find_command_path(char *cmd, char *path)
         cmd_path = ft_strjoin(path_arr[i], command);
         if (access (cmd_path, X_OK) == 0)
         {
+            free(command);
             free_split(path_arr);
             return (cmd_path);
         }

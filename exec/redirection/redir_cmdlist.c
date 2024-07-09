@@ -276,7 +276,7 @@ int	get_file_fd(int fd, char *file, int mode, int redir_type)
 
 	new_fd = open(file, mode, 0777); //the permissions for each redir are different!!!! maybe??
 	if (check_file_access(file, redir_type) != 0)
-		return (printf("bash: %s: Permission denied\n", file), -2);
+		return (printf("bash: %s: Permission denied\n", file), -1);
 	if (new_fd < 0)
 	{
 		printf("open '%s' failed\n", file);
