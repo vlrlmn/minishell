@@ -205,7 +205,7 @@ int	loop_result(t_args *args)
 		add_history(args->input);
 		cmd = parse(args);
 		g_exit_status = exec(cmd, args);	
-		// free(args->input);
+		free(args->input);
 	}
 	return (g_exit_status);
 }

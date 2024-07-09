@@ -84,7 +84,7 @@ int export_cmd(char *str, t_args *params)
         i++;
         if (ft_isalnum(env_var[i]))
         {
-            printf("bash: line 1: export: -%c: invalid option \nexport: usage: export [-nf] [name[=value] ...] or export -p\n", env_var[i]); 
+            printf("export: usage: export [-nf] [name[=value] ...] or export -p\n"); 
             free(env_var);
             return (2);
         }
@@ -95,6 +95,7 @@ int export_cmd(char *str, t_args *params)
         free(env_var);
         return (1);
     }
+    free(env_var);
     // if (ft_isdigit(env_var[0]))
     //     return (printf("export: '%s': not a valid identifier\n", env_var), 1);
     env_value = get_str_after_sign(str, '=');
