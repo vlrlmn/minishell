@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/08 19:04:19 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/09 12:01:03 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,7 +254,7 @@ int	main(int argc, char **argv, char **envp)
 	// 	exit_status = ft_launch_minishell(&shell_context);
 	// 	return (exit_status);
 	// }
-	signal(SIGINT, handle_sigint);
+	// signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN); //after ctrl+d exit status is ALWAYS 0
 	exit_status = loop_result(&shell_context);
 	// fprintf(stderr, "in main!\n");

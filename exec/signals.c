@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 15:39:45 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/09 11:49:53 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/09 11:59:20 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	handle_sigint(int sig)
 			set_status(STOP_HEREDOC);
 			g_exit_status = 1; //or 130
 		}
-		if (get_status(interrupted) == 0) { // Shell is waiting for input
+		if (get_status() == 0) { // Shell is waiting for input
             printf("\n"); // Print a newline to move to the next line
             rl_on_new_line(); // Prepare readline to start a new line
             // rl_replace_line("", 0); // Clear the current input line
