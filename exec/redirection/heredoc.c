@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 14:17:50 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/08 17:31:00 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/09 20:07:20 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,20 @@ int	heredoc(int fd, char *file, char *limiter, int mode, t_args *args)
 
 	input_exp = NULL;
 	fd = get_file_fd(fd, file, mode, HEREDOC);
-	if (fd == -2)
-		return (-2);
+	if (fd == -1)
+		return (-1);
+	set_status(IN_HEREDOC);
 	// fprintf(stderr, "limiter: '%s', its len:  %zu\n", limiter, ft_strlen(limiter));
-	while (1)
+	while (1 && get_status() != STOP_HEREDOC)
 	{
-		set_status(IN_HEREDOC);
 		fprintf(stderr, "> ");
 		input = get_next_line(STDIN_FILENO);
-		if (get_status() == STOP_HEREDOC)
+		if (!input || get_status() == STOP_HEREDOC)
 		{
+			// fprintf(stderr, "> ");
 			free(input);
 			close(fd);
-			return (-2);
+			return (-1);
 		}
 		if (!input || (input[0] == '\n' && !input[1])) // if ctrl + d. TODO ahnde ctrl+c
 		{
@@ -80,8 +81,15 @@ int	heredoc(int fd, char *file, char *limiter, int mode, t_args *args)
 		write(fd, "\n", 1);
 		free(input);
 		if (get_status() == STOP_HEREDOC)
-			return (-2);
+			return (-1);
 	}
+	// if (get_status() == STOP_HEREDOC)
+	// {
+	// 	fprintf(stderr, "> ");
+	// 	free(input);
+	// 	close(fd);
+	// 	return (-1);
+	// }
 	close(fd);
 	// fprintf(stderr, "heredoc completed\n");
 	set_status(IN_CMD);

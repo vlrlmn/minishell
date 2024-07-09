@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/09 15:49:13 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/09 19:50:02 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,7 +261,7 @@ int	main(int argc, char **argv, char **envp)
 	// rl_clear_history(); //idk why mac argue for it
 	// rl_clear_history();
 	clear_history();
-	// free_envp (&shell_context);
+	free_envp (&shell_context);
 	return (exit_status);
 }
 

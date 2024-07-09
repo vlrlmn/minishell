@@ -41,6 +41,7 @@ SRC_BUILTIN = ./exec/builtins/cd.c \
 			./exec/builtins/echo.c \
 			./exec/builtins/pwd.c \
 			./exec/builtins/export.c \
+			./exec/builtins/export_utils.c \
 			./exec/builtins/env.c \
 			./exec/builtins/unset.c \
 			./exec/builtins/exit.c \
