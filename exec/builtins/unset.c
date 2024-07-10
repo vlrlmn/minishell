@@ -44,7 +44,7 @@ int	unset_cmd(char *str, t_args *params)
             return (2);
         }
         if (print_counter == 1)
-            printf("bash: line 1: unset: %s: not a valid identifier\n", env_var);
+            printf("bash: line 1: unset: not a valid identifier\n");
         return (1);
     }
     status = remove_cmd(params, env_var);
