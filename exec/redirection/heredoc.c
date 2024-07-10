@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 14:17:50 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/09 20:07:20 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/10 14:25:43 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int	heredoc(int fd, char *file, char *limiter, int mode, t_args *args)
 	{
 		fprintf(stderr, "> ");
 		input = get_next_line(STDIN_FILENO);
+		printf("input: '%s'\n", input);
 		if (!input || get_status() == STOP_HEREDOC)
 		{
 			// fprintf(stderr, "> ");

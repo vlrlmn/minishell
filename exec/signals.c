@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 15:39:45 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/09 20:08:05 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/10 14:22:18 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ void	handle_sigint(int sig)
 		{
 			set_status(STOP_HEREDOC);
 			g_exit_status = 1; //or 130
-			rl_on_new_line();
-			// write(STDERR_FILENO, "\n", 1);
+			// rl_on_new_line();
+			write(STDERR_FILENO, "\n", 1);
 			write_new_promt();
 			return ;
 			// rl_redisplay();

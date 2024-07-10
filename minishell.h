@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/09 21:32:28 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/10 14:10:34 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,7 +203,6 @@ int		add_redir_details(t_cmd_info	*new_cmd, t_redir *rcmd, t_args *args);
 char	*heredoc_get_tmp_file(void);
 int		heredoc(int fd, char *file, char *limiter, int mode, t_args *args);
 int		call_heredocs(char **arr, t_cmd_info *new_cmd, char **limiter_arr, t_args *args);
-int		append(int fd, char **eargv, t_args *args);
 char	*add_expantion(char *input, t_args *args);
 int		is_expantion(char *input);
 t_cmd_info	*create_cmdlist(t_cmd *cmd, t_args *args);
