@@ -200,9 +200,9 @@ int	loop_result(t_args *args)
 		args->input = readline("minishell$ ");
 		if (args->input == NULL)
 			break ;
+		add_history(args->input);
 		if (!valid_input(args->input))
 			continue ;
-		add_history(args->input);
 		cmd = parse(args);
 		g_exit_status = exec(cmd, args);	
 		// free(args->input);
