@@ -55,7 +55,7 @@ int	heredoc(int fd, char *file, char *limiter, int mode, t_args *args)
 		if (!input || (input[0] == '\n' && !input[1])) // if ctrl + d. TODO ahnde ctrl+c
 		{
 			close(fd);
-			fprintf(stderr, "\nwarning: here-document delimited by end-of-file (wanted `%s')\n", limiter);
+			// fprintf(stderr, "\nwarning: here-document delimited by end-of-file (wanted `%s')\n", limiter);
 			return (-1);
 		}
 		input[ft_strlen(input) - 1] = '\0'; //remove '/n'

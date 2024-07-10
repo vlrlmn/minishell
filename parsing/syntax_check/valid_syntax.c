@@ -25,13 +25,13 @@ int	validate_redirection(char **ps, char *es)
 		g_exit_status = 258;
 		return (0);
 	}
-	else if (tok != 'a')
-	{
-		*eq = '\0';
-		printf("minishell: syntax error near unexpected token '\n");
-		g_exit_status = 258;
-		return (0);
-	}
+	// else if (tok != 'a')
+	// {
+	// 	*eq = '\0';
+	// 	printf("minishell: syntax error near unexpected token \n");
+	// 	g_exit_status = 258;
+	// 	return (0);
+	// }
 	return (1);
 }
 

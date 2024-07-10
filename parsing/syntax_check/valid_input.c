@@ -71,6 +71,11 @@ int	valid_input(char *work_line)
 	i = 0;
 	if (ft_strlen(work_line) == 0)
 		return(0);
+	if (ft_strlen(work_line) == 2 && work_line[0] == '<' && work_line[1] == '>')
+	{
+		g_exit_status = 258;
+		return (0);
+	}
 	while (is_delimiter(work_line[i]))
 		i++;
 	if (!work_line[i])
