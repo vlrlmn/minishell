@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:48:27 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/08 17:54:45 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/09 13:58:45 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int export_cmd(char *str, t_args *params)
         i++;
         if (ft_isalnum(env_var[i]))
         {
-            printf("export: usage: export [-nf] [name[=value] ...] or export -p\n"); 
+            printf("bash: export: invalid option export: usage: export [-nf] [name[=value] ...] or export -p\n"); 
             free(env_var);
             return (2);
         }

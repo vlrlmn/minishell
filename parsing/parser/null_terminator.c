@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:31:59 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/07 17:30:35 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/10 11:08:49 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,9 @@ void	nulterminate_pipe(t_pipe *pipecmd)
 
 void	nulterminate_redir(t_redir *redircmd)
 {
-	nulterminate(redircmd->cmd);
+	// nulterminate(redircmd->cmd);
 	*redircmd->efile = 0;
+    nulterminate(redircmd->cmd);
 }
 
 t_cmd	*nulterminate(t_cmd *cmd)

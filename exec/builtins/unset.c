@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 20:52:48 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/08 17:30:53 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/09 13:59:13 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	unset_cmd(char *str, t_args *params)
     {
         if (str[0] == '-' && ft_isalnum(str[1]))
         {
-            printf("bash: unset: -T: invalid option \nunset: usage: unset [-f] [-v] [name ...]\n");
+            printf("bash: unset: invalid option usage: unset [-f] [-v] [name ...]\n");
             return (2);
         }
         if (print_counter == 1)
