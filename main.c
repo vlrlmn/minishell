@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/09 19:50:02 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/10 12:56:54 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ int	exec(t_cmd	*cmd, t_args *args)
 		return (exit_status); 
 	}
 	pipe_arr = connections(cmd_list);
-	// PrintList(cmd_list);
+	PrintList(cmd_list);
 	// printPipeArr(pipe_arr);
 	if (get_status() == STOP_HEREDOC)
 	{
@@ -233,7 +233,7 @@ void	set_environment(t_args *args, char **envp)
 		i++;
 	}
 	args->envp[len] = NULL;
-	export_cmd("OLDPWD", args);
+	export_cmd("OLDPWD=", args);
 }
 
 /* Here we launch our program, set environment, handle signals.

@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:48:27 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/09 21:48:52 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/10 12:55:10 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	export_cmd(char *str, t_args *params)
 		update_envp_var(params, env_var, env_value);
 	else
 		add_cmd(params, str);
-	// free(env_var);
+	free(env_var);
 	free(env_value);
 	return (0);
 }

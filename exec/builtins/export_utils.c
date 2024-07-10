@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 21:14:48 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/09 21:49:27 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/10 13:20:22 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,9 @@ char	*get_str_before_sign(char *str, char sign)
 
 	i = 0;
 	str_len = 0;
-	while (str[str_len])
-		str_len++;
+	if (!str)
+		return (NULL);
+	str_len = ft_strlen(str);
 	while (str[i] != sign && i < str_len)
 		i++;
 	len = i;

@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 14:36:20 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/06/21 20:29:12 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/10 13:40:20 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 	size_t	i;
 
 	i = 0;
+	if (!src)
+		return (0);
 	if (dstsize == 0)
 		return (ft_strlen(src));
 	while (src[i] && i < dstsize - 1)

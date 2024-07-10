@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 14:20:59 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/09 21:50:32 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/10 12:58:11 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	env_cmd(t_cmd_info *ecmd, t_args *params)
 	{
 		name = get_str_before_sign(params->envp[i], '=');
 		value = get_str_after_sign(params->envp[i], '=');
-		if (value == NULL || (ft_strncmp(name, "OLDPWD", ft_strlen(name)) == 0
+		if (value == NULL || (ft_strncmp(name, "OLDPWD", ft_strlen(name)) == 0 \
 				&& value[0] == '\0'))
 		{
 			free(name);
