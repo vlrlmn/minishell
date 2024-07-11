@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 17:20:39 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/08 18:49:36 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/12 01:00:13 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,35 +71,34 @@ void	fill_pipe(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args)
 
 t_cmd_info	*fill_redir(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args)
 {
+	t_execcmd	*ecmd;
 	t_redir		*rcmd;
 	t_cmd_info	*new_cmd;
 
 	rcmd = (t_redir *)cmd; 
+	if (rcmd->cmd->type == EXEC)
+		ecmd = (t_execcmd *)rcmd->cmd;
 	new_cmd = malloc(sizeof(t_cmd_info));
 	if (!new_cmd)
-		return (NULL);
+		return (free(ecmd), free(rcmd), NULL);
 	// FT_MEMSET FOR new_cmd! ??
 	new_cmd->type = rcmd->type;
 	new_cmd->subcmd = rcmd->cmd;
 	
 	new_cmd->file_read = NULL;
 	new_cmd->file_write = NULL;
-	new_cmd->hfile_array = NULL;
 	new_cmd->fd_read = 0;
 	new_cmd->fd_write = 1;
 
 	if (add_redir_details(new_cmd, rcmd, args))
-	{
-		free(new_cmd);	
-		return ((void *)NULL);
-	}
+		return (free(new_cmd), free(ecmd), free(rcmd), (void *)NULL);
 	if (new_cmd->subcmd->type == REDIR)
 	{
 		/* go through redirs with more_redir(), 
 		open files, close fd-s, go untils type != exec
 		to fill the argv and eargv */
 		if (more_redir(new_cmd, rcmd, args))
-			return (NULL);
+			return (free(new_cmd), free(ecmd), free(rcmd), NULL);
 		/* the last cmd with redir type should 
 		write its file to new_cmd */
 	}
@@ -139,7 +138,6 @@ t_cmd_info	*fill_exec(t_cmd *cmd)
 	new_cmd->fd_write = 1; //change if redirs
 	new_cmd->file_read = NULL;
 	new_cmd->file_write = NULL;
-	new_cmd->hfile_array = NULL;
 	new_cmd->subcmd = 0;
 	if (connection_content(new_cmd))
 		return (NULL);

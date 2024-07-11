@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:05:31 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/10 13:25:17 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/12 00:28:45 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,14 @@ int update_envp_var(t_args *params, char *env_var, char *new_content)
 char	*get_env(char *value, char **envp)
 {
 	int i;
-    // fprintf(stderr, "get_env in \n");
 	i = 0;
 	while (envp[i])
 	{
-		// fprintf(stderr, "envp[%d]: %s \n",i, envp[i]);
-		if (ft_strlen(value) && (ft_strncmp(value, envp[i], ft_strlen(value)) == 0))
+		if (ft_strlen(value) && \
+		(ft_strncmp(value, envp[i], ft_strlen(value)) == 0))
 			return (envp[i]);
 		i++;
 	}
-	// fprintf(stderr, "get_env out \n");
 	return (NULL);
 }
 
@@ -62,7 +60,6 @@ int find_env_index(char **envp, char *var)
             return (i);
 		i++;
 	}
-    // printf("No such env variable\n");
     return (-1);
 }
 
@@ -84,15 +81,11 @@ char    *find_env_var(char **envp, char *var)
 		if (ft_strncmp(envp[i], var, len) == 0 && (ft_strlen(before_sign) == len))
 		{
 			res = envp[i] + (len + 1);
-			free(before_sign);
-			// maybe dould add substr to allocate memory for this substring
-			// return (ft_strdup(res));
-			return (res);
+			return (free(before_sign), res);
 		}
 		free(before_sign);
 		i++;
 	}
-    // printf("No such env variable\n");
 	return (NULL);
 }
 

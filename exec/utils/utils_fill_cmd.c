@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_fill_cmd.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 14:27:19 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/08 17:31:07 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/12 00:47:46 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ int connection_content(t_cmd_info *new_cmd)
 	new_cmd->connection = malloc(sizeof(int) * 2);
 	if (!new_cmd->connection)
 		return (1);
-	new_cmd->connection[0] = 0; //default
-	new_cmd->connection[1] = 1; //default
+	new_cmd->connection[0] = 0;
+	new_cmd->connection[1] = 1;
 	return (0);
 }
 
@@ -83,15 +83,12 @@ void check_arguments(t_cmd_info *ecmd)
 	ecmd->eargv[j] = NULL;
 }
 
-int check_file_access(const char *file_path, int redir_type) {
-	/* if redir_type heredoc or redirin, check for existance. Dpends on the redir type check 
-	F_OK: Check for existence of the file.
-	R_OK: Check for read permission.
-	W_OK: Check for write permission.
-	*/
-	(void)redir_type;
+int check_file_access(const char *file_path, int redir_type) 
+{
 	int	res;
-
+	
+	res = 0;
+	// (void)redir_type;
 	if (redir_type == REDIRIN || redir_type == HEREDOC)
 	{
 		res = access(file_path, F_OK | R_OK);
@@ -100,48 +97,6 @@ int check_file_access(const char *file_path, int redir_type) {
 	{
 		res = access(file_path, F_OK | W_OK);
 	}
+	printf("res: %d\n", res);
 	return (res);
-
-	// printf("mode: %d\n", mode);
-    if (access(file_path, 777) == 0) {
-        return (printf("File '%s' is accessible with the specified mode.\n", file_path), 0);
-    } else {
-        // access() failed, check errno to determine the error
-        switch (errno) {
-            case EACCES:
-                printf("Error: Permission denied to access '%s'.\n", file_path);
-                break;
-            case EROFS:
-                printf("Error: Read-only file system, cannot write to '%s'.\n", file_path);
-                break;
-            case ENOENT:
-                printf("Error: File '%s' does not exist.\n", file_path);
-                break;
-            case ENOTDIR:
-                printf("Error: A component of the path '%s' is not a directory.\n", file_path);
-                break;
-            case ENAMETOOLONG:
-                printf("Error: The path '%s' is too long.\n", file_path);
-                break;
-            case ELOOP:
-                printf("Error: Too many symbolic links encountered while accessing '%s'.\n", file_path);
-                break;
-            case EFAULT:
-                printf("Error: Bad address for file '%s'.\n", file_path);
-                break;
-            case EINVAL:
-                printf("Error: Invalid mode specified for accessing '%s'.\n", file_path);
-                break;
-            case ENOMEM:
-                printf("Error: Insufficient kernel memory to access '%s'.\n", file_path);
-                break;
-            case ETXTBSY:
-                printf("Error: Text file busy, cannot write to '%s'.\n", file_path);
-                break;
-            default:
-                printf("Error: Failed to access '%s' with error code %d (%s).\n", file_path, errno, strerror(errno));
-                break;
-        }
-    }
-    return (1);
 }

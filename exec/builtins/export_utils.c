@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 21:14:48 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/10 13:20:22 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/11 23:54:17 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ char	*get_str_after_sign(char *str, char sign)
 	if (!result)
 		return (perror("malloc"), NULL);
 	i += 1;
-	while (i < ft_strlen(str) && str[i] != '\n')
+	while (i < ft_strlen(str) && !is_delimiter(str[i]) && str[i] != sign)
 	{
 		result[res_i] = str[i];
 		i++;

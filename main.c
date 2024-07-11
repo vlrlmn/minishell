@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/11 18:12:33 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/12 03:03:40 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,11 @@ void PrintTree(t_cmd	*cmd)
 void	print_content(t_cmd_info *current)
 {
 	int i;
+	printf("\tINDEX: %d\n", current->index);
 	printf("type: %d\n", current->type);
 	i = 0;
+	if (!current->argv[i])
+		printf("NO ARGV!\n");
 	while (current->argv[i] != NULL)
 	{
 		printf("ARGV %s\n", current->argv[i]);
@@ -137,7 +140,7 @@ int	exec(t_cmd	*cmd, t_args *args)
 		return (g_exit_status); 
 	}
 	pipe_arr = connections(cmd_list);
-	// PrintList(cmd_list);
+	PrintList(cmd_list);
 	// printPipeArr(pipe_arr);
 	if (status_code(GET, -1) == STOP_HEREDOC)
 	{

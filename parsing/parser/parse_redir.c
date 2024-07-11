@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_redir.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:38:32 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/07 18:15:27 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/12 00:55:22 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ t_cmd	*redirout(t_cmd *subcmd, char *file, char *efile)
 	redircmd->type = REDIR;
 	redircmd->subtype = REDIROUT;
 	redircmd->cmd = subcmd;
+	//redircmd->file = ft_strdup(file); ???
 	redircmd->file = file;
 	redircmd->efile = efile;
 	redircmd->mode = O_WRONLY | O_CREAT | O_TRUNC;

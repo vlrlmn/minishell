@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 14:17:50 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/11 18:27:16 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/12 02:51:17 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,15 @@ char	*heredoc_get_tmp_file(void)
 
 /* if ctrl + C -> show new promt (minishell$) and exit with status 1
 if ctrl + D exit with status 0 */
-int	heredoc(int fd, char *file, char *limiter, int mode, t_args *args)
+
+int	heredoc(t_cmd_info *cmd, char *limiter, t_args *args)
 {
+	int		fd;
 	char	*input;
 	char	*input_exp;
 
 	input_exp = NULL;
-	fd = get_file_fd(fd, file, mode, HEREDOC);
+	fd = get_file_fd(cmd, HEREDOC);
 	if (fd == -1)
 		return (-1);
 	// status_code(SET, IN_HEREDOC);
@@ -70,6 +72,7 @@ int	heredoc(int fd, char *file, char *limiter, int mode, t_args *args)
 				free(input);
 				return (write(fd, "\n", 1), -1);
 			}
+			free(input);
 			input = input_exp;
 		}
 		// fprintf(stderr, "input: '%s'\n", input);
@@ -98,7 +101,7 @@ int	call_heredocs(char **arr, t_cmd_info *new_cmd, char **limiter_arr, t_args *a
 	{
 		limiter = limiter_arr[size];
 		new_cmd->file_read = arr[size];
-		new_cmd->fd_read = heredoc(new_cmd->fd_read, new_cmd->file_read, limiter, new_cmd->mode_read, args);
+		new_cmd->fd_read = heredoc(new_cmd, limiter, args);
 		if (new_cmd->fd_read == -1)
 			return (1);
 		if (size != 0)
@@ -110,7 +113,7 @@ int	call_heredocs(char **arr, t_cmd_info *new_cmd, char **limiter_arr, t_args *a
 	}
 	free(arr);
 	free(limiter_arr);
-	new_cmd->fd_read = get_file_fd(new_cmd->fd_read, new_cmd->file_read, new_cmd->mode_read, HEREDOC);
+	new_cmd->fd_read = get_file_fd(new_cmd, HEREDOC);
 	if (new_cmd->fd_read == -1)
 		return (1);
 	return (0);
