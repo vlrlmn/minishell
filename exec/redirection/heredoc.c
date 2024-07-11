@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 14:17:50 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/11 16:54:46 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/11 18:27:16 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	heredoc(int fd, char *file, char *limiter, int mode, t_args *args)
 	fd = get_file_fd(fd, file, mode, HEREDOC);
 	if (fd == -1)
 		return (-1);
-	status_code(SET, IN_HEREDOC);
+	// status_code(SET, IN_HEREDOC);
 	// fprintf(stderr, "limiter: '%s', its len:  %zu\n", limiter, ft_strlen(limiter));
 	while (1)
 	{
@@ -99,7 +99,7 @@ int	call_heredocs(char **arr, t_cmd_info *new_cmd, char **limiter_arr, t_args *a
 		limiter = limiter_arr[size];
 		new_cmd->file_read = arr[size];
 		new_cmd->fd_read = heredoc(new_cmd->fd_read, new_cmd->file_read, limiter, new_cmd->mode_read, args);
-		if (new_cmd->fd_read == -2)
+		if (new_cmd->fd_read == -1)
 			return (1);
 		if (size != 0)
 		{
@@ -111,7 +111,7 @@ int	call_heredocs(char **arr, t_cmd_info *new_cmd, char **limiter_arr, t_args *a
 	free(arr);
 	free(limiter_arr);
 	new_cmd->fd_read = get_file_fd(new_cmd->fd_read, new_cmd->file_read, new_cmd->mode_read, HEREDOC);
-	if (new_cmd->fd_read == -2)
+	if (new_cmd->fd_read == -1)
 		return (1);
 	return (0);
 }

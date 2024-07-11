@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 11:39:33 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/11 16:51:40 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/11 18:08:31 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,8 @@ char	*read_to_n(int fd, char *save_line)
 			interrupted = 0;
 			return (NULL);
 		}
+		else if (bytes_read == 0) // EOF condition
+            break;
 		buf[bytes_read] = '\0';
 		save_line = join_read(save_line, buf);
 		if (ft_strchr(save_line, '\n'))

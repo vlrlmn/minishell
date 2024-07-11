@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 15:39:45 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/11 16:50:26 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/11 18:19:11 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,25 +52,21 @@ void	handle_sigint(int sig)
 			status_code(SET, STOP_CMD);
 			// fprintf(stderr, "here!\n");
 			g_exit_status = 130;
-			// write(STDERR_FILENO, "\n", 1);
-			// write_new_promt();
+			write(STDERR_FILENO, "\n", 1);
+			write_new_promt();
 			return ;
-			// rl_redisplay();
 		}
 		if (status == IN_HEREDOC)
 		{
 			status_code(SET, STOP_HEREDOC);
-			// fprintf(stderr, "status after set: '%d'\n", status);
 			g_exit_status = 1; //or 130
-			// rl_on_new_line();
 			write(STDERR_FILENO, "\n", 1);
 			write_new_promt();
 			return ;
-			// rl_redisplay();
 		}
-		// rl_replace_line("", 0);
-		// write(STDERR_FILENO, "\n", 1);
-		// write_new_promt();
+		rl_replace_line("", 0);
+		write(STDERR_FILENO, "\n", 1);
+		write_new_promt();
 		return ;
 	}
 }
