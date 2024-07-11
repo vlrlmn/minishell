@@ -6,29 +6,13 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:52:25 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/08 18:14:50 by lomakinaval      ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "../../minishell.h"
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parsing_utils.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/15 11:52:25 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/07 15:45:23 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/11 17:13:35 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-/* add condition for << and >> */
-// 'q' marks the beginning of the token.
-// 'eq' marks the end of token
-int gettoken(char **ps, char *es, char **q, char **eq) // we got 3 addresses of pointers
+int gettoken(char **ps, char *es, char **q, char **eq)
 {
     int token;
 
@@ -78,7 +62,6 @@ int gettoken(char **ps, char *es, char **q, char **eq) // we got 3 addresses of 
         *eq = *ps;
         return token;
     }
-    //////////
     *q = *ps;
     while (*ps < es && !is_delimiter(**ps) && !ft_strchr("<>|", **ps))
     {
@@ -99,8 +82,6 @@ int gettoken(char **ps, char *es, char **q, char **eq) // we got 3 addresses of 
             if (*ps >= es)
                 return (0);
             (*ps)++;  
-            //if (is_delimiter(**ps)) // maybe only space??
-            //    (*ps)++;
         }
         else if (*ps < es)
             (*ps)++;
@@ -108,18 +89,6 @@ int gettoken(char **ps, char *es, char **q, char **eq) // we got 3 addresses of 
     *eq = *ps;
     return ('a');
 }
-// }
-
-// int	peek(char **ps, char *es, char *toks)
-// {
-// 	char	*s;
-
-// 	s = *ps;
-// 	while (s < es && is_delimiter(*s))
-// 		s++;
-// 	*ps = s;
-// 	return (*s && ft_strchr(toks, *s));
-// }
 
 int	peek(char **ps, char *es, char *toks)
 {
@@ -129,65 +98,5 @@ int	peek(char **ps, char *es, char *toks)
 	while (s < es && is_delimiter(*s))
 		s++;
 	*ps = s;
-    /* After the loop, *ps is updated to point to the current position of s. 
-    This modifies the original ps pointer in the calling function to reflect the new position, past any leading delimiters.
-    */
-	return (*s && ft_strchr(toks, *s)); //Checks if the current character is a valid token
-    /* The function returns the result of the logical AND between these two conditions. 
-    If both are true (i.e., *s is not '\0' and *s is in toks), the function returns a non-zero value (true). 
-    Otherwise, it returns zero (false). */
+	return (*s && ft_strchr(toks, *s));
 }
-
-
-// int handle_pipe(char **ps, char **eq)
-// {
-//     (*ps)++;
-//     *eq = *ps;
-//     return '|';
-// }
-
-// int handle_redirect(char **ps, char *es, char **q, char **eq)
-// {
-//     int token;
-
-//     if (**ps == '<')
-//         token = '+';
-//     else
-//         token = '-';
-//     (*ps)++;
-//     skip_delimiters(ps, es);
-//     *q = *ps;
-//     while (*ps < es && !is_delimiter(**ps) && !ft_strchr("|<>", **ps))
-//         (*ps)++;
-//     *eq = *ps;
-//     return token;
-// }
-
-// int handle_word(char **ps, char *es, char **q, char **eq)
-// {
-//     *q = *ps;
-//     while (*ps < es && !is_delimiter(**ps) && !ft_strchr("<>|", **ps))
-//     {
-//         if (**ps == '"' || **ps == '\'')
-//             handle_quotes(ps, es);
-//         else
-//             (*ps)++;
-//     }
-//     *eq = *ps;
-//     return 'a';
-// }
-
-// int gettoken(char **ps, char *es, char **q, char **eq)
-// {
-//     int token;
-
-//     skip_delimiters(ps, es);
-//     if (*ps >= es)
-//         return 0;
-//     token = **ps;
-//     if (token == '|')
-//         return handle_pipe(ps, eq);
-//     else if (token == '<' || token == '>')
-//         return handle_redirect(ps, es, q, eq);
-//     else
-//         return handle_word(ps, es, q, eq);

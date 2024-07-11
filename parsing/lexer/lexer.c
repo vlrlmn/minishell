@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 17:36:36 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/07 15:45:44 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/11 17:26:06 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,35 +77,33 @@ char *clean_cmd(char *line, t_args *args)
     return(val);
 }
 
-void lexical_analysis(t_cmd *cmd, t_args *args)
+void lexer_exec(t_cmd *cmd, t_args *args)
 {
     t_execcmd *exec;
-    t_redir *rcmd;
-    t_pipe *pcmd;
     int i;
-   // char* tmp;
 
     i = 0;
-    if (cmd->type == EXEC)
+    exec = (t_execcmd *)cmd;
+    while (exec->argv[i])
     {
-        exec = (t_execcmd *)cmd;
-        while (exec->argv[i])
-        {
-            if (has_parse_symbol(exec->argv[i]))
-                exec->argv[i] = clean_cmd(exec->argv[i], args);
-            else
-            {
-                //tmp = exec->argv[i];
-                exec->argv[i] = ft_strdup(exec->argv[i]);
-               // free(tmp);
-            }
-            i++;
-        }
+       if (has_parse_symbol(exec->argv[i]))
+            exec->argv[i] = clean_cmd(exec->argv[i], args);
+        else
+            exec->argv[i] = ft_strdup(exec->argv[i]);
+        i++;
     }
+}
+
+void lexical_analysis(t_cmd *cmd, t_args *args)
+{
+    t_redir *rcmd;
+    t_pipe *pcmd;
+    if (cmd->type == EXEC)
+        lexer_exec(cmd, args);
     else if (cmd->type == REDIR)
     {
         rcmd = (t_redir *)cmd;
-        if (rcmd->type == '-' && has_parse_symbol(rcmd->file)) // CHECK IF RCMD TYPE IS SAVED
+        if (rcmd->type == '-' && has_parse_symbol(rcmd->file))
             rcmd->file = clean_cmd(rcmd->file, args);
         lexical_analysis(rcmd->cmd, args);
     }
