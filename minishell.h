@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/10 14:10:34 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/11 15:01:52 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,9 @@ typedef enum signal_status
 	IN_HEREDOC = 1,
 	STOP_CMD = 2,
 	STOP_HEREDOC = 3,
-}			s_type;
+	GET = 4,
+	SET = 5,
+}			t_signal_type;
 
 typedef struct s_cmd_info //free
 {
@@ -238,6 +240,7 @@ void PrintTree(t_cmd	*cmd);
 /* signals */
 int	get_status();
 int	set_status(int new_status);
+int	status_code(t_signal_type flag, int new_status);
 
 void	handle_sigint(int sig);
 int	get_token(char **ps, char *es, char **q, char **eq);

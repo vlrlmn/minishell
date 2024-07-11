@@ -6,36 +6,50 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 15:39:45 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/10 14:22:18 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/11 16:50:26 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static int status;
-// static int interrupted;
-int interrupted;
-
-int	get_status()
+int	status_code(t_signal_type flag, int new_status)
 {
+	// static int	status_prev;
+	static int	status;
+
+	if (flag == GET)
+		return (status);
+	else if (flag == SET)
+		status = new_status;
+	// else if (flag == SET_HISTORY)
+	// 	status_prev = status;
+	// else if (flag == GET_HISTORY)
+	// 	return (status_prev);
 	return (status);
 }
 
-int	set_status(int new_status)
-{
-	status = new_status;
-	return (status);
-}
+// int	get_status()
+// {
+// 	return (status);
+// }
+
+// int	set_status(int new_status)
+// {
+// 	status = new_status;
+// 	return (status);
+// }
 
 void	handle_sigint(int sig)
 {
+	int status;
 	if (sig == SIGINT)
 	{
 		// rl_catch_signals = 0;
-		status = get_status();
+		status = status_code(GET, -1);
+		// fprintf(stderr, "status from get: '%d'\n", status);
 		if (status == IN_CMD)
 		{
-			set_status(STOP_CMD);
+			status_code(SET, STOP_CMD);
 			// fprintf(stderr, "here!\n");
 			g_exit_status = 130;
 			// write(STDERR_FILENO, "\n", 1);
@@ -45,7 +59,8 @@ void	handle_sigint(int sig)
 		}
 		if (status == IN_HEREDOC)
 		{
-			set_status(STOP_HEREDOC);
+			status_code(SET, STOP_HEREDOC);
+			// fprintf(stderr, "status after set: '%d'\n", status);
 			g_exit_status = 1; //or 130
 			// rl_on_new_line();
 			write(STDERR_FILENO, "\n", 1);

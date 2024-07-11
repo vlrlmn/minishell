@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 14:17:50 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/10 14:25:43 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/11 16:54:46 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,24 +40,19 @@ int	heredoc(int fd, char *file, char *limiter, int mode, t_args *args)
 	fd = get_file_fd(fd, file, mode, HEREDOC);
 	if (fd == -1)
 		return (-1);
-	set_status(IN_HEREDOC);
+	status_code(SET, IN_HEREDOC);
 	// fprintf(stderr, "limiter: '%s', its len:  %zu\n", limiter, ft_strlen(limiter));
-	while (1 && get_status() != STOP_HEREDOC)
+	while (1)
 	{
+		status_code(SET, IN_HEREDOC);
 		fprintf(stderr, "> ");
 		input = get_next_line(STDIN_FILENO);
-		printf("input: '%s'\n", input);
-		if (!input || get_status() == STOP_HEREDOC)
-		{
-			// fprintf(stderr, "> ");
-			free(input);
-			close(fd);
-			return (-1);
-		}
 		if (!input || (input[0] == '\n' && !input[1])) // if ctrl + d. TODO ahnde ctrl+c
 		{
 			close(fd);
-			fprintf(stderr, "\nwarning: here-document delimited by end-of-file (wanted `%s')\n", limiter);
+			if (input)
+				free(input);
+			// fprintf(stderr, "\nwarning: here-document delimited by end-of-file (wanted `%s')\n", limiter);
 			return (-1);
 		}
 		input[ft_strlen(input) - 1] = '\0'; //remove '/n'
@@ -81,19 +76,10 @@ int	heredoc(int fd, char *file, char *limiter, int mode, t_args *args)
 		write(fd, input, ft_strlen(input));
 		write(fd, "\n", 1);
 		free(input);
-		if (get_status() == STOP_HEREDOC)
-			return (-1);
 	}
-	// if (get_status() == STOP_HEREDOC)
-	// {
-	// 	fprintf(stderr, "> ");
-	// 	free(input);
-	// 	close(fd);
-	// 	return (-1);
-	// }
 	close(fd);
 	// fprintf(stderr, "heredoc completed\n");
-	set_status(IN_CMD);
+	status_code(SET, IN_CMD);
 	return (fd);
 }
 
