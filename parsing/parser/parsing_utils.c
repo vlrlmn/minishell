@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:52:25 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/11 17:13:35 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/11 17:54:55 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int gettoken(char **ps, char *es, char **q, char **eq)
             (*ps)++;
             while (is_delimiter(**ps))
                 (*ps)++;
-            *q = *ps; // mark the start of limiter name
+            *q = *ps;
             while (!is_delimiter(**ps) && !ft_strchr("|<>", **ps))
                 (*ps)++;
             *eq = *ps;
@@ -47,7 +47,7 @@ int gettoken(char **ps, char *es, char **q, char **eq)
             (*ps)++;
             while (is_delimiter(**ps))
                 (*ps)++;
-            *q = *ps; // mark the start of limiter name
+            *q = *ps;
             while (!is_delimiter(**ps) && !ft_strchr("|<>", **ps))
                 (*ps)++;
             *eq = *ps;

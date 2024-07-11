@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:34:57 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/07 15:46:01 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/11 17:48:39 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,19 +27,18 @@ char	*getvar_name(char *arg)
 		i++;
 	return (ft_substr(arg, 0, i));
 }
+
 char	*get_env_exp(char *value, char **envp)
 {
 	int i;
-    // fprintf(stderr, "get_env in \n");
+	
 	i = 0;
 	while (envp[i])
 	{
-		// fprintf(stderr, "envp[%d]: %s \n",i, envp[i]);
 		if (ft_strlen(value) && (ft_strncmp(value, envp[i], ft_strlen(value)) == 0) && envp[i][ft_strlen(value)] == '=')
 			return (envp[i]);
 		i++;
 	}
-	// fprintf(stderr, "get_env out \n");
 	return (NULL);
 }
 
@@ -50,7 +49,6 @@ void parse_expander_sign(int *i, char *line, t_lexems *list, t_args *args)
 	int		*j;
 
 	j = i;
-	// (*j)++;
 	var_name = getvar_name(line + *j);
 	var_value = get_env_exp(var_name, args->envp);
 	if (var_value)
@@ -86,7 +84,8 @@ void parse_expander(int *i, t_lexems *list, char *line, t_args *args)
     char *exit_str;
 
     (*i)++;
-    if(!line[*i] || is_delimiter(line[*i]) || (line[*i + 1] && line[*i] == '/' && line[*i + 1] == '/'))
+    if(!line[*i] || is_delimiter(line[*i]) || (line[*i + 1] && line[*i] == '/'
+			&& line[*i + 1] == '/'))
     {
         add_char_node(list, '$');
         return ;
