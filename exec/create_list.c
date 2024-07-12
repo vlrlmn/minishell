@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 17:20:39 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/12 01:00:13 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/12 15:38:04 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,14 @@ t_cmd_info	*fill_redir(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args)
 	new_cmd->fd_write = 1;
 
 	if (add_redir_details(new_cmd, rcmd, args))
+	{
+		if (new_cmd->redir_type == HEREDOC && new_cmd->file_read)
+		{
+			unlink(new_cmd->file_read);
+			free(new_cmd->file_read);
+		}
 		return (free(new_cmd), free(ecmd), free(rcmd), (void *)NULL);
+	}
 	if (new_cmd->subcmd->type == REDIR)
 	{
 		/* go through redirs with more_redir(), 

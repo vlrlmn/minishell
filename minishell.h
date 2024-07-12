@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/12 03:01:05 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/12 15:28:29 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,7 +198,7 @@ int		find_env_index(char **envp, char *var);
 void	redir(t_redir *rcmd);
 void	close_fd(t_cmd *ecmd);
 char *get_file(t_cmd_info* cmd);
-int	get_fd_or_mode(t_cmd_info* cmd);
+int	get_fd_or_mode(t_cmd_info* cmd, char flag);
 int		get_file_fd(t_cmd_info* cmd, int redir_type);
 int		r_get_file_fd(t_redir *rcmd, int subtype);
 int		define_fd(t_cmd_info	*rcmd, t_redir *old_cmd, t_args *args);

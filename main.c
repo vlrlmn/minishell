@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/12 14:26:19 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/12 15:35:14 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int g_exit_status = 0;
 
 void	write_new_promt(void)
 {
-	// rl_replace_line("", 0);
+	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();
 }
@@ -133,6 +133,7 @@ int	exec(t_cmd	*cmd, t_args *args)
 
 	pipe_arr = NULL;
 	cmd_list = create_cmdlist(cmd, args);
+	// PrintList(cmd_list);
 	if (!cmd_list)// or return g_exit_status, which i need to define in case of failure inside the create_cmdlist()
 	{
 		free_all(cmd_list, pipe_arr);
@@ -140,7 +141,6 @@ int	exec(t_cmd	*cmd, t_args *args)
 		return (g_exit_status); 
 	}
 	pipe_arr = connections(cmd_list);
-	PrintList(cmd_list);
 	// printPipeArr(pipe_arr);
 	if (status_code(GET, -1) == STOP_HEREDOC)
 	{

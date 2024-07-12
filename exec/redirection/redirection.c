@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 14:22:40 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/12 14:56:41 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/12 15:33:51 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,21 +74,15 @@ int	get_file_fd(t_cmd_info* cmd, int redir_type)
 	int fd;
 	char *file;
 	int mode;
-	(void)redir_type;
 
 	file = get_file(cmd);
-	fd = get_fd_or_mode(cmd);
-	mode = get_fd_or_mode(cmd);
-
-	new_fd = open(file, mode, 0644); 
-	//the permissions for each redir are different!!!! maybe??
-	// if (check_file_access(file, redir_type) != 0)
-	// 	return (printf("bash: %s: Permission denied\n", file), -1);
+	fd = get_fd_or_mode(cmd, 'f');
+	mode = get_fd_or_mode(cmd, 'm');
+	new_fd = open(file, mode, 0777); 
+	if (check_file_access(file, redir_type) != 0)
+		return (printf("bash: %s: Permission denied\n", file), -1);
 	if (new_fd < 0)
-	{
-		printf("open '%s' failed\n", file);
 		return (-1);
-	}
 	if (new_fd != fd && fd != 0 && fd != 1)
 		close(fd);
 	return (new_fd);

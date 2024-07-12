@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 02:39:30 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/12 14:58:02 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/12 15:34:27 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,34 @@ char *get_file(t_cmd_info* cmd)
 	if (cmd->redir_type == REDIRIN || cmd->redir_type == HEREDOC)
 		file = cmd->file_read;
 	else
-		file = cmd->file_read;
+		file = cmd->file_write;
 	return (file);
 }
 
-int	get_fd_or_mode(t_cmd_info* cmd)
+int	get_fd_or_mode(t_cmd_info* cmd, char flag)
 {
 	int fd;
+	int	mode;
 	
-	if (cmd->redir_type == REDIRIN || cmd->redir_type == HEREDOC)
-		fd = cmd->fd_read;
+	if (flag == 'f')
+	{
+		if (cmd->redir_type == REDIRIN || cmd->redir_type == HEREDOC)
+			fd = cmd->fd_read;
+		else
+			fd = cmd->fd_write;
+		return (fd);
+	}
+	if (flag == 'm')
+	{
+		if (cmd->redir_type == REDIRIN || cmd->redir_type == HEREDOC)
+			mode = cmd->mode_read;
+		else
+			mode = cmd->mode_write;
+		return (mode);
+	}
 	else
-		fd = cmd->fd_read;
-	return (fd);
+		return (-1);
+	
 }
 // rsubcmd->fd, rsubcmd->file, rsubcmd->mode, rsubcmd->subtype
 int	r_get_file_fd(t_redir *rcmd, int subtype)
@@ -40,14 +55,13 @@ int	r_get_file_fd(t_redir *rcmd, int subtype)
 	int fd;
 	char *file;
 	int mode;
-	(void)subtype;
 
 	file = rcmd->file;
 	fd = rcmd->fd;
 	mode = rcmd->mode;
 	new_fd = open(file, mode, 0777); 
-	// if (check_file_access(file, subtype) != 0)
-	// 	return (printf("bash: %s: Permission denied\n", file), -1);
+	if (check_file_access(file, subtype) != 0)
+		return (printf("bash: %s: Permission denied\n", file), -1);
 	if (new_fd < 0)
 	{
 		printf("open '%s' failed\n", file);
