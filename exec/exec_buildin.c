@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_buildin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:53:53 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/08 17:30:05 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/12 17:10:26 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,6 @@ int run_buildin(t_cmd_info *ecmd, t_args *params, t_cmd_info *cmd_list, int **pi
     int status;
 
     status = -1;
-    // int i = 0;
-    // while (ecmd->argv[i])
-    // {
-    //     printf("%d arg: %s\n", i, ecmd->argv[i]);
-    //     i++;
-    // }
     if (ft_strncmp(ecmd->argv[0], "cd", 2) == 0)
         status = cd_cmd(ecmd, params);
     else if (ft_strncmp(ecmd->argv[0], "exit", 4) == 0)
@@ -39,7 +33,6 @@ int run_buildin(t_cmd_info *ecmd, t_args *params, t_cmd_info *cmd_list, int **pi
         status = pre_unset_cmd(ecmd, params);
     else
     {
-        // cmd is not valid
         fprintf(stderr, "Command not found: %s\n", ecmd->argv[0]);
         return (127);
     }
@@ -53,16 +46,19 @@ int is_buildin(char *cmd)
     if (!cmd)
         return (0);
     len = ft_strlen(cmd);
- 	return (ft_strncmp(cmd, "cd", len) == 0 || ft_strncmp(cmd, "exit", len) == 0 || ft_strncmp(cmd, "echo", len) == 0
-				|| ft_strncmp(cmd, "pwd", len) == 0 || ft_strncmp(cmd, "export", len) == 0 || ft_strncmp(cmd, "env", len) == 0
-					|| ft_strncmp(cmd, "unset", len) == 0);
+ 	return (ft_strncmp(cmd, "cd", len) == 0 || \
+            ft_strncmp(cmd, "exit", len) == 0 || \
+            ft_strncmp(cmd, "echo", len) == 0 || \
+			ft_strncmp(cmd, "pwd", len) == 0 || \
+            ft_strncmp(cmd, "export", len) == 0 || \
+            ft_strncmp(cmd, "env", len) == 0 || \
+			ft_strncmp(cmd, "unset", len) == 0);
 }
 
 int check_if_single_builtin(t_cmd_info *cmd)
 {
 	if (cmd->argv[0] == 0)
 		exit(127);
-	// or better if (ecmd->type != EXEC && ecmd->type != Redir && is_buildin(ecmd->argv[0]))
 	return (cmd->type == EXEC && is_buildin(cmd->argv[0]));
 }
 
@@ -70,36 +66,20 @@ int run_single_builtin(t_cmd_info *cmd, t_args *params, t_cmd_info *cmd_list, in
 {
 	int	builtin_status;
     int saved_stdout;
-    
-	// fprintf(stderr, "Running command: %s\n", cmd->argv[0]); // Debug message
-    // do dup2 for output redirection
+
     if (cmd->redir_type == APPEND)
     {
         saved_stdout = dup(STDOUT_FILENO);
-        if (saved_stdout < 0) {
-            perror("dup");
-            // close fd-s, free all, return 1
-            return (1);
-        }
-        // write(1, "after dup()\n", 13);
-        if (dup2(cmd->fd_write, STDOUT_FILENO) < 0) {
-            perror("dup2");
-            close(saved_stdout);
-            // close fd-s, free all, return 1
-            return (1);
-        }
-        // write(1, "after 1 dup2()\n", 16);
+        if (saved_stdout < 0)
+            return (perror("dup"), 1);
+        if (dup2(cmd->fd_write, STDOUT_FILENO) < 0) 
+            return (close(saved_stdout), perror("dup2"), 1);
     }
 	builtin_status = run_buildin(cmd, params, cmd_list, pipe_arr);
 	if (cmd->redir_type == APPEND)
 	{
-		if (dup2(saved_stdout, STDOUT_FILENO) < 0) {
-			close(saved_stdout);
-			perror("dup2");
-			// close fd-s, free all, return 1
-			return (1);
-		}
-		// write(1, "after 2 dup2()\n", 16);
+		if (dup2(saved_stdout, STDOUT_FILENO) < 0)
+			return (close(saved_stdout), perror("dup2"), 1);
 		close(saved_stdout);
 	}
 	return (builtin_status);

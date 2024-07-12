@@ -6,14 +6,13 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/12 16:17:29 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/12 18:07:23 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int g_exit_status = 0;
-<<<<<<< HEAD
 // int	interrupted = 0;
 
 void	write_new_promt(void)
@@ -22,50 +21,6 @@ void	write_new_promt(void)
 	rl_on_new_line();
 	rl_redisplay();
 }
-
-void PrintTree(t_cmd	*cmd)
-{
-	t_execcmd *exec;
-	t_pipe *pipe;
-	t_redir *redir;
-
-	int i = 0;
-
-	if (cmd->type == EXEC)
-	{
-		exec = (t_execcmd*) cmd;
-		i=0;
-		while (exec->argv[i])
-		{
-			
-			// printf("Arg %d: %.*s\n", i, (int)(exec->eargv[i] - exec->argv[i]), exec->argv[i]);
-			printf("ARGV %s\n", exec->argv[i]);
-			printf("EARGV %s\n\n", exec->eargv[i]);
-			i++;
-		}
-	}
-	else if (cmd->type == PIPE)
-	{
-		pipe = (t_pipe*) cmd;
-		PrintTree(pipe->left);
-		PrintTree(pipe->right);
-	}
-	else if (cmd->type == REDIR)
-	{
-		redir = (t_redir*)cmd;
-		// printf("\nsubtype '%d'\n", redir->subtype);
-		// printf("redir mode '%d'\n", redir->mode);
-		// printf("redir file '%s'\n", redir->file);
-		// printf("redir efile '%s'\n", redir->efile);
-		PrintTree(redir->cmd);
-		
-	}
-	else
-	{
-		printf("Unknown Type\n");
-	}
-}
-
 
 void	print_content(t_cmd_info *current)
 {
@@ -125,8 +80,6 @@ void	printPipeArr(int **pipe_arr)
 		i++;
 	}
 }
-=======
->>>>>>> main
 
 int	exec(t_cmd	*cmd, t_args *args)
 {
@@ -136,7 +89,6 @@ int	exec(t_cmd	*cmd, t_args *args)
 
 	pipe_arr = NULL;
 	cmd_list = create_cmdlist(cmd, args);
-	// PrintList(cmd_list);
 	if (!cmd_list)// or return g_exit_status, which i need to define in case of failure inside the create_cmdlist()
 	{
 		free_all(cmd_list, pipe_arr);
@@ -144,6 +96,7 @@ int	exec(t_cmd	*cmd, t_args *args)
 		return (g_exit_status); 
 	}
 	pipe_arr = connections(cmd_list);
+	PrintList(cmd_list);
 	// printPipeArr(pipe_arr);
 	if (status_code(GET, -1) == STOP_HEREDOC)
 	{

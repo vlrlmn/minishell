@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 17:20:39 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/12 15:38:04 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/12 17:33:48 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,36 +24,29 @@ t_cmd_info	*create_cmdlist(t_cmd *cmd,  t_args *args)
 	gothrough_cmd(cmd, &cmd_list, args);
 	return (cmd_list);
 }
-
+/* creates linked list there and fill it recursively */
 void	gothrough_cmd(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args)
 {
-	t_cmd_info *cmd_node;
+    t_cmd_info *cmd_node = NULL;
 
-	cmd_node = NULL;
     if (!cmd)
-	{
-        // printf("run_cmd: cmd is NULL\n");
-		return ;
-	}
-    // fprintf(stderr, "Running command type: %d\n", cmd->type);
-	// create linked list there and fill it recursively
-    if (cmd->type == EXEC) //builtin or any usual cmd
+        return;
+
+    if (cmd->type == EXEC)
         cmd_node = fill_exec(cmd);
     else if (cmd->type == REDIR)
         cmd_node = fill_redir(cmd, cmd_list, args);
-    else //PIPE type
+    else
         fill_pipe(cmd, cmd_list, args);
-    // else if (cmd->type == PIPE) //PIPE type
-	if (cmd_node)
-		add_cmd_to_list(cmd_node, cmd_list);
-	return ;
+
+    if (cmd_node)
+        add_cmd_to_list(cmd_node, cmd_list);
+    else
+        g_exit_status = 1;
+
+    return;
 }
 
-/*
-Memory Allocation: Ensure malloc is properly used and sufficient memory is allocated.
-Pointer Dereferencing: Ensure pointers are valid before dereferencing.
-Buffer Copy Functions: Ensure functions like copy_argv and copy_eargv do not exceed buffer limits.
-*/
 void	fill_pipe(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args)
 {
 	t_pipe		*pcmd;
@@ -61,7 +54,6 @@ void	fill_pipe(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args)
 	t_cmd		*right;
 
 	pcmd = (t_pipe *)cmd;
-		// не записывать в лист, а отправить в рекурсию
 	left = pcmd->left;
 	right = pcmd->right;
 	free(pcmd);
@@ -71,59 +63,31 @@ void	fill_pipe(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args)
 
 t_cmd_info	*fill_redir(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args)
 {
-	t_execcmd	*ecmd;
 	t_redir		*rcmd;
 	t_cmd_info	*new_cmd;
 
 	rcmd = (t_redir *)cmd; 
-	if (rcmd->cmd->type == EXEC)
-		ecmd = (t_execcmd *)rcmd->cmd;
 	new_cmd = malloc(sizeof(t_cmd_info));
 	if (!new_cmd)
-		return (free(ecmd), free(rcmd), NULL);
-	// FT_MEMSET FOR new_cmd! ??
-	new_cmd->type = rcmd->type;
-	new_cmd->subcmd = rcmd->cmd;
-	
-	new_cmd->file_read = NULL;
-	new_cmd->file_write = NULL;
-	new_cmd->fd_read = 0;
-	new_cmd->fd_write = 1;
-
+		return (free(rcmd->cmd), free(rcmd), NULL);
+	define_redir_info(new_cmd, rcmd);
 	if (add_redir_details(new_cmd, rcmd, args))
-	{
-		if (new_cmd->redir_type == HEREDOC && new_cmd->file_read)
-		{
-			unlink(new_cmd->file_read);
-			free(new_cmd->file_read);
-		}
-		return (free(new_cmd), free(ecmd), free(rcmd), (void *)NULL);
-	}
+		return (free(rcmd->cmd), free_redir(new_cmd, rcmd), (void *)NULL);
 	if (new_cmd->subcmd->type == REDIR)
 	{
-		/* go through redirs with more_redir(), 
-		open files, close fd-s, go untils type != exec
-		to fill the argv and eargv */
 		if (more_redir(new_cmd, rcmd, args))
-			return (free(new_cmd), free(ecmd), free(rcmd), NULL);
-		/* the last cmd with redir type should 
-		write its file to new_cmd */
+			return (free(rcmd->cmd), free_redir(new_cmd, rcmd), NULL);
 	}
 	if (new_cmd->subcmd->type == EXEC)
 	{
 		copy_argv(new_cmd, new_cmd->subcmd);
 		copy_eargv(new_cmd, new_cmd->subcmd);
 	}
-	// rcmd->mode_read = 0 ???
-	// rcmd->mode_write = 0 ???
 	if (connection_content(new_cmd))
-		return (NULL);
-	// printf("new_cmd->subcmd->type: %d\n", new_cmd->subcmd->type);
+		return (free(rcmd->cmd), free_redir(new_cmd, rcmd), NULL);
 	if (new_cmd->subcmd->type == PIPE)
 		gothrough_cmd(new_cmd->subcmd, cmd_list, args);
-	free(new_cmd->subcmd);
-	free(rcmd);
-	return (new_cmd);
+	return (free(new_cmd->subcmd), free(rcmd), new_cmd);
 }
 
 t_cmd_info	*fill_exec(t_cmd *cmd)
@@ -135,14 +99,12 @@ t_cmd_info	*fill_exec(t_cmd *cmd)
 	if (!new_cmd)
 		return (NULL);
 	ecmd = (t_execcmd *)cmd;
-	// check_arguments(new_cmd);
-	// FT_MEMSET FOR new_cmd!
 	new_cmd->type = EXEC;
 	new_cmd->redir_type = NONE;
 	copy_argv(new_cmd, cmd);
 	copy_eargv(new_cmd, cmd);
-	new_cmd->fd_read = 0; //change if redirs
-	new_cmd->fd_write = 1; //change if redirs
+	new_cmd->fd_read = 0;
+	new_cmd->fd_write = 1;
 	new_cmd->file_read = NULL;
 	new_cmd->file_write = NULL;
 	new_cmd->subcmd = 0;

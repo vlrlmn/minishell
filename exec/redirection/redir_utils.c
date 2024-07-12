@@ -6,11 +6,35 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 02:39:30 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/12 15:34:27 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/12 17:33:54 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
+void	define_redir_info(t_cmd_info *new_cmd, t_redir *rcmd)
+{
+	// FT_MEMSET FOR new_cmd! ??
+	ft_memset(new_cmd, 0, sizeof(*new_cmd));
+	new_cmd->type = rcmd->type;
+	new_cmd->subcmd = rcmd->cmd;
+	new_cmd->file_read = NULL;
+	new_cmd->file_write = NULL;
+	new_cmd->fd_read = 0;
+	new_cmd->fd_write = 1;
+}
+
+/* maybe last arg should be there, and free in previous funct new_cmd->subcmd */
+void	free_redir(t_cmd_info *new_cmd, t_redir *rcmd)
+{
+	if (new_cmd->redir_type == HEREDOC && new_cmd->file_read)
+	{
+		unlink(new_cmd->file_read);
+		free(new_cmd->file_read);
+	}
+	free(new_cmd);
+	free(rcmd);
+}
 
 char *get_file(t_cmd_info* cmd)
 {

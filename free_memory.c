@@ -3,14 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   free_memory.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:06 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/11 17:10:59 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/12 17:06:18 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/* void * allows to assign NULL to pipe_arr*/
+void	*close_free_pipe_arr(int **pipe_arr)
+{
+	int	i;
+
+	i = 0;
+	if (!pipe_arr)
+		return (NULL);
+	while (pipe_arr[i])
+	{
+		if (pipe_arr[i][0] != 0 && pipe_arr[i][0] != 1)
+			close(pipe_arr[i][0]);
+		if (pipe_arr[i][1] != 0 && pipe_arr[i][1] != 1)
+			close(pipe_arr[i][1]);
+		free(pipe_arr[i]);
+		i++;
+	}
+	free(pipe_arr);
+	return (NULL);
+}
 
 void free_split(char **arr) 
 {

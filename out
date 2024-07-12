@@ -4,7 +4,6 @@ Minishell_Tester
 errors.c
 errors.o
 exec
-file
 free_memory.c
 free_memory.o
 main.c
@@ -12,5 +11,6 @@ main.o
 minishell
 minishell.h
 out
+out1
 parsing
 test
