@@ -101,7 +101,7 @@ int	more_redir(t_cmd_info *new_cmd, t_redir *rcmd, t_args *args)
 			fd = r_get_file_fd(rsubcmd, rsubcmd->subtype);
 			close (fd);
 			if (fd == -1)
-				return (1);
+				return (free(rsubcmd), 1);
 		}
 		type = rsubcmd->cmd->type;
 		if (type == REDIR)

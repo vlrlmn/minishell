@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 17:05:13 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/12 16:42:07 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/12 18:16:26 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	check_argument_amount(t_cmd_info *ecmd, t_args *params,
 	if (ecmd->argv[1])
 	{
 		path = get_env("PATH=", params->envp);
-		if (is_buildin(ecmd->argv[1]) || find_command_path(ecmd->argv[1], path))
+		if (is_buildin(ecmd->argv[1]) || find_cmd_path(ecmd->argv[1], path))
 			free_and_exit(255, cmd_list, pipe_arr, params, NULL);
 	}
 	if (arg_counter > 2)

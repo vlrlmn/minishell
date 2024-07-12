@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/12 03:01:05 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/12 18:02:57 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ t_cmd		*nulterminate(t_cmd *cmd);
 int			valid_input(char *work_line);
 void			free_split(char **arr);
 void			run_cmd(t_cmd *cmd, t_args *params);
-char			*find_command_path(char *cmd, char *path);
+char	*find_cmd_path(char *cmd, char *path);
 int			gettoken(char **ps, char *es, char **q, char **eq);
 void		exit_with_err(char *msg);
 int			peek(char **ps, char *es, char *toks);
@@ -183,6 +183,7 @@ int export_cmd(char *str, t_args *params);
 int pre_unset_cmd(t_cmd_info *ecmd, t_args *params);
 int	unset_cmd(char *str, t_args *params);
 void	exit_cmd(t_cmd_info *ecmd, t_args *params,  t_cmd_info *cmd_list, int **pipe_arr);
+int is_executable(const char *path);
 
 char	*get_str_after_sign(char *str, char sign); //export
 char	*get_str_before_sign(char *str, char sign); //export
@@ -190,6 +191,7 @@ int		add_cmd(t_args *params, char *new_env_var); //export
 int		export_print(t_args *params); //export
 int		check_var_name(char *env_var);
 int		remove_cmd(t_args *params, char *env_var_to_remove); //unset
+int	is_valid_variable_name(char *key);
 
 /* env utils */
 int		update_envp_var(t_args *params, char *env_var, char *new_content);
@@ -198,9 +200,11 @@ int		find_env_index(char **envp, char *var);
 void	redir(t_redir *rcmd);
 void	close_fd(t_cmd *ecmd);
 char *get_file(t_cmd_info* cmd);
-int	get_fd_or_mode(t_cmd_info* cmd);
+int	get_fd_or_mode(t_cmd_info* cmd, char flag);
 int		get_file_fd(t_cmd_info* cmd, int redir_type);
 int		r_get_file_fd(t_redir *rcmd, int subtype);
+void	free_redir(t_cmd_info *new_cmd, t_redir *rcmd);
+void	define_redir_info(t_cmd_info *new_cmd, t_redir *rcmd);
 int		define_fd(t_cmd_info	*rcmd, t_redir *old_cmd, t_args *args);
 int		define_file(t_cmd_info	*rcmd, t_redir *old_cmd);
 int		add_redir_details(t_cmd_info	*new_cmd, t_redir *rcmd, t_args *args);

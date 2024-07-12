@@ -6,13 +6,13 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 17:30:44 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/12 00:27:23 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/12 17:47:15 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-char	*find_command_path(char *cmd, char *path)
+char	*find_cmd_path(char *cmd, char *path)
 {
 	char	*cmd_path;
 	char	**path_arr;
@@ -38,4 +38,25 @@ char	*find_command_path(char *cmd, char *path)
 	free(command);
 	free_split(path_arr);
 	return (NULL);
+}
+
+int	if_path_to_cmd(char *path_line)
+{
+	if (access(path_line, F_OK) == 0 && access(path_line, X_OK) == 0)
+		return (0);
+	return (1);
+}
+
+int is_executable(const char *path) 
+{
+    struct stat sb;
+
+    // Check if the path exists and is a regular file
+    if (stat(path, &sb) == 0 && S_ISREG(sb.st_mode)) 
+	{
+        if (access(path, X_OK) == 0) {
+            return (0);
+        }
+    }
+    return (1);
 }

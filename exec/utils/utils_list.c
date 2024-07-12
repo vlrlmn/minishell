@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 14:27:29 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/12 01:20:07 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/12 15:17:30 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ void	free_argv(t_cmd_info *current)
 	int	i;
 
 	i = 0;
+	if (!current->argv[i])
+		return ;
 	while (current->argv[i])
 	{
 		free(current->argv[i]);

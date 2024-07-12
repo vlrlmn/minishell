@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 14:27:19 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/12 14:53:59 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/12 15:33:15 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,24 +85,20 @@ void	check_arguments(t_cmd_info *ecmd)
 
 int	check_file_access(const char *file_path, int redir_type)
 {
-	(void)redir_type;
 	int	res;
 
 	res = 0;
 	if (redir_type == REDIRIN || redir_type == HEREDOC)
 	{
 		res = access(file_path, F_OK);
-		printf("res F_OK?: %d\n", res);
         if (res == 0)
             res = access(file_path, R_OK);
 	}
 	if (redir_type == REDIROUT || redir_type == APPEND)
 	{
 		res = access(file_path, F_OK);
-		printf("res F_OK?: %d\n", res);
         if (res == 0)
             res = access(file_path, W_OK);
 	}
-	printf("final res: %d\n", res);
 	return (res);
 }
