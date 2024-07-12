@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 02:39:30 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/12 20:06:08 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/12 20:12:55 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	define_redir_info(t_cmd_info *new_cmd, t_redir *rcmd)
 {
-	// FT_MEMSET FOR new_cmd! ??
 	ft_memset(new_cmd, 0, sizeof(*new_cmd));
 	new_cmd->type = rcmd->type;
 	new_cmd->subcmd = rcmd->cmd;
