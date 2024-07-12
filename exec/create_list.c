@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 17:20:39 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/12 18:15:45 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/12 20:10:14 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,11 @@ t_cmd_info	*fill_redir(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args)
 		return (free(rcmd->cmd), free(rcmd), NULL);
 	define_redir_info(new_cmd, rcmd);
 	if (add_redir_details(new_cmd, rcmd, args))
-		return (free(rcmd->cmd), free_redir(new_cmd, rcmd), (void *)NULL);
+		return (free_redir(rcmd), free(new_cmd), (void *)NULL);
 	if (new_cmd->subcmd->type == REDIR)
 	{
 		if (more_redir(new_cmd, rcmd, args))
-			return (free(rcmd->cmd), free_redir(new_cmd, rcmd), NULL);
+			return (free_redir(rcmd), free(new_cmd), NULL);
 	}
 	if (new_cmd->subcmd->type == EXEC)
 	{
@@ -84,10 +84,10 @@ t_cmd_info	*fill_redir(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args)
 		copy_eargv(new_cmd, new_cmd->subcmd);
 	}
 	if (connection_content(new_cmd))
-		return (free(rcmd->cmd), free_redir(new_cmd, rcmd), NULL);
+		return (free_redir(rcmd), free_cmd_list(new_cmd), NULL);
 	if (new_cmd->subcmd->type == PIPE)
 		gothrough_cmd(new_cmd->subcmd, cmd_list, args);
-	return (free(new_cmd->subcmd), free(rcmd), new_cmd);
+	return (free(rcmd), new_cmd);
 }
 
 t_cmd_info	*fill_exec(t_cmd *cmd)

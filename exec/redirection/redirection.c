@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 14:22:40 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/12 19:55:51 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/12 20:10:40 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,13 @@ int	define_fd(t_cmd_info *rcmd, t_redir *old_cmd, t_args *args)
 	if (rcmd->redir_type == HEREDOC)
 	{
 		rcmd->fd_read = heredoc(rcmd, old_cmd->file, args);
-		if (rcmd->fd_read == -1 || rcmd->fd_write == -1)
+		if (rcmd->fd_read == -1)
+		{
+			unlink(rcmd->file_read);
+			free(rcmd->file_read);	
+			rcmd->file_read = NULL;
 			return (1);
+		}
 		rcmd->fd_read = get_file_fd(rcmd, rcmd->redir_type);
 	}
 	if (rcmd->fd_read == -1 || rcmd->fd_write == -1)

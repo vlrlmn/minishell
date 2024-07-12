@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/12 18:19:26 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/12 19:32:11 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,7 +204,7 @@ char *get_file(t_cmd_info* cmd);
 int	get_fd_or_mode(t_cmd_info* cmd, char flag);
 int		get_file_fd(t_cmd_info* cmd, int redir_type);
 int		r_get_file_fd(t_redir *rcmd, int subtype);
-void	free_redir(t_cmd_info *new_cmd, t_redir *rcmd);
+void	free_redir(t_redir *rcmd);
 void	define_redir_info(t_cmd_info *new_cmd, t_redir *rcmd);
 int		define_fd(t_cmd_info	*rcmd, t_redir *old_cmd, t_args *args);
 int		define_file(t_cmd_info	*rcmd, t_redir *old_cmd);

@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 14:17:50 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/12 19:31:48 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/12 20:10:24 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,6 @@ int	heredoc(t_cmd_info *cmd, char *limiter, t_args *args)
 	fd = get_file_fd(cmd, HEREDOC);
 	if (fd == -1)
 		return (-1);
-	// status_code(SET, IN_HEREDOC);
-	// fprintf(stderr, "limiter: '%s', its len:  %zu\n", limiter, ft_strlen(limiter));
 	while (1)
 	{
 		status_code(SET, IN_HEREDOC);
@@ -105,7 +103,12 @@ int	call_heredocs(char **arr, t_cmd_info *new_cmd, char **limiter_arr, t_args *a
 		new_cmd->file_read = arr[size];
 		new_cmd->fd_read = heredoc(new_cmd, limiter, args);
 		if (new_cmd->fd_read == -1)
+		{
+			unlink(new_cmd->file_read);
+			free(new_cmd->file_read);
+			new_cmd->file_read = NULL;
 			return (1);
+		}
 		if (size != 0)
 		{
 			unlink(arr[size]);
