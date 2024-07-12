@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 02:39:30 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/12 18:16:40 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/12 19:57:55 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ int	r_get_file_fd(t_redir *rcmd, int subtype)
 		return (printf("bash: %s: Permission denied\n", file), -1);
 	if (new_fd < 0)
 	{
-		// printf("open '%s' failed\n", file);
 		return (-1);
 	}
 	if (new_fd != fd && fd != 0 && fd != 1)
