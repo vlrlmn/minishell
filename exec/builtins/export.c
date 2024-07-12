@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:48:27 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/10 12:55:10 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/12 16:06:48 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ int	export_print(t_args *params)
 	i = 0;
 	while (params->envp[i])
 	{
+		printf("str: '%s'\n", params->envp[i]);
 		value = get_str_after_sign(params->envp[i], '=');
 		name = get_str_before_sign(params->envp[i], '=');
 		if (value == NULL || (ft_strncmp(name, "OLDPWD", ft_strlen(name)) == 0
