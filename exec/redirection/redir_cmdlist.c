@@ -85,6 +85,7 @@ int	more_redir(t_cmd_info *new_cmd, t_redir *rcmd, t_args *args)
 	{
 		if (rsubcmd->subtype == HEREDOC)
 		{
+			//function
 			new_cmd->file_read = heredoc_get_tmp_file();
 			if (heredoc_arr)
 			{
@@ -92,13 +93,14 @@ int	more_redir(t_cmd_info *new_cmd, t_redir *rcmd, t_args *args)
 				limiter_arr[i_hd] = rsubcmd->file;
 				// printf("index: %d, '%s', limiter: '%s'\n", i_hd, heredoc_arr[i_hd], limiter_arr[i_hd]);
 			}
+			//
 			i_hd += 1;
 		}
 		else //creates a file
 		{
 			fd = r_get_file_fd(rsubcmd, rsubcmd->subtype);
 			close (fd);
-			if (fd == -2)
+			if (fd == -1)
 				return (1);
 		}
 		type = rsubcmd->cmd->type;
@@ -109,6 +111,7 @@ int	more_redir(t_cmd_info *new_cmd, t_redir *rcmd, t_args *args)
 			rsubcmd = tmp;
 		}
 	}
+	//function
 	if (heredoc_arr)
 	{
 		heredoc_arr[i_hd] = NULL;
@@ -116,6 +119,7 @@ int	more_redir(t_cmd_info *new_cmd, t_redir *rcmd, t_args *args)
 		if (call_heredocs(heredoc_arr, new_cmd, limiter_arr, args))
 			return (1);
 	}
+	//
 	new_cmd->subcmd = rsubcmd->cmd;
 	return (0);
 }
