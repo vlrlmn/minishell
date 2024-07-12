@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 14:22:40 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/12 19:58:05 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/12 20:10:40 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	get_file_fd(t_cmd_info* cmd, int redir_type)
 	mode = get_fd_or_mode(cmd, 'm');
 	new_fd = open(file, mode, 0777); 
 	if (check_file_access(file, redir_type) != 0)
-		return (printf("bash: %s: Permission denied\n", file), -1);
+		return (-1);
 	if (new_fd < 0)
 		return (-1);
 	if (new_fd != fd && fd != 0 && fd != 1)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 17:05:13 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/12 18:03:21 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/12 18:16:26 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,7 @@ void	check_argument_amount(t_cmd_info *ecmd, t_args *params,
 			free_and_exit(255, cmd_list, pipe_arr, params, NULL);
 	}
 	if (arg_counter > 2)
-	{
-		// printf("exit: too many arguments\n");
 		free_and_exit(1, cmd_list, pipe_arr, params, NULL);
-	}
 }
 
 void	check_first_char(char *status, t_cmd_info *cmd_list, int **pipe_arr,

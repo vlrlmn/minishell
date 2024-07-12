@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:48:27 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/12 16:29:28 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/12 20:04:44 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,42 +57,24 @@ int	export_print(t_args *params)
 
 int	export_cmd(char *str, t_args *params)
 {
-    char    *env_var;
-    char    *env_value;
-    int i = 0;
-    
-    if (!str)
-        return (printf("export: invalid argument\n"), 1);
-    env_var = get_str_before_sign(str, '=');
-    while(env_var[i] == '-')
-    {
-        i++;
-        if (ft_isalnum(env_var[i]))
-        {
-            printf("bash: export: invalid option export: usage: export [-nf] [name[=value] ...] or export -p\n"); 
-            free(env_var);
-            return (2);
-        }
-    }
-    if (!is_valid_variable_name(env_var))
-    {
-        printf("export: '%s': not a valid identifier\n", env_var);
-        free(env_var);
-        return (1);
-    }
-    free(env_var);
-    // if (ft_isdigit(env_var[0]))
-    //     return (printf("export: '%s': not a valid identifier\n", env_var), 1);
-    env_value = get_str_after_sign(str, '=');
-    if (find_env_var(params->envp, env_var))
-    {
-        update_envp_var(params, env_var, env_value);
-    }
-    else
-        add_cmd(params, str);
-    // free(env_var);
-    free(env_value);
-    return (0);
+	char	*env_var;
+	char	*env_value;
+	int		status;
+
+	if (!str)
+		return (printf("export: invalid argument\n"), 1);
+	env_var = get_str_before_sign(str, '=');
+	status = check_var_name(env_var);
+	if (status != 0)
+		return (status);
+	env_value = get_str_after_sign(str, '=');
+	free(env_var);
+	if (find_env_var(params->envp, env_var))
+		update_envp_var(params, env_var, env_value);
+	else
+		add_cmd(params, str);
+	free(env_value);
+	return (0);
 }
 
 void	free_arr(char **new_env_list, int i)
