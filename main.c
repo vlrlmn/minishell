@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/12 16:40:34 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/12 17:42:12 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,6 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGQUIT, SIG_IGN);
 	exit_status = loop_result(&shell_context);
 	clear_history();
-	free_envp (&shell_context);
+	// free_envp (&shell_context);
 	return (exit_status);
 }

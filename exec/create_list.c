@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_list.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 17:20:39 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/12 01:00:13 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/12 18:04:01 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ void	gothrough_cmd(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args)
     // else if (cmd->type == PIPE) //PIPE type
 	if (cmd_node)
 		add_cmd_to_list(cmd_node, cmd_list);
+	else
+		g_exit_status = 1;
 	return ;
 }
 
