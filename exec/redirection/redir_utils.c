@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 02:39:30 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/12 17:33:54 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/12 20:06:08 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,32 @@ void	define_redir_info(t_cmd_info *new_cmd, t_redir *rcmd)
 }
 
 /* maybe last arg should be there, and free in previous funct new_cmd->subcmd */
-void	free_redir(t_cmd_info *new_cmd, t_redir *rcmd)
+void	free_redir(t_redir *rcmd)
 {
-	if (new_cmd->redir_type == HEREDOC && new_cmd->file_read)
+	t_execcmd *ecmd;
+	int	i;
+
+	i = 0;
+	if (rcmd->cmd->type == EXEC)
 	{
-		unlink(new_cmd->file_read);
-		free(new_cmd->file_read);
+		ecmd = (t_execcmd *)rcmd->cmd;
+		if (!ecmd->argv[i])
+		{
+			free(ecmd);
+			free(rcmd);
+			return ;
+		}
+		while (ecmd->argv[i])
+		{
+			free(ecmd->argv[i]);
+			ecmd->argv[i] = NULL;
+			ecmd->eargv[i] = NULL;
+			i++;
+		}
+		free(ecmd);
 	}
-	free(new_cmd);
+	else
+		free(rcmd->cmd);
 	free(rcmd);
 }
 
