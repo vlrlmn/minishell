@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/07/07 17:31:44 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/11 17:11:55 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,11 @@ int	valid_input(char *work_line)
 	i = 0;
 	if (ft_strlen(work_line) == 0)
 		return(0);
+	if (ft_strlen(work_line) == 2 && work_line[0] == '<' && work_line[1] == '>')
+	{
+		g_exit_status = 258;
+		return (0);
+	}
 	while (is_delimiter(work_line[i]))
 		i++;
 	if (!work_line[i])

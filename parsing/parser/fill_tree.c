@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:03:40 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/07 17:29:30 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/11 17:14:14 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,3 @@ t_cmd	*pipecmd(t_cmd *left, t_cmd *right)
 
 	return ((t_cmd *)cmd);
 }
-

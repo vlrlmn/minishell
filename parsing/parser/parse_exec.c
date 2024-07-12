@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 16:49:26 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/09 18:04:28 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/12 16:23:39 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,6 @@ t_cmd	*execcmd(void)
 	return ((t_cmd *)exec);
 }
 
-t_cmd *initexec(char **ps, char *es) 
-{
-    t_cmd *cmd;
-
-    cmd = execcmd();
-    cmd = parseredir(cmd, ps, es);
-    return (cmd);
-}
-
 void processargs(t_execcmd *exec, t_cmd **cmd, char **ps, char *es) 
 {
     char *q;
@@ -41,6 +32,7 @@ void processargs(t_execcmd *exec, t_cmd **cmd, char **ps, char *es)
     int argc;
     
     argc = 0;
+    // *cmd = parseredir(*cmd, ps, es);
     while (!peek(ps, es, "|")) 
     {
         if ((tok = gettoken(ps, es, &q, &eq)) == 0)
@@ -60,9 +52,12 @@ void processargs(t_execcmd *exec, t_cmd **cmd, char **ps, char *es)
 
 t_cmd *parseexec(char **ps, char *es)
 {
-    t_cmd *cmd;
+    t_execcmd	*exec;
+	t_cmd		*cmd;
 
-    cmd = initexec(ps, es);
-    processargs((t_execcmd *)cmd, &cmd, ps, es);
+	cmd = execcmd();
+	exec = (t_execcmd *)cmd;
+	cmd = parseredir(cmd, ps, es);
+    processargs(exec, &cmd, ps, es);
     return (cmd);
 }

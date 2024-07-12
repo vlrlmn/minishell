@@ -6,13 +6,14 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/12 15:51:00 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/12 16:17:29 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int g_exit_status = 0;
+<<<<<<< HEAD
 // int	interrupted = 0;
 
 void	write_new_promt(void)
@@ -124,6 +125,8 @@ void	printPipeArr(int **pipe_arr)
 		i++;
 	}
 }
+=======
+>>>>>>> main
 
 int	exec(t_cmd	*cmd, t_args *args)
 {
@@ -148,45 +151,13 @@ int	exec(t_cmd	*cmd, t_args *args)
 		return (free_all(cmd_list, pipe_arr), 1); //or not 1?
 	}
 	exit_status = run_cmds(cmd_list, pipe_arr, args);
-	// printf("status after exec: %d\n", exit_status);
 	if (!cmd_list->argv[0] || cmd_list->argv[0][0] == '\0')
 		return (free_all(cmd_list, pipe_arr), exit_status);
 	if (list_size(cmd_list) == 1 && is_buildin(cmd_list->argv[0]))
 		return (free_all(cmd_list, pipe_arr), exit_status);
 	exit_status = wait_cmds(cmd_list);
-	// printf("status after wait: %d\n", exit_status);
 	free_all(cmd_list, pipe_arr);
 	return (exit_status);
-}
-
-/*This is where we have instant loop happening. Inside the loop
-we reading the line, adding it in history and call lexer, beginning
-of args->input parsing*/
-void	free_args(void *ptr)
-{
-	if (ptr)
-		free(ptr);
-	ptr = NULL;
-}
-
-int ft_launch_minishell(t_args *args)
-{
-	t_cmd	*cmd;
-
-    if (args->input == NULL)
-	{
-		write(STDOUT_FILENO, "exit in launch\n", 5);
-		return 1;
-	}
-	if (!valid_input(args->input))
-	{
-		free_envp(args);
-		exit(SYNTAX_ERR);
-	}
-	cmd = parse(args);
-	PrintTree(cmd);
-	g_exit_status = exec(cmd, args);
-	return (g_exit_status);
 }
 
 int	loop_result(t_args *args)
@@ -195,26 +166,18 @@ int	loop_result(t_args *args)
 
 	while (1)
 	{
-		// printf(Y"NEW_PROMT:"RST);
-		// if (interrupted) { // Check if an interruption occurred
-        //     interrupted = 0; // Reset the flag
-        //     continue; // Skip to the next iteration, prompting the user again
-        // }
 		args->input = readline("minishell$ ");
 		if (args->input == NULL)
 			break ;
+		add_history(args->input);
 		if (!valid_input(args->input))
 			continue ;
-		add_history(args->input);
 		cmd = parse(args);
-		g_exit_status = exec(cmd, args);	
-		// free(args->input);
+		g_exit_status = exec(cmd, args);
 	}
 	return (g_exit_status);
 }
 
-/* We need to create new environment argument and copy envp from main
-arguments because this is safe way to work with environment */
 void	set_environment(t_args *args, char **envp)
 {
 	int	len;
@@ -239,10 +202,6 @@ void	set_environment(t_args *args, char **envp)
 	export_cmd("OLDPWD=", args);
 }
 
-/* Here we launch our program, set environment, handle signals.
-For saving history and mowing with arrows through
-previously written commands we use	rl_clear_history(void);
-In the end we clear everything and free memory */
 int	main(int argc, char **argv, char **envp)
 {
 	t_args	shell_context;
@@ -251,26 +210,8 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	set_environment(&shell_context, envp);
-	// if (argc >= 3 && !ft_strncmp(argv[1], "-c", 3))
-	// {
-	// 	shell_context.input = argv[2];
-	// 	exit_status = ft_launch_minishell(&shell_context);
-	// 	return (exit_status);
-	// }
-	signal(SIGINT, handle_sigint);
-	signal(SIGQUIT, SIG_IGN); //after ctrl+d exit status is ALWAYS 0
+	signal(SIGQUIT, SIG_IGN);
 	exit_status = loop_result(&shell_context);
-	// fprintf(stderr, "in main!\n");
-	// rl_clear_history(); //idk why mac argue for it
-	// rl_clear_history();
 	clear_history();
-	// free_envp (&shell_context);
 	return (exit_status);
 }
-
-/*
-about signals
-1) should ctrl+c clear all memory or returning promt is enough? should there be ^C after pressing this cmd?
-2) if 'return' pressed, should it quit? errno = 2
-3) ctrl D -> "exit" str in the promt, not on the new line
-*/

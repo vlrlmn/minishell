@@ -6,80 +6,57 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 11:52:25 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/08 18:14:50 by lomakinaval      ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "../../minishell.h"
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parsing_utils.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/15 11:52:25 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/07 15:45:23 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/12 12:43:10 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-/* add condition for << and >> */
-// 'q' marks the beginning of the token.
-// 'eq' marks the end of token
-int gettoken(char **ps, char *es, char **q, char **eq) // we got 3 addresses of pointers
+int redir_tok_heredoc (char **ps, char **q, char **eq, int *token)
 {
-    int token;
-
-    while (*ps < es && (**ps == ' ' || **ps == '\t' || **ps == '\n'))
+    (*ps)++;
+    while (is_delimiter(**ps))
         (*ps)++;
-    if (*ps >= es)
-        return 0;
-    token = **ps;
-    if (**ps == '|')
-    {
-        (*ps)++;
-        *eq = *ps;
-        return token;
-    }
-    else if (**ps == '<' || **ps == '>')
-    {
-        (*ps)++;
-        if (**ps == '<')
-        {
-            (*ps)++;
-            while (is_delimiter(**ps))
-                (*ps)++;
-            *q = *ps; // mark the start of limiter name
-            while (!is_delimiter(**ps) && !ft_strchr("|<>", **ps))
-                (*ps)++;
-            *eq = *ps;
-            token = '+';
-            return (token);
-        }
-        else if (**ps == '>')
-        {
-            (*ps)++;
-            while (is_delimiter(**ps))
-                (*ps)++;
-            *q = *ps; // mark the start of limiter name
-            while (!is_delimiter(**ps) && !ft_strchr("|<>", **ps))
-                (*ps)++;
-            *eq = *ps;
-            token = '-';
-            return (token);
-        }
-        while (is_delimiter(**ps))
-            (*ps)++;
-        *q = *ps;
-        while (!is_delimiter(**ps) && !ft_strchr("|<>", **ps))
-            (*ps)++;
-        *eq = *ps;
-        return token;
-    }
-    //////////
     *q = *ps;
+    while (!is_delimiter(**ps) && !ft_strchr("|<>", **ps))
+        (*ps)++;
+    *eq = *ps;
+    *token = '+';
+    return (*token);
+}
+
+int redir_tok_append(char **ps, char **q, char **eq, int *token)
+{
+    (*ps)++;
+    while (is_delimiter(**ps))
+        (*ps)++;
+    *q = *ps;
+    while (!is_delimiter(**ps) && !ft_strchr("|<>", **ps))
+        (*ps)++;
+    *eq = *ps;
+    *token = '-';
+    return (*token);
+
+}
+
+int get_redir_token(char **ps, char **q, char **eq, int *token)
+{
+    (*ps)++;
+    if (**ps == '<')
+        return (redir_tok_heredoc(ps, q, eq, token));
+    else if (**ps == '>')
+        return (redir_tok_append(ps, q, eq, token));
+    while (is_delimiter(**ps))
+        (*ps)++;
+    *q = *ps;
+    while (!is_delimiter(**ps) && !ft_strchr("|<>", **ps))
+        (*ps)++;
+    *eq = *ps;
+    return *token;
+}
+
+int skip_characters(char **ps, char *es)
+{
     while (*ps < es && !is_delimiter(**ps) && !ft_strchr("<>|", **ps))
     {
         if (**ps == '"')
@@ -98,28 +75,40 @@ int gettoken(char **ps, char *es, char **q, char **eq) // we got 3 addresses of 
                 (*ps)++;
             if (*ps >= es)
                 return (0);
-            (*ps)++;  
-            //if (is_delimiter(**ps)) // maybe only space??
-            //    (*ps)++;
+            (*ps)++;
         }
         else if (*ps < es)
             (*ps)++;
     }
+    return (1);
+}
+
+int get_pipe_token(char **ps, char **eq, int *token)
+{
+    (*ps)++;
+    *eq = *ps;
+    return (*token);
+}
+
+int gettoken(char **ps, char *es, char **q, char **eq)
+{
+    int token;
+
+    while (*ps < es && is_delimiter(**ps))
+        (*ps)++;
+    if (*ps >= es)
+        return 0;
+    token = **ps;
+    if (**ps == '|')
+        return (get_pipe_token(ps, eq, &token));
+    else if (**ps == '<' || **ps == '>')
+        return (get_redir_token(ps, q, eq, &token));
+    *q = *ps;
+    if(!skip_characters(ps, es))
+        return (0);
     *eq = *ps;
     return ('a');
 }
-// }
-
-// int	peek(char **ps, char *es, char *toks)
-// {
-// 	char	*s;
-
-// 	s = *ps;
-// 	while (s < es && is_delimiter(*s))
-// 		s++;
-// 	*ps = s;
-// 	return (*s && ft_strchr(toks, *s));
-// }
 
 int	peek(char **ps, char *es, char *toks)
 {
@@ -129,65 +118,5 @@ int	peek(char **ps, char *es, char *toks)
 	while (s < es && is_delimiter(*s))
 		s++;
 	*ps = s;
-    /* After the loop, *ps is updated to point to the current position of s. 
-    This modifies the original ps pointer in the calling function to reflect the new position, past any leading delimiters.
-    */
-	return (*s && ft_strchr(toks, *s)); //Checks if the current character is a valid token
-    /* The function returns the result of the logical AND between these two conditions. 
-    If both are true (i.e., *s is not '\0' and *s is in toks), the function returns a non-zero value (true). 
-    Otherwise, it returns zero (false). */
+	return (*s && ft_strchr(toks, *s));
 }
-
-
-// int handle_pipe(char **ps, char **eq)
-// {
-//     (*ps)++;
-//     *eq = *ps;
-//     return '|';
-// }
-
-// int handle_redirect(char **ps, char *es, char **q, char **eq)
-// {
-//     int token;
-
-//     if (**ps == '<')
-//         token = '+';
-//     else
-//         token = '-';
-//     (*ps)++;
-//     skip_delimiters(ps, es);
-//     *q = *ps;
-//     while (*ps < es && !is_delimiter(**ps) && !ft_strchr("|<>", **ps))
-//         (*ps)++;
-//     *eq = *ps;
-//     return token;
-// }
-
-// int handle_word(char **ps, char *es, char **q, char **eq)
-// {
-//     *q = *ps;
-//     while (*ps < es && !is_delimiter(**ps) && !ft_strchr("<>|", **ps))
-//     {
-//         if (**ps == '"' || **ps == '\'')
-//             handle_quotes(ps, es);
-//         else
-//             (*ps)++;
-//     }
-//     *eq = *ps;
-//     return 'a';
-// }
-
-// int gettoken(char **ps, char *es, char **q, char **eq)
-// {
-//     int token;
-
-//     skip_delimiters(ps, es);
-//     if (*ps >= es)
-//         return 0;
-//     token = **ps;
-//     if (token == '|')
-//         return handle_pipe(ps, eq);
-//     else if (token == '<' || token == '>')
-//         return handle_redirect(ps, es, q, eq);
-//     else
-//         return handle_word(ps, es, q, eq);

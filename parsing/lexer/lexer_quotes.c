@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 15:23:28 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/07 15:45:52 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/11 17:46:22 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,18 @@ void parse_quote(char *line, int *i, t_lexems *list)
         (*i)++;
 }
 
-void parse_double_quote(int *i, char *line, t_lexems *list, t_args *args)
+void parse_expander_status(int *i, t_lexems *list)
 {
     char *exit_str;
 
+    exit_str = ft_itoa(g_exit_status);
+    add_str_node(list, exit_str);
+    free(exit_str);
+    (*i) += 2;
+}
+
+void parse_double_quote(int *i, char *line, t_lexems *list, t_args *args)
+{
     (*i)++;
     while(line[*i] && line[*i] != '\"')
     {
@@ -37,15 +45,10 @@ void parse_double_quote(int *i, char *line, t_lexems *list, t_args *args)
             (*i)++;
         }
         else if (line[*i] == '$' && line[*i + 1] =='?')
-        {
-            exit_str = ft_itoa(g_exit_status);
-            add_str_node(list, exit_str);
-            free(exit_str);
-            (*i) += 2;
-        }
+            parse_expander_status(i, list);
         else if (line[*i] == '$' && line[*i + 1] =='0')
         {
-            add_str_node(list, "bash\n");
+            add_str_node(list, "minishell\n");
             (*i) += 2;
         }
         else if (line[*i] == '$')
@@ -59,4 +62,3 @@ void parse_double_quote(int *i, char *line, t_lexems *list, t_args *args)
     if (line[*i] == '\"')
         (*i)++;
 }
-

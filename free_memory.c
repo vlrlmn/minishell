@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_memory.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:06 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/08 19:00:28 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/11 17:10:59 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,5 @@ void	free_and_exit(int status, t_cmd_info *cmd_list, int **pipe_arr, t_args *par
 		free(cmd_path);
 	free_all(cmd_list, pipe_arr);
 	(void)params;
-	// free_envp(params);
 	exit(status);
 }
