@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 14:17:50 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/12 18:04:54 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/12 19:20:41 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int	heredoc(t_cmd_info *cmd, char *limiter, t_args *args)
 		input = get_next_line(STDIN_FILENO);
 		if (!input || (input[0] == '\n' && !input[1])) // if ctrl + d. TODO ahnde ctrl+c
 		{
+			status_code(SET, CTRL_D);
 			close(fd);
 			if (input)
 				free(input);
@@ -79,6 +80,7 @@ int	heredoc(t_cmd_info *cmd, char *limiter, t_args *args)
 		write(fd, input, ft_strlen(input));
 		write(fd, "\n", 1);
 		free(input);
+		input = NULL;
 	}
 	close(fd);
 	// fprintf(stderr, "heredoc completed\n");

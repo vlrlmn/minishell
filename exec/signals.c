@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 15:39:45 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/12 18:05:11 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/12 19:12:45 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,23 @@ int	status_code(t_signal_type flag, int new_status)
 	return (status);
 }
 
+void	handle_sigquit(int sig)
+{
+	if (sig == SIGQUIT)
+	{
+		status_code(SET, CTRL_D);
+		g_exit_status = 0;
+	}
+	return ;
+}
+
 void	handle_sigint(int sig)
 {
 	int status;
 	if (sig == SIGINT)
 	{
 		status = status_code(GET, -1);
+		// printf("\nim in sigint handler!\n");
 		if (status == IN_CMD)
 		{
 			status_code(SET, STOP_CMD);
@@ -39,6 +50,7 @@ void	handle_sigint(int sig)
 		}
 		if (status == IN_HEREDOC)
 		{
+			fprintf(stderr, "\nstop heredoc!\n");
 			status_code(SET, STOP_HEREDOC);
 			g_exit_status = 1; //or 130
 			write(STDERR_FILENO, "\n", 1);
@@ -47,6 +59,7 @@ void	handle_sigint(int sig)
 		}
 		write(STDERR_FILENO, "\n", 1);
 		write_new_promt();
+		g_exit_status = 0;
 		return ;
 	}
 }
