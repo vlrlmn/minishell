@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 14:19:33 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/12 00:26:13 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/12 14:24:42 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ char	*join_input_and_value(char *input, t_args *args)
 	char	*env_value;
 	char	*input_before_exp;
 
-	env_name = get_str_after_sign(input, '$'); 
-	env_value = find_env_var(args->envp, env_name);		
+	env_name = get_str_after_sign(input, '$');
+	env_value = find_env_var(args->envp, env_name);
 	free(env_name);
 	input_before_exp = get_str_before_sign(input, '$');
 	if (input_before_exp && env_value)
@@ -44,7 +44,7 @@ char	*join_input_and_value(char *input, t_args *args)
 		res = NULL;
 	else if (!input_before_exp)
 		res = ft_strdup(env_value);
-	else //if (!env_value)
+	else
 		res = input_before_exp;
 	return (res);
 }
@@ -55,7 +55,7 @@ char	*more_expantions(char *input, int k, char *old_res, t_args *args)
 	char	*rem;
 	char	*new_res;
 	char	*new_rem;
-	
+
 	new_rem = NULL;
 	len = ft_strlen(input) - k;
 	rem = malloc(sizeof(char) * (len + 1));
@@ -63,7 +63,7 @@ char	*more_expantions(char *input, int k, char *old_res, t_args *args)
 		return (free(old_res), NULL);
 	ft_strlcpy(rem, &input[k], ft_strlen(rem));
 	if (is_expantion(rem))
-		new_rem = add_expantion(rem, args); //rem becomes input
+		new_rem = add_expantion(rem, args);
 	if (new_rem)
 	{
 		free(rem);
@@ -106,5 +106,5 @@ char	*add_expantion(char *input, t_args *args)
 	if (middle == 1 && res)
 		res = more_expantions(input, k, res, args);
 	fprintf(stderr, "result_str: '%s'\n", res);
-    return (res);
+	return (res);
 }

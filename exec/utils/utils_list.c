@@ -24,7 +24,7 @@ int	modify_static_int(t_signal_type flag)
 	return (i_list);
 }
 
-void	add_cmd_to_list(t_cmd_info *cmd, t_cmd_info	**head)
+void	add_cmd_to_list(t_cmd_info *cmd, t_cmd_info **head)
 {
 	t_cmd_info	*current;
 	t_cmd_info	*new_cmd;
@@ -79,7 +79,7 @@ void	free_argv(t_cmd_info *current)
 	}
 }
 
-void	free_cmd_list(t_cmd_info	*cmd_list)
+void	free_cmd_list(t_cmd_info *cmd_list)
 {
 	t_cmd_info	*current;
 	t_cmd_info	*tmp;

@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 14:22:40 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/12 02:49:25 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/12 14:56:41 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	define_fd(t_cmd_info *rcmd, t_redir *old_cmd, t_args *args)
 	if (rcmd->redir_type == HEREDOC)
 	{
 		rcmd->fd_read = heredoc(rcmd, old_cmd->file, args);
-		// rcmd->fd_read = get_file_fd(rcmd, rcmd->redir_type);
+		rcmd->fd_read = get_file_fd(rcmd, rcmd->redir_type);
 	}
 	if (rcmd->fd_read == -1 || rcmd->fd_write == -1)
 		return (1);
@@ -74,14 +74,16 @@ int	get_file_fd(t_cmd_info* cmd, int redir_type)
 	int fd;
 	char *file;
 	int mode;
+	(void)redir_type;
 
 	file = get_file(cmd);
 	fd = get_fd_or_mode(cmd);
 	mode = get_fd_or_mode(cmd);
-	new_fd = open(file, mode, 0777); 
+
+	new_fd = open(file, mode, 0644); 
 	//the permissions for each redir are different!!!! maybe??
-	if (check_file_access(file, redir_type) != 0)
-		return (printf("bash: %s: Permission denied\n", file), -1);
+	// if (check_file_access(file, redir_type) != 0)
+	// 	return (printf("bash: %s: Permission denied\n", file), -1);
 	if (new_fd < 0)
 	{
 		printf("open '%s' failed\n", file);

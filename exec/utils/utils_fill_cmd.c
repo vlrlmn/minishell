@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 14:27:19 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/12 00:47:46 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/12 14:53:59 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	copy_argv(t_cmd_info *new_cmd, t_cmd *cmd)
 	new_cmd->argv[i] = NULL;
 }
 
-int connection_content(t_cmd_info *new_cmd)
+int	connection_content(t_cmd_info *new_cmd)
 {
 	new_cmd->connection = malloc(sizeof(int) * 2);
 	if (!new_cmd->connection)
@@ -54,12 +54,12 @@ int connection_content(t_cmd_info *new_cmd)
 	return (0);
 }
 
-/* This function ensures 
-that all non-empty arguments in ecmd->argv and ecmd->eargv are moved 
-to the front of their respective arrays, 
-eliminating any gaps caused by empty strings 
+/* This function ensures
+that all non-empty arguments in ecmd->argv and ecmd->eargv are moved
+to the front of their respective arrays,
+eliminating any gaps caused by empty strings
 and correctly terminating the arrays with NULL */
-void check_arguments(t_cmd_info *ecmd)
+void	check_arguments(t_cmd_info *ecmd)
 {
 	int	i;
 	int	j;
@@ -83,20 +83,26 @@ void check_arguments(t_cmd_info *ecmd)
 	ecmd->eargv[j] = NULL;
 }
 
-int check_file_access(const char *file_path, int redir_type) 
+int	check_file_access(const char *file_path, int redir_type)
 {
+	(void)redir_type;
 	int	res;
-	
+
 	res = 0;
-	// (void)redir_type;
 	if (redir_type == REDIRIN || redir_type == HEREDOC)
 	{
-		res = access(file_path, F_OK | R_OK);
+		res = access(file_path, F_OK);
+		printf("res F_OK?: %d\n", res);
+        if (res == 0)
+            res = access(file_path, R_OK);
 	}
 	if (redir_type == REDIROUT || redir_type == APPEND)
 	{
-		res = access(file_path, F_OK | W_OK);
+		res = access(file_path, F_OK);
+		printf("res F_OK?: %d\n", res);
+        if (res == 0)
+            res = access(file_path, W_OK);
 	}
-	printf("res: %d\n", res);
+	printf("final res: %d\n", res);
 	return (res);
 }

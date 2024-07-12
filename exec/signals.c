@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 15:39:45 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/11 18:19:11 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/12 14:26:29 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	handle_sigint(int sig)
 			write_new_promt();
 			return ;
 		}
-		rl_replace_line("", 0);
+		// rl_replace_line("", 0);
 		write(STDERR_FILENO, "\n", 1);
 		write_new_promt();
 		return ;

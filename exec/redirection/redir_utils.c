@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 02:39:30 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/12 03:02:43 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/12 14:58:02 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,14 @@ int	r_get_file_fd(t_redir *rcmd, int subtype)
 	int fd;
 	char *file;
 	int mode;
+	(void)subtype;
 
 	file = rcmd->file;
 	fd = rcmd->fd;
 	mode = rcmd->mode;
 	new_fd = open(file, mode, 0777); 
-	if (check_file_access(file, subtype) != 0)
-		return (printf("bash: %s: Permission denied\n", file), -1);
+	// if (check_file_access(file, subtype) != 0)
+	// 	return (printf("bash: %s: Permission denied\n", file), -1);
 	if (new_fd < 0)
 	{
 		printf("open '%s' failed\n", file);
