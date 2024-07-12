@@ -6,28 +6,22 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 17:36:36 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/11 17:26:06 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/12 13:02:57 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void free_list(t_lexems *list)
+void parse_empty_quotes(int i, char *line, t_lexems *list)
 {
-    t_lexem_node *current_node;
-    t_lexem_node *next_node;
-
-    if (list == NULL)
-        return;
-
-    current_node = list->head;
-    while (current_node != NULL)
+    if (i == 2 && line[0] == '\'' && line[i - 1] == '\'')
     {
-        next_node = current_node->next;
-        free(current_node->data);
-        free(current_node);
-        current_node = next_node;
+       add_str_node(list, "\'\'");
     }
+    if (i == 2 && line[0] == '\"' && line[i - 1] == '\"')
+    {
+       add_str_node(list, " ");
+    }   
 }
 
 char *clean_line(char *line, t_lexems *list, t_args *args)
@@ -36,8 +30,6 @@ char *clean_line(char *line, t_lexems *list, t_args *args)
     int i;
 
     i = 0;
-    // if (!line)
-    //     return (NULL);
     while(line[i])
     {
         if (line[i] == '\'')
@@ -52,12 +44,8 @@ char *clean_line(char *line, t_lexems *list, t_args *args)
             i++;
         }
     }
-    if (i == 2 && line[0] == '\'' && line[i - 1] == '\'')
-    {
-       add_str_node(list, "\'\'");
-    }
+    parse_empty_quotes(i, line, list);
     res = list_to_string(list);
-    //free_list(list);
     return (res);
 }
 
