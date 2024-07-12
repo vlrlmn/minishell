@@ -53,9 +53,10 @@ SRC_REDIR = ./exec/redirection/heredoc.c \
 			./exec/redirection/redir_utils.c \
 
 SRC_UTILS = ./exec/utils/utils_env.c \
+			./exec/utils/exec_utils.c \
 			./exec/utils/utils_fill_cmd.c \
 			./exec/utils/utils_list.c \
-			./exec/utils/exec_utils.c \
+			./exec/utils/exec_path_utils.c \
 			./exec/utils/expantion.c \
 
 SRCS = $(SRC) $(SRC_PARSING) $(SRC_EXECUTION) $(SRC_BUILTIN) $(SRC_REDIR) $(SRC_UTILS)

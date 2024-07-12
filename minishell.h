@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/12 19:32:11 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/12 22:10:50 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,6 +243,13 @@ void	*close_free_pipe_arr(int **pipe_arr);
 void    free_all(t_cmd_info	*cmd_list, int **pipe_arr);
 void	free_and_exit(int status, t_cmd_info *cmd_list, int **pipe_arr, t_args *params, char *cmd_path);
 void PrintTree(t_cmd	*cmd);
+
+
+/* execution utils */
+char *check_params(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *params);
+int prepare_connections(t_cmd_info *cmd);
+void	close_parent_connections(t_cmd_info *cmd);
+
 
 /* signals */
 int	get_status();
