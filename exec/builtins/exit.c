@@ -6,28 +6,19 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 17:05:13 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/09 12:08:15 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/12 15:06:21 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	exit_cmd(t_cmd_info *ecmd, t_args *params, t_cmd_info *cmd_list, int **pipe_arr)
+void	check_argument_amount(t_cmd_info *ecmd, t_args *params,
+		t_cmd_info *cmd_list, int **pipe_arr)
 {
-	int		i;
-	char	*status;
-	int		num_st;
 	int		arg_counter;
-	int		minus_counter;
-	int		plus_counter;
 	char	*path;
 
-	i = 0;
-	num_st = 0;
 	arg_counter = 0;
-	minus_counter = 0;
-	plus_counter = 0;
-	status = ecmd->argv[1];
 	while (ecmd->argv[arg_counter])
 		arg_counter++;
 	if (ecmd->argv[1])
@@ -38,30 +29,53 @@ void	exit_cmd(t_cmd_info *ecmd, t_args *params, t_cmd_info *cmd_list, int **pipe
 	}
 	if (arg_counter > 2)
 	{
-		// printf("exit: too many arguments\n");
+		printf("exit: too many arguments\n");
 		free_and_exit(1, cmd_list, pipe_arr, params, NULL);
 	}
+}
+
+void	check_first_char(char *status, t_cmd_info *cmd_list, int **pipe_arr,
+		t_args *params)
+{
+	int	minus_counter;
+	int	plus_counter;
+	int	i;
+
+	i = 0;
+	minus_counter = 0;
+	plus_counter = 0;
+	while (status[i])
+	{
+		if (ft_isalpha(status[i]) || minus_counter > 1 || plus_counter > 1)
+			free_and_exit(255, cmd_list, pipe_arr, params, NULL);
+		if (status[i] == '-')
+			minus_counter++;
+		if (status[i] == '+')
+			plus_counter++;
+		i++;
+	}
+}
+
+void	exit_cmd(t_cmd_info *ecmd, t_args *params, t_cmd_info *cmd_list,
+		int **pipe_arr)
+{
+	char	*status;
+	int		num_st;
+
+	num_st = 0;
+	check_argument_amount(ecmd, params, cmd_list, pipe_arr);
+	status = ecmd->argv[1];
 	if (status)
 	{
-		while (status[i])
-		{
-			if (ft_isalpha(status[i]) || minus_counter > 1 || plus_counter > 1)
-				free_and_exit(255, cmd_list, pipe_arr, params, NULL);
-			if (status[i] == '-')
-				minus_counter++;
-			if (status[i] == '+')
-				plus_counter++;
-			i++;
-		}
+		check_first_char(status, cmd_list, pipe_arr, params);
 		num_st = ft_atoi(status);
-		if (num_st > 255 || num_st < 0) //overflow
+		if (num_st > 255 || num_st < 0)
 		{
 			if (num_st < 0)
 			{
 				num_st *= -1;
 				num_st = num_st % 256;
 				num_st = 256 - num_st;
-				
 			}
 			else
 				num_st = num_st % 256;

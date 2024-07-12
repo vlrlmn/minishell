@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/11 17:10:49 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/12 15:05:24 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,17 @@ int	exec(t_cmd	*cmd, t_args *args)
 	if (!cmd_list)
 	{
 		free_all(cmd_list, pipe_arr);
-		exit_status = 1;
-		return (exit_status); 
+		// exit_status = 1; // see above
+		return (g_exit_status); 
 	}
 	pipe_arr = connections(cmd_list);
-	if (get_status() == STOP_HEREDOC)
-		return (free_all(cmd_list, pipe_arr), 1);
+	// PrintList(cmd_list);
+	// printPipeArr(pipe_arr);
+	if (status_code(GET, -1) == STOP_HEREDOC)
+	{
+		// fprintf(stderr, "heredoc stopped\n");
+		return (free_all(cmd_list, pipe_arr), 1); //or not 1?
+	}
 	exit_status = run_cmds(cmd_list, pipe_arr, args);
 	if (!cmd_list->argv[0] || cmd_list->argv[0][0] == '\0')
 		return (free_all(cmd_list, pipe_arr), exit_status);
@@ -80,7 +85,7 @@ void	set_environment(t_args *args, char **envp)
 		i++;
 	}
 	args->envp[len] = NULL;
-	export_cmd("OLDPWD", args);
+	export_cmd("OLDPWD=", args);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -94,5 +99,6 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGQUIT, SIG_IGN);
 	exit_status = loop_result(&shell_context);
 	clear_history();
+	free_envp (&shell_context);
 	return (exit_status);
 }

@@ -3,26 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   utils_list.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 14:27:29 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/04 11:30:18 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/12 01:20:07 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-static int	i_list;
+/* modifies head of linked list and addes new cmd_node to the list of cmds. */
+int	modify_static_int(t_signal_type flag)
+{
+	static int	i_list;
 
-static int	i_list;
+	if (flag == SET)
+		i_list += 1;
+	if (flag == SET_ZERO)
+		i_list = 0;
+	return (i_list);
+}
 
-/* modifies head of linked list and addes new cmd_node to the linked list of cmds. */
-void	add_cmd_to_list(t_cmd_info *cmd, t_cmd_info	**head)
+void	add_cmd_to_list(t_cmd_info *cmd, t_cmd_info **head)
 {
 	t_cmd_info	*current;
 	t_cmd_info	*new_cmd;
+	int			i_list;
 
-	i_list += 1;
+	i_list = modify_static_int(SET);
 	new_cmd = cmd;
 	new_cmd->next = NULL;
 	if (!*head)
@@ -33,7 +41,7 @@ void	add_cmd_to_list(t_cmd_info *cmd, t_cmd_info	**head)
 	else
 	{
 		current = *head;
-		while (current->next != NULL) // reach the last node
+		while (current->next != NULL)
 			current = current->next;
 		new_cmd->head = 0;
 		current->next = new_cmd;
@@ -57,11 +65,24 @@ int	list_size(t_cmd_info *cmd_list)
 	return (size);
 }
 
-void	free_cmd_list(t_cmd_info	*cmd_list)
+void	free_argv(t_cmd_info *current)
+{
+	int	i;
+
+	i = 0;
+	while (current->argv[i])
+	{
+		free(current->argv[i]);
+		current->argv[i] = NULL;
+		current->eargv[i] = NULL;
+		i++;
+	}
+}
+
+void	free_cmd_list(t_cmd_info *cmd_list)
 {
 	t_cmd_info	*current;
 	t_cmd_info	*tmp;
-	int i;
 
 	if (!cmd_list)
 		return ;
@@ -69,7 +90,7 @@ void	free_cmd_list(t_cmd_info	*cmd_list)
 	while (current)
 	{
 		tmp = current->next;
-		// free_cmd(current);
+		free_argv(current);
 		if (current->fd_read != 0 && current->fd_read != 1)
 			close(current->fd_read);
 		if (current->fd_write != 0 && current->fd_write != 1)
@@ -79,39 +100,9 @@ void	free_cmd_list(t_cmd_info	*cmd_list)
 			unlink(current->file_read);
 			free(current->file_read);
 		}
-		//free current->subcmd ?
 		free(current->connection);
-		if (current->hfile_array)
-			free_hfile_arr(current->hfile_array);
-
-		i = 0;
-		while (current->argv[i])
-		{
-			free(current->argv[i]);
-			current->argv[i] = NULL;
-			current->eargv[i] = NULL;
-			i++;
-		}
-
 		free(current);
 		current = tmp;
 	}
-	i_list = 0;
-	i_list = 0;
-	return ;
-}
-
-void	free_hfile_arr(char **hfile_array)
-{
-	int	i;
-
-	i = 0;
-	if (!hfile_array)
-		return ;
-	while (hfile_array[i])
-	{
-		free(hfile_array[i]);
-		i++;
-	}
-	free(hfile_array);
+	modify_static_int(SET_ZERO);
 }

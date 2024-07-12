@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:39:06 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/08 15:47:51 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/10 13:49:58 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,89 +14,101 @@
 
 // TODO errors handling EVERYWHERE where return(1);
 
-void    relative_path(char *result, t_cmd_info *ecmd) 
+void	relative_path(char *result, t_cmd_info *ecmd)
 {
-    char cwd[1024];
+	char	cwd[1024];
 
-    if (getcwd(cwd, sizeof(cwd)) == NULL) 
-    {
-        perror("getcwd");
-        return;
-    }
-    ft_strlcat(cwd, "/", sizeof(cwd));
-    ft_strlcat(cwd, ecmd->argv[1], sizeof(cwd));
-    ft_strlcpy(result, cwd, sizeof(cwd));
+	if (getcwd(cwd, sizeof(cwd)) == NULL)
+	{
+		perror("getcwd");
+		return ;
+	}
+	ft_strlcat(cwd, "/", sizeof(cwd));
+	ft_strlcat(cwd, ecmd->argv[1], sizeof(cwd));
+	ft_strlcpy(result, cwd, sizeof(cwd));
 }
 
-int cd_cmd(t_cmd_info *ecmd, t_args *params) 
+char	*define_prevdir(t_args *params)
 {
-    char path[1024];
-    char *old_path;
-    char *new_path;
-    char *prevdir;
-    char *home;
-    // char oldpwd[1024] = "OLDPWD";
-    // char pwd[1024] = "PWD";
+	char	*prevdir;
 
-    char *oldpwd;
-    char *pwd;
+	prevdir = find_env_var(params->envp, "OLDPWD");
+	if (prevdir == NULL || prevdir[0] == '\0')
+		return (printf("cd: OLDPWD not set\n"), NULL);
+	// don't delete this printf, it's needed for bash replication	
+	printf("'%s'\n", prevdir);
+	return (prevdir);
+}
 
-    oldpwd = ft_strdup("OLDPWD");
-    if (!oldpwd)
-        return (1);
-    pwd = ft_strdup("PWD");
-    if (!pwd)
-    {
-        free(oldpwd);
-        return (1);
-    }
-    old_path = getcwd(path, sizeof(path));
-    if (!old_path)
-        return (1); // TODO errors handling
-    old_path = ft_strdup(old_path); //free
-    if (old_path == NULL)
-        return (1); //ERROR todo
-    if ((!ecmd->argv[1]) || (ft_strncmp(ecmd->argv[1], "HOME=", 5) == 0))
-    {
-        if (ecmd->argv[1] == NULL)
-            ecmd->argv[1] = get_env("HOME=", params->envp);
-        home = get_str_after_sign(ecmd->argv[1], '=');
-        if (!home) 
-            return(printf("cd: HOME not set\n"), 1);
-        ft_strlcpy(path, home, sizeof(path));
-        free(home);
-    }
-    else if (ecmd->argv[1][0] == '/') 
-    {
-        ft_strlcpy(path, ecmd->argv[1], sizeof(path));
-    }
-    else if (ecmd->argv[1][0] == '-') //go to oldpwd, oldpwd becomes current direcrory
-    {
-        prevdir = find_env_var(params->envp, "OLDPWD"); //attention
-        if (prevdir[0] == '\0')
-            return (printf("cd: OLDPWD not set\n"), 1);
-        printf("'%s'\n", prevdir); //don't delete this printf, it's needed for bash replication
-        ft_strlcpy(path, prevdir, sizeof(path));
-    }
-    else
-        relative_path(path, ecmd);
-    if (chdir(path) != 0) 
-    {
-        perror("cd");
-        return (1);
-    }
-    // if (find_env_index(params->envp, "OLDPWD") == -1)
-    //     export_cmd("OLDPWD=", params);
-    if (find_env_index(params->envp, "PWD") != -1)
-        update_envp_var(params, oldpwd, old_path); //what if result is 1? handle error
-    free(old_path);
-    free(oldpwd);
-    new_path = getcwd(path, sizeof(path));
-    if (!new_path)
-        return (1);
-    update_envp_var(params, pwd, new_path);
-    free(pwd);
-    // printf("list oldpwd: %s\n", find_env_var(params->envp, "OLDPWD"));
-    // printf("list pwd: \t%s\n", find_env_var(params->envp, "PWD"));
-    return (0);
+char	*define_directory(t_cmd_info *ecmd, t_args *params)
+{
+	char	*home;
+	char	path[1024];
+
+	if ((!ecmd->argv[1]) || ecmd->argv[1][0] == '\0' || \
+		(ft_strncmp(ecmd->argv[1], "HOME=", 5) == 0))
+	{
+		if (ecmd->argv[1] == NULL || ecmd->argv[1][0] == '\0')
+			ecmd->argv[1] = ft_strdup(get_env("HOME=", params->envp));
+		home = get_str_after_sign(ecmd->argv[1], '=');
+		if (!home)
+			return (printf("cd: HOME not set\n"), NULL);
+		ft_strlcpy(path, home, sizeof(path));
+		free(home);
+	}
+	else if (ecmd->argv[1][0] == '/')
+		ft_strlcpy(path, ecmd->argv[1], sizeof(path));
+	else if (ecmd->argv[1][0] == '-')
+	{
+		if (!ft_strlcpy(path, define_prevdir(params), sizeof(path)))
+			return (NULL);
+	}
+	else
+		relative_path(path, ecmd);
+	return (ft_strdup(path));
+}
+
+int	define_new_pwd(t_args *params)
+{
+	char	*pwd;
+	char	buffer[1024];
+	char	*new_path;
+
+	new_path = getcwd(buffer, sizeof(buffer));
+	if (!new_path)
+		return (1);
+	pwd = ft_strdup("PWD");
+	if (!pwd)
+		return (1);
+	update_envp_var(params, pwd, new_path);
+	free(pwd);
+	return (0);
+}
+
+int	cd_cmd(t_cmd_info *ecmd, t_args *params)
+{
+	char	buffer[1024];
+	char	*path;
+	char	*old_path;
+	char	*oldpwd;
+
+	old_path = ft_strdup(getcwd(buffer, sizeof(buffer)));
+	if (!old_path)
+		return (1);
+	path = define_directory(ecmd, params);
+	if (!path)
+		return (free(old_path), 1);
+	if (chdir(path) != 0)
+		return (perror("cd"), free(path), 1);
+	free(path);
+	oldpwd = ft_strdup("OLDPWD");
+	if (!oldpwd)
+		return (free(old_path), 1);
+	if (find_env_index(params->envp, "PWD") != -1)
+		update_envp_var(params, oldpwd, old_path);
+	free(old_path);
+	free(oldpwd);
+	if (define_new_pwd(params))
+		return (1);
+	return (0);
 }

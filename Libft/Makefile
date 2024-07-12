@@ -6,7 +6,7 @@
 #    By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/25 10:45:42 by vlomakin          #+#    #+#              #
-#    Updated: 2024/07/02 16:12:09 by sabdulki         ###   ########.fr        #
+#    Updated: 2024/07/11 14:26:07 by sabdulki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,9 +50,7 @@ SRC = ft_memset.c \
 		ft_putendl_fd.c \
 		ft_putnbr_fd.c \
 		ft_striteri.c \
-		./get_next_line/get_next_line.c \
-		./get_next_line/get_next_line_utils.c \
-		# get_next_line.c
+		get_next_line.c \
 
 SRC_B = 	ft_lstnew.c \
 	  		ft_lstsize.c \

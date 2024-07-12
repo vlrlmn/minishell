@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 14:17:50 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/08 17:31:00 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/12 15:07:10 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,30 +31,29 @@ char	*heredoc_get_tmp_file(void)
 
 /* if ctrl + C -> show new promt (minishell$) and exit with status 1
 if ctrl + D exit with status 0 */
-int	heredoc(int fd, char *file, char *limiter, int mode, t_args *args)
+
+int	heredoc(t_cmd_info *cmd, char *limiter, t_args *args)
 {
+	int		fd;
 	char	*input;
 	char	*input_exp;
 
 	input_exp = NULL;
-	fd = get_file_fd(fd, file, mode, HEREDOC);
-	if (fd == -2)
-		return (-2);
+	fd = get_file_fd(cmd, HEREDOC);
+	if (fd == -1)
+		return (-1);
+	// status_code(SET, IN_HEREDOC);
 	// fprintf(stderr, "limiter: '%s', its len:  %zu\n", limiter, ft_strlen(limiter));
 	while (1)
 	{
-		set_status(IN_HEREDOC);
+		status_code(SET, IN_HEREDOC);
 		fprintf(stderr, "> ");
 		input = get_next_line(STDIN_FILENO);
-		if (get_status() == STOP_HEREDOC)
-		{
-			free(input);
-			close(fd);
-			return (-2);
-		}
 		if (!input || (input[0] == '\n' && !input[1])) // if ctrl + d. TODO ahnde ctrl+c
 		{
 			close(fd);
+			if (input)
+				free(input);
 			// fprintf(stderr, "\nwarning: here-document delimited by end-of-file (wanted `%s')\n", limiter);
 			return (-1);
 		}
@@ -73,18 +72,17 @@ int	heredoc(int fd, char *file, char *limiter, int mode, t_args *args)
 				free(input);
 				return (write(fd, "\n", 1), -1);
 			}
+			free(input);
 			input = input_exp;
 		}
 		// fprintf(stderr, "input: '%s'\n", input);
 		write(fd, input, ft_strlen(input));
 		write(fd, "\n", 1);
 		free(input);
-		if (get_status() == STOP_HEREDOC)
-			return (-2);
 	}
 	close(fd);
 	// fprintf(stderr, "heredoc completed\n");
-	set_status(IN_CMD);
+	status_code(SET, IN_CMD);
 	return (fd);
 }
 
@@ -103,8 +101,8 @@ int	call_heredocs(char **arr, t_cmd_info *new_cmd, char **limiter_arr, t_args *a
 	{
 		limiter = limiter_arr[size];
 		new_cmd->file_read = arr[size];
-		new_cmd->fd_read = heredoc(new_cmd->fd_read, new_cmd->file_read, limiter, new_cmd->mode_read, args);
-		if (new_cmd->fd_read == -2)
+		new_cmd->fd_read = heredoc(new_cmd, limiter, args);
+		if (new_cmd->fd_read == -1)
 			return (1);
 		if (size != 0)
 		{
@@ -115,8 +113,8 @@ int	call_heredocs(char **arr, t_cmd_info *new_cmd, char **limiter_arr, t_args *a
 	}
 	free(arr);
 	free(limiter_arr);
-	new_cmd->fd_read = get_file_fd(new_cmd->fd_read, new_cmd->file_read, new_cmd->mode_read, HEREDOC);
-	if (new_cmd->fd_read == -2)
+	new_cmd->fd_read = get_file_fd(new_cmd, HEREDOC);
+	if (new_cmd->fd_read == -1)
 		return (1);
 	return (0);
 }

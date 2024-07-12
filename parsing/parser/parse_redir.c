@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:38:32 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/11 17:13:42 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/12 15:08:02 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ t_cmd	*redirout(t_cmd *subcmd, char *file, char *efile)
 	redircmd->type = REDIR;
 	redircmd->subtype = REDIROUT;
 	redircmd->cmd = subcmd;
+	//redircmd->file = ft_strdup(file); ???
 	redircmd->file = file;
 	redircmd->efile = efile;
 	redircmd->mode = O_WRONLY | O_CREAT | O_TRUNC;

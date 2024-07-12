@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/08 19:01:14 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/12 03:01:05 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,10 @@ typedef enum signal_status
 	IN_HEREDOC = 1,
 	STOP_CMD = 2,
 	STOP_HEREDOC = 3,
-}			s_type;
+	GET = 4,
+	SET = 5,
+	SET_ZERO = 6,
+}			t_signal_type;
 
 typedef struct s_cmd_info //free
 {
@@ -125,7 +128,6 @@ typedef struct s_cmd_info //free
 	
 	char	*argv[MAXARGS];
 	char	*eargv[MAXARGS];
-	int		status;
 	int		fd_read;
 	int		fd_write;
 	char	*file_read;
@@ -133,7 +135,6 @@ typedef struct s_cmd_info //free
 	int		mode_read;
 	int		mode_write;
 	int		*connection;
-	char	**hfile_array;
 	struct s_cmd_info	*next;
 }	t_cmd_info;
 
@@ -187,6 +188,7 @@ char	*get_str_after_sign(char *str, char sign); //export
 char	*get_str_before_sign(char *str, char sign); //export
 int		add_cmd(t_args *params, char *new_env_var); //export
 int		export_print(t_args *params); //export
+int		check_var_name(char *env_var);
 int		remove_cmd(t_args *params, char *env_var_to_remove); //unset
 
 /* env utils */
@@ -195,14 +197,17 @@ char	*find_env_var(char **envp, char *var);
 int		find_env_index(char **envp, char *var);
 void	redir(t_redir *rcmd);
 void	close_fd(t_cmd *ecmd);
-int		get_file_fd(int fd, char *file, int mode, int redir_type);
+char *get_file(t_cmd_info* cmd);
+int	get_fd_or_mode(t_cmd_info* cmd);
+int		get_file_fd(t_cmd_info* cmd, int redir_type);
+int		r_get_file_fd(t_redir *rcmd, int subtype);
 int		define_fd(t_cmd_info	*rcmd, t_redir *old_cmd, t_args *args);
 int		define_file(t_cmd_info	*rcmd, t_redir *old_cmd);
 int		add_redir_details(t_cmd_info	*new_cmd, t_redir *rcmd, t_args *args);
+int	 count_files(t_redir *rcmd, int redir_type);
 char	*heredoc_get_tmp_file(void);
-int		heredoc(int fd, char *file, char *limiter, int mode, t_args *args);
+int	heredoc(t_cmd_info *cmd, char *limiter, t_args *args);
 int		call_heredocs(char **arr, t_cmd_info *new_cmd, char **limiter_arr, t_args *args);
-int		append(int fd, char **eargv, t_args *args);
 char	*add_expantion(char *input, t_args *args);
 int		is_expantion(char *input);
 t_cmd_info	*create_cmdlist(t_cmd *cmd, t_args *args);
@@ -230,7 +235,6 @@ int		wait_cmds(t_cmd_info *cmd_head);
 void	free_envp(t_args *args);
 void	free_cmd_list(t_cmd_info	*cmd_list);
 void	*close_free_pipe_arr(int **pipe_arr);
-void	free_hfile_arr(char **hfile_array);
 void    free_all(t_cmd_info	*cmd_list, int **pipe_arr);
 void	free_and_exit(int status, t_cmd_info *cmd_list, int **pipe_arr, t_args *params, char *cmd_path);
 void PrintTree(t_cmd	*cmd);
@@ -238,6 +242,7 @@ void PrintTree(t_cmd	*cmd);
 /* signals */
 int	get_status();
 int	set_status(int new_status);
+int	status_code(t_signal_type flag, int new_status);
 
 void	handle_sigint(int sig);
 int	get_token(char **ps, char *es, char **q, char **eq);
