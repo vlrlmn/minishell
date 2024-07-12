@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/12 18:19:52 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/12 19:31:34 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,20 +28,14 @@ int	exec(t_cmd	*cmd, t_args *args)
 
 	pipe_arr = NULL;
 	cmd_list = create_cmdlist(cmd, args);
+	// printf("status: %d\n", status_code(GET, -1));
+	if (status_code(GET, -1) == CTRL_D)
+		g_exit_status = 0;
 	if (!cmd_list)// or return g_exit_status, which i need to define in case of failure inside the create_cmdlist()
-	{
-		free_all(cmd_list, pipe_arr);
-		// exit_status = 1; // see above
-		return (g_exit_status); 
-	}
+		return (free_all(cmd_list, pipe_arr), g_exit_status); 
 	pipe_arr = connections(cmd_list);
 	// PrintList(cmd_list);
 	// printPipeArr(pipe_arr);
-	if (status_code(GET, -1) == STOP_HEREDOC)
-	{
-		// fprintf(stderr, "heredoc stopped\n");
-		return (free_all(cmd_list, pipe_arr), 1); //or not 1?
-	}
 	exit_status = run_cmds(cmd_list, pipe_arr, args);
 	if (!cmd_list->argv[0] || cmd_list->argv[0][0] == '\0')
 		return (free_all(cmd_list, pipe_arr), exit_status);
@@ -102,7 +96,8 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	set_environment(&shell_context, envp);
-	signal(SIGQUIT, SIG_IGN);
+	signal(SIGQUIT, handle_sigquit);
+	signal(SIGINT, handle_sigint);
 	exit_status = loop_result(&shell_context);
 	clear_history();
 	// free_envp (&shell_context);

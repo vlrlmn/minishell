@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/12 18:02:57 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/12 18:19:26 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ typedef enum signal_status
 	GET = 4,
 	SET = 5,
 	SET_ZERO = 6,
+	CTRL_D = 7,
 }			t_signal_type;
 
 typedef struct s_cmd_info //free
@@ -249,6 +250,8 @@ int	set_status(int new_status);
 int	status_code(t_signal_type flag, int new_status);
 
 void	handle_sigint(int sig);
+void	handle_sigquit(int sig);
+
 int	get_token(char **ps, char *es, char **q, char **eq);
 // static void	process_special_tokens(char **s, int *token);
 // static void	skip_non_special_tokens(char **s, char *es);

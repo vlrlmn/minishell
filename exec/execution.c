@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 14:51:13 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/12 17:52:39 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/12 19:02:20 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ int	execute_cmd(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *p
 
 	i = 0;
 	status = 0;
+	if (cmd->fd_read == -2)
+		return (0);
 	if (!cmd->argv[0] || cmd->argv[0][0] == '\0') // attention!
 		return (1);
 	check_arguments(cmd);
