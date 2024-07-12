@@ -1,0 +1,31 @@
+ ls -la > tmp/check
+bash: tmp/check: Permission denied
+minishell$ exit 1337 1337 1337 1337 1337
+
+=================================================================
+==15963==ERROR: LeakSanitizer: detected memory leaks
+
+Direct leak of 7 byte(s) in 2 object(s) allocated from:
+    #0 0x72083efa4808 in __interceptor_malloc ../../../../src/libsanitizer/asan/asan_malloc_linux.cc:144
+    #1 0x642390f0048b in ft_strdup /workspaces/minishell/Libft/ft_strdup.c:23
+    #2 0x642390ef4e1f in lexer_exec parsing/lexer/lexer.c:80
+    #3 0x642390ef4f22 in lexical_analysis parsing/lexer/lexer.c:90
+    #4 0x642390ef50a6 in lexical_analysis parsing/lexer/lexer.c:96
+    #5 0x642390eefa2b in parse parsing/parser/parsing.c:46
+    #6 0x642390eee9ed in loop_result /workspaces/minishell/main.c:68
+    #7 0x642390eeed83 in main /workspaces/minishell/main.c:107
+    #8 0x72083ec79082 in __libc_start_main ../csu/libc-start.c:308
+
+SUMMARY: AddressSanitizer: 7 byte(s) leaked in 2 allocation(s).
+__________
+
+export doesntexist=test \n unset doesntexist \n export | grep doesntexist
+
+__________
+export TES_T=test \n unset TES_T \n export | grep TES_T
+
+__________
+export TEST_=test \n unset TEST_ \n export | grep TEST_
+___________
+export ______=test unset ______ \n export | grep ______
+___________
