@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 15:39:45 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/13 20:41:19 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/13 21:35:10 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	handle_sigint(int sig)
 		{
 			status_code(SET, STOP_CMD);
 			g_exit_status = 130;
+			write(STDERR_FILENO, "\n", 1);
 			write_new_promt();
 			return ;
 		}
@@ -51,9 +52,11 @@ void	handle_sigint(int sig)
 		{
 			status_code(SET, STOP_HEREDOC);
 			g_exit_status = 1;
+			write(STDERR_FILENO, "\n", 1);
 			write_new_promt();
 			return ;
 		}
+		write(STDERR_FILENO, "\n", 1);
 		write_new_promt();
 		g_exit_status = 0;
 		return ;
