@@ -12,7 +12,8 @@ LDFLAGS = -lreadline
 
 SRC = 			main.c \
 				errors.c \
-				free_memory.c
+				free_memory.c \
+				debug_message.c 
 
 SRC_PARSING = 	./parsing/parser/parsing.c \
 				./parsing/parser/parse_exec.c \

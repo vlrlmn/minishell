@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 14:17:50 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/12 20:10:24 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/13 13:50:48 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,18 @@ int	heredoc(t_cmd_info *cmd, char *limiter, t_args *args)
 	return (fd);
 }
 
-int	call_heredocs(char **arr, t_cmd_info *new_cmd, char **limiter_arr, t_args *args)
+void	free_heredoc_arr(char **arr)
+{
+	int i = 0;
+	while(arr[i])
+	{
+		free(arr[i]);
+		i += 2;
+	}
+	free(arr);
+}
+
+int	call_heredocs(char **arr, t_cmd_info *new_cmd, t_args *args)
 {
 	int	i;
 	int	size;
@@ -99,17 +110,19 @@ int	call_heredocs(char **arr, t_cmd_info *new_cmd, char **limiter_arr, t_args *a
 	size -= 1;
 	while (i < size)
 	{
-		limiter = limiter_arr[size];
+		limiter = arr[size];
+		size--;
 		new_cmd->file_read = arr[size];
 		new_cmd->fd_read = heredoc(new_cmd, limiter, args);
 		if (new_cmd->fd_read == -1)
 		{
 			unlink(new_cmd->file_read);
+			free_heredoc_arr(arr);
 			free(new_cmd->file_read);
 			new_cmd->file_read = NULL;
 			return (1);
 		}
-		if (size != 0)
+		if (size != 0 && size % 2 == 0)
 		{
 			unlink(arr[size]);
 			free(arr[size]);
@@ -117,7 +130,7 @@ int	call_heredocs(char **arr, t_cmd_info *new_cmd, char **limiter_arr, t_args *a
 		size--;
 	}
 	free(arr);
-	free(limiter_arr);
+	// free(limiter_arr);
 	new_cmd->fd_read = get_file_fd(new_cmd, HEREDOC);
 	if (new_cmd->fd_read == -1)
 		return (1);
