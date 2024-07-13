@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 11:39:33 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/11 18:08:31 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/13 20:15:37 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,65 +33,6 @@ int setup_signal_handler() {
     }
     return 0;
 }
-char	*join_read(char *save_line, char *buf)
-{
-	char	*concat;
-
-	concat = ft_strjoin(save_line, buf);
-	free(save_line);
-	return (concat);
-}
-
-char	*remainder_chars(char *save_line)
-{
-	int		i;
-	int		j;
-	char	*remainder;
-
-	i = 0;
-	if (!save_line)
-		return (NULL);
-	while (save_line[i] && save_line[i] != '\n')
-		i++;
-	if (save_line[i] == '\0')
-	{
-		free(save_line);
-		return (NULL);
-	}
-	remainder = ft_calloc(sizeof(char), (ft_strlen(save_line) - i + 1));
-	i++;
-	j = 0;
-	while (save_line[i])
-	{
-		remainder[j] = save_line[i];
-		j++;
-		i++;
-	}
-	free(save_line);
-	return (remainder);
-}
-
-char	*final_line(char *save_line)
-{
-	char	*result;
-	int		i;
-
-	i = 0;
-	if (!save_line || !save_line[i])
-		return (NULL);
-	while (save_line[i] && save_line[i] != '\n')
-		i++;
-	result = ft_calloc(sizeof(char), (i + 1 + 1));
-	i = 0;
-	while (save_line[i] && save_line[i] != '\n')
-	{
-		result[i] = save_line[i];
-		i++;
-	}
-	if (save_line[i] && save_line[i] == '\n')
-		result[i++] = '\n';
-	return (result);
-}
 
 char	*read_to_n(int fd, char *save_line)
 {
@@ -107,10 +48,8 @@ char	*read_to_n(int fd, char *save_line)
 		bytes_read = read(fd, buf, BUFFER_SIZE);
 		if (bytes_read < 0)
 		{
-			free(buf);
-			free(save_line);
 			interrupted = 0;
-			return (NULL);
+			return (free(buf), free(save_line), NULL);
 		}
 		else if (bytes_read == 0) // EOF condition
             break;

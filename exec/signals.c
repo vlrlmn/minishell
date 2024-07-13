@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 15:39:45 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/12 19:31:40 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/13 20:09:59 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,20 +44,16 @@ void	handle_sigint(int sig)
 		{
 			status_code(SET, STOP_CMD);
 			g_exit_status = 130;
-			write(STDERR_FILENO, "\n", 1);
 			write_new_promt();
 			return ;
 		}
 		if (status == IN_HEREDOC)
 		{
-			fprintf(stderr, "\nstop heredoc!\n");
 			status_code(SET, STOP_HEREDOC);
 			g_exit_status = 1; //or 130
-			write(STDERR_FILENO, "\n", 1);
 			write_new_promt();
 			return ;
 		}
-		write(STDERR_FILENO, "\n", 1);
 		write_new_promt();
 		g_exit_status = 0;
 		return ;

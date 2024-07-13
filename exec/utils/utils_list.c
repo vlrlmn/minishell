@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 14:27:29 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/13 15:15:45 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/13 20:06:06 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,22 +65,6 @@ int	list_size(t_cmd_info *cmd_list)
 	return (size);
 }
 
-void	free_argv(t_cmd_info *current)
-{
-	int	i;
-
-	i = 0;
-	if (!current->argv[i])
-		return ;
-	while (current->argv[i])
-	{
-		free(current->argv[i]);
-		current->argv[i] = NULL;
-		current->eargv[i] = NULL;
-		i++;
-	}
-}
-
 void	free_cmd_list(t_cmd_info *cmd_list)
 {
 	t_cmd_info	*current;
@@ -93,15 +77,7 @@ void	free_cmd_list(t_cmd_info *cmd_list)
 	{
 		tmp = current->next;
 		free_argv(current);
-		if (current->fd_read != 0 && current->fd_read != 1)
-			close(current->fd_read);
-		if (current->fd_write != 0 && current->fd_write != 1)
-			close(current->fd_write);
-		if (current->file_read && current->redir_type == HEREDOC)
-		{
-			unlink(current->file_read);
-			free(current->file_read);
-		}
+		free_files_and_fd(current);
 		free(current->connection);
 		if (current->type == REDIR && current->subcmd)
 		{

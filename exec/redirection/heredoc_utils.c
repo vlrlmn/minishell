@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 18:22:46 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/13 18:24:02 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/13 19:14:46 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,15 +52,28 @@ int	check_input(char *input, int fd)
 	return (0);
 }
 
-void	free_heredoc_arr(char **arr)
+char *free_heredoc_arr(char **arr, char flag)
 {
-	int i = 0;
-	while(arr[i])
+	int i;
+	char *heredoc_name;
+	
+	i = 0;
+	heredoc_name = NULL;
+	while (arr[i])
 	{
-		free(arr[i]);
+		if (flag == 'l' && i == 0)
+		{
+			i += 2;
+			continue ;
+		}
+		else
+			free(arr[i]);
 		i += 2;
 	}
+	if (flag == 'l')
+		heredoc_name = arr[0];
 	free(arr);
+	return (heredoc_name);
 }
 
 int	count_arr_elem(char **arr)

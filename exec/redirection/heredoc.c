@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 14:17:50 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/13 18:24:12 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/13 19:18:14 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,9 @@ int	heredoc(t_cmd_info *cmd, char *limiter, t_args *args)
 void	null_input_exit(char **arr, t_cmd_info *new_cmd)
 {
 	unlink(new_cmd->file_read);
-	free_heredoc_arr(arr);
+	free_heredoc_arr(arr, 'n');
 	new_cmd->file_read = NULL;
+	close(new_cmd->fd_read);
 }
 
 int	call_heredocs(char **arr, t_cmd_info *new_cmd, t_args *args)
@@ -82,7 +83,7 @@ int	call_heredocs(char **arr, t_cmd_info *new_cmd, t_args *args)
 			unlink(arr[size]);
 		size--;
 	}
-	free_heredoc_arr(arr);
+	new_cmd->file_read = free_heredoc_arr(arr, 'l');
 	new_cmd->fd_read = get_file_fd(new_cmd, HEREDOC);
 	if (new_cmd->fd_read == -1)
 		return (1);

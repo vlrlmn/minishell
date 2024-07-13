@@ -44,46 +44,34 @@ int	 count_files(t_redir *rcmd, int redir_type)
 	return (counter);
 }
 
-char	**create_file_array(t_redir *rcmd, int redir_type)
-{
-	char	**hfile_arr;
-	int			size;
 
-	hfile_arr = NULL;
-	size = count_files(rcmd, redir_type);
-	if (size > 1)
-		hfile_arr = malloc(sizeof(char *) * ((size * 2) + 1));
-	if (!hfile_arr)
-		return (NULL);
-	return (hfile_arr);
+
+int	check_files(t_redir *rsubcmd)
+{
+	int	fd;
+
+	fd = r_get_file_fd(rsubcmd, rsubcmd->subtype);
+	close (fd);
+	if (fd == -1)
+		return (free(rsubcmd), free((t_execcmd *)rsubcmd->cmd), 1);
+	return (0);
 }
 
-int	fill_heredoc_array(char **heredoc_arr, int i, t_cmd_info *new_cmd, t_redir *rcmd)
+t_redir	*go_next_rsubcmd(t_redir *rsubcmd)
 {
-	if (heredoc_arr)
-	{
-		heredoc_arr[i] = new_cmd->file_read;
-		i++;
-		heredoc_arr[i] = rcmd->file;
-		i += 1;
-	}
-	return (i);
-}
-
-int	more_redir(t_cmd_info *new_cmd, t_redir *rcmd, t_args *args)
-{
-	t_redir		*rsubcmd;
 	t_redir		*tmp;
-	int			type;
-	int			i;
-	int			fd;
-	char		**heredoc_arr;
 
-	i = 0;
+	tmp = (t_redir *)rsubcmd->cmd;
+	free(rsubcmd);
+	rsubcmd = tmp;
+	return (rsubcmd);
+}
+
+t_redir *while_redir(t_redir *rsubcmd, char **heredoc_arr, t_cmd_info *new_cmd, int i)
+{
+	int			type;
+
 	type = REDIR;
-	rsubcmd = (t_redir *)rcmd->cmd;
-	heredoc_arr = create_file_array(rcmd, HEREDOC);
-	i = fill_heredoc_array(heredoc_arr, i, new_cmd, rcmd);
 	while (type == REDIR)
 	{
 		if (rsubcmd->subtype == HEREDOC)
@@ -91,32 +79,42 @@ int	more_redir(t_cmd_info *new_cmd, t_redir *rcmd, t_args *args)
 			new_cmd->file_read = heredoc_get_tmp_file();
 			i = fill_heredoc_array(heredoc_arr, i, new_cmd, rsubcmd);
 		}
-		else //creates a file
+		else
 		{
-			fd = r_get_file_fd(rsubcmd, rsubcmd->subtype);
-			close (fd);
-			if (fd == -1)
-				return (free(rsubcmd), free((t_execcmd *)rsubcmd->cmd), 1); //check if not double free
+			if (check_files(rsubcmd))
+				return (NULL);
 		}
 		type = rsubcmd->cmd->type;
 		if (type == REDIR)
-		{
-			tmp = (t_redir *)rsubcmd->cmd;
-			free(rsubcmd);
-			rsubcmd = tmp;
-		}
+			rsubcmd = go_next_rsubcmd(rsubcmd);
 	}
 	if (heredoc_arr)
-	{
 		heredoc_arr[i] = NULL;
+	return (rsubcmd);
+}
+
+int	more_redir(t_cmd_info *new_cmd, t_redir *rcmd, t_args *args)
+{
+	t_redir		*rsubcmd;
+	char		**heredoc_arr;
+	int			i;
+
+	i = 0;
+	rsubcmd = (t_redir *)rcmd->cmd;
+	heredoc_arr = create_file_array(rcmd, HEREDOC);
+	i = fill_heredoc_array(heredoc_arr, i, new_cmd, rcmd);
+	rsubcmd = while_redir(rsubcmd, heredoc_arr, new_cmd, i);
+	if (!rsubcmd)
+		return (1);
+	if (heredoc_arr)
+	{
 		if (call_heredocs(heredoc_arr, new_cmd, args))
 		{
-			if (type == 1)
+			if (rsubcmd->cmd->type == 1)
 				free((t_execcmd *)rsubcmd->cmd);
 			return (1);
 		}
 	}
 	new_cmd->subcmd = rsubcmd->cmd;
-	free(rsubcmd);
-	return (0);
+	return (free(rsubcmd), 0);
 }
