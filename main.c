@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/13 14:48:54 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/13 15:18:00 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ int	exec(t_cmd	*cmd, t_args *args)
 	if (!cmd_list)// or return g_exit_status, which i need to define in case of failure inside the create_cmdlist()
 		return (free_all(cmd_list, pipe_arr), g_exit_status); 
 	pipe_arr = connections(cmd_list);
-	PrintList(cmd_list);
-	printPipeArr(pipe_arr);
+	// PrintList(cmd_list);
+	// printPipeArr(pipe_arr);
 	exit_status = run_cmds(cmd_list, pipe_arr, args);
 	if (!cmd_list->argv[0] || cmd_list->argv[0][0] == '\0')
 		return (free_all(cmd_list, pipe_arr), exit_status);

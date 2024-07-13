@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 14:17:50 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/13 13:50:48 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/13 15:07:51 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	heredoc(t_cmd_info *cmd, char *limiter, t_args *args)
 			if (input)
 				free(input);
 			// fprintf(stderr, "\nwarning: here-document delimited by end-of-file (wanted `%s')\n", limiter);
-			return (-1);
+			return (-2);
 		}
 		input[ft_strlen(input) - 1] = '\0'; //remove '/n'
 		// fprintf(stderr, "input: %s, its len:  %zu\n", input, ft_strlen(input));
@@ -114,7 +114,7 @@ int	call_heredocs(char **arr, t_cmd_info *new_cmd, t_args *args)
 		size--;
 		new_cmd->file_read = arr[size];
 		new_cmd->fd_read = heredoc(new_cmd, limiter, args);
-		if (new_cmd->fd_read == -1)
+		if (new_cmd->fd_read == -2)
 		{
 			unlink(new_cmd->file_read);
 			free_heredoc_arr(arr);

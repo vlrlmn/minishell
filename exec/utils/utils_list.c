@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 14:27:29 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/13 14:46:29 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/13 15:15:45 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void	free_cmd_list(t_cmd_info *cmd_list)
 			free(current->file_read);
 		}
 		free(current->connection);
-		if (current->type == REDIR)
+		if (current->type == REDIR && current->subcmd)
 		{
 			if (current->subcmd->type == EXEC)
 				free((t_execcmd *)current->subcmd);
