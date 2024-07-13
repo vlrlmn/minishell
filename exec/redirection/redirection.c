@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 14:22:40 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/13 15:10:47 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/13 18:28:10 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,6 @@ int	define_file(t_cmd_info	*rcmd, t_redir *old_cmd)
 
 int	define_fd(t_cmd_info *rcmd, t_redir *old_cmd, t_args *args)
 {
-	/* if fd == -1, i have to bring the command to execution with invalid fd.
-	and exit with status 1 in child proc, if fd of command == -1 */ 
 	if (rcmd->redir_type == REDIRIN)
 	{
 		rcmd->fd_read = get_file_fd(rcmd, rcmd->redir_type);
@@ -60,6 +58,9 @@ int	define_fd(t_cmd_info *rcmd, t_redir *old_cmd, t_args *args)
 	}
 	if (rcmd->redir_type == HEREDOC)
 	{
+		rcmd->fd_read = get_file_fd(rcmd, rcmd->redir_type);
+		if (rcmd->fd_read == -1)
+			return (0);
 		rcmd->fd_read = heredoc(rcmd, old_cmd->file, args);
 		if (rcmd->fd_read == -2)
 		{
@@ -70,8 +71,6 @@ int	define_fd(t_cmd_info *rcmd, t_redir *old_cmd, t_args *args)
 		}
 		rcmd->fd_read = get_file_fd(rcmd, rcmd->redir_type);
 	}
-	// if (rcmd->fd_read == -1 || rcmd->fd_write == -1)
-	// 	return (1);
 	return (0);
 }
 

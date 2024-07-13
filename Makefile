@@ -49,6 +49,7 @@ SRC_BUILTIN = ./exec/builtins/cd.c \
 
 
 SRC_REDIR = ./exec/redirection/heredoc.c \
+			./exec/redirection/heredoc_utils.c \
 			./exec/redirection/redir_cmdlist.c \
 			./exec/redirection/redirection.c \
 			./exec/redirection/redir_utils.c \

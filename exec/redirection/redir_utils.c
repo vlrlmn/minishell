@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 02:39:30 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/12 20:15:59 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/13 15:23:04 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	define_redir_info(t_cmd_info *new_cmd, t_redir *rcmd)
 	new_cmd->fd_write = 1;
 }
 
-/* maybe last arg should be there, and free in previous funct new_cmd->subcmd */
 void	free_redir(t_redir *rcmd)
 {
 	t_execcmd *ecmd;
@@ -89,7 +88,7 @@ int	get_fd_or_mode(t_cmd_info* cmd, char flag)
 		return (-1);
 	
 }
-// rsubcmd->fd, rsubcmd->file, rsubcmd->mode, rsubcmd->subtype
+
 int	r_get_file_fd(t_redir *rcmd, int subtype)
 {
 	int	new_fd;

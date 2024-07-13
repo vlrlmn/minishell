@@ -30,8 +30,7 @@ int	 count_files(t_redir *rcmd, int redir_type)
 		type = REDIR;
 		while (type == REDIR)
 		{
-			// printf("rsubcmd->file: %s\n", rsubcmd->file);
-			if (rsubcmd->subtype == redir_type) // HEREDOC, REDIRIN, REDIROUT
+			if (rsubcmd->subtype == redir_type)
 				counter += 1;
 			type = rsubcmd->cmd->type;
 			if (type == REDIR)
@@ -59,16 +58,6 @@ char	**create_file_array(t_redir *rcmd, int redir_type)
 	return (hfile_arr);
 }
 
-void	print_arr(char **arr)
-{
-	int i = 0;
-	while(arr[i])
-	{
-		printf("index: %d, str: %s\n", i, arr[i]);
-		i++;
-	}
-}
-
 int	fill_heredoc_array(char **heredoc_arr, int i, t_cmd_info *new_cmd, t_redir *rcmd)
 {
 	if (heredoc_arr)
@@ -76,10 +65,9 @@ int	fill_heredoc_array(char **heredoc_arr, int i, t_cmd_info *new_cmd, t_redir *
 		heredoc_arr[i] = new_cmd->file_read;
 		i++;
 		heredoc_arr[i] = rcmd->file;
-		printf("index: %d, '%s', limiter: '%s'\n", i, heredoc_arr[i-1], heredoc_arr[i]);
 		i += 1;
 	}
-	return (i); //alredy incremented
+	return (i);
 }
 
 int	more_redir(t_cmd_info *new_cmd, t_redir *rcmd, t_args *args)
@@ -95,8 +83,7 @@ int	more_redir(t_cmd_info *new_cmd, t_redir *rcmd, t_args *args)
 	type = REDIR;
 	rsubcmd = (t_redir *)rcmd->cmd;
 	heredoc_arr = create_file_array(rcmd, HEREDOC);
-	i = fill_heredoc_array(heredoc_arr, i, new_cmd, rcmd); // returns alredy incremented i
-	// free(t_execcmd *)rcmd->cmd));
+	i = fill_heredoc_array(heredoc_arr, i, new_cmd, rcmd);
 	while (type == REDIR)
 	{
 		if (rsubcmd->subtype == HEREDOC)
@@ -109,23 +96,19 @@ int	more_redir(t_cmd_info *new_cmd, t_redir *rcmd, t_args *args)
 			fd = r_get_file_fd(rsubcmd, rsubcmd->subtype);
 			close (fd);
 			if (fd == -1)
-				return (free(rsubcmd), 1); //check if not double free
+				return (free(rsubcmd), free((t_execcmd *)rsubcmd->cmd), 1); //check if not double free
 		}
 		type = rsubcmd->cmd->type;
 		if (type == REDIR)
 		{
 			tmp = (t_redir *)rsubcmd->cmd;
-			// free(rsubcmd->cmd);
-			free(rsubcmd); // ??
+			free(rsubcmd);
 			rsubcmd = tmp;
 		}
-		// else
-		// 	free(rsubcmd->cmd);
 	}
 	if (heredoc_arr)
 	{
 		heredoc_arr[i] = NULL;
-		print_arr(heredoc_arr);
 		if (call_heredocs(heredoc_arr, new_cmd, args))
 		{
 			if (type == 1)
@@ -134,5 +117,6 @@ int	more_redir(t_cmd_info *new_cmd, t_redir *rcmd, t_args *args)
 		}
 	}
 	new_cmd->subcmd = rsubcmd->cmd;
+	free(rsubcmd);
 	return (0);
 }

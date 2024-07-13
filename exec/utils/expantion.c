@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 14:19:33 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/12 14:24:42 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/13 15:57:43 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,6 @@ char	*add_expantion(char *input, t_args *args)
 	res = join_input_and_value(input, args);
 	if (middle == 1 && res)
 		res = more_expantions(input, k, res, args);
-	fprintf(stderr, "result_str: '%s'\n", res);
+	// fprintf(stderr, "result_str: '%s'\n", res);
 	return (res);
 }
