@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 11:39:33 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/13 20:15:37 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/13 21:10:01 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,23 +15,35 @@
 
 #define BUFFER_SIZE 1000
 
-volatile sig_atomic_t interrupted = 0;
+// int	modify_interrupted(char flag)
+// {
+// 	volatile sig_atomic_t	interrupted;
+// 	if (flag == 's')
+// 		interrupted += 1;
+// 	return (interrupted);
+// }
 
-void handle_sigint_gnl(int sig) {
+volatile sig_atomic_t	interrupted = 0;
+
+void	handle_sigint_gnl(int sig)
+{
 	(void)sig;
-    interrupted = 1;
+	interrupted = 1;
 }
 
-int setup_signal_handler() {
-    struct sigaction sa;
-    sa.sa_handler = handle_sigint_gnl;
-    sa.sa_flags = 0; // или SA_RESTART
-    sigemptyset(&sa.sa_mask);
-    if (sigaction(SIGINT, &sa, NULL) == -1) {
-        perror("sigaction");
-        return -1;
-    }
-    return 0;
+int	setup_signal_handler(void)
+{
+	struct sigaction	sa;
+
+	sa.sa_handler = handle_sigint_gnl;
+	sa.sa_flags = 0; // или SA_RESTART
+	sigemptyset(&sa.sa_mask);
+	if (sigaction(SIGINT, &sa, NULL) == -1)
+	{
+		perror("sigaction");
+		return (-1);
+	}
+	return (0);
 }
 
 char	*read_to_n(int fd, char *save_line)
@@ -51,8 +63,8 @@ char	*read_to_n(int fd, char *save_line)
 			interrupted = 0;
 			return (free(buf), free(save_line), NULL);
 		}
-		else if (bytes_read == 0) // EOF condition
-            break;
+		else if (bytes_read == 0)
+			break ;
 		buf[bytes_read] = '\0';
 		save_line = join_read(save_line, buf);
 		if (ft_strchr(save_line, '\n'))
@@ -68,7 +80,7 @@ char	*get_next_line(int fd)
 	char		*result;
 
 	if (setup_signal_handler() == -1)
-        return (NULL);
+		return (NULL);
 	if (fd < 0 || BUFFER_SIZE <= 0 || (read(fd, 0, 0) < 0))
 		return (NULL);
 	save_line = read_to_n(fd, save_line);
@@ -78,24 +90,3 @@ char	*get_next_line(int fd)
 	save_line = remainder_chars(save_line);
 	return (result);
 }
-
-// #include <stdio.h>
-
-// int	main(void)
-// {
-// 	int fd;
-
-// 	fd = open("txt.txt", O_RDONLY);
-// 	if (fd < 0)
-// 		exit(-1);
-//  	char *line = get_next_line(fd);
-
-// 	while (line)
-// 	{
-// 		printf("%s", line);
-// 		free(line);
-//  		line = get_next_line(fd);
-// 	}
-// 	printf("%s", get_next_line(fd));
-// 	close(fd);
-// }

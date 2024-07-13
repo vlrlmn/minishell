@@ -15,7 +15,7 @@
 char	**create_file_array(t_redir *rcmd, int redir_type)
 {
 	char	**hfile_arr;
-	int			size;
+	int		size;
 
 	hfile_arr = NULL;
 	size = count_files(rcmd, redir_type);
@@ -26,7 +26,8 @@ char	**create_file_array(t_redir *rcmd, int redir_type)
 	return (hfile_arr);
 }
 
-int	fill_heredoc_array(char **heredoc_arr, int i, t_cmd_info *new_cmd, t_redir *rcmd)
+int	fill_heredoc_array(char **heredoc_arr, int i, t_cmd_info *new_cmd,
+		t_redir *rcmd)
 {
 	if (heredoc_arr)
 	{

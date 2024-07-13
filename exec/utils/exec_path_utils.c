@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_utils.c                                       :+:      :+:    :+:   */
+/*   exec_path_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 17:30:44 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/12 17:47:15 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/13 20:39:14 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,16 +47,16 @@ int	if_path_to_cmd(char *path_line)
 	return (1);
 }
 
-int is_executable(const char *path) 
+int	is_executable(const char *path)
 {
-    struct stat sb;
+	struct stat	sb;
 
-    // Check if the path exists and is a regular file
-    if (stat(path, &sb) == 0 && S_ISREG(sb.st_mode)) 
+	if (stat(path, &sb) == 0 && S_ISREG(sb.st_mode))
 	{
-        if (access(path, X_OK) == 0) {
-            return (0);
-        }
-    }
-    return (1);
+		if (access(path, X_OK) == 0)
+		{
+			return (0);
+		}
+	}
+	return (1);
 }

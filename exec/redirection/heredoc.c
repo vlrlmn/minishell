@@ -45,7 +45,7 @@ int	heredoc(t_cmd_info *cmd, char *limiter, t_args *args)
 		if (check_input(input, fd))
 			return (-2);
 		if (is_limiter(input, limiter))
-			return(free(input), close(fd), (fd)); 
+			return (free(input), close(fd), (fd));
 		input = do_expantion(input, cmd, args);
 		if (!input)
 			return (close(fd), -1);
@@ -67,8 +67,8 @@ void	null_input_exit(char **arr, t_cmd_info *new_cmd)
 
 int	call_heredocs(char **arr, t_cmd_info *new_cmd, t_args *args)
 {
-	int	size;
-	char *limiter;
+	int		size;
+	char	*limiter;
 
 	size = count_arr_elem(arr);
 	while (-1 < size)

@@ -12,7 +12,7 @@
 
 #include "../../minishell.h"
 
-int		add_redir_details(t_cmd_info *new_cmd, t_redir *rcmd, t_args *args)
+int	add_redir_details(t_cmd_info *new_cmd, t_redir *rcmd, t_args *args)
 {
 	new_cmd->redir_type = rcmd->subtype;
 	define_file(new_cmd, rcmd);
@@ -24,7 +24,7 @@ int		add_redir_details(t_cmd_info *new_cmd, t_redir *rcmd, t_args *args)
 	return (0);
 }
 
-int	define_file(t_cmd_info	*rcmd, t_redir *old_cmd)
+int	define_file(t_cmd_info *rcmd, t_redir *old_cmd)
 {
 	if (rcmd->redir_type == REDIRIN)
 	{
@@ -65,7 +65,7 @@ int	define_fd(t_cmd_info *rcmd, t_redir *old_cmd, t_args *args)
 		if (rcmd->fd_read == -2)
 		{
 			unlink(rcmd->file_read);
-			free(rcmd->file_read);	
+			free(rcmd->file_read);
 			rcmd->file_read = NULL;
 			return (1);
 		}
@@ -74,17 +74,17 @@ int	define_fd(t_cmd_info *rcmd, t_redir *old_cmd, t_args *args)
 	return (0);
 }
 
-int	get_file_fd(t_cmd_info* cmd, int redir_type)
+int	get_file_fd(t_cmd_info *cmd, int redir_type)
 {
-	int	new_fd;
-	int fd;
-	char *file;
-	int mode;
+	int		new_fd;
+	int		fd;
+	char	*file;
+	int		mode;
 
 	file = get_file(cmd);
 	fd = get_fd_or_mode(cmd, 'f');
 	mode = get_fd_or_mode(cmd, 'm');
-	new_fd = open(file, mode, 0777); 
+	new_fd = open(file, mode, 0777);
 	if (check_file_access(file, redir_type) != 0)
 		return (-1);
 	if (new_fd < 0)

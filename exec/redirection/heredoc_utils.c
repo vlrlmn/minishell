@@ -6,16 +6,16 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 18:22:46 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/13 19:14:46 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/13 20:34:30 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int is_limiter(char *limiter, char *input)
+int	is_limiter(char *limiter, char *input)
 {
 	limiter[ft_strlen(limiter) - 1] = '\0';
-	if (ft_strncmp(limiter, input, ft_strlen(limiter)) == 0 \
+	if (ft_strncmp(limiter, input, ft_strlen(limiter)) == 0
 		&& ft_strlen(limiter) == (ft_strlen(input)))
 	{
 		return (1);
@@ -23,7 +23,7 @@ int is_limiter(char *limiter, char *input)
 	return (0);
 }
 
-char *do_expantion(char *input, t_cmd_info *cmd, t_args *args)
+char	*do_expantion(char *input, t_cmd_info *cmd, t_args *args)
 {
 	char	*input_exp;
 
@@ -41,7 +41,7 @@ char *do_expantion(char *input, t_cmd_info *cmd, t_args *args)
 
 int	check_input(char *input, int fd)
 {
-	if (!input || (input[0] == '\n' && !input[1])) // if ctrl + d. TODO ahnde ctrl+c
+	if (!input || (input[0] == '\n' && !input[1]))
 	{
 		status_code(SET, CTRL_D);
 		close(fd);
@@ -52,11 +52,11 @@ int	check_input(char *input, int fd)
 	return (0);
 }
 
-char *free_heredoc_arr(char **arr, char flag)
+char	*free_heredoc_arr(char **arr, char flag)
 {
-	int i;
-	char *heredoc_name;
-	
+	int		i;
+	char	*heredoc_name;
+
 	i = 0;
 	heredoc_name = NULL;
 	while (arr[i])

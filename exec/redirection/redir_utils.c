@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 02:39:30 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/13 15:23:04 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/13 20:35:06 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ void	define_redir_info(t_cmd_info *new_cmd, t_redir *rcmd)
 
 void	free_redir(t_redir *rcmd)
 {
-	t_execcmd *ecmd;
-	int	i;
+	t_execcmd	*ecmd;
+	int			i;
 
 	i = 0;
 	if (rcmd->cmd->type == EXEC)
@@ -52,9 +52,9 @@ void	free_redir(t_redir *rcmd)
 	free(rcmd);
 }
 
-char *get_file(t_cmd_info* cmd)
+char	*get_file(t_cmd_info *cmd)
 {
-	char *file;
+	char	*file;
 
 	if (cmd->redir_type == REDIRIN || cmd->redir_type == HEREDOC)
 		file = cmd->file_read;
@@ -63,11 +63,11 @@ char *get_file(t_cmd_info* cmd)
 	return (file);
 }
 
-int	get_fd_or_mode(t_cmd_info* cmd, char flag)
+int	get_fd_or_mode(t_cmd_info *cmd, char flag)
 {
-	int fd;
+	int	fd;
 	int	mode;
-	
+
 	if (flag == 'f')
 	{
 		if (cmd->redir_type == REDIRIN || cmd->redir_type == HEREDOC)
@@ -86,20 +86,19 @@ int	get_fd_or_mode(t_cmd_info* cmd, char flag)
 	}
 	else
 		return (-1);
-	
 }
 
 int	r_get_file_fd(t_redir *rcmd, int subtype)
 {
-	int	new_fd;
-	int fd;
-	char *file;
-	int mode;
+	int		new_fd;
+	int		fd;
+	char	*file;
+	int		mode;
 
 	file = rcmd->file;
 	fd = rcmd->fd;
 	mode = rcmd->mode;
-	new_fd = open(file, mode, 0777); 
+	new_fd = open(file, mode, 0777);
 	if (check_file_access(file, subtype) != 0)
 		return (printf("bash: %s: Permission denied\n", file), -1);
 	if (new_fd < 0)

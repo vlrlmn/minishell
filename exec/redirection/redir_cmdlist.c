@@ -1,27 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redirections.c                                      :+:      :+:    :+:   */
+/*   redir_cmdlist.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 14:23:17 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/06/12 20:24:33 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/13 20:35:58 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-/* When you use >>, 
-Bash opens the specified file in append mode and writes the output of the command to it. 
-If the file does not exist, it will be created. */
-
-int	 count_files(t_redir *rcmd, int redir_type)
+int	count_files(t_redir *rcmd, int redir_type)
 {
-	int			type;
-	int			counter;
-	t_redir		*rsubcmd;
-	t_redir		*tmp;
+	int		type;
+	int		counter;
+	t_redir	*rsubcmd;
+	t_redir	*tmp;
 
 	counter = 0;
 	if (rcmd->cmd->type == REDIR)
@@ -44,14 +40,12 @@ int	 count_files(t_redir *rcmd, int redir_type)
 	return (counter);
 }
 
-
-
 int	check_files(t_redir *rsubcmd)
 {
 	int	fd;
 
 	fd = r_get_file_fd(rsubcmd, rsubcmd->subtype);
-	close (fd);
+	close(fd);
 	if (fd == -1)
 		return (free(rsubcmd), free((t_execcmd *)rsubcmd->cmd), 1);
 	return (0);
@@ -59,7 +53,7 @@ int	check_files(t_redir *rsubcmd)
 
 t_redir	*go_next_rsubcmd(t_redir *rsubcmd)
 {
-	t_redir		*tmp;
+	t_redir	*tmp;
 
 	tmp = (t_redir *)rsubcmd->cmd;
 	free(rsubcmd);
@@ -67,9 +61,10 @@ t_redir	*go_next_rsubcmd(t_redir *rsubcmd)
 	return (rsubcmd);
 }
 
-t_redir *while_redir(t_redir *rsubcmd, char **heredoc_arr, t_cmd_info *new_cmd, int i)
+t_redir	*while_redir(t_redir *rsubcmd, char **heredoc_arr, t_cmd_info *new_cmd,
+		int i)
 {
-	int			type;
+	int	type;
 
 	type = REDIR;
 	while (type == REDIR)
@@ -95,9 +90,9 @@ t_redir *while_redir(t_redir *rsubcmd, char **heredoc_arr, t_cmd_info *new_cmd, 
 
 int	more_redir(t_cmd_info *new_cmd, t_redir *rcmd, t_args *args)
 {
-	t_redir		*rsubcmd;
-	char		**heredoc_arr;
-	int			i;
+	t_redir	*rsubcmd;
+	char	**heredoc_arr;
+	int		i;
 
 	i = 0;
 	rsubcmd = (t_redir *)rcmd->cmd;

@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 15:39:45 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/13 20:09:59 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/13 20:41:19 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,11 @@ void	handle_sigquit(int sig)
 
 void	handle_sigint(int sig)
 {
-	int status;
+	int	status;
+
 	if (sig == SIGINT)
 	{
 		status = status_code(GET, -1);
-		// printf("\nim in sigint handler!\n");
 		if (status == IN_CMD)
 		{
 			status_code(SET, STOP_CMD);
@@ -50,7 +50,7 @@ void	handle_sigint(int sig)
 		if (status == IN_HEREDOC)
 		{
 			status_code(SET, STOP_HEREDOC);
-			g_exit_status = 1; //or 130
+			g_exit_status = 1;
 			write_new_promt();
 			return ;
 		}
