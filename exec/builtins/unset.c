@@ -82,7 +82,10 @@ int	remove_cmd(t_args *params, char *env_var_to_remove)
 
 	size = 0;
 	if (!env_var_to_remove)
+	{
+		printf("Not a valid identifier\n");
 		return (1);
+	}
 	while (params->envp[size])
 		size++;
 	new_envlist = malloc(sizeof(char *) * size);

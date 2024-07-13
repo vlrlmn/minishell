@@ -117,7 +117,11 @@ int	more_redir(t_cmd_info *new_cmd, t_redir *rcmd, t_args *args)
 		heredoc_arr[i_hd] = NULL;
 		limiter_arr[i_hd] = NULL;
 		if (call_heredocs(heredoc_arr, new_cmd, limiter_arr, args))
+		{
+			if (type == 1)
+				free((t_execcmd *)rsubcmd->cmd);
 			return (1);
+		}
 	}
 	//
 	new_cmd->subcmd = rsubcmd->cmd;

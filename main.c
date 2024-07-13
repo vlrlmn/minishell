@@ -100,6 +100,6 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGINT, handle_sigint);
 	exit_status = loop_result(&shell_context);
 	clear_history();
-	// free_envp (&shell_context);
+	free_envp (&shell_context);
 	return (exit_status);
 }

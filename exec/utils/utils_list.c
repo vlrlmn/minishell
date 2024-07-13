@@ -103,6 +103,11 @@ void	free_cmd_list(t_cmd_info *cmd_list)
 			free(current->file_read);
 		}
 		free(current->connection);
+		if (current->type == REDIR)
+		{
+			if (current->subcmd->type == EXEC)
+				free((t_execcmd *)current->subcmd);
+		}
 		free(current);
 		current = tmp;
 	}
