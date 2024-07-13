@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 17:20:39 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/13 13:29:48 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/13 15:17:01 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ t_cmd_info	*fill_redir(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args)
 		return (free_redir(rcmd), free_cmd_list(new_cmd), NULL);
 	if (new_cmd->subcmd->type == PIPE)
 		gothrough_cmd(new_cmd->subcmd, cmd_list, args);
-	return (free((t_execcmd *)rcmd->cmd), free(rcmd), new_cmd);
+	return (free(rcmd), new_cmd);
 }
 
 t_cmd_info	*fill_exec(t_cmd *cmd)

@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 14:27:19 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/12 15:33:15 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/13 15:09:45 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,5 +100,7 @@ int	check_file_access(const char *file_path, int redir_type)
         if (res == 0)
             res = access(file_path, W_OK);
 	}
+	if (res < 0)
+		printf("Bad file permission: %s\n", file_path);
 	return (res);
 }

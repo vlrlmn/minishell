@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 14:22:40 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/12 20:10:40 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/13 15:10:47 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	define_fd(t_cmd_info *rcmd, t_redir *old_cmd, t_args *args)
 	if (rcmd->redir_type == HEREDOC)
 	{
 		rcmd->fd_read = heredoc(rcmd, old_cmd->file, args);
-		if (rcmd->fd_read == -1)
+		if (rcmd->fd_read == -2)
 		{
 			unlink(rcmd->file_read);
 			free(rcmd->file_read);	
@@ -70,8 +70,8 @@ int	define_fd(t_cmd_info *rcmd, t_redir *old_cmd, t_args *args)
 		}
 		rcmd->fd_read = get_file_fd(rcmd, rcmd->redir_type);
 	}
-	if (rcmd->fd_read == -1 || rcmd->fd_write == -1)
-		return (1);
+	// if (rcmd->fd_read == -1 || rcmd->fd_write == -1)
+	// 	return (1);
 	return (0);
 }
 
