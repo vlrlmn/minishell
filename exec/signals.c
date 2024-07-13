@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 15:39:45 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/12 19:31:40 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/13 16:13:30 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,19 @@ void	handle_sigquit(int sig)
 	return ;
 }
 
+void write_sig_prompt()
+{
+	write(STDERR_FILENO, "\n", 1);
+	write_new_promt();
+}
+
 void	handle_sigint(int sig)
 {
 	int status;
+
 	if (sig == SIGINT)
 	{
 		status = status_code(GET, -1);
-		// printf("\nim in sigint handler!\n");
 		if (status == IN_CMD)
 		{
 			status_code(SET, STOP_CMD);
@@ -50,15 +56,13 @@ void	handle_sigint(int sig)
 		}
 		if (status == IN_HEREDOC)
 		{
-			fprintf(stderr, "\nstop heredoc!\n");
 			status_code(SET, STOP_HEREDOC);
-			g_exit_status = 1; //or 130
+			g_exit_status = 1;
 			write(STDERR_FILENO, "\n", 1);
 			write_new_promt();
 			return ;
 		}
-		write(STDERR_FILENO, "\n", 1);
-		write_new_promt();
+		write_sig_prompt();
 		g_exit_status = 0;
 		return ;
 	}
