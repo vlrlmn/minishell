@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_connections.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 15:21:12 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/13 14:50:53 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/13 15:23:31 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int	**connections(t_cmd_info *cmd_list)
 	t_cmd_info	*cmd;
 
 	size = list_size(cmd_list);
-	printf("size: %d\n", size);
 	if (set_one_cmd(size, cmd_list))
 		return (NULL);
 	pipe_arr = malloc(sizeof(int *) * (list_size(cmd_list)));
