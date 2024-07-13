@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/12 19:32:11 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/13 14:38:22 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,7 +212,7 @@ int		add_redir_details(t_cmd_info	*new_cmd, t_redir *rcmd, t_args *args);
 int	 count_files(t_redir *rcmd, int redir_type);
 char	*heredoc_get_tmp_file(void);
 int	heredoc(t_cmd_info *cmd, char *limiter, t_args *args);
-int		call_heredocs(char **arr, t_cmd_info *new_cmd, char **limiter_arr, t_args *args);
+int		call_heredocs(char **arr, t_cmd_info *new_cmd, t_args *args);
 char	*add_expantion(char *input, t_args *args);
 int		is_expantion(char *input);
 t_cmd_info	*create_cmdlist(t_cmd *cmd, t_args *args);
@@ -244,6 +244,13 @@ void    free_all(t_cmd_info	*cmd_list, int **pipe_arr);
 void	free_and_exit(int status, t_cmd_info *cmd_list, int **pipe_arr, t_args *params, char *cmd_path);
 void PrintTree(t_cmd	*cmd);
 
+
+/* execution utils */
+char *check_params(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *params);
+int prepare_connections(t_cmd_info *cmd);
+void	close_parent_connections(t_cmd_info *cmd);
+
+
 /* signals */
 int	get_status();
 int	set_status(int new_status);
@@ -261,5 +268,12 @@ int	validate_pipe(char **ps, char *es);
 t_cmd *parseexec(char **ps, char *es);
 void handle_quotes(char **ps, char *es);
 void skip_delimiters(char **ps, char *es);
+
+
+/* debug message */
+void	print_content(t_cmd_info *current);
+int PrintList(t_cmd_info *cmd_list);
+void	printPipeArr(int **pipe_arr);
+
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 15:21:12 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/12 17:06:09 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/13 14:50:53 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 and the last in pipe_ar should be NULL */
 int	set_one_cmd(int size, t_cmd_info *cmd_list)
 {
-	if (size < 2)
+	if (size == 1)
 	{
 		cmd_list->connection[0] = cmd_list->fd_read;
 		cmd_list->connection[1] = cmd_list->fd_write;
@@ -33,6 +33,7 @@ int	**connections(t_cmd_info *cmd_list)
 	t_cmd_info	*cmd;
 
 	size = list_size(cmd_list);
+	printf("size: %d\n", size);
 	if (set_one_cmd(size, cmd_list))
 		return (NULL);
 	pipe_arr = malloc(sizeof(int *) * (list_size(cmd_list)));

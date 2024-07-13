@@ -5,58 +5,70 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/15 17:30:44 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/12 17:47:15 by sabdulki         ###   ########.fr       */
+/*   Created: 2024/07/12 22:07:48 by sabdulki          #+#    #+#             */
+/*   Updated: 2024/07/12 22:08:28 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-char	*find_cmd_path(char *cmd, char *path)
+char *check_params(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *params)
 {
 	char	*cmd_path;
-	char	**path_arr;
-	char	*command;
-	int		i;
 
-	i = 0;
-	if (!path)
-		return (NULL);
-	if (ft_strnstr(cmd, "./", ft_strlen(cmd)) || ft_strnstr(cmd, "../",
-			ft_strlen(cmd)))
-		return (cmd);
-	path_arr = ft_split(path, ':');
-	command = ft_strjoin("/", cmd);
-	while (path_arr[i])
+	cmd_path = NULL;
+	if (!params)
+		free_and_exit(1, cmd_list, pipe_arr, params, cmd_path);
+	if (cmd->argv[0][0] == '/')
+		cmd_path = cmd->argv[0];
+	else if (!is_buildin(cmd->argv[0]))
 	{
-		cmd_path = ft_strjoin(path_arr[i], command);
-		if (access(cmd_path, X_OK) == 0)
-			return (free(command), free_split(path_arr), cmd_path);
-		free(cmd_path);
-		i++;
+		cmd_path = find_cmd_path(cmd->argv[0], get_env("PATH=", params->envp));
+		if (!cmd_path)
+		{
+			fprintf(stderr, "command not found: %s\n", cmd->argv[0]);
+			free_and_exit(127, cmd_list, pipe_arr, params, cmd_path);
+		}
 	}
-	free(command);
-	free_split(path_arr);
-	return (NULL);
-}
-
-int	if_path_to_cmd(char *path_line)
-{
-	if (access(path_line, F_OK) == 0 && access(path_line, X_OK) == 0)
-		return (0);
-	return (1);
-}
-
-int is_executable(const char *path) 
-{
-    struct stat sb;
-
-    // Check if the path exists and is a regular file
-    if (stat(path, &sb) == 0 && S_ISREG(sb.st_mode)) 
+	if (!is_buildin(cmd->argv[0]))
 	{
-        if (access(path, X_OK) == 0) {
-            return (0);
-        }
-    }
-    return (1);
+		if (is_executable(cmd_path))
+		{
+			fprintf(stderr, "%s: is a directory\n", cmd_path);
+			free_and_exit(126, cmd_list, pipe_arr, params, NULL);
+		}
+	}
+	return (cmd_path);
+}
+
+int prepare_connections(t_cmd_info *cmd)
+{
+	if (cmd->connection[0] == -1 || cmd->connection[1] == -1)
+		return (1);
+	if (dup2(cmd->connection[0], STDIN_FILENO) == -1)
+	{
+		close(cmd->connection[0]);
+		close(cmd->connection[1]);
+		perror("dup2");
+    	return (1);
+	}
+	if (cmd->connection[0] != 0)
+		close(cmd->connection[0]);
+	if (dup2(cmd->connection[1], STDOUT_FILENO) == -1)
+	{
+		close(cmd->connection[1]);
+		perror("dup2");
+    	return (1);
+	}
+	if (cmd->connection[1] != 1)
+		close(cmd->connection[1]);
+	return (0);
+}
+
+void	close_parent_connections(t_cmd_info *cmd)
+{
+	if (cmd->connection[0] != 0)
+		close(cmd->connection[0]);
+	if (cmd->connection[1] != 1)
+		close(cmd->connection[1]);
 }
