@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/14 12:49:56 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/14 13:14:07 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int g_sig_exit_status = 0;
 
 void	write_new_promt(void)
 {
+	// rl_new_line();
 	rl_on_new_line();
 	rl_redisplay();
 }

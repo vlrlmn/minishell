@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:48:27 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/13 15:53:54 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/14 13:28:42 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,11 @@ int	export_cmd(char *str, t_args *params)
 	if (status != 0)
 		return (status);
 	env_value = get_str_after_sign(str, '=');
-	free(env_var);
 	if (find_env_var(params->envp, env_var))
 		update_envp_var(params, env_var, env_value);
 	else
 		add_cmd(params, str);
+	free(env_var); // Leaks? 
 	free(env_value);
 	return (0);
 }
