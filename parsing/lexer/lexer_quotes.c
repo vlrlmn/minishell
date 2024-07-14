@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_quotes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: vlomakin <vlomakin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 15:23:28 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/14 12:28:38 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/14 16:35:45 by vlomakin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,17 @@ void	parse_expander_status(int *i, t_lexems *list, int *exit_status)
 	(*i) += 2;
 }
 
+int	is_delimiter_or_quote(char symbol)
+{
+	return (is_delimiter(symbol) || symbol == '\"');
+}
+
 void	parse_double_quote(int *i, t_clean_line_args args, int *exit_status)
 {
 	(*i)++;
 	while (args.line[*i] && args.line[*i] != '\"')
 	{
-		if (args.line[*i] == '$' && (is_delimiter(args.line[*i + 1]) || \
-		args.line[*i + 1] == '\"'))
+		if (args.line[*i] == '$' && is_delimiter_or_quote(args.line[*i + 1]))
 		{
 			add_char_node(args.list, '$');
 			(*i)++;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: vlomakin <vlomakin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:27:36 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/14 12:34:19 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/14 16:31:50 by vlomakin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 t_cmd	*parsepipe(char **ps, char *es)
 {
 	t_cmd	*cmd;
-	char *q, *eq;
+	char	*q;
+	char	*eq;
 
 	cmd = parseexec(ps, es);
 	if (peek(ps, es, "|"))
@@ -36,10 +37,10 @@ t_cmd	*parse(t_args *args, int *exit_status)
 	es = ps + ft_strlen(args->input);
 	cmd = parsepipe(&ps, es);
 	if (peek(&ps, es, ""))
-    {
-        if (ps != es)
-            exit_with_err("Syntax err\n");
-    }
+	{
+		if (ps != es)
+			exit_with_err("Syntax err\n");
+	}
 	while (args->input < es && is_delimiter(*args->input))
 		args->input++;
 	nulterminate(cmd);

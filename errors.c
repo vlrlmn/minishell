@@ -32,7 +32,7 @@ void	panic_and_free_env(t_args *args, int index)
 	i = 0;
 	while (i < index)
 	{
-		free((void*)args->envp[i]);
+		free((void *)args->envp[i]);
 		i++;
 	}
 	free(args->envp);

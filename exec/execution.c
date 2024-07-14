@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: vlomakin <vlomakin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 14:51:13 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/14 12:55:49 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/14 17:33:28 by vlomakin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	execute_cmd(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr,
 	status = 0;
 	if (cmd->fd_read == -2)
 		return (0);
-	if (!cmd->argv[0] || cmd->argv[0][0] == '\0') // attention!
+	if (!cmd->argv[0] || cmd->argv[0][0] == '\0')
 		return (1);
 	check_arguments(cmd);
 	if (cmd->argv[0][0] != '$')
@@ -69,13 +69,13 @@ void	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr,
 	{
 		cmd_path = check_params(cmd, cmd_list, pipe_arr, params);
 		if (prepare_connections(cmd))
-			free_and_exit(EXIT_FAILURE, cmd_list, pipe_arr, params, cmd_path);
+			free_and_exit(EXIT_FAILURE, cmd_list, pipe_arr, cmd_path);
 		pipe_arr = close_free_pipe_arr(pipe_arr);
 		if (is_buildin(cmd->argv[0]))
 			status = run_buildin(cmd, params, cmd_list, pipe_arr);
 		else
 			status = execve(cmd_path, cmd->argv, params->envp);
-		free_and_exit(status, cmd_list, pipe_arr, params, cmd_path);
+		free_and_exit(status, cmd_list, pipe_arr, cmd_path);
 	}
 	else
 		close_parent_connections(cmd);

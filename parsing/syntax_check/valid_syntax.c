@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   valid_syntax.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: vlomakin <vlomakin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 15:34:37 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/14 12:21:28 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/14 16:37:19 by vlomakin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,6 @@ int	validate_redirection(char **ps, char *es, int *exit_status)
 		*exit_status = 258;
 		return (0);
 	}
-	// else if (tok != 'a')
-	// {
-	// 	*eq = '\0';
-	// 	printf("minishell: syntax error near unexpected token \n");
-	// 	exit_status = 258;
-	// 	return (0);
-	// }
 	return (1);
 }
 

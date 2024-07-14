@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   valid_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: vlomakin <vlomakin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/07/14 12:21:21 by lomakinaval      ###   ########.fr       */
+/*   Created: 2024/07/14 16:37:02 by vlomakin          #+#    #+#             */
+/*   Updated: 2024/07/14 16:37:05 by vlomakin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	valid_quotes(char *input)
 		return (1);
 }
 
-int valid_syntax(char *work_line, int *exit_status)
+int	valid_syntax(char *work_line, int *exit_status)
 {
 	char	*ps;
 	char	*es;
@@ -70,7 +70,7 @@ int	valid_input(char *work_line, int *exit_status)
 
 	i = 0;
 	if (ft_strlen(work_line) == 0)
-		return(0);
+		return (0);
 	if (ft_strlen(work_line) == 2 && work_line[0] == '<' && work_line[1] == '>')
 	{
 		*exit_status = 258;

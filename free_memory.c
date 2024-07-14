@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   free_memory.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlomakin <vlomakin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:06 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/12 17:06:18 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/14 16:43:23 by vlomakin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* void * allows to assign NULL to pipe_arr*/
 void	*close_free_pipe_arr(int **pipe_arr)
 {
 	int	i;
@@ -33,15 +32,17 @@ void	*close_free_pipe_arr(int **pipe_arr)
 	return (NULL);
 }
 
-void free_split(char **arr) 
+void	free_split(char **arr)
 {
-    int i = 0;
-    while (arr[i]) 
+	int	i;
+
+	i = 0;
+	while (arr[i])
 	{
-        free(arr[i]);
-        i++;
-    }
-    free(arr);
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
 }
 
 void	free_envp(t_args *args)
@@ -53,23 +54,23 @@ void	free_envp(t_args *args)
 		return ;
 	while (args->envp[i])
 	{
-		free((void*)args->envp[i]);
+		free((void *)args->envp[i]);
 		i++;
 	}
 	free(args->envp);
 }
 
-void    free_all(t_cmd_info	*cmd_list, int **pipe_arr)
+void	free_all(t_cmd_info *cmd_list, int **pipe_arr)
 {
-    free_cmd_list(cmd_list);
-    close_free_pipe_arr(pipe_arr);
+	free_cmd_list(cmd_list);
+	close_free_pipe_arr(pipe_arr);
 }
 
-void	free_and_exit(int status, t_cmd_info *cmd_list, int **pipe_arr, t_args *params, char *cmd_path)
+void	free_and_exit (int status, t_cmd_info *cmd_list, int **pipe_arr, 
+		char *cmd_path)
 {
 	if (cmd_path)
 		free(cmd_path);
 	free_all(cmd_list, pipe_arr);
-	(void)params;
 	exit(status);
 }

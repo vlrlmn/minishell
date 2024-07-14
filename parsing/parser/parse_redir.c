@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_redir.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: vlomakin <vlomakin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:38:32 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/12 18:17:41 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/14 16:31:19 by vlomakin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ t_cmd	*redirout(t_cmd *subcmd, char *file, char *efile)
 	redircmd->type = REDIR;
 	redircmd->subtype = REDIROUT;
 	redircmd->cmd = subcmd;
-	//redircmd->file = ft_strdup(file); ???
 	redircmd->file = file;
 	redircmd->efile = efile;
 	redircmd->mode = O_WRONLY | O_CREAT | O_TRUNC;
@@ -90,7 +89,7 @@ t_cmd	*parseredir(t_cmd *cmd, char **ps, char *es)
 	int		tok;
 	char	*q;
 	char	*eq;
-	
+
 	while (peek(ps, es, "<>"))
 	{
 		tok = gettoken(ps, es, &q, &eq);
