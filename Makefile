@@ -1,21 +1,12 @@
-# cc main.c -I/usr/local/opt/readline/include -L/usr/local/opt/readline/lib -lreadline -o minishell
-
-# 1. -lreadline - compilation flag
-# 2. -I/usr/local/opt/readline/include -L/usr/local/opt/readline/lib -lreadline libraries for functions like rl_replace_line and rl_redisplay 
 
 NAME = minishell
 CC = cc --debug -Wall -Wextra -Werror -g3
-# CFLAGS = -I/usr/local/opt/readline/include
 CFLAGS = -I/usr/local/Cellar/readline/8.1/include
-# LDFLAGS = -I/usr/local/include -L/usr/local/lib -lreadline  
 LDFLAGS = -lreadline -L/usr/local/Cellar/readline/8.1/lib
-# -L/usr/local/Cellar/readline/8.1/lib -L/usr/local/Cellar/readline/8.1/include
-# -L/usr/local/opt/readline/lib -lreadline
 
 SRC = 			main.c \
 				errors.c \
 				free_memory.c \
-				debug_message.c 
 
 SRC_PARSING = 	./parsing/parser/parsing.c \
 				./parsing/parser/parse_exec.c \
@@ -84,13 +75,6 @@ $(NAME):	$(OBJ)
 	$(CC) -o $(NAME) $(OBJ) $(LIBFT) $(LDFLAGS)
 
 all:		$(NAME)
-
-leaks:
-	valgrind --leak-check=full \
-	--track-origins=yes \
-	--show-leak-kinds=all -s \
- 	--suppressions=supression.txt \
-	./minishell
 
 clean:
 	$(RM) $(OBJ)
