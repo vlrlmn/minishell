@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 15:39:45 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/14 19:16:53 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/14 20:02:59 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	handle_sigquit(int sig)
 
 void	write_sig_prompt(void)
 {
+	write(STDERR_FILENO, "\n", 1);
 	write_new_promt();
 }
 

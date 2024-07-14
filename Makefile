@@ -2,7 +2,7 @@
 NAME = minishell
 CC = cc --debug -Wall -Wextra -Werror -g3
 CFLAGS = -I/usr/local/Cellar/readline/8.1/include
-LDFLAGS = -lreadline -L/usr/local/Cellar/readline/8.1/lib
+LDFLAGS = -lreadline 
 
 SRC = 			main.c \
 				errors.c \
