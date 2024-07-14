@@ -67,6 +67,11 @@ int	export_cmd(char *str, t_args *params)
 	if (status != 0)
 		return (status);
 	env_value = get_str_after_sign(str, '=');
+	if (!env_value)
+	{
+		free(env_var);
+		return (1);
+	}
 	if (find_env_var(params->envp, env_var))
 		update_envp_var(params, env_var, env_value);
 	else

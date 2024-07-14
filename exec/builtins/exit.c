@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: vlomakin <vlomakin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 17:05:13 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/12 18:16:26 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/14 16:47:53 by vlomakin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,13 @@ void	check_argument_amount(t_cmd_info *ecmd, t_args *params,
 	{
 		path = get_env("PATH=", params->envp);
 		if (is_buildin(ecmd->argv[1]) || find_cmd_path(ecmd->argv[1], path))
-			free_and_exit(255, cmd_list, pipe_arr, params, NULL);
+			free_and_exit(255, cmd_list, pipe_arr, NULL);
 	}
 	if (arg_counter > 2)
-		free_and_exit(1, cmd_list, pipe_arr, params, NULL);
+		free_and_exit(1, cmd_list, pipe_arr, NULL);
 }
 
-void	check_first_char(char *status, t_cmd_info *cmd_list, int **pipe_arr,
-		t_args *params)
+void	check_first_char(char *status, t_cmd_info *cmd_list, int **pipe_arr)
 {
 	int	minus_counter;
 	int	plus_counter;
@@ -44,7 +43,7 @@ void	check_first_char(char *status, t_cmd_info *cmd_list, int **pipe_arr,
 	while (status[i])
 	{
 		if (ft_isalpha(status[i]) || minus_counter > 1 || plus_counter > 1)
-			free_and_exit(255, cmd_list, pipe_arr, params, NULL);
+			free_and_exit(255, cmd_list, pipe_arr, NULL);
 		if (status[i] == '-')
 			minus_counter++;
 		if (status[i] == '+')
@@ -64,7 +63,7 @@ void	exit_cmd(t_cmd_info *ecmd, t_args *params, t_cmd_info *cmd_list,
 	status = ecmd->argv[1];
 	if (status)
 	{
-		check_first_char(status, cmd_list, pipe_arr, params);
+		check_first_char(status, cmd_list, pipe_arr);
 		num_st = ft_atoi(status);
 		if (num_st > 255 || num_st < 0)
 		{
@@ -78,5 +77,5 @@ void	exit_cmd(t_cmd_info *ecmd, t_args *params, t_cmd_info *cmd_list,
 				num_st = num_st % 256;
 		}
 	}
-	free_and_exit(num_st, cmd_list, pipe_arr, params, NULL);
+	free_and_exit(num_st, cmd_list, pipe_arr, NULL);
 }

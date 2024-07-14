@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 14:51:13 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/14 19:01:32 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/14 19:17:00 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,13 +71,13 @@ void	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr,
 	{
 		cmd_path = check_params(cmd, cmd_list, pipe_arr, params);
 		if (prepare_connections(cmd))
-			free_and_exit(EXIT_FAILURE, cmd_list, pipe_arr, params, cmd_path);
+			free_and_exit(EXIT_FAILURE, cmd_list, pipe_arr, cmd_path);
 		pipe_arr = close_free_pipe_arr(pipe_arr);
 		if (is_buildin(cmd->argv[0]))
 			status = run_buildin(cmd, params, cmd_list, pipe_arr);
 		else
 			status = execve(cmd_path, cmd->argv, params->envp);
-		free_and_exit(status, cmd_list, pipe_arr, params, cmd_path);
+		free_and_exit(status, cmd_list, pipe_arr, cmd_path);
 	}
 	else
 		close_parent_connections(cmd);

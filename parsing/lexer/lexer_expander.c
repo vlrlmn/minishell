@@ -81,13 +81,13 @@ void	parse_expander_sign_in_quotes(int *i, char *line, t_lexems *list,
 	free(var_name);
 }
 
-void	parse_expander(int* i, t_clean_line_args args, int *exit_status)
+void	parse_expander(int *i, t_clean_line_args args, int *exit_status)
 {
 	char	*exit_str;
 
 	(*i)++;
-	if (!args.line[*i] || is_delimiter(args.line[*i]) || (args.line[*i + 1] && args.line[*i] == '/'
-			&& args.line[*i + 1] == '/'))
+	if (!args.line[*i] || is_delimiter(args.line[*i]) || (args.line[*i + 1]
+			&& args.line[*i] == '/' && args.line[*i + 1] == '/'))
 	{
 		add_char_node(args.list, '$');
 		return ;

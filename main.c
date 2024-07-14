@@ -6,22 +6,22 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/14 19:06:21 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/14 19:15:10 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int g_sig_exit_status = 0;
+int		g_sig_exit_status = 0;
 
 void	write_new_promt(void)
 {
-	// rl_replace_line("", 0);
+	// rl_replace_line("", 1);
 	rl_on_new_line();
 	rl_redisplay();
 }
 
-void exec(t_cmd	*cmd, t_args *args, int *last_status)
+void	exec(t_cmd *cmd, t_args *args, int *last_status)
 {
 	t_cmd_info	*cmd_list;
 	int			**pipe_arr;
@@ -31,7 +31,7 @@ void exec(t_cmd	*cmd, t_args *args, int *last_status)
 	if (status_code(GET, -1) == CTRL_D)
 		*last_status = 0;
 	if (!cmd_list)
-		return (free_all(cmd_list, pipe_arr)); 
+		return (free_all(cmd_list, pipe_arr));
 	pipe_arr = connections(cmd_list);
 	*last_status = run_cmds(cmd_list, pipe_arr, args);
 	if (!cmd_list->argv[0] || cmd_list->argv[0][0] == '\0')
@@ -40,10 +40,10 @@ void exec(t_cmd	*cmd, t_args *args, int *last_status)
 		return (free_all(cmd_list, pipe_arr));
 	*last_status = wait_cmds(cmd_list);
 	free_all(cmd_list, pipe_arr);
-	return;
+	return ;
 }
 
-void loop_result(t_args *args, int *exit_status)
+void	loop_result(t_args *args, int *exit_status)
 {
 	t_cmd	*cmd;
 
@@ -52,13 +52,14 @@ void loop_result(t_args *args, int *exit_status)
 		args->input = readline("minishell$ ");
 		if (args->input == NULL)
 			break ;
-		add_history(args->input);
+		if (ft_strlen(args->input) > 1 && args->input[0] != '\n')
+			add_history(args->input);
 		if (!valid_input(args->input, exit_status))
 			continue ;
 		cmd = parse(args, exit_status);
 		exec(cmd, args, exit_status);
 	}
-	return;
+	return ;
 }
 
 void	set_environment(t_args *args, char **envp)
@@ -98,6 +99,6 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGINT, handle_sigint);
 	loop_result(&shell_context, &exit_status);
 	clear_history();
-	free_envp (&shell_context);
+	free_envp(&shell_context);
 	return (exit_status);
 }

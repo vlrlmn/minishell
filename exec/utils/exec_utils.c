@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vlomakin <vlomakin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 22:07:48 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/12 22:08:28 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/14 16:48:24 by vlomakin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*check_params(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr,
 
 	cmd_path = NULL;
 	if (!params)
-		free_and_exit(1, cmd_list, pipe_arr, params, cmd_path);
+		free_and_exit(1, cmd_list, pipe_arr, cmd_path);
 	if (cmd->argv[0][0] == '/')
 		cmd_path = cmd->argv[0];
 	else if (!is_buildin(cmd->argv[0]))
@@ -28,7 +28,7 @@ char	*check_params(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr,
 		if (!cmd_path)
 		{
 			fprintf(stderr, "command not found: %s\n", cmd->argv[0]);
-			free_and_exit(127, cmd_list, pipe_arr, params, cmd_path);
+			free_and_exit(127, cmd_list, pipe_arr, cmd_path);
 		}
 	}
 	if (!is_buildin(cmd->argv[0]))
@@ -36,7 +36,7 @@ char	*check_params(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr,
 		if (is_executable(cmd_path))
 		{
 			fprintf(stderr, "%s: is a directory\n", cmd_path);
-			free_and_exit(126, cmd_list, pipe_arr, params, NULL);
+			free_and_exit(126, cmd_list, pipe_arr, NULL);
 		}
 	}
 	return (cmd_path);

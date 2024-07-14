@@ -51,9 +51,9 @@ char	*clean_line(t_clean_line_args clean_args, int *exit_status)
 
 char	*clean_cmd(char *line, t_args *args, int *exit_status)
 {
-	t_lexems	args_list;
-	char		*val;
-	t_clean_line_args clean_args;
+	t_lexems			args_list;
+	char				*val;
+	t_clean_line_args	clean_args;
 
 	args_list.head = NULL;
 	args_list.tail = NULL;
