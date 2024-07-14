@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:27:36 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/07 17:14:36 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/14 12:34:19 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_cmd	*parsepipe(char **ps, char *es)
 	return (cmd);
 }
 
-t_cmd	*parse(t_args *args)
+t_cmd	*parse(t_args *args, int *exit_status)
 {
 	char	*es;
 	char	*ps;
@@ -43,6 +43,6 @@ t_cmd	*parse(t_args *args)
 	while (args->input < es && is_delimiter(*args->input))
 		args->input++;
 	nulterminate(cmd);
-	lexical_analysis(cmd, args);
+	lexical_analysis(cmd, args, exit_status);
 	return (cmd);
 }

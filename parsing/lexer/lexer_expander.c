@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:34:57 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/14 09:35:31 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/14 12:17:04 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,29 +81,29 @@ void	parse_expander_sign_in_quotes(int *i, char *line, t_lexems *list,
 	free(var_name);
 }
 
-void	parse_expander(int *i, t_lexems *list, char *line, t_args *args)
+void	parse_expander(int* i, t_clean_line_args args, int *exit_status)
 {
 	char	*exit_str;
 
 	(*i)++;
-	if (!line[*i] || is_delimiter(line[*i]) || (line[*i + 1] && line[*i] == '/'
-			&& line[*i + 1] == '/'))
+	if (!args.line[*i] || is_delimiter(args.line[*i]) || (args.line[*i + 1] && args.line[*i] == '/'
+			&& args.line[*i + 1] == '/'))
 	{
-		add_char_node(list, '$');
+		add_char_node(args.list, '$');
 		return ;
 	}
-	else if (line[*i] == '?')
+	else if (args.line[*i] == '?')
 	{
-		exit_str = ft_itoa(g_exit_status);
-		add_str_node(list, exit_str);
+		exit_str = ft_itoa(*exit_status);
+		add_str_node(args.list, exit_str);
 		free(exit_str);
 		(*i)++;
 	}
-	else if (line[*i] == '0')
+	else if (args.line[*i] == '0')
 	{
-		add_str_node(list, "bash\n");
+		add_str_node(args.list, "bash\n");
 		(*i)++;
 	}
 	else
-		parse_expander_sign(i, line, list, args);
+		parse_expander_sign(i, args.line, args.list, args.args);
 }

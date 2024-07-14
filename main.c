@@ -6,13 +6,13 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/14 09:34:41 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/14 12:49:56 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int g_exit_status = 0;
+int g_sig_exit_status = 0;
 
 void	write_new_promt(void)
 {
@@ -20,33 +20,32 @@ void	write_new_promt(void)
 	rl_redisplay();
 }
 
-int	exec(t_cmd	*cmd, t_args *args)
+void exec(t_cmd	*cmd, t_args *args, int *last_status)
 {
 	t_cmd_info	*cmd_list;
 	int			**pipe_arr;
-	int			exit_status;
 
 	pipe_arr = NULL;
-	cmd_list = create_cmdlist(cmd, args);
+	cmd_list = create_cmdlist(cmd, args, last_status);
 	// printf("status: %d\n", status_code(GET, -1));
 	if (status_code(GET, -1) == CTRL_D)
-		g_exit_status = 0;
-	if (!cmd_list)// or return g_exit_status, which i need to define in case of failure inside the create_cmdlist()
-		return (free_all(cmd_list, pipe_arr), g_exit_status); 
+		*last_status = 0;
+	if (!cmd_list)// or return exit_status, which i need to define in case of failure inside the create_cmdlist()
+		return (free_all(cmd_list, pipe_arr)); 
 	pipe_arr = connections(cmd_list);
 	// PrintList(cmd_list);
 	// printPipeArr(pipe_arr);
-	exit_status = run_cmds(cmd_list, pipe_arr, args);
+	*last_status = run_cmds(cmd_list, pipe_arr, args);
 	if (!cmd_list->argv[0] || cmd_list->argv[0][0] == '\0')
-		return (free_all(cmd_list, pipe_arr), exit_status);
+		return (free_all(cmd_list, pipe_arr));
 	if (list_size(cmd_list) == 1 && is_buildin(cmd_list->argv[0]))
-		return (free_all(cmd_list, pipe_arr), exit_status);
-	exit_status = wait_cmds(cmd_list);
+		return (free_all(cmd_list, pipe_arr));
+	*last_status = wait_cmds(cmd_list);
 	free_all(cmd_list, pipe_arr);
-	return (exit_status);
+	return;
 }
 
-int	loop_result(t_args *args)
+void loop_result(t_args *args, int *exit_status)
 {
 	t_cmd	*cmd;
 
@@ -56,12 +55,12 @@ int	loop_result(t_args *args)
 		if (args->input == NULL)
 			break ;
 		add_history(args->input);
-		if (!valid_input(args->input))
+		if (!valid_input(args->input, exit_status))
 			continue ;
-		cmd = parse(args);
-		g_exit_status = exec(cmd, args);
+		cmd = parse(args, exit_status);
+		exec(cmd, args, exit_status);
 	}
-	return (g_exit_status);
+	return;
 }
 
 void	set_environment(t_args *args, char **envp)
@@ -93,12 +92,13 @@ int	main(int argc, char **argv, char **envp)
 	t_args	shell_context;
 	int		exit_status;
 
+	exit_status = 0;
 	(void)argc;
 	(void)argv;
 	set_environment(&shell_context, envp);
 	signal(SIGQUIT, handle_sigquit);
 	signal(SIGINT, handle_sigint);
-	exit_status = loop_result(&shell_context);
+	loop_result(&shell_context, &exit_status);
 	clear_history();
 	free_envp (&shell_context);
 	return (exit_status);

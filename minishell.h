@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/13 20:07:36 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/14 12:27:21 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@
 # define Y "\033[1;33m"
 # define RST "\033[0m"
 
-extern int g_exit_status;
+extern int g_sig_exit_status;
 typedef struct s_args
 {
 	char	*input; 
@@ -139,15 +139,22 @@ typedef struct s_cmd_info //free
 	struct s_cmd_info	*next;
 }	t_cmd_info;
 
-void		lexical_analysis(t_cmd *cmd, t_args *args);
+typedef struct s_clean_line_args
+{
+	char *line;
+	t_lexems *list;
+	t_args *args;
+}   t_clean_line_args;
+
+void		lexical_analysis(t_cmd *cmd, t_args *args, int *exit_status);
 void		old_check_arguments(t_execcmd *ecmd);
-void		parse_double_quote(int *i, char *line, t_lexems *list, t_args *args);
+void		parse_double_quote(int *i, t_clean_line_args args, int *exit_status);
 void		parse_quote(char *line, int *i, t_lexems *list);
 void		parse_expander_sign(int *i, char *line, t_lexems *list, t_args *args);
-void		parse_expander(int *i, t_lexems *list, char *line, t_args *args);
+void		parse_expander(int *i, t_clean_line_args clean_args, int *exit_status);
 char		*get_env(char *value, char **envp);
 t_cmd		*nulterminate(t_cmd *cmd);
-int			valid_input(char *work_line);
+int			valid_input(char *work_line, int *exit_status);
 void			free_split(char **arr);
 void			run_cmd(t_cmd *cmd, t_args *params);
 char	*find_cmd_path(char *cmd, char *path);
@@ -157,14 +164,14 @@ int			peek(char **ps, char *es, char *toks);
 t_cmd		*parseredir(t_cmd *cmd, char **ps, char *es);
 t_cmd		*pipecmd(t_cmd *left, t_cmd *right);
 t_cmd		*parsepipe(char **ps, char *es);
-t_cmd		*parse(t_args *args);
+t_cmd		*parse(t_args *args, int *exit_status);
 void		panic_and_free_env(t_args *args, int index);
 void		exit_with_syntax_err(t_args *args, int err_code);
 void		exit_with_malloc_error(int err_code);
 int			is_delimiter(char c);
 int			ft_isalnum(int c);
 int			has_parse_symbol(char *s);
-char		*clean_cmd (char *line, t_args *args);
+char		*clean_cmd (char *line, t_args *args, int *exit_status);
 void		add_char_node(t_lexems *list, char c);
 void		add_str_node(t_lexems *list, char *str);
 char		*list_to_string(t_lexems *list);
@@ -220,12 +227,12 @@ char *do_expantion(char *input, t_cmd_info *cmd, t_args *args);
 int is_limiter(char *limiter, char *input);
 char	*add_expantion(char *input, t_args *args);
 int		is_expantion(char *input);
-t_cmd_info	*create_cmdlist(t_cmd *cmd, t_args *args);
-t_cmd_info	*fill_redir(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args);
+t_cmd_info	*create_cmdlist(t_cmd *cmd, t_args *args, int *exit_status);
+t_cmd_info	*fill_redir(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args, int *exit_status);
 t_cmd_info	*fill_exec(t_cmd *cmd);
 void	add_cmd_to_list(t_cmd_info *cmd, t_cmd_info	**head);
-void	gothrough_cmd(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args);
-void	fill_pipe(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args);
+void	gothrough_cmd(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args, int *exit_status);
+void	fill_pipe(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args, int *exit_status);
 int		more_redir(t_cmd_info *new_cmd, t_redir *rcmd, t_args *args);
 int		list_size(t_cmd_info *cmd_list);
 void	check_arguments(t_cmd_info *ecmd);
@@ -267,9 +274,9 @@ void	handle_sigquit(int sig);
 int	get_token(char **ps, char *es, char **q, char **eq);
 // static void	process_special_tokens(char **s, int *token);
 // static void	skip_non_special_tokens(char **s, char *es);
-int	validate_redirection(char **ps, char *es);
-int	check_invalid_pipe_syntax(char **ps, char *es);
-int	validate_pipe(char **ps, char *es);
+int	validate_redirection(char **ps, char *es, int *exit_status);
+int	check_invalid_pipe_syntax(char **ps, char *es, int *exit_status);
+int	validate_pipe(char **ps, char *es, int *exit_status);
 t_cmd *parseexec(char **ps, char *es);
 void handle_quotes(char **ps, char *es);
 void skip_delimiters(char **ps, char *es);

@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/07/11 17:11:55 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/14 12:21:21 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	valid_quotes(char *input)
 		return (1);
 }
 
-int valid_syntax(char *work_line)
+int valid_syntax(char *work_line, int *exit_status)
 {
 	char	*ps;
 	char	*es;
@@ -43,19 +43,19 @@ int valid_syntax(char *work_line)
 
 	ps = work_line;
 	es = ps + ft_strlen(work_line);
-	if (check_invalid_pipe_syntax(&ps, es))
+	if (check_invalid_pipe_syntax(&ps, es, exit_status))
 		return (0);
 	while (!peek(&ps, es, "\0"))
 	{
 		tok = get_token(&ps, es, 0, 0);
 		if (tok == '>' || tok == '<' || tok == '+' || tok == '-')
 		{
-			if (!validate_redirection(&ps, es))
+			if (!validate_redirection(&ps, es, exit_status))
 				return (0);
 		}
 		else if (tok == '|')
 		{
-			if (!validate_pipe(&ps, es))
+			if (!validate_pipe(&ps, es, exit_status))
 				return (0);
 		}
 		else if (tok == '\0')
@@ -64,7 +64,7 @@ int valid_syntax(char *work_line)
 	return (1);
 }
 
-int	valid_input(char *work_line)
+int	valid_input(char *work_line, int *exit_status)
 {
 	int	i;
 
@@ -73,7 +73,7 @@ int	valid_input(char *work_line)
 		return(0);
 	if (ft_strlen(work_line) == 2 && work_line[0] == '<' && work_line[1] == '>')
 	{
-		g_exit_status = 258;
+		*exit_status = 258;
 		return (0);
 	}
 	while (is_delimiter(work_line[i]))
@@ -82,10 +82,11 @@ int	valid_input(char *work_line)
 		return (0);
 	if (!valid_quotes(work_line))
 	{
+		*exit_status = 258;
 		printf("Close quotes\n");
 		return (0);
 	}
-	if (!valid_syntax(work_line))
+	if (!valid_syntax(work_line, exit_status))
 		return (0);
 	return (1);
 }

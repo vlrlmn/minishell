@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_list.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 17:20:39 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/13 20:41:51 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/14 12:29:52 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,17 @@
 It should be included into the list and into the cmd tree.
 In run_exec I will skip this cmd abdo only do heredoc */
 
-t_cmd_info	*create_cmdlist(t_cmd *cmd, t_args *args)
+t_cmd_info	*create_cmdlist(t_cmd *cmd, t_args *args, int *exit_status)
 {
 	t_cmd_info	*cmd_list;
 
 	cmd_list = NULL;
-	gothrough_cmd(cmd, &cmd_list, args);
+	gothrough_cmd(cmd, &cmd_list, args, exit_status);
 	return (cmd_list);
 }
 
 /* creates linked list there and fill it recursively */
-void	gothrough_cmd(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args)
+void	gothrough_cmd(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args, int *exit_status)
 {
 	t_cmd_info	*cmd_node;
 
@@ -36,17 +36,17 @@ void	gothrough_cmd(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args)
 	if (cmd->type == EXEC)
 		cmd_node = fill_exec(cmd);
 	else if (cmd->type == REDIR)
-		cmd_node = fill_redir(cmd, cmd_list, args);
+		cmd_node = fill_redir(cmd, cmd_list, args, exit_status);
 	else
-		fill_pipe(cmd, cmd_list, args);
+		fill_pipe(cmd, cmd_list, args, exit_status);
 	if (cmd_node)
 		add_cmd_to_list(cmd_node, cmd_list);
 	else
-		g_exit_status = 1;
+		*exit_status = 1;
 	return ;
 }
 
-void	fill_pipe(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args)
+void	fill_pipe(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args, int *exit_status)
 {
 	t_pipe	*pcmd;
 	t_cmd	*left;
@@ -56,11 +56,11 @@ void	fill_pipe(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args)
 	left = pcmd->left;
 	right = pcmd->right;
 	free(pcmd);
-	gothrough_cmd(left, cmd_list, args);
-	gothrough_cmd(right, cmd_list, args);
+	gothrough_cmd(left, cmd_list, args, exit_status);
+	gothrough_cmd(right, cmd_list, args, exit_status);
 }
 
-t_cmd_info	*fill_redir(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args)
+t_cmd_info	*fill_redir(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args, int *exit_status)
 {
 	t_redir		*rcmd;
 	t_cmd_info	*new_cmd;
@@ -85,7 +85,7 @@ t_cmd_info	*fill_redir(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args)
 	if (connection_content(new_cmd))
 		return (free_redir(rcmd), free_cmd_list(new_cmd), NULL);
 	if (new_cmd->subcmd->type == PIPE)
-		gothrough_cmd(new_cmd->subcmd, cmd_list, args);
+		gothrough_cmd(new_cmd->subcmd, cmd_list, args, exit_status);
 	return (free(rcmd), new_cmd);
 }
 

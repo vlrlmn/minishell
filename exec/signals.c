@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 15:39:45 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/14 09:35:00 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/14 12:51:48 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	handle_sigquit(int sig)
 	if (sig == SIGQUIT)
 	{
 		status_code(SET, CTRL_D);
-		g_exit_status = 0;
+		g_sig_exit_status = 0;
 	}
 	return ;
 }
@@ -49,7 +49,7 @@ void	handle_sigint(int sig)
 		if (status == IN_CMD)
 		{
 			status_code(SET, STOP_CMD);
-			g_exit_status = 130;
+			g_sig_exit_status = 130;
 			write(STDERR_FILENO, "\n", 1);
 			write_new_promt();
 			return ;
@@ -57,13 +57,13 @@ void	handle_sigint(int sig)
 		if (status == IN_HEREDOC)
 		{
 			status_code(SET, STOP_HEREDOC);
-			g_exit_status = 1;
+			g_sig_exit_status = 1;
 			write(STDERR_FILENO, "\n", 1);
 			write_new_promt();
 			return ;
 		}
 		write_sig_prompt();
-		g_exit_status = 0;
+		g_sig_exit_status = 0;
 		return ;
 	}
 }
