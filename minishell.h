@@ -5,13 +5,13 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vlomakin <vlomakin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/14 16:42:52 by vlomakin         ###   ########.fr       */
+/*   Created: 2024/07/14 19:02:23 by vlomakin          #+#    #+#             */
+/*   Updated: 2024/07/14 19:16:08 by vlomakin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL
-# define MINISHELL
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
 # include "Libft/libft.h"
 # include <errno.h>
@@ -38,6 +38,7 @@
 # define RST "\033[0m"
 
 extern int				g_sig_exit_status;
+
 typedef struct s_args
 {
 	char				*input;
@@ -98,7 +99,8 @@ typedef enum redir_type
 	REDIRIN = 5,
 	REDIROUT = 6,
 	NONE = -1
-}						r_type;
+}						t_rtype;
+
 typedef enum token_type
 {
 	PIPE = 0,
@@ -120,12 +122,12 @@ typedef enum signal_status
 
 typedef struct s_cmd_info //free
 {
-	t_args *args;
-	int head;
-	int index;
-	int type;
-	int redir_type;
-	t_cmd *subcmd;
+	t_args		*args;
+	int			head;
+	int			index;
+	int			type;
+	int			redir_type;
+	t_cmd		*subcmd;
 
 	char *argv[MAXARGS];
 	char *eargv[MAXARGS];
@@ -200,12 +202,14 @@ int						unset_cmd(char *str, t_args *params);
 void					exit_cmd(t_cmd_info *ecmd, t_args *params,
 							t_cmd_info *cmd_list, int **pipe_arr);
 int						is_executable(const char *path);
-int	redir_tok_append(char **ps, char **q, char **eq, int *token);
-int	redir_tok_heredoc(char **ps, char **q, char **eq, int *token);
-char	*get_str_after_sign(char *str, char sign);  //export
-char	*get_str_before_sign(char *str, char sign); //export
-int	add_cmd(t_args *params, char *new_env_var);  //export
-int	export_print(t_args *params);                //export
+int						redir_tok_append(char **ps, char **q, char **eq,
+							int *token);
+int						redir_tok_heredoc(char **ps, char **q, char **eq,
+							int *token);
+char					*get_str_after_sign(char *str, char sign);
+char					*get_str_before_sign(char *str, char sign);
+int						add_cmd(t_args *params, char *new_env_var);
+int						export_print(t_args *params);
 int						check_var_name(char *env_var);
 int	remove_cmd(t_args *params, char *env_var_to_remove); //unset
 int						is_valid_variable_name(char *key);
@@ -257,10 +261,8 @@ int						list_size(t_cmd_info *cmd_list);
 void					check_arguments(t_cmd_info *ecmd);
 void					copy_eargv(t_cmd_info *new_cmd, t_cmd *cmd);
 void					copy_argv(t_cmd_info *new_cmd, t_cmd *cmd);
-int						check_file_access(const char *file_path,
-							int redir_type); //, int redir_type);
-
-/* connections between cmds */
+int	check_file_access(const char *file_path,
+						int redir_type);
 int						**connections(t_cmd_info *cmd_list);
 int						**fill_pipes(t_cmd_info *cmd, int **pipe_arr, int i,
 							int size);
