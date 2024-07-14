@@ -12,7 +12,8 @@
 
 #include "../../minishell.h"
 
-char *check_params(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *params)
+char	*check_params(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr,
+		t_args *params)
 {
 	char	*cmd_path;
 
@@ -41,7 +42,7 @@ char *check_params(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args
 	return (cmd_path);
 }
 
-int prepare_connections(t_cmd_info *cmd)
+int	prepare_connections(t_cmd_info *cmd)
 {
 	if (cmd->connection[0] == -1 || cmd->connection[1] == -1)
 		return (1);
@@ -50,7 +51,7 @@ int prepare_connections(t_cmd_info *cmd)
 		close(cmd->connection[0]);
 		close(cmd->connection[1]);
 		perror("dup2");
-    	return (1);
+		return (1);
 	}
 	if (cmd->connection[0] != 0)
 		close(cmd->connection[0]);
@@ -58,7 +59,7 @@ int prepare_connections(t_cmd_info *cmd)
 	{
 		close(cmd->connection[1]);
 		perror("dup2");
-    	return (1);
+		return (1);
 	}
 	if (cmd->connection[1] != 1)
 		close(cmd->connection[1]);

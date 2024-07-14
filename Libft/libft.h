@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 12:16:59 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/10 14:36:01 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/13 20:13:51 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,9 @@ void				ft_lstiter(t_list *lst, void (*f)(void *));
 void				ft_lstclear(t_list **lst, void (*del)(void *));
 void				ft_lstadd_back(t_list **lst, t_list *new);
 char				*get_next_line(int fd);
+char				*final_line(char *save_line);
+char				*remainder_chars(char *save_line);
+char				*join_read(char *save_line, char *buf);
 t_list				*ft_lstmap(t_list *lst, void *(*f)(void *),
 						void (*del)(void *));
 

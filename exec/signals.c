@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 15:39:45 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/13 16:19:05 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/14 09:35:00 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void write_sig_prompt()
 
 void	handle_sigint(int sig)
 {
-	int status;
+	int	status;
 
 	if (sig == SIGINT)
 	{

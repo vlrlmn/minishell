@@ -6,7 +6,7 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:34:57 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/13 12:56:12 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/14 09:35:31 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,21 +30,22 @@ char	*getvar_name(char *arg)
 
 char	*get_env_exp(char *value, char **envp)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
 	while (envp[i])
 	{
-		if (ft_strlen(value) && (ft_strncmp(value, envp[i], ft_strlen(value)) == 0) && envp[i][ft_strlen(value)] == '=')
+		if (ft_strlen(value) && (ft_strncmp(value, envp[i],
+					ft_strlen(value)) == 0) && envp[i][ft_strlen(value)] == '=')
 			return (envp[i]);
 		i++;
 	}
 	return (NULL);
 }
 
-void parse_expander_sign(int *i, char *line, t_lexems *list, t_args *args)
+void	parse_expander_sign(int *i, char *line, t_lexems *list, t_args *args)
 {
-    char	*var_name;
+	char	*var_name;
 	char	*var_value;
 	int		*j;
 
@@ -60,9 +61,10 @@ void parse_expander_sign(int *i, char *line, t_lexems *list, t_args *args)
 	free(var_name);
 }
 
-void parse_expander_sign_in_quotes(int *i, char *line, t_lexems *list, t_args *args)
+void	parse_expander_sign_in_quotes(int *i, char *line, t_lexems *list,
+		t_args *args)
 {
-    char	*var_name;
+	char	*var_name;
 	char	*var_value;
 	int		*j;
 
@@ -79,29 +81,29 @@ void parse_expander_sign_in_quotes(int *i, char *line, t_lexems *list, t_args *a
 	free(var_name);
 }
 
-void parse_expander(int *i, t_lexems *list, char *line, t_args *args)
+void	parse_expander(int *i, t_lexems *list, char *line, t_args *args)
 {
-    char *exit_str;
+	char	*exit_str;
 
-    (*i)++;
-    if(!line[*i] || is_delimiter(line[*i]) || (line[*i + 1] && line[*i] == '/'
+	(*i)++;
+	if (!line[*i] || is_delimiter(line[*i]) || (line[*i + 1] && line[*i] == '/'
 			&& line[*i + 1] == '/'))
-    {
-        add_char_node(list, '$');
-        return ;
-    }
-    else if (line[*i] == '?')
-    {
-        exit_str = ft_itoa(g_exit_status);
-        add_str_node(list, exit_str);
-        free(exit_str);
-        (*i)++;
-    }
+	{
+		add_char_node(list, '$');
+		return ;
+	}
+	else if (line[*i] == '?')
+	{
+		exit_str = ft_itoa(g_exit_status);
+		add_str_node(list, exit_str);
+		free(exit_str);
+		(*i)++;
+	}
 	else if (line[*i] == '0')
 	{
 		add_str_node(list, "bash\n");
 		(*i)++;
 	}
-    else
-        parse_expander_sign(i, line, list, args);
+	else
+		parse_expander_sign(i, line, list, args);
 }

@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/13 14:38:22 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/13 20:07:36 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,6 +213,11 @@ int	 count_files(t_redir *rcmd, int redir_type);
 char	*heredoc_get_tmp_file(void);
 int	heredoc(t_cmd_info *cmd, char *limiter, t_args *args);
 int		call_heredocs(char **arr, t_cmd_info *new_cmd, t_args *args);
+int	count_arr_elem(char **arr);
+char *free_heredoc_arr(char **arr, char flag);
+int	check_input(char *input, int fd);
+char *do_expantion(char *input, t_cmd_info *cmd, t_args *args);
+int is_limiter(char *limiter, char *input);
 char	*add_expantion(char *input, t_args *args);
 int		is_expantion(char *input);
 t_cmd_info	*create_cmdlist(t_cmd *cmd, t_args *args);
@@ -275,5 +280,11 @@ void	print_content(t_cmd_info *current);
 int PrintList(t_cmd_info *cmd_list);
 void	printPipeArr(int **pipe_arr);
 
+char	**create_file_array(t_redir *rcmd, int redir_type);
+int	fill_heredoc_array(char **heredoc_arr, int i, t_cmd_info *new_cmd, t_redir *rcmd);
+
+
+void	free_files_and_fd(t_cmd_info *current);
+void	free_argv(t_cmd_info *current);
 
 #endif

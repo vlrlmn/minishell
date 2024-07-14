@@ -6,14 +6,12 @@
 /*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 15:21:12 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/13 15:23:31 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/14 09:34:50 by lomakinaval      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-/* there should be pipe_amount-1 amount of connections, 
-and the last in pipe_ar should be NULL */
 int	set_one_cmd(int size, t_cmd_info *cmd_list)
 {
 	if (size == 1)

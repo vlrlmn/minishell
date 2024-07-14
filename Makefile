@@ -49,9 +49,11 @@ SRC_BUILTIN = ./exec/builtins/cd.c \
 
 
 SRC_REDIR = ./exec/redirection/heredoc.c \
+			./exec/redirection/heredoc_utils.c \
 			./exec/redirection/redir_cmdlist.c \
 			./exec/redirection/redirection.c \
 			./exec/redirection/redir_utils.c \
+			./exec/redirection/redir_cmdlist_utils.c \
 
 SRC_UTILS = ./exec/utils/utils_env.c \
 			./exec/utils/exec_utils.c \
@@ -59,6 +61,8 @@ SRC_UTILS = ./exec/utils/utils_env.c \
 			./exec/utils/utils_list.c \
 			./exec/utils/exec_path_utils.c \
 			./exec/utils/expantion.c \
+			./exec/utils/free_utils.c \
+
 
 SRCS = $(SRC) $(SRC_PARSING) $(SRC_EXECUTION) $(SRC_BUILTIN) $(SRC_REDIR) $(SRC_UTILS)
 

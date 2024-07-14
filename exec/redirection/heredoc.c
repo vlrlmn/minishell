@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 14:17:50 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/13 15:07:51 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/13 19:18:14 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,11 @@ char	*heredoc_get_tmp_file(void)
 	return (filename);
 }
 
-/* if ctrl + C -> show new promt (minishell$) and exit with status 1
-if ctrl + D exit with status 0 */
-
 int	heredoc(t_cmd_info *cmd, char *limiter, t_args *args)
 {
 	int		fd;
 	char	*input;
-	char	*input_exp;
 
-	input_exp = NULL;
 	fd = get_file_fd(cmd, HEREDOC);
 	if (fd == -1)
 		return (-1);
@@ -47,90 +42,48 @@ int	heredoc(t_cmd_info *cmd, char *limiter, t_args *args)
 		status_code(SET, IN_HEREDOC);
 		fprintf(stderr, "> ");
 		input = get_next_line(STDIN_FILENO);
-		if (!input || (input[0] == '\n' && !input[1])) // if ctrl + d. TODO ahnde ctrl+c
-		{
-			status_code(SET, CTRL_D);
-			close(fd);
-			if (input)
-				free(input);
-			// fprintf(stderr, "\nwarning: here-document delimited by end-of-file (wanted `%s')\n", limiter);
+		if (check_input(input, fd))
 			return (-2);
-		}
-		input[ft_strlen(input) - 1] = '\0'; //remove '/n'
-		// fprintf(stderr, "input: %s, its len:  %zu\n", input, ft_strlen(input));
-		if ((ft_strncmp(limiter, input, ft_strlen(limiter)) == 0) && (ft_strlen(limiter) == (ft_strlen(input))))
-		{
-			free(input);
-			break ;
-		}
-		if (is_expantion(input))
-		{
-			input_exp = add_expantion(input, args);
-			if (!input_exp)
-			{
-				free(input);
-				return (write(fd, "\n", 1), -1);
-			}
-			free(input);
-			input = input_exp;
-		}
-		// fprintf(stderr, "input: '%s'\n", input);
+		if (is_limiter(input, limiter))
+			return (free(input), close(fd), (fd));
+		input = do_expantion(input, cmd, args);
+		if (!input)
+			return (close(fd), -1);
 		write(fd, input, ft_strlen(input));
 		write(fd, "\n", 1);
 		free(input);
-		input = NULL;
 	}
 	close(fd);
-	// fprintf(stderr, "heredoc completed\n");
-	status_code(SET, IN_CMD);
 	return (fd);
 }
 
-void	free_heredoc_arr(char **arr)
+void	null_input_exit(char **arr, t_cmd_info *new_cmd)
 {
-	int i = 0;
-	while(arr[i])
-	{
-		free(arr[i]);
-		i += 2;
-	}
-	free(arr);
+	unlink(new_cmd->file_read);
+	free_heredoc_arr(arr, 'n');
+	new_cmd->file_read = NULL;
+	close(new_cmd->fd_read);
 }
 
 int	call_heredocs(char **arr, t_cmd_info *new_cmd, t_args *args)
 {
-	int	i;
-	int	size;
-	char *limiter;
-	
-	i = -1;
-	size = 0;
-	while (arr[size])
-		size++;
-	size -= 1;
-	while (i < size)
+	int		size;
+	char	*limiter;
+
+	size = count_arr_elem(arr);
+	while (-1 < size)
 	{
 		limiter = arr[size];
 		size--;
 		new_cmd->file_read = arr[size];
 		new_cmd->fd_read = heredoc(new_cmd, limiter, args);
 		if (new_cmd->fd_read == -2)
-		{
-			unlink(new_cmd->file_read);
-			free_heredoc_arr(arr);
-			free(new_cmd->file_read);
-			new_cmd->file_read = NULL;
-			return (1);
-		}
+			return (null_input_exit(arr, new_cmd), 1);
 		if (size != 0 && size % 2 == 0)
-		{
 			unlink(arr[size]);
-			free(arr[size]);
-		}
 		size--;
 	}
-	free(arr);
-	// free(limiter_arr);
+	new_cmd->file_read = free_heredoc_arr(arr, 'l');
 	new_cmd->fd_read = get_file_fd(new_cmd, HEREDOC);
 	if (new_cmd->fd_read == -1)
 		return (1);

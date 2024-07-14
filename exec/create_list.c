@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 17:20:39 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/13 15:17:01 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/13 20:41:51 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,42 +16,41 @@
 It should be included into the list and into the cmd tree.
 In run_exec I will skip this cmd abdo only do heredoc */
 
-t_cmd_info	*create_cmdlist(t_cmd *cmd,  t_args *args)
+t_cmd_info	*create_cmdlist(t_cmd *cmd, t_args *args)
 {
-	t_cmd_info *cmd_list;
+	t_cmd_info	*cmd_list;
 
 	cmd_list = NULL;
 	gothrough_cmd(cmd, &cmd_list, args);
 	return (cmd_list);
 }
+
 /* creates linked list there and fill it recursively */
 void	gothrough_cmd(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args)
 {
-    t_cmd_info *cmd_node = NULL;
+	t_cmd_info	*cmd_node;
 
-    if (!cmd)
-        return;
-
-    if (cmd->type == EXEC)
-        cmd_node = fill_exec(cmd);
-    else if (cmd->type == REDIR)
-        cmd_node = fill_redir(cmd, cmd_list, args);
-    else
-        fill_pipe(cmd, cmd_list, args);
-
-    if (cmd_node)
-        add_cmd_to_list(cmd_node, cmd_list);
-    else
-        g_exit_status = 1;
-
-    return;
+	cmd_node = NULL;
+	if (!cmd)
+		return ;
+	if (cmd->type == EXEC)
+		cmd_node = fill_exec(cmd);
+	else if (cmd->type == REDIR)
+		cmd_node = fill_redir(cmd, cmd_list, args);
+	else
+		fill_pipe(cmd, cmd_list, args);
+	if (cmd_node)
+		add_cmd_to_list(cmd_node, cmd_list);
+	else
+		g_exit_status = 1;
+	return ;
 }
 
 void	fill_pipe(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args)
 {
-	t_pipe		*pcmd;
-	t_cmd		*left;
-	t_cmd		*right;
+	t_pipe	*pcmd;
+	t_cmd	*left;
+	t_cmd	*right;
 
 	pcmd = (t_pipe *)cmd;
 	left = pcmd->left;
@@ -66,13 +65,13 @@ t_cmd_info	*fill_redir(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args)
 	t_redir		*rcmd;
 	t_cmd_info	*new_cmd;
 
-	rcmd = (t_redir *)cmd; 
+	rcmd = (t_redir *)cmd;
 	new_cmd = malloc(sizeof(t_cmd_info));
 	if (!new_cmd)
 		return (free(rcmd->cmd), free(rcmd), NULL);
 	define_redir_info(new_cmd, rcmd);
 	if (add_redir_details(new_cmd, rcmd, args))
-		return (free_redir(rcmd), free(new_cmd), (void *)NULL);
+		return (free_redir(rcmd), free(new_cmd), (void *) NULL);
 	if (new_cmd->subcmd->type == REDIR)
 	{
 		if (more_redir(new_cmd, rcmd, args))

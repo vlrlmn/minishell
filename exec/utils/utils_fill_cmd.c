@@ -91,14 +91,14 @@ int	check_file_access(const char *file_path, int redir_type)
 	if (redir_type == REDIRIN || redir_type == HEREDOC)
 	{
 		res = access(file_path, F_OK);
-        if (res == 0)
-            res = access(file_path, R_OK);
+		if (res == 0)
+			res = access(file_path, R_OK);
 	}
 	if (redir_type == REDIROUT || redir_type == APPEND)
 	{
 		res = access(file_path, F_OK);
-        if (res == 0)
-            res = access(file_path, W_OK);
+		if (res == 0)
+			res = access(file_path, W_OK);
 	}
 	if (res < 0)
 		printf("Bad file permission: %s\n", file_path);

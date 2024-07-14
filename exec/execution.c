@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 14:51:13 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/12 22:08:35 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/13 20:41:05 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,11 @@ int	run_cmds(t_cmd_info *cmd_list, int **pipe_arr, t_args *args)
 	return (0);
 }
 
-int	execute_cmd(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *params)
+int	execute_cmd(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr,
+		t_args *params)
 {
 	int	status;
-	int i;
+	int	i;
 
 	i = 0;
 	status = 0;
@@ -40,7 +41,7 @@ int	execute_cmd(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *p
 	if (!cmd->argv[0] || cmd->argv[0][0] == '\0') // attention!
 		return (1);
 	check_arguments(cmd);
-	while(cmd->argv[0][i])
+	while (cmd->argv[0][i])
 	{
 		*(cmd->argv[0] + i) = ft_tolower(cmd->argv[0][i]);
 		i++;
@@ -53,11 +54,12 @@ int	execute_cmd(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *p
 	return (status);
 }
 
-void	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr, t_args *params)
+void	run_exec(t_cmd_info *cmd, t_cmd_info *cmd_list, int **pipe_arr,
+		t_args *params)
 {
 	char	*cmd_path;
-	int	pid;
-	int	status;
+	int		pid;
+	int		status;
 
 	pid = fork();
 	if (pid < 0)
