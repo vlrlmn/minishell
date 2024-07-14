@@ -3,7 +3,8 @@
 
 void	print_content(t_cmd_info *current)
 {
-	int i;
+	int	i;
+
 	printf("\tINDEX: %d\n", current->index);
 	printf("type: %d\n", current->type);
 	i = 0;
@@ -24,20 +25,22 @@ void	print_content(t_cmd_info *current)
 	printf("file_write: %s\n", current->file_write);
 }
 
-int PrintList(t_cmd_info *cmd_list)
+int	PrintList(t_cmd_info *cmd_list)
 {
-    t_cmd_info *current = cmd_list;
+	t_cmd_info	*current;
+
+	current = cmd_list;
 	printf("-------------PRINTING LIST-------------\n");
 	if (!current)
 		return (printf("no list nodes, error\n"), 1);
-    while (current->next != NULL) 
+	while (current->next != NULL)
 	{
-        print_content(current);
+		print_content(current);
 		if (current->next != NULL)
-        	current = current->next;
+			current = current->next;
 		else
 			return (printf("ERROR IN PRINTING\n"), 1);
-    }
+	}
 	if (current->next == NULL)
 		print_content(current);
 	printf("--------------------------------------\n");

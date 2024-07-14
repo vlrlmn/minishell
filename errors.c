@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:03 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/05/21 13:43:51 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/14 19:09:44 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	panic_and_free_env(t_args *args, int index)
 	i = 0;
 	while (i < index)
 	{
-		free((void*)args->envp[i]);
+		free((void*) args->envp[i]);
 		i++;
 	}
 	free(args->envp);

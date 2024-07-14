@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:05:31 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/14 13:38:23 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/14 19:04:26 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ char	*find_env_var(char **envp, char *var)
 	while (envp[i])
 	{
 		before_sign = get_str_before_sign(envp[i], '=');
-		if ((ft_strlen(before_sign) == len) 
+		if ((ft_strlen(before_sign) == len) \
 			&& ft_strncmp(envp[i], var, len) == 0)
 		{
 			res = envp[i] + (len + 1);

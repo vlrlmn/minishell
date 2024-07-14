@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:43:09 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/14 12:27:21 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/14 19:12:39 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ typedef enum signal_status
 	CTRL_D = 7,
 }			t_signal_type;
 
-typedef struct s_cmd_info //free
+typedef struct s_cmd_info
 {
 	t_args	*args;
 	int		head;
@@ -147,7 +147,6 @@ typedef struct s_clean_line_args
 }   t_clean_line_args;
 
 void		lexical_analysis(t_cmd *cmd, t_args *args, int *exit_status);
-void		old_check_arguments(t_execcmd *ecmd);
 void		parse_double_quote(int *i, t_clean_line_args args, int *exit_status);
 void		parse_quote(char *line, int *i, t_lexems *list);
 void		parse_expander_sign(int *i, char *line, t_lexems *list, t_args *args);
@@ -205,8 +204,6 @@ int	is_valid_variable_name(char *key);
 int		update_envp_var(t_args *params, char *env_var, char *new_content);
 char	*find_env_var(char **envp, char *var);
 int		find_env_index(char **envp, char *var);
-void	redir(t_redir *rcmd);
-void	close_fd(t_cmd *ecmd);
 char *get_file(t_cmd_info* cmd);
 int	get_fd_or_mode(t_cmd_info* cmd, char flag);
 int		get_file_fd(t_cmd_info* cmd, int redir_type);
@@ -254,7 +251,6 @@ void	free_cmd_list(t_cmd_info	*cmd_list);
 void	*close_free_pipe_arr(int **pipe_arr);
 void    free_all(t_cmd_info	*cmd_list, int **pipe_arr);
 void	free_and_exit(int status, t_cmd_info *cmd_list, int **pipe_arr, t_args *params, char *cmd_path);
-void PrintTree(t_cmd	*cmd);
 
 
 /* execution utils */
@@ -264,8 +260,6 @@ void	close_parent_connections(t_cmd_info *cmd);
 
 
 /* signals */
-int	get_status();
-int	set_status(int new_status);
 int	status_code(t_signal_type flag, int new_status);
 
 void	handle_sigint(int sig);

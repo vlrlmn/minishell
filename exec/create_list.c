@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_list.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomakinavaleria <lomakinavaleria@studen    +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 17:20:39 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/14 12:29:52 by lomakinaval      ###   ########.fr       */
+/*   Updated: 2024/07/14 19:00:36 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_cmd_info	*create_cmdlist(t_cmd *cmd, t_args *args, int *exit_status)
 }
 
 /* creates linked list there and fill it recursively */
-void	gothrough_cmd(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args, int *exit_status)
+void	gothrough_cmd(t_cmd *cmd, t_cmd_info **list, t_args *args, int *exit_st)
 {
 	t_cmd_info	*cmd_node;
 
@@ -36,17 +36,17 @@ void	gothrough_cmd(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args, int *exit_st
 	if (cmd->type == EXEC)
 		cmd_node = fill_exec(cmd);
 	else if (cmd->type == REDIR)
-		cmd_node = fill_redir(cmd, cmd_list, args, exit_status);
+		cmd_node = fill_redir(cmd, list, args, exit_st);
 	else
-		fill_pipe(cmd, cmd_list, args, exit_status);
+		fill_pipe(cmd, list, args, exit_st);
 	if (cmd_node)
-		add_cmd_to_list(cmd_node, cmd_list);
+		add_cmd_to_list(cmd_node, list);
 	else
-		*exit_status = 1;
+		*exit_st = 1;
 	return ;
 }
 
-void	fill_pipe(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args, int *exit_status)
+void	fill_pipe(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args, int *exit_st)
 {
 	t_pipe	*pcmd;
 	t_cmd	*left;
@@ -56,11 +56,11 @@ void	fill_pipe(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args, int *exit_status
 	left = pcmd->left;
 	right = pcmd->right;
 	free(pcmd);
-	gothrough_cmd(left, cmd_list, args, exit_status);
-	gothrough_cmd(right, cmd_list, args, exit_status);
+	gothrough_cmd(left, cmd_list, args, exit_st);
+	gothrough_cmd(right, cmd_list, args, exit_st);
 }
 
-t_cmd_info	*fill_redir(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args, int *exit_status)
+t_cmd_info	*fill_redir(t_cmd *cmd, t_cmd_info **list, t_args *args, int *ex_st)
 {
 	t_redir		*rcmd;
 	t_cmd_info	*new_cmd;
@@ -85,7 +85,7 @@ t_cmd_info	*fill_redir(t_cmd *cmd, t_cmd_info **cmd_list, t_args *args, int *exi
 	if (connection_content(new_cmd))
 		return (free_redir(rcmd), free_cmd_list(new_cmd), NULL);
 	if (new_cmd->subcmd->type == PIPE)
-		gothrough_cmd(new_cmd->subcmd, cmd_list, args, exit_status);
+		gothrough_cmd(new_cmd->subcmd, list, args, ex_st);
 	return (free(rcmd), new_cmd);
 }
 

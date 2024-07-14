@@ -33,15 +33,17 @@ void	*close_free_pipe_arr(int **pipe_arr)
 	return (NULL);
 }
 
-void free_split(char **arr) 
+void	free_split(char **arr)
 {
-    int i = 0;
-    while (arr[i]) 
+	int	i;
+
+	i = 0;
+	while (arr[i])
 	{
-        free(arr[i]);
-        i++;
-    }
-    free(arr);
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
 }
 
 void	free_envp(t_args *args)
@@ -53,19 +55,20 @@ void	free_envp(t_args *args)
 		return ;
 	while (args->envp[i])
 	{
-		free((void*)args->envp[i]);
+		free((void *)args->envp[i]);
 		i++;
 	}
 	free(args->envp);
 }
 
-void    free_all(t_cmd_info	*cmd_list, int **pipe_arr)
+void	free_all(t_cmd_info *cmd_list, int **pipe_arr)
 {
-    free_cmd_list(cmd_list);
-    close_free_pipe_arr(pipe_arr);
+	free_cmd_list(cmd_list);
+	close_free_pipe_arr(pipe_arr);
 }
 
-void	free_and_exit(int status, t_cmd_info *cmd_list, int **pipe_arr, t_args *params, char *cmd_path)
+void	free_and_exit(int status, t_cmd_info *cmd_list, int **pipe_arr,
+		t_args *params, char *cmd_path)
 {
 	if (cmd_path)
 		free(cmd_path);

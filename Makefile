@@ -4,10 +4,12 @@
 # 2. -I/usr/local/opt/readline/include -L/usr/local/opt/readline/lib -lreadline libraries for functions like rl_replace_line and rl_redisplay 
 
 NAME = minishell
-CC = cc --debug -Wall -Wextra -Werror -g3 -fsanitize=address
-CFLAGS = -I/usr/local/opt/readline/include
+CC = cc --debug -Wall -Wextra -Werror -g3
+# CFLAGS = -I/usr/local/opt/readline/include
+CFLAGS = -I/usr/local/Cellar/readline/8.1/include
 # LDFLAGS = -I/usr/local/include -L/usr/local/lib -lreadline  
-LDFLAGS = -lreadline  
+LDFLAGS = -lreadline -L/usr/local/Cellar/readline/8.1/lib
+# -L/usr/local/Cellar/readline/8.1/lib -L/usr/local/Cellar/readline/8.1/include
 # -L/usr/local/opt/readline/lib -lreadline
 
 SRC = 			main.c \
@@ -82,6 +84,13 @@ $(NAME):	$(OBJ)
 	$(CC) -o $(NAME) $(OBJ) $(LIBFT) $(LDFLAGS)
 
 all:		$(NAME)
+
+leaks:
+	valgrind --leak-check=full \
+	--track-origins=yes \
+	--show-leak-kinds=all -s \
+ 	--suppressions=supression.txt \
+	./minishell
 
 clean:
 	$(RM) $(OBJ)
