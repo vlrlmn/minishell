@@ -6,7 +6,7 @@
 /*   By: vlomakin <vlomakin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 19:02:23 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/14 19:16:08 by vlomakin         ###   ########.fr       */
+/*   Updated: 2024/07/14 19:25:21 by vlomakin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,23 +122,22 @@ typedef enum signal_status
 
 typedef struct s_cmd_info //free
 {
-	t_args		*args;
-	int			head;
-	int			index;
-	int			type;
-	int			redir_type;
-	t_cmd		*subcmd;
-
-	char *argv[MAXARGS];
-	char *eargv[MAXARGS];
-	int fd_read;
-	int fd_write;
-	char *file_read;
-	char *file_write;
-	int mode_read;
-	int mode_write;
-	int *connection;
-	struct s_cmd_info *next;
+	t_args				*args;
+	int					head;
+	int					index;
+	int					type;
+	int					redir_type;
+	t_cmd				*subcmd;
+	char				*argv[MAXARGS];
+	char				*eargv[MAXARGS];
+	int					fd_read;
+	int					fd_write;
+	char				*file_read;
+	char				*file_write;
+	int					mode_read;
+	int					mode_write;
+	int					*connection;
+	struct s_cmd_info	*next;
 }						t_cmd_info;
 
 typedef struct s_clean_line_args
@@ -211,10 +210,8 @@ char					*get_str_before_sign(char *str, char sign);
 int						add_cmd(t_args *params, char *new_env_var);
 int						export_print(t_args *params);
 int						check_var_name(char *env_var);
-int	remove_cmd(t_args *params, char *env_var_to_remove); //unset
+int						remove_cmd(t_args *params, char *env_var_to_remove);
 int						is_valid_variable_name(char *key);
-
-/* env utils */
 int						update_envp_var(t_args *params, char *env_var,
 							char *new_content);
 char					*find_env_var(char **envp, char *var);
@@ -261,8 +258,8 @@ int						list_size(t_cmd_info *cmd_list);
 void					check_arguments(t_cmd_info *ecmd);
 void					copy_eargv(t_cmd_info *new_cmd, t_cmd *cmd);
 void					copy_argv(t_cmd_info *new_cmd, t_cmd *cmd);
-int	check_file_access(const char *file_path,
-						int redir_type);
+int						check_file_access(const char *file_path,
+							int redir_type);
 int						**connections(t_cmd_info *cmd_list);
 int						**fill_pipes(t_cmd_info *cmd, int **pipe_arr, int i,
 							int size);
@@ -282,24 +279,16 @@ void					free_all(t_cmd_info *cmd_list, int **pipe_arr);
 void					free_and_exit(int status, t_cmd_info *cmd_list,
 							int **pipe_arr, char *cmd_path);
 void					PrintTree(t_cmd *cmd);
-
-/* execution utils */
 char					*check_params(t_cmd_info *cmd, t_cmd_info *cmd_list,
 							int **pipe_arr, t_args *params);
 int						prepare_connections(t_cmd_info *cmd);
 void					close_parent_connections(t_cmd_info *cmd);
-
-/* signals */
 int						get_status(void);
 int						set_status(int new_status);
 int						status_code(t_signal_type flag, int new_status);
-
 void					handle_sigint(int sig);
 void					handle_sigquit(int sig);
-
 int						get_token(char **ps, char *es, char **q, char **eq);
-// static void	process_special_tokens(char **s, int *token);
-// static void	skip_non_special_tokens(char **s, char *es);
 int						validate_redirection(char **ps, char *es,
 							int *exit_status);
 int						check_invalid_pipe_syntax(char **ps, char *es,
@@ -308,16 +297,12 @@ int						validate_pipe(char **ps, char *es, int *exit_status);
 t_cmd					*parseexec(char **ps, char *es);
 void					handle_quotes(char **ps, char *es);
 void					skip_delimiters(char **ps, char *es);
-
-/* debug message */
 void					print_content(t_cmd_info *current);
 int						PrintList(t_cmd_info *cmd_list);
 void					printPipeArr(int **pipe_arr);
-
 char					**create_file_array(t_redir *rcmd, int redir_type);
 int						fill_heredoc_array(char **heredoc_arr, int i,
 							t_cmd_info *new_cmd, t_redir *rcmd);
-
 void					free_files_and_fd(t_cmd_info *current);
 void					free_argv(t_cmd_info *current);
 
