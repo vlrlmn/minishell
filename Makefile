@@ -1,19 +1,12 @@
-# cc main.c -I/usr/local/opt/readline/include -L/usr/local/opt/readline/lib -lreadline -o minishell
-
-# 1. -lreadline - compilation flag
-# 2. -I/usr/local/opt/readline/include -L/usr/local/opt/readline/lib -lreadline libraries for functions like rl_replace_line and rl_redisplay 
 
 NAME = minishell
-CC = cc --debug -Wall -Wextra -Werror -g3 -fsanitize=address
-CFLAGS = -I/usr/local/opt/readline/include
-# LDFLAGS = -I/usr/local/include -L/usr/local/lib -lreadline  
-LDFLAGS = -lreadline  
-# -L/usr/local/opt/readline/lib -lreadline
+CC = cc --debug -Wall -Wextra -Werror -g3
+CFLAGS = -I/usr/local/Cellar/readline/8.1/include
+LDFLAGS = -lreadline -L/usr/local/Cellar/readline/8.1/lib
 
 SRC = 			main.c \
 				errors.c \
 				free_memory.c \
-				debug_message.c 
 
 SRC_PARSING = 	./parsing/parser/parsing.c \
 				./parsing/parser/parse_exec.c \

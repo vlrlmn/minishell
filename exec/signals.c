@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlomakin <vlomakin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 15:39:45 by sabdulki          #+#    #+#             */
-/*   Updated: 2024/07/14 16:51:29 by vlomakin         ###   ########.fr       */
+/*   Updated: 2024/07/14 19:16:53 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,8 @@ void	handle_sigquit(int sig)
 	return ;
 }
 
-void write_sig_prompt()
+void	write_sig_prompt(void)
 {
-	write(STDERR_FILENO, "\n", 1);
 	write_new_promt();
 }
 

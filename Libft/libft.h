@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 12:16:59 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/13 20:13:51 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/14 18:54:52 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,11 @@ typedef struct s_list
 	void			*content;
 	struct s_list	*next;
 }					t_list;
+
+typedef struct s_signal_state
+{
+	volatile sig_atomic_t	interrupted;
+}							t_signal_state;
 
 int					ft_isalpha(int c);
 int					ft_isdigit(int c);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_memory.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlomakin <vlomakin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:06 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/14 16:43:23 by vlomakin         ###   ########.fr       */
+/*   Updated: 2024/07/14 19:20:21 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	free_all(t_cmd_info *cmd_list, int **pipe_arr)
 	close_free_pipe_arr(pipe_arr);
 }
 
-void	free_and_exit (int status, t_cmd_info *cmd_list, int **pipe_arr, 
+void	free_and_exit(int status, t_cmd_info *cmd_list, int **pipe_arr, \
 		char *cmd_path)
 {
 	if (cmd_path)

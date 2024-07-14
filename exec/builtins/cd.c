@@ -6,7 +6,7 @@
 /*   By: sabdulki <sabdulki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:39:06 by lomakinaval       #+#    #+#             */
-/*   Updated: 2024/07/10 13:49:58 by sabdulki         ###   ########.fr       */
+/*   Updated: 2024/07/14 19:04:40 by sabdulki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ char	*define_prevdir(t_args *params)
 	prevdir = find_env_var(params->envp, "OLDPWD");
 	if (prevdir == NULL || prevdir[0] == '\0')
 		return (printf("cd: OLDPWD not set\n"), NULL);
-	// don't delete this printf, it's needed for bash replication	
 	printf("'%s'\n", prevdir);
 	return (prevdir);
 }

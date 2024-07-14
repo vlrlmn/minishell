@@ -6,7 +6,7 @@
 /*   By: vlomakin <vlomakin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 19:02:23 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/14 19:25:21 by vlomakin         ###   ########.fr       */
+/*   Updated: 2024/07/14 19:28:24 by vlomakin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ typedef enum signal_status
 	CTRL_D = 7,
 }						t_signal_type;
 
-typedef struct s_cmd_info //free
+typedef struct s_cmd_info
 {
 	t_args				*args;
 	int					head;

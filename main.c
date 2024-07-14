@@ -6,13 +6,13 @@
 /*   By: vlomakin <vlomakin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 12:44:21 by vlomakin          #+#    #+#             */
-/*   Updated: 2024/07/14 18:59:07 by vlomakin         ###   ########.fr       */
+/*   Updated: 2024/07/14 19:28:12 by vlomakin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		g_sig_exit_status = 0;
+int	g_sig_exit_status = 0;
 
 void	write_new_promt(void)
 {
