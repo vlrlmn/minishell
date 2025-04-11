@@ -1,5 +1,5 @@
 
-# 🐚 minishell - replica of bash v3.2
+# Minishell - replica of bash v3.2
 
 `minishell` is an educational implementation of the Linux Shell (bash version 3.2), written in C.  
 The project was developed as part of a team assignment at [42 Abu Dhabi school](https://42abudhabi.ae/).  
@@ -7,7 +7,7 @@ The goal is to gain a deeper understanding of how Unix terminals, processes, pip
 
 ---
 
-## Features 💡
+## Features
 
 - Execution of standard shell commands
 - Implementation of **built-in commands**:
@@ -36,7 +36,7 @@ The goal is to gain a deeper understanding of how Unix terminals, processes, pip
 
 ---
 
-## Installation 📥
+## Installation
 ### 1. Clone the repository
 ``` 
 git clone https://github.com/your-username/minishell.git
@@ -54,7 +54,7 @@ make
 
 Here you go! Use it just like you would use regular Bash.
 
-## Usage Examples 📃
+## Usage Examples
 ```
 $ echo Hello, world!
 Hello, world!
@@ -77,7 +77,7 @@ Standards: POSIX
 
 **Key concepts**: processes, fork/exec, signals, pipes, redirections, system calls, command parsing.
 
-## Team 🏃‍♀️🏃‍♀️
+## Team
 
 👩‍💻 Valeriia Lomakina — https://github.com/vlrlmn
 
